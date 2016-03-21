@@ -29,8 +29,12 @@ var MainApp = Backbone.Marionette.Application.extend({
 		$("#HEADER #mainmenu .menuitem").removeClass('active')
 		$("#HEADER #mainmenu .menuitem#" + mode).addClass('active');
 	},
-	Route: function (route) {
-		window.location = route;
+	Route: function (route, trigger) {
+		if (_.isUndefined(trigger))
+			trigger = true;
+		APP.controller.router.navigate(route, {
+			trigger: trigger
+		})
 	},
 	InitializeCollections: function () {
 		//		this.models = {
