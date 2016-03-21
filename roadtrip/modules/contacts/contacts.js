@@ -21,6 +21,9 @@ window.DEF.modules.contacts.Collection = Backbone.Highway.Collection.extend({
 	url: 'dev.telegauge.com:3000/roadtrip/contacts',
 });
 
+/**
+ * A list of commands, automatically tied to the $cmd in  #module/$cmd/$id.  See DoView
+ */
 window.DEF.modules.contacts.cmds = {
 	/**
 	 * Edit a contact
@@ -32,12 +35,19 @@ window.DEF.modules.contacts.cmds = {
 		ui: {
 			"field": ".field",
 			"save": "#save",
-			"cancel": "#cancel"
+			"cancel": "#cancel",
+			"delete": "#delete"
 		},
 		events: {
 			"change @ui.field": "MakeDirty",
 			"click @ui.save": "Save",
-			"click @ui.cancel": "Cancel"
+			"click @ui.cancel": "Cancel",
+			"click @ui.delete": "Delete"
+		},
+		onBeforeRender: function () {
+			if (!this.model) {
+				this.model = new DEF.modules.contacts.Model({})
+			}
 		},
 		MakeDirty: function (e) {
 			console.log(e);
@@ -52,9 +62,16 @@ window.DEF.modules.contacts.cmds = {
 				console.log($el.id, $el.value)
 				model.set($el.id, $el.value);
 			})
+			if (!this.model.id) {
+				APP.models.contacts.create(model);
+			}
 			this.triggerMethod('main:list');
 		},
 		Cancel: function (e) {
+			this.triggerMethod('main:list');
+		},
+		Delete: function (e) {
+			APP.models.contacts.remove(this.model);
 			this.triggerMethod('main:list');
 		}
 	}),
@@ -88,16 +105,17 @@ window.DEF.modules.contacts.MainView = Backbone.Marionette.LayoutView.extend({
 	childEvents: {
 		'main:list': 'ListContacts',
 	},
+	ui: {
+		add: "#add",
+		list: "#list"
+	},
+	events: {
+		"click @ui.add": "Add",
+		"click @ui.list": "ListContacts"
+	},
 	onRender: function () {
 		APP.SetMode("contacts");
-		switch (this.options.cmd) {
-		case 'edit':
-		case 'view':
-			this.DoView(this.options.cmd, this.options.arg);
-			break;
-		default:
-			this.ListContacts();
-		}
+		this.Command(this.options.cmd, this.options.arg);
 	},
 	ListContacts: function () {
 		var list = new DEF.modules.contacts.ContactList({
@@ -109,12 +127,26 @@ window.DEF.modules.contacts.MainView = Backbone.Marionette.LayoutView.extend({
 	/**
 	 * Show a collection based $cmd in  #module/$cmd/$id
 	 */
-	DoView: function (cmd, id) {
-		var page = new DEF.modules.contacts.cmds[cmd]({
-			model: APP.models.contacts.get(id),
+	Command: function (cmd, id) {
+		switch (cmd) {
+		case 'edit':
+		case 'view':
+			var page = new DEF.modules.contacts.cmds[cmd]({
+				model: APP.models.contacts.get(id),
+			});
+			this.showChildView('list', page);
+			break;
+		case 'list':
+		default:
+			this.ListContacts();
+		}
+	},
+	Add: function () {
+		var page = new DEF.modules.contacts.cmds.edit({
+			model: false,
 		});
 		this.showChildView('list', page);
-	},
+	}
 });
 
 /**
