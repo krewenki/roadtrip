@@ -5,7 +5,7 @@ window.DEF.modules.contacts.Contact = Backbone.Model.extend({
 	}
 });
 
-window.DEF.modules.contacts.Contacts = Backbone.Highway.Collection.extend({
+window.DEF.modules.contacts.Collection = Backbone.Highway.Collection.extend({
 	model: DEF.modules.contacts.Contact,
 	url: 'dev.telegauge.com:3000/roadtrip/contacts',
 });
