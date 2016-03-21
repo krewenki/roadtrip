@@ -1,6 +1,7 @@
 DEF.Router = Backbone.Marionette.AppRouter.extend({
 	appRoutes: {
-		'': 'GoHome'
+		'': 'GoHome',
+		'contacts': "Contacts"
 	}
 });
 
@@ -12,7 +13,6 @@ DEF.Controller = Backbone.Marionette.Object.extend({
 			APP.root.showChildView('header', header);
 			this.init_done = true;
 		}
-		$("#search").val("");
 	},
 	GoHome: function () {
 		this.InitializeInterface();
@@ -20,7 +20,19 @@ DEF.Controller = Backbone.Marionette.Object.extend({
 			page: "home"
 		})
 		APP.root.showChildView("main", page);
+		APP.SetMode("home");
+	},
+	Contacts: function () {
+		this.InitializeInterface();
+		if (APP.models.contacts.length) {
+			var page = new DEF.ContactsLayout({});
+			APP.root.showChildView("main", page);
+			APP.SetMode("contacts");
+		} else {
+			this.listenToOnce(APP.models.contacts, 'sync', this.Contacts.bind(this))
+		}
 	}
+
 
 
 });

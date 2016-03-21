@@ -5,7 +5,7 @@ window._ = require('underscore');
 window.APP = {}; // DEFINE THE MAIN APP OBJECT
 window.DEF = {}; // HOLD THE DEFINITIONS. ALL THE MODULES, ETC...
 
-//require('../vendor/backbone.highway.js');
+require('../vendor/backbone.highway.js');
 
 require('../style/style.scss');
 require("font-awesome-webpack");
@@ -14,6 +14,8 @@ require("./layout.js");
 require("./router.js");
 require("./static.js");
 
+require("../modules/contacts/contacts.js");
+
 var MainApp = Backbone.Marionette.Application.extend({
 	setRootLayout: function () {
 		this.root = new DEF.RootLayout();
@@ -21,13 +23,16 @@ var MainApp = Backbone.Marionette.Application.extend({
 	SetTitle: function (title) {
 		document.title = title + " - roadtrip";
 	},
+	SetMode: function (mode) {
+		$("#HEADER #mainmenu .menuitem").removeClass('active')
+		$("#HEADER #mainmenu .menuitem#" + mode).addClass('active');
+	},
 	Route: function (route) {
 		window.location = route;
 	},
 	InitializeCollections: function () {
-		APP.UID = 0;
 		this.models = {
-			//			ratings: new COW.Ratings(),
+			contacts: new DEF.Contacts(),
 		}
 	},
 	Icon: function (icon, title) {
