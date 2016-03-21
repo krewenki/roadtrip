@@ -4,10 +4,10 @@ window.$ = require('jquery');
 window._ = require('underscore');
 window.APP = {}; // DEFINE THE MAIN APP OBJECT
 window.DEF = {}; // HOLD THE DEFINITIONS. ALL THE MODULES, ETC...
-window.DEF.modules = {}
+window.DEF.modules = {} // hold the models definitions
 
-//require('backbone.highway');
-require('../vendor/backbone.highway.js')
+require('backbone.highway');
+//require('../vendor/backbone.highway.js')
 
 require('../style/style.scss');
 require("font-awesome-webpack");
@@ -33,9 +33,9 @@ var MainApp = Backbone.Marionette.Application.extend({
 		window.location = route;
 	},
 	InitializeCollections: function () {
-		this.models = {
-			contacts: new DEF.modules.contacts.Contacts(),
-		}
+		//		this.models = {
+		//	//		contacts: new DEF.modules.contacts.Contacts(),
+		//		}
 	},
 	Icon: function (icon, title) {
 		icons = {
@@ -77,6 +77,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 
 
 APP = new MainApp();
+APP.models = {} // hold the collections
 
 APP.Format = {
 	fixed: function (val, dec) {
