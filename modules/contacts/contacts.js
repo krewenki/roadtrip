@@ -1,15 +1,16 @@
-DEF.Contact = Backbone.Model.extend({
+window.DEF.modules.contacts = {}
+window.DEF.modules.contacts.Contact = Backbone.Model.extend({
 	defaults: {
 		name: "Person 1"
 	}
-})
+});
 
-DEF.Contacts = Backbone.Highway.Collection.extend({
-	model: DEF.Contact,
+window.DEF.modules.contacts.Contacts = Backbone.Highway.Collection.extend({
+	model: DEF.modules.contacts.Contact,
 	url: 'dev.telegauge.com:3000/roadtrip/contacts',
 });
 
-DEF.ContactsLayout = Backbone.Marionette.LayoutView.extend({
+window.DEF.modules.contacts.MainView = Backbone.Marionette.LayoutView.extend({
 	template: require("./templates/contacts.html"),
 	regions: {
 		list: "#contact_list"
@@ -22,24 +23,24 @@ DEF.ContactsLayout = Backbone.Marionette.LayoutView.extend({
 		APP.SetMode("contacts");
 	},
 	ListContacts: function () {
-		var list = new DEF.ContactList({
+		var list = new DEF.modules.contacts.ContactList({
 			collection: APP.models.contacts,
 		});
 		this.showChildView('list', list);
 	}
 });
 
-DEF.ContactLine = Backbone.Marionette.ItemView.extend({
+window.DEF.modules.contacts.ContactLine = Backbone.Marionette.ItemView.extend({
 	tagName: 'tr',
 	template: require("./templates/contact_line.html")
-})
+});
 
 
-DEF.ContactList = Backbone.Marionette.CompositeView.extend({
+window.DEF.modules.contacts.ContactList = Backbone.Marionette.CompositeView.extend({
 	template: require("./templates/contact_list.html"),
 	tagName: "table",
 	className: "table table-full table-top",
-	childView: DEF.ContactLine,
+	childView: DEF.modules.contacts.ContactLine,
 	emptyView: DEF.EmptyView,
 	emptyViewOptions: {
 		icon: "warning",
@@ -48,4 +49,4 @@ DEF.ContactList = Backbone.Marionette.CompositeView.extend({
 	collectionEvents: {
 		"sync": "render"
 	}
-});
+})

@@ -4,6 +4,7 @@ window.$ = require('jquery');
 window._ = require('underscore');
 window.APP = {}; // DEFINE THE MAIN APP OBJECT
 window.DEF = {}; // HOLD THE DEFINITIONS. ALL THE MODULES, ETC...
+window.DEF.modules = {}
 
 //require('backbone.highway');
 require('../vendor/backbone.highway.js')
@@ -33,7 +34,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 	},
 	InitializeCollections: function () {
 		this.models = {
-			contacts: new DEF.Contacts(),
+			contacts: new DEF.modules.contacts.Contacts(),
 		}
 	},
 	Icon: function (icon, title) {
