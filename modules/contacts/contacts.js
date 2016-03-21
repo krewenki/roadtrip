@@ -23,6 +23,7 @@ window.DEF.modules.contacts.Model = Backbone.Model.extend({
 window.DEF.modules.contacts.Collection = Backbone.Highway.Collection.extend({
 	model: DEF.modules.contacts.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/contacts',
+	comparator: 'name'
 });
 
 /**
@@ -102,7 +103,9 @@ window.DEF.modules.contacts.MainView = Backbone.Marionette.LayoutView.extend({
 	},
 	Icon: function (icon) {
 		var icons = {
-			employee: "user"
+			employee: "user",
+			company: "building",
+			vendor: "money",
 		}
 		return APP.Icon(icons[icon]);
 	},
@@ -141,6 +144,7 @@ window.DEF.modules.contacts.MainView = Backbone.Marionette.LayoutView.extend({
 		APP.Route("#contacts", false);
 	},
 	/**
+	 * 
 	 * Show a collection based $cmd in  #module/$cmd/$id
 	 */
 	Command: function (cmd, id) {

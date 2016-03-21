@@ -1,4 +1,13 @@
 <tr>
+	<th>Kind</th>
+	<td>
+		<input class='field' <%=kind=='employee' ? "checked": ""%> type='radio' value='employee' name='kind' id='kind'>Employee
+		<input class='field' <%=kind=='company' ? "checked": ""%> type='radio' value='company' name='kind' id='kind'>Company
+		<input class='field' <%=kind=='vendor' ? "checked": ""%> type='radio' value='vendor' name='kind' id='kind'>Vendor
+	</td>
+</tr>
+
+<tr>
 	<th>Name</th>
 	<td>
 		<input class='field' type='input' id='name' value='<%=name%>'>
