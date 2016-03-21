@@ -1,0 +1,42 @@
+@import 'config';
+@import 'util';
+body {
+	margin: 0px;
+	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+}
+
+#HEADER {
+	background-color: black;
+	background: linear-gradient(#333, #000);
+	color: white;
+	padding: 10px;
+	box-shadow: 0px 5px 20px rgba(0, 0, 0, .5);
+	.link {
+		cursor: pointer;
+	}
+	#title {
+		font-size: 40px;
+		margin-bottom: 10px;
+	}
+	#usermenu {
+		position: absolute;
+		right: 10px;
+		top: 10px;
+	}
+	#mainmenu {
+		overflow: hidden;
+		background-color: #333;
+		border: 4px solid #555;
+		padding: 10px;
+		border-radius: 17px;
+		box-shadow: inset 2px 2px 10px #222;
+		.menuitem {
+			float: left;
+			padding: 10px 20px;
+			&.active {
+				background-color: black;
+				border-radius: 13px;
+			}
+		}
+	}
+}
