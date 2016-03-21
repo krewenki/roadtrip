@@ -1,0 +1,50 @@
+{
+	"name": "roadtrip",
+	"version": "0.0.1",
+	"description": "trip roads",
+	"main": "app/main.js",
+	"devDependencies": {
+		"JSON2": "^0.1.0",
+		"babel-core": "^6.5.2",
+		"babel-loader": "^6.2.2",
+		"backbone.marionette": "2.4.5",
+		"bootstrap": "^3.3.6",
+		"css-loader": "^0.23.1",
+		"express": "^4.13.4",
+		"extract-text-webpack-plugin": "^1.0.1",
+		"file-loader": "^0.8.5",
+		"font-awesome": "^4.5.0",
+		"font-awesome-webpack": "0.0.4",
+		"fs": "0.0.2",
+		"html": "0.0.10",
+		"html-loader": "^0.4.3",
+		"jquery": "^2.2.0",
+		"less": "^2.6.1",
+		"markdown": "^0.5.0",
+		"markdown-loader": "^0.1.7",
+		"marked": "^0.3.5",
+		"node-loader": "^0.5.0",
+		"node-sass": "^3.4.2",
+		"passport-local": "^1.0.0",
+		"sass-loader": "^3.1.2",
+		"socket.io": "^1.4.5",
+		"socket.io-client": "^1.4.5",
+		"style": "0.0.3",
+		"style-loader": "^0.13.0",
+		"underscore": "^1.8.3",
+		"underscore-template-loader": "^0.6.0",
+		"url-loader": "^0.5.7",
+		"webpack": "^1.12.13",
+		"webpack-dev-server": "^1.14.1"
+	},
+	"repository": {
+		"type": "svn",
+		"url": "svn://dev.telegauge.com/roadtrip"
+	},
+	"scripts": {
+		"start": "rm -rf public/build; node server",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "team telegauge",
+	"license": "ISC"
+}
