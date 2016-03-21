@@ -75,11 +75,6 @@
 	padding: 10px;
 }
 
-a {
-	color: $link_color;
-	text-decoration: none;
-}
-
 hr {
 	border: 0;
 	height: 2px;
@@ -94,11 +89,19 @@ hr {
 	.link {
 		color: $link_color;
 	}
+	a {
+		color: $link_color;
+		text-decoration: none;
+	}
 }
 
 #HEADER {
 	.link {
 		color: $link_color_alt;
+	}
+	a {
+		color: $link_color_alt;
+		text-decoration: none;
 	}
 }
 
