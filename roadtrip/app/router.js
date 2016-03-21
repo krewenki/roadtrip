@@ -28,11 +28,11 @@ DEF.Controller = Backbone.Marionette.Object.extend({
 	Route: function (module, arg1, arg2) {
 		this.InitializeInterface();
 		if (!_.isUndefined(APP.models[module]) && APP.models[module].length) {
-			var page = new DEF.modules[module].MainView({
-				arg1: arg1,
-				arg2: arg2
+			APP.Page = new DEF.modules[module].MainView({
+				cmd: arg1,
+				arg: arg2
 			});
-			APP.root.showChildView("main", page);
+			APP.root.showChildView("main", APP.Page);
 			APP.SetMode(module);
 		} else {
 			APP.models[module] = new DEF.modules[module].Collection()

@@ -55,4 +55,22 @@ body {
 
 #MAIN {
 	padding: 10px;
+	h1 {
+		font-size: 20px;
+	}
+	#menu {
+		font-size: 12px;
+		background: linear-gradient(#444, #333);
+		background-color: #555;
+		padding: 10px 20px;
+		margin: 10px 10px 30px 10px;
+		border-radius: 10px;
+		text-align: right;
+		display: flex;
+		box-shadow: 0px 5px 20px rgba(0, 0, 0, .5);
+		.cmd {
+			color: #fff;
+			flex: 1
+		}
+	}
 }

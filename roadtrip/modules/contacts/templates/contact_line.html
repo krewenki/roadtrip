@@ -1,5 +1,6 @@
 <td>
-	<%=name%>
+	<%=APP.Page.Icon(kind)%>
+		<%=name%>
 </td>
 <td>
 	<a href="tel:<%=phone%>">
@@ -7,7 +8,15 @@
 	</a>
 </td>
 <td>
-	<div id='edit'>
-		<span class='link' id='view'><%=APP.Icon('view')%></span>
-	</div>
+	<a href="<%=email%>">
+		<%=email%>
+	</a>
+</td>
+<td align='center'>
+	<span class='cmd link' id='view' id='view'>
+		<%=APP.Icon('view')%>
+	</span>
+	<span class='cmd link' id='edit' id='edit'>
+		<%=APP.Icon('edit')%>
+	</span>
 </td>
