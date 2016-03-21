@@ -65,16 +65,30 @@ body {
 		padding: 10px 20px;
 		margin: 10px 10px 30px 10px;
 		border-radius: 10px;
-		text-align: right;
-		display: flex;
 		box-shadow: 0px 5px 20px rgba(0, 0, 0, .5);
+		color: #fff;
+		#title {
+			font-weight: bold;
+		}
 		.cmd {
-			color: #fff;
-			flex: 1
+			color: white;
+			float: right;
+			padding: 0px 10px;
+			&:hover {
+				color: #0FF;
+			}
 		}
 	}
-	.dirty {
-		// the field has been edited
-		outline: 1px solid red;
+	.table-left {
+		input {
+			border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border: 1px solid #aaa;
+			padding: 5px;
+		}
+		.dirty {
+			// the field has been edited
+			background-color: rgba(0, 255, 255, 0.1);
+		}
 	}
 }

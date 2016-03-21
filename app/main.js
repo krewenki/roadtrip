@@ -64,6 +64,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 			edit: "pencil",
 			view: "search",
 			cancel: "remove",
+			delete: "trash",
 			new: "plus"
 		}
 
