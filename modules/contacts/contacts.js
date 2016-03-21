@@ -10,6 +10,10 @@ window.DEF.modules.contacts.Model = Backbone.Model.extend({
 		kind: "employee",
 		phone: "",
 		email: ""
+	},
+	search_string: function () {
+		var string = this.get('name') + " " + this.get('email');
+		return string.toUpperCase();
 	}
 });
 
@@ -107,20 +111,31 @@ window.DEF.modules.contacts.MainView = Backbone.Marionette.LayoutView.extend({
 	},
 	ui: {
 		add: "#add",
-		list: "#list"
+		list: "#list",
+		search: "#search"
 	},
 	events: {
 		"click @ui.add": "Add",
-		"click @ui.list": "ListContacts"
+		"click @ui.list": "ListContacts",
+		"keyup @ui.search": "Search"
 	},
 	onRender: function () {
 		APP.SetMode("contacts");
 		this.Command(this.options.cmd, this.options.arg);
 	},
-	ListContacts: function () {
+	ListContacts: function (search) {
 		var list = new DEF.modules.contacts.ContactList({
 			collection: APP.models.contacts,
+			filter: function (m) {
+				if (search) {
+					var string = m.search_string()
+					return string.indexOf(search.toUpperCase()) >= 0;
+				} else
+					return true;
+
+			}
 		});
+
 		this.showChildView('list', list);
 		APP.Route("#contacts", false);
 	},
@@ -146,6 +161,10 @@ window.DEF.modules.contacts.MainView = Backbone.Marionette.LayoutView.extend({
 			model: false,
 		});
 		this.showChildView('list', page);
+	},
+	Search: function (e) {
+		this.ListContacts(e.currentTarget.value);
+		console.log(e.currentTarget.value);
 	}
 });
 
