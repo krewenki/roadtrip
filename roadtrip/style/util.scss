@@ -85,6 +85,7 @@ hr {
 	height: 2px;
 	background: #333;
 }
+
 .link {
 	cursor: pointer;
 }
@@ -94,12 +95,12 @@ hr {
 		color: $link_color;
 	}
 }
+
 #HEADER {
 	.link {
 		color: $link_color_alt;
 	}
 }
-
 
 .height-fill {
 	max-height: 100%;
