@@ -127,7 +127,8 @@ window.DEF.modules.contacts.MainView = Backbone.Marionette.LayoutView.extend({
 		var list = new DEF.modules.contacts.ContactList({
 			collection: APP.models.contacts,
 			filter: function (m) {
-				if (search) {
+				search = search || ""
+				if (search.length > 1) {
 					var string = m.search_string()
 					return string.indexOf(search.toUpperCase()) >= 0;
 				} else
@@ -176,6 +177,9 @@ window.DEF.modules.contacts.ContactLine = Backbone.Marionette.ItemView.extend({
 	template: require("./templates/contact_line.html"),
 	ui: {
 		cmd: ".cmd"
+	},
+	modelEvents: {
+		"change": "render"
 	},
 	events: {
 		"click @ui.cmd": "DoCommand"
