@@ -34,7 +34,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 		icons = {
 			calendar: "calendar",
 			contacts: "group",
-			projects: "line-chart",
+			projects: "pie-chart",
 
 			warning: "warning",
 			link: "external-link",
