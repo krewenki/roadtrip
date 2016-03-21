@@ -5,7 +5,8 @@ window._ = require('underscore');
 window.APP = {}; // DEFINE THE MAIN APP OBJECT
 window.DEF = {}; // HOLD THE DEFINITIONS. ALL THE MODULES, ETC...
 
-require('../vendor/backbone.highway.js');
+//require('backbone.highway');
+require('../vendor/backbone.highway.js')
 
 require('../style/style.scss');
 require("font-awesome-webpack");
@@ -56,6 +57,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 			report: "bug",
 			data: "rss",
 			edit: "pencil",
+			view: "search",
 			cancel: "remove",
 			new: "plus"
 		}

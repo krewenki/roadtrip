@@ -2,5 +2,12 @@
 	<%=name%>
 </td>
 <td>
-	<%=phone%>
+	<a href="tel:<%=phone%>">
+		<%=phone%>
+	</a>
+</td>
+<td>
+	<div id='edit'>
+		<span class='link' id='view'><%=APP.Icon('view')%></span>
+	</div>
 </td>
