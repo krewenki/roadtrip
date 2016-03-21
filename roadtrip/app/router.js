@@ -1,7 +1,9 @@
 DEF.Router = Backbone.Marionette.AppRouter.extend({
 	appRoutes: {
 		'': 'GoHome',
-		'contacts': "Contacts"
+		':module': "Route",
+		':module/:arg': "Route",
+		':module/:arg1/:arg2': "Route"
 	}
 });
 
@@ -22,17 +24,20 @@ DEF.Controller = Backbone.Marionette.Object.extend({
 		APP.root.showChildView("main", page);
 		APP.SetMode("home");
 	},
-	Contacts: function () {
-		this.InitializeInterface();
-		if (APP.models.contacts.length) {
-			var page = new DEF.ContactsLayout({});
-			APP.root.showChildView("main", page);
-			APP.SetMode("contacts");
-		} else {
-			this.listenToOnce(APP.models.contacts, 'sync', this.Contacts.bind(this))
-		}
-	}
 
+	Route: function (module, arg1, arg2) {
+		this.InitializeInterface();
+		if (APP.models[module].length) {
+			var page = new DEF.modules[module].MainView({
+				arg1: arg1,
+				arg2: arg2
+			});
+			APP.root.showChildView("main", page);
+			APP.SetMode(module);
+		} else {
+			this.listenToOnce(APP.models[module], 'sync', this.Route.bind(this, module, arg1, arg2))
+		}
+	},
 
 
 });
