@@ -22,11 +22,45 @@ window.DEF.modules.contacts.Collection = Backbone.Highway.Collection.extend({
 });
 
 window.DEF.modules.contacts.cmds = {
+	/**
+	 * Edit a contact
+	 */
 	edit: Backbone.Marionette.ItemView.extend({
 		tagName: "table",
 		className: "table table-full table-left",
-		template: require("./templates/edit.html")
+		template: require("./templates/edit.html"),
+		ui: {
+			"field": ".field",
+			"save": "#save",
+			"cancel": "#cancel"
+		},
+		events: {
+			"change @ui.field": "MakeDirty",
+			"click @ui.save": "Save",
+			"click @ui.cancel": "Cancel"
+		},
+		MakeDirty: function (e) {
+			console.log(e);
+			if (e.currentTarget.value == this.model.get(e.currentTarget.id))
+				$(e.currentTarget).removeClass("dirty");
+			else
+				$(e.currentTarget).addClass("dirty");
+		},
+		Save: function (e) {
+			var model = this.model;
+			$(".field.dirty").each(function (i, $el) {
+				console.log($el.id, $el.value)
+				model.set($el.id, $el.value);
+			})
+			this.triggerMethod('main:list');
+		},
+		Cancel: function (e) {
+			this.triggerMethod('main:list');
+		}
 	}),
+	/**
+	 * View a plain, read-only contact
+	 */
 	view: Backbone.Marionette.ItemView.extend({
 		tagName: "table",
 		className: "table table-full table-left",
@@ -51,8 +85,10 @@ window.DEF.modules.contacts.MainView = Backbone.Marionette.LayoutView.extend({
 		}
 		return APP.Icon(icons[icon]);
 	},
+	childEvents: {
+		'main:list': 'ListContacts',
+	},
 	onRender: function () {
-		this.ListContacts();
 		APP.SetMode("contacts");
 		switch (this.options.cmd) {
 		case 'edit':
@@ -68,7 +104,11 @@ window.DEF.modules.contacts.MainView = Backbone.Marionette.LayoutView.extend({
 			collection: APP.models.contacts,
 		});
 		this.showChildView('list', list);
+		APP.Route("#contacts", false);
 	},
+	/**
+	 * Show a collection based $cmd in  #module/$cmd/$id
+	 */
 	DoView: function (cmd, id) {
 		var page = new DEF.modules.contacts.cmds[cmd]({
 			model: APP.models.contacts.get(id),
