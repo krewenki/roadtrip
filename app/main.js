@@ -34,14 +34,15 @@ var MainApp = Backbone.Marionette.Application.extend({
 	Route: function (route, trigger) {
 		if (_.isUndefined(trigger))
 			trigger = true;
+
+		//		if (history.pushState) {
+		//			history.pushState(null, null, route);
+		//		} else {
+		//			location.hash = route;
+		//		}
 		APP.controller.router.navigate(route, {
 			trigger: trigger
 		})
-	},
-	InitializeCollections: function () {
-		//		this.models = {
-		//	//		contacts: new DEF.modules.contacts.Contacts(),
-		//		}
 	},
 	Icon: function (icon, title) {
 		icons = {
@@ -100,7 +101,6 @@ APP.Format = {
 
 
 APP.on('before:start', function () {
-	APP.InitializeCollections();
 	APP.setRootLayout();
 });
 

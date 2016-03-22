@@ -35,7 +35,10 @@ DEF.Controller = Backbone.Marionette.Object.extend({
 			APP.root.showChildView("main", APP.Page);
 			APP.SetMode(module);
 		} else {
-			APP.models[module] = new DEF.modules[module].Collection()
+			APP.root.showChildView("main", new DEF.EmptyView({
+				msg: "Loading..."
+			}));
+			APP.models[module] = new DEF.modules[module].Collection();
 			this.listenToOnce(APP.models[module], 'sync', this.Route.bind(this, module, arg1, arg2))
 		}
 	},
