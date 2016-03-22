@@ -9,7 +9,9 @@ window.DEF.modules.contacts.Model = Backbone.Model.extend({
 		name: "Person 1",
 		kind: "employee",
 		phone: "",
-		email: ""
+		email: "",
+		views: 0,
+		edits: 0
 	},
 	search_string: function () {
 		var string = this.get('name') + " " + this.get('email');
@@ -23,7 +25,11 @@ window.DEF.modules.contacts.Model = Backbone.Model.extend({
 window.DEF.modules.contacts.Collection = Backbone.Highway.Collection.extend({
 	model: DEF.modules.contacts.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/contacts',
-	comparator: 'name'
+	comparator: function (m) {
+		//var sort = ('00000' + (m.get('views') + m.get('edits'))).substr(-5) + m.get('name');
+		var sort = (m.get('views') + m.get('edits'));
+		return -sort
+	}
 });
 
 /**
@@ -67,9 +73,10 @@ window.DEF.modules.contacts.cmds = {
 				console.log($el.id, $el.value)
 				model.set($el.id, $el.value);
 			})
-			if (!this.model.id) {
+			if (!this.model.id)
 				APP.models.contacts.create(model);
-			}
+			else
+				this.model.set('edits', this.model.get('edits') + 1);
 			this.triggerMethod('main:list');
 		},
 		Cancel: function (e) {
@@ -86,7 +93,11 @@ window.DEF.modules.contacts.cmds = {
 	view: Backbone.Marionette.ItemView.extend({
 		tagName: "table",
 		className: "table table-full table-left",
-		template: require("./templates/view.html")
+		template: require("./templates/view.html"),
+		onShow: function () {
+			console.log("x");
+			this.model.set('views', this.model.get('views') + 1);
+		}
 	})
 }
 
@@ -115,34 +126,46 @@ window.DEF.modules.contacts.MainView = Backbone.Marionette.LayoutView.extend({
 	ui: {
 		add: "#add",
 		list: "#list",
-		search: "#search"
+		search: "#search",
+		filter: "#filter",
+		submenu: "#submenu",
+		filterkind: "#filterkind",
 	},
 	events: {
 		"click @ui.add": "Add",
 		"click @ui.list": "ListContacts",
-		"keyup @ui.search": "Search"
+		"keyup @ui.search": "Search",
+		"click @ui.filter": "ToggleFilter",
+		"change @ui.filterkind": "ListContacts"
 	},
 	onRender: function () {
 		APP.SetMode("contacts");
 		this.Command(this.options.cmd, this.options.arg);
 	},
 	ListContacts: function (search) {
-		var list = new DEF.modules.contacts.ContactList({
+		var kind = this.ui.filterkind.val();
+		console.log(kind);
+		this.view = new DEF.modules.contacts.ContactList({
 			collection: APP.models.contacts,
 			filter: function (m) {
 				search = search || ""
 				if (search.length > 1) {
 					var string = m.search_string()
-					return string.indexOf(search.toUpperCase()) >= 0;
-				} else
-					return true;
+					if (string.indexOf(search.toUpperCase()) == -1)
+						return false;
 
+				} else if (kind != 'all') {
+					if (m.get('kind') != kind)
+						return false;
+				}
+				return true;
 			}
 		});
 
-		this.showChildView('list', list);
+		this.showChildView('list', this.view);
 		APP.Route("#contacts", false);
 	},
+
 	/**
 	 * 
 	 * Show a collection based $cmd in  #module/$cmd/$id
@@ -151,10 +174,10 @@ window.DEF.modules.contacts.MainView = Backbone.Marionette.LayoutView.extend({
 		switch (cmd) {
 		case 'edit':
 		case 'view':
-			var page = new DEF.modules.contacts.cmds[cmd]({
+			this.view = new DEF.modules.contacts.cmds[cmd]({
 				model: APP.models.contacts.get(id),
 			});
-			this.showChildView('list', page);
+			this.showChildView('list', this.view);
 			break;
 		case 'list':
 		default:
@@ -170,6 +193,20 @@ window.DEF.modules.contacts.MainView = Backbone.Marionette.LayoutView.extend({
 	Search: function (e) {
 		this.ListContacts(e.currentTarget.value);
 		console.log(e.currentTarget.value);
+	},
+	ToggleFilter: function (e) {
+		if ($(e.currentTarget).hasClass('toggled')) {
+			this.ui.submenu.slideUp();
+			$(e.currentTarget).removeClass('toggled')
+		} else {
+			this.ui.submenu.slideDown();
+			$(e.currentTarget).addClass('toggled');
+
+		}
+	},
+	ApplyFilter: function (e) {
+		var id = e.currentTarget.id;
+		console.log(id);
 	}
 });
 
