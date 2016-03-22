@@ -12,6 +12,7 @@ require('backbone.highway');
 require('../style/style.scss');
 require("font-awesome-webpack");
 
+require("./roadtrip.js");
 require("./layout.js");
 require("./router.js");
 require("./static.js");
