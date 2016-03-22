@@ -15,7 +15,7 @@ window.Roadtrip = {
 		idAttribute: '_id',
 		defaults: {},
 		search_string: function () {
-			var string = this.defaults.join(", ");
+			var string = JSON.stringify(this.attributes);
 			return string.toUpperCase();
 		}
 	}),

@@ -85,6 +85,14 @@ hr {
 	cursor: pointer;
 }
 
+.nowrap {
+	white-space: nowrap;
+}
+
+.bold {
+	font-weight: bold;
+}
+
 #MAIN {
 	.link {
 		color: $link_color;
@@ -153,9 +161,11 @@ fieldset {
 .table-top {
 	th {
 		border-bottom: 2px solid #aaa;
+		vertical-align: top;
 	}
 	td {
 		border-bottom: 1px solid #eee;
+		vertical-align: top;
 	}
 }
 

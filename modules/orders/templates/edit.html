@@ -1,17 +1,76 @@
 <tr>
 	<th>Order</th>
 	<td>
-		<input class='field' type='input' id='order' value='<%=order%>'>
+		<input type='text' class='field' id='orders' value='<%=order%>'>
+	</td>
+</tr>
+<tr>
+	<th>Type</th>
+	<td>
+		<input type='text' class='field' id='type' value='<%=type%>'>
+	</td>
+</tr>
+<tr>
+	<th>Quantity</th>
+	<td>
+		<input type='text' class='field' id='qty' value='<%=qty%>'>
 	</td>
 </tr>
 <tr>
 	<th>Warehouse</th>
 	<td>
-		<select id='warehouse'>
-			<option <%=warehouse=='JAX' ? "selected": ""%> value='JAX'>JAX</option>
-		</select>
+		<input type='text' class='field' id='warehouse' value='<%=warehouse%>'>
 	</td>
 </tr>
+<tr>
+	<th>Order Date</th>
+	<td>
+		<input type='text' class='field' id='order_date' value='<%=order_date%>'>
+	</td>
+</tr>
+<tr>
+	<th>Scheduler Date</th>
+	<td>
+		<input type='text' class='field' id='scheduler_date' value='<%=scheduler_date%>'>
+	</td>
+</tr>
+<tr>
+	<th>Customer Request Date</th>
+	<td>
+		<input type='text' class='field' id='customer_request_date' value='<%=customer_request_date%>'>
+	</td>
+</tr>
+<tr>
+	<th>Release Date</th>
+	<td>
+		<input type='text' class='field' id='release_date' value='<%=release_date%>'>
+	</td>
+</tr>
+<tr>
+	<th>Parts Due Date</th>
+	<td>
+		<input type='text' class='field' id='parts_due_date' value='<%=parts_due_date%>'>
+	</td>
+</tr>
+<tr>
+	<th>Production Start Date</th>
+	<td>
+		<input type='text' class='field' id='production_start' value='<%=production_start%>'>
+	</td>
+</tr>
+<tr>
+	<th>Test Start Date</th>
+	<td>
+		<input type='text' class='field' id='test_start' value='<%=test_start%>'>
+	</td>
+</tr>
+<tr>
+	<th>Description</th>
+	<td>
+		<input type='text' class='field' id='description' value='<%=description%>'>
+	</td>
+</tr>
+
 <tr>
 	<td colspan=2>
 		<button id='save' class='btn default'>
