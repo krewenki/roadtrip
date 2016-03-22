@@ -18,6 +18,7 @@ require("./router.js");
 require("./static.js");
 
 require("../modules/contacts/contacts.js");
+require("../modules/orders/orders.js");
 
 var MainApp = Backbone.Marionette.Application.extend({
 	setRootLayout: function () {
@@ -31,6 +32,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 		$("#HEADER #mainmenu .menuitem#" + mode).addClass('active');
 	},
 	Route: function (route, trigger) {
+		console.log(route);
 		if (_.isUndefined(trigger))
 			trigger = true;
 		APP.controller.router.navigate(route, {
@@ -47,6 +49,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 			calendar: "calendar",
 			contacts: "group",
 			projects: "pie-chart",
+			orders: "dollar",
 
 			warning: "warning",
 			link: "external-link",

@@ -1,0 +1,25 @@
+<tr>
+	<th>Order</th>
+	<td>
+		<input class='field' type='input' id='order' value='<%=order%>'>
+	</td>
+</tr>
+<tr>
+	<th>Warehouse</th>
+	<td>
+		<select id='warehouse'>
+			<option <%=warehouse=='JAX' ? "selected": ""%> value='JAX'>JAX</option>
+		</select>
+	</td>
+</tr>
+<tr>
+	<td colspan=2>
+		<button id='save' class='btn default'>
+			<%=APP.Icon("save")%> Save</button>
+		<button id='cancel' class='btn '>
+			<%=APP.Icon("cancel")%> Cancel</button>
+		<button id='delete' class='btn danger '>
+			<%=APP.Icon("delete")%> Delete</button>
+	</td>
+
+</tr>
