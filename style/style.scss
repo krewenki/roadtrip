@@ -58,20 +58,20 @@ body {
 	h1 {
 		font-size: 20px;
 	}
-		#empty {
-			color: #999;
-			width: 100%;
-			padding: 50px;
-			text-align: center;
-			box-sizing: border-box;
-			line-height: 30px;
-			#icon {
-				font-size: 50px;
-			}
-			#msg {
-				font-size: 25px;
-			}
+	#empty {
+		color: #999;
+		width: 100%;
+		padding: 50px;
+		text-align: center;
+		box-sizing: border-box;
+		line-height: 30px;
+		#icon {
+			font-size: 50px;
 		}
+		#msg {
+			font-size: 25px;
+		}
+	}
 	#menu {
 		font-size: 12px;
 		background: linear-gradient(#444, #333);
