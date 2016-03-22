@@ -5,23 +5,21 @@
 	<div class='cmd link' id='list'>
 		<%=APP.Icon('list')%> List
 	</div>
-<!--
 	<div class='cmd link' id='filter'>
 		<%=APP.Icon('tag')%> Filter
 	</div>
--->
 	<span id='title'>Orders</span>
 	<input id='search' type='search' placeholder='search'>
-<!--
-<div id='submenu' style='display:none'>
-	Kind:
-	<select class='filter' id='filterkind'>
-		<option selected value='all'>All</option>
-		<option value='company'>Company</option>
-		<option value='vendor'>Vendor</option>
-		<option value='employee'>Employee</option>
-	</select>
-</div>-->
+
+	<div id='submenu' style='display:none'>
+		Type:
+		<select class='filter_field' id='filtertype'>
+			<option selected value='all'>All</option>
+			<option value='4'>4</option>
+			<option value='5'>5</option>
+			<option value='44'>44</option>
+		</select>
+	</div>
 </div>
 
 <div id='record_list'></div>

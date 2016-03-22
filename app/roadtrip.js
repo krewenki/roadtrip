@@ -83,7 +83,6 @@ window.Roadtrip = {
 		},
 		ListRecords: function () {
 			var mode = this.id.toLocaleLowerCase();
-			var kind = this.ui.filterkind.val();
 			var search = this.ui.search.val();
 
 			this.view = new DEF.modules[mode].RecordList({
@@ -94,15 +93,10 @@ window.Roadtrip = {
 						var string = m.search_string()
 						if (string.indexOf(search.toUpperCase()) == -1)
 							return false;
-
-					} else if (kind != 'all') {
-						if (m.get('kind') != kind)
-							return false;
 					}
 					return true;
 				}
 			});
-
 			this.showChildView('list', this.view);
 			APP.Route("#" + mode, false);
 		},
