@@ -79,11 +79,13 @@ window.Roadtrip = {
 			this.showChildView('list', page);
 		},
 		Search: function (e) {
-			this.ListRecords(e.currentTarget.value);
+			this.ListRecords(); // .setFilter does not yet exist.  this is a crappy way to do it.
 		},
-		ListRecords: function (search) {
+		ListRecords: function () {
 			var mode = this.id.toLocaleLowerCase();
 			var kind = this.ui.filterkind.val();
+			var search = this.ui.search.val();
+
 			this.view = new DEF.modules[mode].RecordList({
 				collection: APP.models[mode],
 				filter: function (m) {
