@@ -7,7 +7,7 @@ window.DEF.modules.orders.Model = Roadtrip.Model.extend({
 	idAttribute: '_id',
 	defaults: {
 		order: "000001",
-		order_type: "regula",
+		order_type: "regular",
 		customer_id: false,
 		ship_to_id: false,
 		warehouse: "JAX",
@@ -28,12 +28,7 @@ window.DEF.modules.orders.Model = Roadtrip.Model.extend({
  */
 window.DEF.modules.orders.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.orders.Model,
-	url: 'dev.telegauge.com:3000/roadtrip/contacts',
-	comparator: function (m) {
-		//var sort = ('00000' + (m.get('views') + m.get('edits'))).substr(-5) + m.get('name');
-		var sort = (m.get('views') + m.get('edits'));
-		return -sort
-	}
+	url: 'dev.telegauge.com:3000/roadtrip/orders',
 });
 
 /**
@@ -67,6 +62,7 @@ window.DEF.modules.orders.MainView = Roadtrip.MainView.extend({
 		employee: "user",
 		company: "building",
 		vendor: "money",
+		customer: "x"
 	},
 	regions: {
 		menu: "#menu",

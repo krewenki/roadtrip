@@ -32,7 +32,6 @@ var MainApp = Backbone.Marionette.Application.extend({
 		$("#HEADER #mainmenu .menuitem#" + mode).addClass('active');
 	},
 	Route: function (route, trigger) {
-		console.log(route);
 		if (_.isUndefined(trigger))
 			trigger = true;
 		APP.controller.router.navigate(route, {
