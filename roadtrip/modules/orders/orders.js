@@ -18,7 +18,7 @@ window.DEF.modules.orders.Model = Roadtrip.Model.extend({
 		edits: 0
 	},
 	search_string: function () {
-		var string = this.get('name') + " " + this.get('email');
+		var string = this.get('description');
 		return string.toUpperCase();
 	}
 });
