@@ -24,11 +24,6 @@ window.DEF.modules.contacts.Model = Roadtrip.Model.extend({
 window.DEF.modules.contacts.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.contacts.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/contacts',
-	comparator: function (m) {
-		//var sort = ('00000' + (m.get('views') + m.get('edits'))).substr(-5) + m.get('name');
-		var sort = (m.get('views') + m.get('edits'));
-		return -sort
-	}
 });
 
 /**
@@ -60,8 +55,9 @@ window.DEF.modules.contacts.MainView = Roadtrip.MainView.extend({
 	id: 'CONTACTS',
 	icons: {
 		employee: "user",
-		company: "building",
+		company: "bank",
 		vendor: "money",
+		customer: "building"
 	},
 	regions: {
 		menu: "#menu",

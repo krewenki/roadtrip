@@ -4,6 +4,11 @@
  */
 window.Roadtrip = {
 	Collection: Backbone.Highway.Collection.extend({
+		comparator: function (m) {
+			//var sort = ('00000' + (m.get('views') + m.get('edits'))).substr(-5) + m.get('name');
+			var sort = (m.get('views') + m.get('edits'));
+			return -sort
+		}
 
 	}),
 	Model: Backbone.Model.extend({
