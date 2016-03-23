@@ -54,10 +54,8 @@ DEF.modules.contacts.MainView = Roadtrip.MainView.extend({
 	template: require("./templates/contacts.html"),
 	id: 'CONTACTS',
 	icons: {
-		employee: "user",
-		company: "bank",
-		vendor: "money",
-		customer: "building"
+		Vendor: "money",
+		Customer: "building"
 	},
 	regions: {
 		menu: "#menu",

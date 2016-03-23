@@ -38,14 +38,14 @@ window.Roadtrip = {
 			search: "#search",
 			filter: "#filter",
 			submenu: "#submenu",
-			filterkind: "#filterkind",
+			filterfield: ".filter_field",
 		},
 		events: {
 			"click @ui.add": "Add",
 			"click @ui.list": "ListRecords",
 			"keyup @ui.search": "Search",
-			"click @ui.filter": "ToggleFilter",
-			"change @ui.filterkind": "ListRecords"
+			"click @ui.filter": "ToggleFilterView",
+			"change @ui.filterfield": "ListRecords"
 		},
 		onRender: function () {
 			APP.SetMode(this.id.toLocaleLowerCase());
@@ -84,24 +84,36 @@ window.Roadtrip = {
 		},
 		ListRecords: function () {
 			var mode = this.id.toLocaleLowerCase();
-			var search = this.ui.search.val();
+			var where = {
+				search: this.ui.search.val(),
+				fields: {}
+			}
+			this.ui.filterfield.each(function (i, el) {
+				if (el.value && el.value != 'all')
+					where.fields[el.id] = el.value
+			})
 
 			this.view = new DEF.modules[mode].RecordList({
 				collection: APP.models[mode],
-				filter: function (m, i) {
-					search = search || ""
-					if (search.length > 1) {
-						var string = m.search_string()
-						if (string.indexOf(search.toUpperCase()) == -1)
+				filter: function (m, i, c) {
+					var fields = Object.keys(where.fields);
+					for (var f = 0; f < fields.length; f++) {
+						var id = fields[f],
+							val = where.fields[id];
+						if (m.get(id) != val)
 							return false;
 					}
+
+					var string = m.search_string()
+					if (string.indexOf(where.search.toUpperCase()) == -1)
+						return false;
 					return true;
-				}
+				},
 			});
 			this.showChildView('list', this.view);
-			APP.Route("#" + mode, false);
+			APP.Route("#" + mode, false); // re-route, in case they searched from some other view
 		},
-		ToggleFilter: function (e) {
+		ToggleFilterView: function (e) {
 			if ($(e.currentTarget).hasClass('toggled')) {
 				this.ui.submenu.slideUp();
 				$(e.currentTarget).removeClass('toggled')
@@ -195,6 +207,7 @@ window.Roadtrip = {
 		collectionEvents: {
 			"sync": "render"
 		},
+
 		addChild: function (child, ChildView, index) {
 			var from = (this.page - 1) * this.perpage;
 			var to = from + this.perpage
