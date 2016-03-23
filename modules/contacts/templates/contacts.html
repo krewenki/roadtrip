@@ -1,6 +1,6 @@
 <div id='menu'>
 	<div class='cmd link' id='add'>
-		<%=APP.Icon('new')%> Add
+		<%=APP.Icon('user-plus')%> Add
 	</div>
 	<div class='cmd link' id='list'>
 		<%=APP.Icon('list')%> List
@@ -10,6 +10,7 @@
 	</div>
 	<span id='title'>Contacts</span>
 	<input id='search' type='search' placeholder='search'>
+
 	<div id='submenu' style='display:none'>
 		Kind:
 		<select class='filter_field' id='kind'>
@@ -21,5 +22,8 @@
 		</select>
 	</div>
 </div>
-
 <div id='record_list'></div>
+<div id='footer'>
+	records:
+	<%=APP.models.contacts.length%>
+</div>

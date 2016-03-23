@@ -4,12 +4,13 @@
  */
 window.Roadtrip = {
 	Collection: Backbone.Highway.Collection.extend({
+		perpage: 100,
+		page: 1,
 		comparator: function (m) {
 			//var sort = ('00000' + (m.get('views') + m.get('edits'))).substr(-5) + m.get('name');
 			var sort = (m.get('views') + m.get('edits'));
 			return -sort
 		}
-
 	}),
 	Model: Backbone.Model.extend({
 		idAttribute: '_id',
@@ -87,7 +88,7 @@ window.Roadtrip = {
 
 			this.view = new DEF.modules[mode].RecordList({
 				collection: APP.models[mode],
-				filter: function (m) {
+				filter: function (m, i) {
 					search = search || ""
 					if (search.length > 1) {
 						var string = m.search_string()
@@ -181,6 +182,8 @@ window.Roadtrip = {
 		}
 	}),
 	RecordList: Backbone.Marionette.CompositeView.extend({
+		page: 1,
+		perpage: 40,
 		tagName: "table",
 		className: "table table-full table-top",
 		childView: false,
@@ -191,6 +194,12 @@ window.Roadtrip = {
 		},
 		collectionEvents: {
 			"sync": "render"
+		},
+		addChild: function (child, ChildView, index) {
+			var from = (this.page - 1) * this.perpage;
+			var to = from + this.perpage
+			if (index >= from && index < to)
+				Backbone.Marionette.CollectionView.prototype.addChild.apply(this, arguments);
 		}
 	})
 
