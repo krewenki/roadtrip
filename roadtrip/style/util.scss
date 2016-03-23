@@ -15,6 +15,10 @@
 	cursor: pointer;
 }
 
+.hover:hover {
+	background-color: rgba(0, 0, 0, 0.05);
+}
+
 .btn {
 	display: inline-block;
 	margin: 10px;

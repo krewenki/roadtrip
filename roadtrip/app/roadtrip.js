@@ -35,7 +35,6 @@ window.Roadtrip = {
 		},
 		ui: {
 			add: "#add",
-			list: "#list",
 			search: "#search",
 			filter: "#filter",
 			submenu: "#submenu",
@@ -191,6 +190,7 @@ window.Roadtrip = {
 	}),
 	RecordLine: Backbone.Marionette.ItemView.extend({
 		tagName: 'tr',
+		className: 'click hover',
 		ui: {
 			cmd: ".cmd"
 		},
@@ -198,10 +198,17 @@ window.Roadtrip = {
 			"change": "render"
 		},
 		events: {
-			"click @ui.cmd": "DoCommand"
+			"click @ui.cmd": "DoCommand",
+			"click": "View"
 		},
-		DoCommand: function (e) {
-			APP.Route("#" + (this.module) + "/" + e.currentTarget.id + "/" + this.model.get('_id'));
+		View: function () {
+			this.DoCommand('view')
+		},
+		clickCmd: function (e) {
+			this.DoCommand(e.currentTarget.id);
+		},
+		DoCommand(cmd) {
+			APP.Route("#" + (this.module) + "/" + cmd + "/" + this.model.get('_id'));
 		}
 	}),
 	RecordList: Backbone.Marionette.CompositeView.extend({
