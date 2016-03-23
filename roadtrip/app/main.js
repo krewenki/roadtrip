@@ -51,6 +51,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 			projects: "pie-chart",
 			orders: "money",
 			expenses: "dollar",
+			timeclock: "clock-o",
 
 			warning: "warning",
 			link: "external-link",

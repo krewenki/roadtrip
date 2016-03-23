@@ -65,10 +65,6 @@ DEF.modules.orders.MainView = Roadtrip.MainView.extend({
 		vendor: "money",
 		customer: "x"
 	},
-	regions: {
-		menu: "#menu",
-		list: "#record_list"
-	},
 });
 
 /**

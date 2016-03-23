@@ -12,10 +12,6 @@ DEF.modules.contacts.Model = Roadtrip.Model.extend({
 		views: 0,
 		edits: 0
 	},
-	search_string: function () {
-		var string = this.get('name') + " " + this.get('email');
-		return string.toUpperCase();
-	}
 });
 
 /**
@@ -56,20 +52,6 @@ DEF.modules.contacts.MainView = Roadtrip.MainView.extend({
 	icons: {
 		Vendor: "money",
 		Customer: "building"
-	},
-	regions: {
-		menu: "#menu",
-		list: "#record_list"
-	},
-	ToggleFilter: function (e) {
-		if ($(e.currentTarget).hasClass('toggled')) {
-			this.ui.submenu.slideUp();
-			$(e.currentTarget).removeClass('toggled')
-		} else {
-			this.ui.submenu.slideDown();
-			$(e.currentTarget).addClass('toggled');
-
-		}
 	},
 });
 
