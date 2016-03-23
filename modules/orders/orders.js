@@ -27,7 +27,6 @@ DEF.modules.orders.Model = Roadtrip.Model.extend({
 DEF.modules.orders.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.orders.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/orders',
-	comparator: "SOLI"
 });
 /**
  * A list of commands, automatically tied to the $cmd in  #module/$cmd/$id.  See DoView
@@ -50,6 +49,7 @@ DEF.modules.orders.cmds = {
 			lineitems: "#lineitems"
 		},
 		onShow: function () {
+			this.model.set('views', this.model.get('views') + 1);
 			this.showChildView('order', new DEF.modules.orders.OrderView({
 				model: this.model,
 			}))
