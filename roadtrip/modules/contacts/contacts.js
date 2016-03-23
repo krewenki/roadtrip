@@ -1,9 +1,9 @@
-window.DEF.modules.contacts = {}
+DEF.modules.contacts = {}
 
 /**
  * The main model.  SHould be called "Model"
  */
-window.DEF.modules.contacts.Model = Roadtrip.Model.extend({
+DEF.modules.contacts.Model = Roadtrip.Model.extend({
 	defaults: {
 		name: "Person 1",
 		kind: "employee",
@@ -21,7 +21,7 @@ window.DEF.modules.contacts.Model = Roadtrip.Model.extend({
 /**
  * The main collection.  MUST be called "Collection"
  */
-window.DEF.modules.contacts.Collection = Roadtrip.Collection.extend({
+DEF.modules.contacts.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.contacts.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/contacts',
 });
@@ -29,7 +29,7 @@ window.DEF.modules.contacts.Collection = Roadtrip.Collection.extend({
 /**
  * A list of commands, automatically tied to the $cmd in  #module/$cmd/$id.  See DoView
  */
-window.DEF.modules.contacts.cmds = {
+DEF.modules.contacts.cmds = {
 	/**
 	 * Edit a contact
 	 */
@@ -50,7 +50,7 @@ window.DEF.modules.contacts.cmds = {
  * The MainView.  HAS to be called MainView.  This is where this module begins
  */
 
-window.DEF.modules.contacts.MainView = Roadtrip.MainView.extend({
+DEF.modules.contacts.MainView = Roadtrip.MainView.extend({
 	template: require("./templates/contacts.html"),
 	id: 'CONTACTS',
 	icons: {
@@ -78,7 +78,7 @@ window.DEF.modules.contacts.MainView = Roadtrip.MainView.extend({
 /**
  * A single line of contacts on the main contact view
  */
-window.DEF.modules.contacts.RecordLine = Roadtrip.RecordLine.extend({
+DEF.modules.contacts.RecordLine = Roadtrip.RecordLine.extend({
 	module: "contacts",
 	template: require("./templates/contact_line.html"),
 });
@@ -86,7 +86,7 @@ window.DEF.modules.contacts.RecordLine = Roadtrip.RecordLine.extend({
 /**
  * This is a list of contacts
  */
-window.DEF.modules.contacts.RecordList = Roadtrip.RecordList.extend({
+DEF.modules.contacts.RecordList = Roadtrip.RecordList.extend({
 	module: "contacts",
 	template: require("./templates/contact_list.html"),
 	childView: DEF.modules.contacts.RecordLine,

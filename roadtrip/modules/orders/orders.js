@@ -1,9 +1,9 @@
-window.DEF.modules.orders = {}
+DEF.modules.orders = {}
 
 /**
  * The main model.  SHould be called "Model"
  */
-window.DEF.modules.orders.Model = Roadtrip.Model.extend({
+DEF.modules.orders.Model = Roadtrip.Model.extend({
 	idAttribute: '_id',
 	defaults: {
 		order: "000001",
@@ -26,15 +26,16 @@ window.DEF.modules.orders.Model = Roadtrip.Model.extend({
 /**
  * The main collection.  MUST be called "Collection"
  */
-window.DEF.modules.orders.Collection = Roadtrip.Collection.extend({
+DEF.modules.orders.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.orders.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/orders',
+	comparator: "SOLI"
 });
 
 /**
  * A list of commands, automatically tied to the $cmd in  #module/$cmd/$id.  See DoView
  */
-window.DEF.modules.orders.cmds = {
+DEF.modules.orders.cmds = {
 	/**
 	 * Edit a contact
 	 */
@@ -55,7 +56,7 @@ window.DEF.modules.orders.cmds = {
  * The MainView.  HAS to be called MainView.  This is where this module begins
  */
 
-window.DEF.modules.orders.MainView = Roadtrip.MainView.extend({
+DEF.modules.orders.MainView = Roadtrip.MainView.extend({
 	template: require("./templates/orders.html"),
 	id: 'ORDERS',
 	icons: {
@@ -73,7 +74,7 @@ window.DEF.modules.orders.MainView = Roadtrip.MainView.extend({
 /**
  * A single line of contacts on the main contact view
  */
-window.DEF.modules.orders.RecordLine = Roadtrip.RecordLine.extend({
+DEF.modules.orders.RecordLine = Roadtrip.RecordLine.extend({
 	module: "orders",
 	template: require("./templates/order_line.html"),
 });
@@ -81,7 +82,7 @@ window.DEF.modules.orders.RecordLine = Roadtrip.RecordLine.extend({
 /**
  * This is a list of contacts
  */
-window.DEF.modules.orders.RecordList = Roadtrip.RecordList.extend({
+DEF.modules.orders.RecordList = Roadtrip.RecordList.extend({
 	module: "orders",
 	template: require("./templates/order_list.html"),
 	childView: DEF.modules.orders.RecordLine,
