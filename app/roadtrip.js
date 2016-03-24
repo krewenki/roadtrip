@@ -23,7 +23,6 @@ Roadtrip = {
 	}),
 	MainView: Backbone.Marionette.LayoutView.extend({
 		icons: {},
-		collections: {},
 		regions: {
 			menu: "#menu",
 			list: "#record_list"
@@ -47,16 +46,6 @@ Roadtrip = {
 			"keyup @ui.search": "Search",
 			"click @ui.filter": "ToggleFilterView",
 			"change @ui.filterfield": "ListRecords"
-		},
-		initialize: function () {
-			//			var collections = Object.keys(this.collections);
-			//			for (var c = 0; c < collections.length; c++) {
-			//				var collection = collections[c];
-			//				if (!APP.models[collection]) {
-			//					APP.models[collection] = new collection();
-			//					console.log("New collection: " + collection);
-			//				}
-			//			}		
 		},
 		onRender: function () {
 			var mode = this.id.toLocaleLowerCase();
