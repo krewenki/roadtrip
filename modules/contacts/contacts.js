@@ -105,7 +105,7 @@ DEF.modules.contacts.MainView = Roadtrip.RecordList.extend({
 		return true;
 	},
 	onRender: function () {
-		this.ui.search.focus()
+		this.ui.search.focus().val(this.search); // this search is disgusting
 	},
 	Search: function (e) {
 		console.log(this.ui.search.val(), this.templateHelpers());
