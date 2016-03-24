@@ -1,4 +1,6 @@
-DEF.modules.orders = {}
+DEF.modules.orders = {
+	views: {}
+}
 require("./lineitem.js");
 
 /**
@@ -35,53 +37,49 @@ APP.models.orders = new DEF.modules.orders.Collection();
 /**
  * A list of commands, automatically tied to the $cmd in  #module/$cmd/$id.  See DoView
  */
-DEF.modules.orders.views = {
-	/**
-	 * Edit a contact
-	 */
-	edit: Roadtrip.Edit.extend({
-		module: "orders",
-		template: require("./templates/edit.html"),
-	}),
-	/**
-	 * View a plain, read-only contact
-	 */
-	view: Backbone.Marionette.LayoutView.extend({
-		template: require("./templates/view.html"),
-		regions: {
-			order: "#order",
-			lineitems: "#lineitems"
-		},
-		ui: {
-			edit: "#edit",
-			delete: "#delete"
-		},
-		events: {
-			"click @ui.edit": "Edit",
-			"click @ui.delete": "Delete"
-		},
-		onShow: function () {
-			this.model.set('views', this.model.get('views') + 1);
+DEF.modules.orders.views.edit = Roadtrip.Edit.extend({
+	module: "orders",
+	template: require("./templates/edit.html"),
+});
+/**
+ * View a plain, read-only contact
+ */
+DEF.modules.orders.views.view = Backbone.Marionette.LayoutView.extend({
+	template: require("./templates/view.html"),
+	regions: {
+		order: "#order",
+		lineitems: "#lineitems"
+	},
+	ui: {
+		edit: "#edit",
+		delete: "#delete"
+	},
+	events: {
+		"click @ui.edit": "Edit",
+		"click @ui.delete": "Delete"
+	},
+	onShow: function () {
+		this.model.set('views', this.model.get('views') + 1);
 
-			this.showChildView('order', new DEF.modules.orders.OrderView({
-				model: this.model,
-			}))
-			this.showChildView('lineitems', new DEF.modules.orders.LineItemView({
-				collection: new Backbone.Collection(this.model.get('lineitems'))
-			}))
-		},
-		Edit: function () {
-			APP.Route("#orders/" + "edit" + "/" + this.model.id);
-		},
-		Delete: function () {
-			if (confirm("Are you sure you want to delete " + this.model.get(this.model.nameAttribute))) {
-				console.log("kill it");
-				APP.models.orders.remove(this.model);
-				APP.Route("#orders", "orders");
-			}
+		this.showChildView('order', new DEF.modules.orders.OrderView({
+			model: this.model,
+		}))
+		this.showChildView('lineitems', new DEF.modules.orders.LineItemView({
+			collection: new Backbone.Collection(this.model.get('lineitems'))
+		}))
+	},
+	Edit: function () {
+		APP.Route("#orders/" + "edit" + "/" + this.model.id);
+	},
+	Delete: function () {
+		if (confirm("Are you sure you want to delete " + this.model.get(this.model.nameAttribute))) {
+			console.log("kill it");
+			APP.models.orders.remove(this.model);
+			APP.Route("#orders", "orders");
 		}
-	})
-}
+	}
+});
+
 
 DEF.modules.orders.OrderView = Backbone.Marionette.ItemView.extend({
 	template: require("./templates/order.html"),

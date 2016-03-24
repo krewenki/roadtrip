@@ -73,6 +73,20 @@ DEF.modules.contacts.views = {
 DEF.modules.contacts.RecordLine = Roadtrip.RecordLine.extend({
 	module: "contacts",
 	template: require("./templates/contact_line.html"),
+	templateHelpers: function () {
+		var icons = {
+			Vendor: "building",
+			Customer: "money",
+			Miscellaneous: "question",
+			"Customer,Marine": "ship",
+			Insurance: "wheelchair",
+			"Freight Transportation": "truck"
+		}
+
+		return {
+			icon: icons[this.model.get('kind')]
+		}
+	}
 });
 
 /**
@@ -81,7 +95,7 @@ DEF.modules.contacts.RecordLine = Roadtrip.RecordLine.extend({
 DEF.modules.contacts.MainView = Roadtrip.RecordList.extend({
 	id: 'CONTACTS',
 	template: require("./templates/contacts.html"),
-	templateHelpers: function () {
+	templateHelpers: function (x, y, z) {
 		return {
 			search: this.search,
 		}

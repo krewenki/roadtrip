@@ -1,9 +1,26 @@
-DEF.modules.orders.LineItemLine = Backbone.Marionette.ItemView.extend({
+DEF.modules.orders.LineItemLine = Roadtrip.RecordLine.extend({
 	tagName: "tr",
-	template: require("./templates/view_lineitem.html")
+	template: require("./templates/lineitem_view.html"),
+	events: {
+		"click": "View"
+	},
+	View: function (e) {
+		APP.Route("#orders/editline/" + this.model.get('_id'))
+	}
 })
-DEF.modules.orders.LineItemView = Backbone.Marionette.CollectionView.extend({
-	tagName: "table",
-	className: "table table-full table-top",
-	childView: DEF.modules.orders.LineItemLine
+DEF.modules.orders.LineItemView = Roadtrip.RecordList.extend({
+	template: require("./templates/lineitems.html"),
+	className: "#LINEITEMS",
+	childView: DEF.modules.orders.LineItemLine,
+	emptyView: DEF.EmptyView,
+	emptyViewOptions: {
+		icon: "warning",
+		msg: "No records found"
+	},
 })
+
+DEF.modules.orders.views.editline = Roadtrip.View.extend({
+	initialize: function () {
+		console.log('x');
+	}
+});
