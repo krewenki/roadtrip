@@ -31,13 +31,23 @@ DEF.modules.contacts.Collection = Roadtrip.Collection.extend({
 /**
  * A list of commands, automatically tied to the $cmd in  #module/$cmd/$id.  See DoView
  */
-DEF.modules.contacts.cmds = {
+DEF.modules.contacts.views = {
 	/**
 	 * Edit a contact
 	 */
 	edit: Roadtrip.Edit.extend({
 		module: "contacts",
 		template: require("./templates/edit.html"),
+		//		ui: {
+		//			save: "#save",
+		//			delete: "#delete",
+		//			cancel: "#cancel"
+		//		},
+		//		events: {
+		//			"click @ui.save": "Save",
+		//			"click @ui.delete": "Delete",
+		//			"click @ui.cancel": "Cancel"
+		//		},
 	}),
 	/**
 	 * View a plain, read-only contact
@@ -67,19 +77,6 @@ DEF.modules.contacts.cmds = {
 }
 
 /**
- * The MainView.  HAS to be called MainView.  This is where this module begins
- */
-
-DEF.modules.contacts.MainView = Roadtrip.MainView.extend({
-	template: require("./templates/contacts.html"),
-	id: 'CONTACTS',
-	icons: {
-		Vendor: "money",
-		Customer: "building"
-	},
-});
-
-/**
  * A single line of contacts on the main contact view
  */
 DEF.modules.contacts.RecordLine = Roadtrip.RecordLine.extend({
@@ -88,11 +85,20 @@ DEF.modules.contacts.RecordLine = Roadtrip.RecordLine.extend({
 });
 
 /**
- * This is a list of contacts
+ * The MainView.  HAS to be called MainView.  This is where this module begins
  */
-DEF.modules.contacts.RecordList = Roadtrip.RecordList.extend({
-	module: "contacts",
-	template: require("./templates/contact_list.html"),
+DEF.modules.contacts.MainView = Roadtrip.RecordList.extend({
+	id: 'CONTACTS',
+	template: require("./templates/contacts.html"),
 	childView: DEF.modules.contacts.RecordLine,
-
-})
+	childViewContainer: "#record_list",
+	ui: {
+		search: "#search"
+	},
+	events: {
+		"keyup @ui.search": "Search"
+	},
+	Search: function (e) {
+		console.log(this.ui.search.val());
+	}
+});

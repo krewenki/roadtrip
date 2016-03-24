@@ -104,6 +104,7 @@ body {
 		border-radius: 10px;
 		box-shadow: 0px 5px 20px rgba(0, 0, 0, .5);
 		color: #fff;
+		min-height: 20px;
 		#title {
 			font-weight: bold;
 		}
@@ -111,6 +112,9 @@ body {
 			color: white;
 			float: right;
 			padding: 0px 10px;
+			&.danger {
+				color: #Faa;
+			}
 			&:hover {
 				color: #0FF;
 			}

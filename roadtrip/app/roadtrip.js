@@ -23,119 +23,114 @@ Roadtrip = {
 	}),
 	MainView: Backbone.Marionette.LayoutView.extend({
 		icons: {},
-		regions: {
-			menu: "#menu",
-			list: "#record_list"
-		},
-		Icon: function (icon) {
-			return APP.Icon(this.icons[icon]);
-		},
-		childEvents: {
-			'main:list': 'ListRecords',
-		},
-		ui: {
-			add: "#add",
-			search: "#search",
-			filter: "#filter",
-			submenu: "#submenu",
-			filterfield: ".filter_field",
-		},
-		events: {
-			"click @ui.add": "Add",
-			"click @ui.list": "ListRecords",
-			"keyup @ui.search": "Search",
-			"click @ui.filter": "ToggleFilterView",
-			"change @ui.filterfield": "ListRecords"
-		},
-		onRender: function () {
-			var mode = this.id.toLocaleLowerCase();
-			APP.SetMode(mode);
-			this.Command(this.options.cmd, this.options.arg);
-		},
-
-		/**
-		 * 
-		 * Show a collection based $cmd in  #module/$cmd/$id
-		 */
-		Command: function (cmd, id) {
-			var mode = this.id.toLocaleLowerCase();
-			switch (cmd) {
-			case 'edit':
-			case 'view':
-				this.view = new DEF.modules[mode].cmds[cmd]({
-					model: APP.models[mode].get(id),
-				});
-				this.showChildView('list', this.view);
-				break;
-			case 'list':
-			default:
-				this.ListRecords();
-			}
-		},
-		Add: function () {
-			var mode = this.id.toLocaleLowerCase();
-			console.log(mode);
-			var page = new DEF.modules[mode].cmds.edit({
-				model: false,
-			});
-			this.showChildView('list', page);
-		},
-		Search: function (e) {
-			this.ListRecords(); // .setFilter does not yet exist.  this is a crappy way to do it.
-		},
-		ListRecords: function () {
-			var mode = this.id.toLocaleLowerCase();
-			var where = {
-				search: this.ui.search.val(),
-				fields: {}
-			}
-			this.ui.filterfield.each(function (i, el) {
-				if (el.value && el.value != 'all')
-					where.fields[el.id] = el.value
-			})
-
-			this.view = new DEF.modules[mode].RecordList({
-				collection: APP.models[mode],
-				filter: function (m, i, c) {
-					var fields = Object.keys(where.fields);
-					for (var f = 0; f < fields.length; f++) {
-						var id = fields[f],
-							val = where.fields[id];
-						if (m.get(id) != val)
-							return false;
-					}
-
-					var string = m.search_string()
-					if (string.indexOf(where.search.toUpperCase()) == -1)
-						return false;
-					return true;
-				},
-			});
-			this.showChildView('list', this.view);
-			APP.Route("#" + mode, mode, false); // re-route, in case they searched from some other view
-		},
-		ToggleFilterView: function (e) {
-			if ($(e.currentTarget).hasClass('toggled')) {
-				this.ui.submenu.slideUp();
-				$(e.currentTarget).removeClass('toggled')
-			} else {
-				this.ui.submenu.slideDown();
-				$(e.currentTarget).addClass('toggled');
-
-			}
-		},
+		//		regions: {
+		//			list: "#record_list"
+		//		},
+		//		Icon: function (icon) {
+		//			return APP.Icon(this.icons[icon]);
+		//		},//		childEvents: {
+		//			'main:list': 'ListRecords',
+		//		},
+		//		ui: {
+		//			add: "#add",
+		//			search: "#search",
+		//			filter: "#filter",
+		//			submenu: "#submenu",
+		//			filterfield: ".filter_field",
+		//		},
+		//		events: {
+		//			"click @ui.add": "Add",
+		//			"click @ui.list": "ListRecords",
+		//			"keyup @ui.search": "Search",
+		//			"click @ui.filter": "ToggleFilterView",
+		//			"change @ui.filterfield": "ListRecords"
+		//		},
+		//		onRender: function () {
+		//			var mode = this.id.toLocaleLowerCase();
+		//			APP.SetMode(mode);
+		//			this.Command(this.options.cmd, this.options.arg);
+		//		},
+		//
+		//		/**
+		//		 * 
+		//		 * Show a collection based $cmd in  #module/$cmd/$id
+		//		 */
+		//		Command: function (cmd, id) {
+		//			var mode = this.id.toLocaleLowerCase();
+		//			console.log(mode, cmd, id);
+		//			switch (cmd) {
+		//			case 'edit':
+		//			case 'view':
+		//				this.view = new DEF.modules[mode].cmds[cmd]({
+		//					model: APP.models[mode].get(id),
+		//				});
+		//				APP.root.showChildView('main', this.view);
+		//				break;
+		//			case 'list':
+		//			default:
+		//				this.ListRecords();
+		//			}
+		//		},
+		//		Add: function () {
+		//			var mode = this.id.toLocaleLowerCase();
+		//			console.log(mode);
+		//			var page = new DEF.modules[mode].cmds.edit({
+		//				model: false,
+		//			});
+		//			this.showChildView('list', page);
+		//		},
+		//		Search: function (e) {
+		//			this.ListRecords(); // .setFilter does not yet exist.  this is a crappy way to do it.
+		//		},
+		//		ListRecords: function () {
+		//			var mode = this.id.toLocaleLowerCase();
+		//			var where = {
+		//				search: this.ui.search.val(),
+		//				fields: {}
+		//			}
+		//			this.ui.filterfield.each(function (i, el) {
+		//				if (el.value && el.value != 'all')
+		//					where.fields[el.id] = el.value
+		//			})
+		//
+		//			this.view = new DEF.modules[mode].RecordList({
+		//				collection: APP.models[mode],
+		//				filter: function (m, i, c) {
+		//					var fields = Object.keys(where.fields);
+		//					for (var f = 0; f < fields.length; f++) {
+		//						var id = fields[f],
+		//							val = where.fields[id];
+		//						if (m.get(id) != val)
+		//							return false;
+		//					}
+		//
+		//					var string = m.search_string()
+		//					if (string.indexOf(where.search.toUpperCase()) == -1)
+		//						return false;
+		//					return true;
+		//				},
+		//			});
+		//			this.showChildView('list', this.view);
+		//			APP.Route("#" + mode, mode, false); // re-route, in case they searched from some other view
+		//		},
+		//		ToggleFilterView: function (e) {
+		//			if ($(e.currentTarget).hasClass('toggled')) {
+		//				this.ui.submenu.slideUp();
+		//				$(e.currentTarget).removeClass('toggled')
+		//			} else {
+		//				this.ui.submenu.slideDown();
+		//				$(e.currentTarget).addClass('toggled');
+		//
+		//			}
+		//		},
 	}),
 
 	View: Backbone.Marionette.ItemView.extend({
-		tagName: "table",
-		className: "table table-full table-left",
 		onShow: function () {
 			this.model.set('views', this.model.get('views') + 1);
 		},
 	}),
 	Edit: Backbone.Marionette.ItemView.extend({
-		tagName: "table",
-		className: "table table-full table-left",
 		ui: {
 			"field": ".field",
 			"save": "#save",
@@ -169,14 +164,14 @@ Roadtrip = {
 				APP.models[this.module].create(model);
 			else
 				this.model.set('edits', this.model.get('edits') + 1);
-			this.triggerMethod('main:list');
+			APP.Route("#contacts/view/" + this.model.id);
 		},
 		Cancel: function (e) {
-			this.triggerMethod('main:list');
+			APP.Route("#contacts/view/" + this.model.get('_id'));
 		},
 		Delete: function (e) {
 			APP.models[this.module].remove(this.model);
-			this.triggerMethod('main:list');
+			APP.Route("#contacts");
 		}
 	}),
 	RecordLine: Backbone.Marionette.ItemView.extend({
@@ -193,10 +188,9 @@ Roadtrip = {
 		}
 	}),
 	RecordList: Backbone.Marionette.CompositeView.extend({
+		template: false,
 		page: 1,
 		perpage: 40,
-		tagName: "table",
-		className: "table table-full table-top",
 		childView: false,
 		emptyView: DEF.EmptyView,
 		emptyViewOptions: {
