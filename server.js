@@ -2,12 +2,17 @@ var express = require('express');
 var path = require('path');
 var httpProxy = require('http-proxy');
 
+var Highway = require('highway');
+
 // We need to add a configuration to our proxy server,
 // as we are now proxying outside localhost
 var proxy = httpProxy.createProxyServer({
 	changeOrigin: true
 });
 var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
 
 var isProduction = process.env.NODE_ENV === 'production';
 var port = isProduction ? process.env.PORT : 3000;
@@ -44,3 +49,18 @@ app.get('/user/:id', function (req, res, next) {
 		});
 	}
 });
+
+var hw = new Highway({
+	uri: 'dev.telegauge.com',
+	database: 'roadtrip',
+	http: app,
+	io: io,
+	auth: [
+		{ 
+			strategy: 'local',
+			routes : {
+				login : '/login.html'
+			}
+		}
+	]
+})
