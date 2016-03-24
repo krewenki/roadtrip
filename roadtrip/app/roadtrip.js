@@ -14,6 +14,7 @@ Roadtrip = {
 	}),
 	Model: Backbone.Model.extend({
 		idAttribute: '_id',
+		nameAttribute: 'name', // the human-readable field in the record
 		defaults: {},
 		search_string: function () {
 			var string = JSON.stringify(this.attributes);
@@ -58,7 +59,8 @@ Roadtrip = {
 			//			}		
 		},
 		onRender: function () {
-			APP.SetMode(this.id.toLocaleLowerCase());
+			var mode = this.id.toLocaleLowerCase();
+			APP.SetMode(mode);
 			this.Command(this.options.cmd, this.options.arg);
 		},
 
@@ -121,7 +123,7 @@ Roadtrip = {
 				},
 			});
 			this.showChildView('list', this.view);
-			APP.Route("#" + mode, false); // re-route, in case they searched from some other view
+			APP.Route("#" + mode, mode, false); // re-route, in case they searched from some other view
 		},
 		ToggleFilterView: function (e) {
 			if ($(e.currentTarget).hasClass('toggled')) {
@@ -208,7 +210,7 @@ Roadtrip = {
 			this.DoCommand(e.currentTarget.id);
 		},
 		DoCommand(cmd) {
-			APP.Route("#" + (this.module) + "/" + cmd + "/" + this.model.get('_id'));
+			APP.Route("#" + (this.module) + "/" + cmd + "/" + this.model.get('_id'), this.model.get(this.model.nameAttribute));
 		}
 	}),
 	RecordList: Backbone.Marionette.CompositeView.extend({

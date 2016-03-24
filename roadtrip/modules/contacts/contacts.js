@@ -4,6 +4,7 @@ DEF.modules.contacts = {}
  * The main model.  SHould be called "Model"
  */
 DEF.modules.contacts.Model = Roadtrip.Model.extend({
+	nameAttribute: 'name', // the human-readable field in the record
 	defaults: {
 		name: "Person 1",
 		kind: "employee",

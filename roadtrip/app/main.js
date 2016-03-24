@@ -30,7 +30,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 		$("#HEADER #mainmenu .menuitem").removeClass('active')
 		$("#HEADER #mainmenu .menuitem[data-mode=" + mode + "]").addClass('active');
 	},
-	Route: function (route, trigger) {
+	Route: function (route, title, trigger) {
 		if (_.isUndefined(trigger))
 			trigger = true;
 
@@ -42,6 +42,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 		APP.controller.router.navigate(route, {
 			trigger: trigger
 		})
+		this.SetTitle(title);
 	},
 	Icon: function (icon, title) {
 		icons = {
@@ -81,7 +82,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 			if (icons[icon])
 				icon = icons[icon];
 		}
-		return "<i " + (title ? "title='" + title + "'" : "") + " class='fa fa-" + icon + "'></i>";
+		return "<i " + (title ? "title='" + title + "'" : "") + " class='icon fa fa-" + icon + "'></i>";
 	},
 });
 
