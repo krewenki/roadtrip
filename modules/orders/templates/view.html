@@ -1,9 +1,14 @@
-<button class='btn cmd' id='edit'>
-	<%=APP.Icon('edit')%> edit
-</button>
-<button class='btn danger cmd' id='delete'>
-	<%=APP.Icon('delete')%> delete
-</button>
+<div id='menu'>
+	<span id='title'>Orders:</span>
+	<%=order%>
+		<div class='cmd link' id='edit'>
+			<%=APP.Icon('edit')%> edit
+		</div>
+		<div class='cmd link danger' id='delete'>
+			<%=APP.Icon('delete')%> delete
+		</div>
+</div>
+
 <table class='table table-full table-left' id='order'></table>
 <div id='lineitems'>
 </div>
