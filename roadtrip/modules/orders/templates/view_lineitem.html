@@ -5,8 +5,7 @@
 	<%=description%>
 </td>
 <td align='right'>
-	$
-	<%=price.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')%>
+	<%=APP.Format.money(price)%>
 </td>
 <td class='nowrap' align='center'>
 	<span class='cmd link' id='view' id='view'>
