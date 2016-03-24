@@ -40,6 +40,24 @@ DEF.modules.contacts.cmds = {
 	view: Roadtrip.View.extend({
 		module: "contacts",
 		template: require("./templates/view.html"),
+		ui: {
+			edit: "#edit",
+			delete: "#delete"
+		},
+		events: {
+			"click @ui.edit": "Edit",
+			"click @ui.delete": "Delete"
+		},
+		Edit: function () {
+			APP.Route("#contacts/" + "edit" + "/" + this.model.id);
+		},
+		Delete: function () {
+			if (confirm("Are you sure you want to delete " + this.model.get(this.model.nameAttribute))) {
+				console.log("kill it");
+				APP.models.contacts.remove(this.model);
+				APP.Route("#contacts", "contacts");
+			}
+		}
 	})
 }
 
