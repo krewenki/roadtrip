@@ -36,4 +36,14 @@ DEF.RootLayout = Backbone.Marionette.LayoutView.extend({
 // ------------------
 DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 	template: require('../templates/header.html'),
+	ui: {
+		button: ".menuitem"
+	},
+	events: {
+		"click @ui.button": "Go"
+	},
+	Go: function (e) {
+		APP.Route('#' + e.currentTarget.id);
+		APP.SetMode(e.currentTarget.id); // set mode immediately, for UI sakes, in case the view has to wait for the collecton to sync
+	}
 });

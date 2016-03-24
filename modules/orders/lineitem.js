@@ -1,10 +1,9 @@
-//DEF.modules.orders.Order_LineItems = Roadtrip.Collection.extend({
-//	//	model: DEF.modules.orders.Model,
-//	//	url: 'dev.telegauge.com:3000/roadtrip/orders_lineitems',
-//	//	comparator: "SOLI"
-//});
-//
-//
-DEF.modules.orders.LineItems = Backbone.Marionette.CollectionView.extend({
-
+DEF.modules.orders.LineItemLine = Backbone.Marionette.ItemView.extend({
+	tagName: "tr",
+	template: require("./templates/view_lineitem.html")
+})
+DEF.modules.orders.LineItemView = Backbone.Marionette.CollectionView.extend({
+	tagName: "table",
+	className: "table table-full table-top",
+	childView: DEF.modules.orders.LineItemLine
 })

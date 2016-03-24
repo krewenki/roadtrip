@@ -63,16 +63,6 @@ DEF.modules.orders.cmds = {
 DEF.modules.orders.OrderView = Backbone.Marionette.ItemView.extend({
 	template: require("./templates/order.html"),
 })
-DEF.modules.orders.LineItemLine = Backbone.Marionette.ItemView.extend({
-	tagName: "tr",
-	template: require("./templates/view_lineitem.html")
-})
-DEF.modules.orders.LineItemView = Backbone.Marionette.CollectionView.extend({
-	tagName: "table",
-	className: "table table-full table-top",
-	childView: DEF.modules.orders.LineItemLine
-})
-
 
 /**
  * The MainView.  HAS to be called MainView.  This is where this module begins
@@ -86,9 +76,6 @@ DEF.modules.orders.MainView = Roadtrip.MainView.extend({
 		company: "building",
 		vendor: "money",
 		customer: "x"
-	},
-	collections: {
-		orders_lineitem: DEF.modules.orders.Order_LineItems
 	},
 	Command: function (cmd, id) {
 		var mode = this.id.toLocaleLowerCase();
@@ -106,7 +93,7 @@ DEF.modules.orders.MainView = Roadtrip.MainView.extend({
 });
 
 /**
- * A single line of contacts on the main contact view
+ * A single line of orders on the main order view
  */
 DEF.modules.orders.RecordLine = Roadtrip.RecordLine.extend({
 	module: "orders",
@@ -114,7 +101,7 @@ DEF.modules.orders.RecordLine = Roadtrip.RecordLine.extend({
 });
 
 /**
- * This is a list of contacts
+ * This is a list of orders
  */
 DEF.modules.orders.RecordList = Roadtrip.RecordList.extend({
 	module: "orders",
