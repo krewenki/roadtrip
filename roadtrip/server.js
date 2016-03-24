@@ -60,6 +60,13 @@ var hw = new Highway({
 			strategy: 'local',
 			routes : {
 				login : '/login.html'
+			},
+			homeCallback: function(req,res){
+				if(!req.session || !req.session.passport.user){
+					res.redirect('/login.html')
+				} else {
+					res.sendFile(path.resolve('public/index_template.html'));
+				}
 			}
 		}
 	]
