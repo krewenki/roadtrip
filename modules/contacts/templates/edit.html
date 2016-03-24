@@ -1,32 +1,64 @@
-<tr>
-	<th>Kind</th>
-	<td>
-		<input class='field' <%=kind=='Company' ? "checked": ""%> type='radio' value='company' name='kind' id='kind'>Company
-		<input class='field' <%=kind=='Vendor' ? "checked": ""%> type='radio' value='vendor' name='kind' id='kind'>Vendor
-	</td>
-</tr>
+<div id='menu'>
+	<span id='title'>Contacts:</span>
+	<%=name%>
+		<div class='cmd link ' id='cancel'>
+			<%=APP.Icon('cancel')%> cancel
+		</div>
+		<div class='cmd link' id='save'>
+			<%=APP.Icon('save')%> save
+		</div>
+		<div class='cmd link danger' id='delete'>
+			<%=APP.Icon('delete')%> delete
+		</div>
+</div>
 
-<tr>
-	<th>Name</th>
-	<td>
-		<input class='field' type='input' id='name' value='<%=name%>'>
-	</td>
-</tr>
+<table class='table table-full table-left'>
+	<tr>
+		<th>Kind</th>
+		<td>
+			<input class='field' <%=kind=='Company' ? "checked": ""%> type='radio' value='company' name='kind' id='kind'>Company
+			<input class='field' <%=kind=='Vendor' ? "checked": ""%> type='radio' value='vendor' name='kind' id='kind'>Vendor
+		</td>
+	</tr>
 
-<tr>
-	<th>Phone</th>
-	<td>
-		<input class='field' type='input' id='phone' value='<%=phone%>'>
-	</td>
-</tr>
+	<tr>
+		<th>Name</th>
+		<td>
+			<input class='field' type='text' id='name' value='<%=name%>' placeholder='name'>
+		</td>
+	</tr>
 
-<tr>
-	<th>E-Mail</th>
-	<td>
-		<input class='field' type='input' id='email' value='<%=email%>'>
-	</td>
-</tr>
+	<tr>
+		<th>Phone</th>
+		<td>
+			<input class='field' type='text' id='phone' value='<%=phone%>' placeholder='phone number'>
+		</td>
+	</tr>
 
+	<tr>
+		<th>E-Mail</th>
+		<td>
+			<input class='field' type='text' id='email' value='<%=email%>' placeholder='e-mail'>
+		</td>
+	</tr>
+	<tr>
+		<th>Address</th>
+		<td>
+			<input class='field' type='text' id='address' value='<%=address%>'>
+			<br />
+			<input class='field' type='text' id='address2' value='<%=address2%>' placeholder="address (cont.)">
+		</td>
+	</tr>
+	<tr>
+		<th>City, State, Zip</th>
+		<td>
+			<input class='field' type='text' id='city' value='<%=city%>' placeholder='City'>
+			<input class='field' type='text' id='state' value='<%=state%>' placeholder='state'>
+			<input class='field' type='text' id='zip' value='<%=zip%>' placeholder='zip'>
+		</td>
+	</tr>
+
+	<!--
 <tr>
 	<td colspan=2>
 		<button id='save' class='btn default'>
@@ -37,4 +69,5 @@
 			<%=APP.Icon("delete")%> Delete</button>
 	</td>
 
-</tr>
+</tr>-->
+</table>

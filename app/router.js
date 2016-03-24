@@ -25,18 +25,23 @@ DEF.Controller = Backbone.Marionette.Object.extend({
 		APP.SetMode("home");
 	},
 
-	Route: function (module, arg1, arg2) {
+	Route: function (module, cmd, arg) {
 		if (module === 'home') {
 			this.GoHome();
 			return;
 		}
 		this.InitializeInterface();
 		if (!_.isUndefined(APP.models[module]) && APP.models[module].length) {
-			APP.Page = new DEF.modules[module].MainView({
-				cmd: arg1,
-				arg: arg2
-
-			});
+			console.log("route", module, cmd, arg);
+			if (cmd) {
+				APP.Page = new DEF.modules[module].views[cmd]({
+					model: APP.models[module].get(arg),
+				});
+			} else {
+				APP.Page = new DEF.modules[module].MainView({
+					collection: APP.models[module]
+				});
+			}
 			APP.root.showChildView("main", APP.Page);
 			APP.SetMode(module);
 		} else {
@@ -44,7 +49,7 @@ DEF.Controller = Backbone.Marionette.Object.extend({
 				msg: "Loading..."
 			}));
 			APP.models[module] = new DEF.modules[module].Collection();
-			this.listenToOnce(APP.models[module], 'sync', this.Route.bind(this, module, arg1, arg2))
+			this.listenToOnce(APP.models[module], 'sync', this.Route.bind(this, module, cmd, arg))
 		}
 	},
 
