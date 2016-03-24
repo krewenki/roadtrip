@@ -8,8 +8,13 @@ DEF.modules.contacts.Model = Roadtrip.Model.extend({
 	defaults: {
 		name: "Person 1",
 		kind: "employee",
+		address: "",
+		address2: "",
 		phone: "",
 		email: "",
+		city: "",
+		state: "",
+		zip: "",
 		views: 0,
 		edits: 0
 	},

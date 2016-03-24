@@ -3,6 +3,18 @@
 		<%=name%>
 </td>
 <td>
-	<%=city%>,
-		<%=state%>
+	<a href='https://maps.google.com?q=<%=address%> <%=city%> <%=state%> <%=zip%>'>
+		<%=city%>,
+			<%=state%>
+	</a>
+</td>
+<td>
+	<a href='email:<%=email%>'>
+		<%=email%>
+	</a>
+</td>
+<td>
+	<a href='tel:<%=phone%>'>
+		<%=phone%>
+	</a>
 </td>
