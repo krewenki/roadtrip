@@ -3,6 +3,9 @@
 	<td>
 		<%=kind%>
 	</td>
+	<td rowspan=8>
+		<iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDZolqc646yTVgKFAL_72huENxZ9uBS3z8&q=<%=(address+'+'+city+'+'+state+'+'+zip).replace(/ /g,'+')%>" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+	</td>
 </tr>
 <tr>
 	<th>Name</th>
