@@ -125,11 +125,17 @@ Roadtrip = {
 		//		},
 	}),
 
+	/**
+	 * Useful for viewing a single model
+	 */
 	View: Backbone.Marionette.ItemView.extend({
 		onShow: function () {
 			this.model.set('views', this.model.get('views') + 1);
 		},
 	}),
+	/**
+	 * Useful for supporting edit forms.  Has all the save/dirty logic built in.
+	 */
 	Edit: Backbone.Marionette.ItemView.extend({
 		ui: {
 			"field": ".field",
@@ -164,14 +170,17 @@ Roadtrip = {
 				APP.models[this.module].create(model);
 			else
 				this.model.set('edits', this.model.get('edits') + 1);
-			APP.Route("#contacts/view/" + this.model.id);
+			APP.Route("#" + this.module + "/view/" + this.model.id);
 		},
 		Cancel: function (e) {
-			APP.Route("#contacts/view/" + this.model.get('_id'));
+			if (this.model.get('_id'))
+				APP.Route("#" + this.module + "/view/" + this.model.get('_id'));
+			else
+				APP.Route("#" + this.module);
 		},
 		Delete: function (e) {
 			APP.models[this.module].remove(this.model);
-			APP.Route("#contacts");
+			APP.Route("#" + this.module + "");
 		}
 	}),
 	RecordLine: Backbone.Marionette.ItemView.extend({

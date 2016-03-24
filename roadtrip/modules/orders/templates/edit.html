@@ -1,41 +1,46 @@
-<tr>
-	<th>Order</th>
-	<td>
-		<%=order%>
-	</td>
-</tr>
-<tr>
-	<td>
-	</td>
-	<td class='note'>
-		<%=APP.Icon('warning')%> The dates on the data import are not in the right format, so this will complain a lot.</td>
-</tr>
-<tr>
-	<th>Order Date</th>
-	<td>
-		<input type='date' id='order_date' value='<%=order_date%>'>
-	</td>
-</tr>
-<tr>
-	<th>Customer Request Date</th>
-	<td>
-		<input type='date' id='customer_request_date' value='<%=customer_request_date%>'>
-	</td>
-</tr>
-<tr>
-	<th>Release Date</th>
-	<td>
-		<input type='date' id='release_date' value='<%=release_date%>'>
-	</td>
-</tr>
-<tr>
-	<td colspan=2>
-		<button id='save' class='btn default'>
-			<%=APP.Icon("save")%> Save</button>
-		<button id='cancel' class='btn '>
-			<%=APP.Icon("cancel")%> Cancel</button>
-		<button id='delete' class='btn danger '>
-			<%=APP.Icon("delete")%> Delete</button>
-	</td>
+<div id='menu'>
+	<span id='title'>Contacts:</span>
+	<%=name%>
+		<div class='cmd link ' id='cancel'>
+			<%=APP.Icon('cancel')%> cancel
+		</div>
+		<div class='cmd link' id='save'>
+			<%=APP.Icon('save')%> save
+		</div>
+		<div class='cmd link danger' id='delete'>
+			<%=APP.Icon('delete')%> delete
+		</div>
+</div>
 
-</tr>
+<table class='table table-full table-left'>
+	<tr>
+		<th>Order</th>
+		<td>
+			<%=order%>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		</td>
+		<td class='note'>
+			<%=APP.Icon('warning')%> The dates on the data import are not in the right format, so this will complain a lot.</td>
+	</tr>
+	<tr>
+		<th>Order Date</th>
+		<td>
+			<input type='date' id='order_date' value='<%=new Date(order_date)%>'>
+		</td>
+	</tr>
+	<tr>
+		<th>Customer Request Date</th>
+		<td>
+			<input type='date' id='customer_request_date' value='<%=customer_request_date%>'>
+		</td>
+	</tr>
+	<tr>
+		<th>Release Date</th>
+		<td>
+			<input type='date' id='release_date' value='<%=release_date%>'>
+		</td>
+	</tr>
+</table>

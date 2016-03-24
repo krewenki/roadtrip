@@ -18,7 +18,7 @@ DEF.modules.orders.Model = Roadtrip.Model.extend({
 		edits: 0
 	},
 	search_string: function () {
-		var string = this.get('order') + " " + this.get('description');
+		var string = this.get('order') + "";
 		return string.toUpperCase();
 	}
 });
@@ -30,12 +30,12 @@ DEF.modules.orders.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.orders.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/orders',
 });
-APP.models.orders = new DEF.modules.contacts.Collection();
+APP.models.orders = new DEF.modules.orders.Collection();
 
 /**
  * A list of commands, automatically tied to the $cmd in  #module/$cmd/$id.  See DoView
  */
-DEF.modules.orders.cmds = {
+DEF.modules.orders.views = {
 	/**
 	 * Edit a contact
 	 */
@@ -87,33 +87,6 @@ DEF.modules.orders.OrderView = Backbone.Marionette.ItemView.extend({
 	template: require("./templates/order.html"),
 })
 
-/**
- * The MainView.  HAS to be called MainView.  This is where this module begins
- */
-
-DEF.modules.orders.MainView = Roadtrip.MainView.extend({
-	template: require("./templates/orders.html"),
-	id: 'ORDERS',
-	icons: {
-		employee: "user",
-		company: "building",
-		vendor: "money",
-		customer: "x"
-	},
-	Command: function (cmd, id) {
-		var mode = this.id.toLocaleLowerCase();
-		switch (cmd) {
-		case 'view':
-			this.view = new DEF.modules[mode].cmds[cmd]({
-				model: APP.models[mode].get(id),
-			});
-			this.showChildView('list', this.view);
-			break;
-		default:
-			Roadtrip.MainView.prototype.Command.apply(this, arguments);
-		}
-	},
-});
 
 /**
  * A single line of orders on the main order view
@@ -139,12 +112,47 @@ DEF.modules.orders.RecordLine = Roadtrip.RecordLine.extend({
 	}
 });
 
-/**
- * This is a list of orders
- */
-DEF.modules.orders.RecordList = Roadtrip.RecordList.extend({
-	module: "orders",
-	template: require("./templates/order_list.html"),
-	childView: DEF.modules.orders.RecordLine,
 
-})
+/**
+ * The MainView.  HAS to be called MainView.  This is where this module begins
+ */
+DEF.modules.orders.MainView = Roadtrip.RecordList.extend({
+	id: 'ORDERS',
+	search: "",
+	template: require("./templates/orders.html"),
+	childView: DEF.modules.orders.RecordLine,
+	childViewContainer: "#record_list",
+	templateHelpers: function () {
+		return {
+			search: this.search,
+		}
+	},
+	ui: {
+		search: "#search",
+		add: "#add"
+	},
+	events: {
+		"keyup @ui.search": "Search",
+		"click @ui.add": "Add"
+	},
+	filter: function (model, index, collection) {
+		var string = model.search_string();
+		if (string.indexOf(this.search.toUpperCase()) == -1)
+			return false;
+		return true;
+	},
+	onRender: function () {
+		this.ui.search.focus().val(this.search); // this search is disgusting
+	},
+	Search: function (e) {
+		console.log(this.ui.search.val(), this.templateHelpers());
+		this.search = this.ui.search.val();
+		this.render();
+	},
+	Add: function () {
+		var page = new DEF.modules.contacts.views.edit({
+			model: false,
+		});
+		APP.root.showChildView('main', page);
+	}
+});

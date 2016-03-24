@@ -84,12 +84,10 @@ DEF.modules.contacts.MainView = Roadtrip.RecordList.extend({
 	templateHelpers: function () {
 		return {
 			search: this.search,
-			now: Date.now()
 		}
 	},
 	childView: DEF.modules.contacts.RecordLine,
 	childViewContainer: "#record_list",
-	reorderOnSort: true,
 	ui: {
 		search: "#search",
 		add: "#add"
@@ -110,7 +108,7 @@ DEF.modules.contacts.MainView = Roadtrip.RecordList.extend({
 	Search: function (e) {
 		console.log(this.ui.search.val(), this.templateHelpers());
 		this.search = this.ui.search.val();
-		this.collection.trigger('sync');
+		this.render();
 	},
 	Add: function () {
 		var page = new DEF.modules.contacts.views.edit({
