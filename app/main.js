@@ -1,13 +1,11 @@
 require('backbone.marionette');
 
-window.$ = require('jquery');
-window._ = require('underscore');
-window.APP = {}; // DEFINE THE MAIN APP OBJECT
-window.DEF = {}; // HOLD THE DEFINITIONS. ALL THE MODULES, ETC...
-window.DEF.modules = {} // hold the models definitions
+$ = require('jquery');
+_ = require('underscore');
+APP = {}; // DEFINE THE MAIN APP OBJECT
+DEF = {}; // HOLD THE DEFINITIONS. ALL THE MODULES, ETC...
 
 require('backbone.highway');
-//require('../vendor/backbone.highway.js')
 
 require('../style/style.scss');
 require("font-awesome-webpack");
@@ -17,6 +15,7 @@ require("./layout.js");
 require("./router.js");
 require("./static.js");
 
+DEF.modules = {} // hold the models definitions
 require("../modules/contacts/contacts.js");
 require("../modules/orders/orders.js");
 
@@ -29,7 +28,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 	},
 	SetMode: function (mode) {
 		$("#HEADER #mainmenu .menuitem").removeClass('active')
-		$("#HEADER #mainmenu .menuitem#" + mode).addClass('active');
+		$("#HEADER #mainmenu .menuitem[data-mode=" + mode + "]").addClass('active');
 	},
 	Route: function (route, trigger) {
 		if (_.isUndefined(trigger))
