@@ -26,6 +26,10 @@ DEF.Controller = Backbone.Marionette.Object.extend({
 	},
 
 	Route: function (module, arg1, arg2) {
+		if (module == 'home') {
+			this.GoHome();
+			return;
+		}
 		this.InitializeInterface();
 		if (!_.isUndefined(APP.models[module]) && APP.models[module].length) {
 			APP.Page = new DEF.modules[module].MainView({

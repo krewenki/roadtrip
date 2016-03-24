@@ -2,7 +2,7 @@
  * Project-wide prototypes for convenience.
  * 
  */
-window.Roadtrip = {
+Roadtrip = {
 	Collection: Backbone.Highway.Collection.extend({
 		perpage: 100,
 		page: 1,

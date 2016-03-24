@@ -3,18 +3,19 @@
 		<span id='subtitle'>a Telegauge project</span>
 </div>
 
+<!--
+I use data-id here, because when i did stuff like 'id=contacts', then clicking on it caused the browser to want to scroll to it
+-->
 
 <div class='bg1' id='mainmenu'>
-	<div class='menuitem link' id='home'>
+	<div class='menuitem link' data-mode='home'>
 		<%=APP.Icon('home')%> <span class='label'>Home</span>
 	</div>
-	<div class='menuitem link' id='contacts'>
+	<div class='menuitem link' data-mode='contacts'>
 		<%=APP.Icon('contacts')%> <span class='label'>Contacts</span>
 	</div>
-	<div class='menuitem link' id='orders'>
-		<!--<a href="#orders">-->
+	<div class='menuitem link' data-mode='orders'>
 		<%=APP.Icon('orders')%> <span class='label'>Orders</span>
-			<!--</a>-->
 	</div>
 	<div class='menuitem' id='calendar'>
 		<%=APP.Icon('calendar')%> <span class='label'>Calendar</span>
