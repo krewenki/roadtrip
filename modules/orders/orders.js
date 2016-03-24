@@ -6,11 +6,13 @@ require("./lineitem.js");
  */
 DEF.modules.orders.Model = Roadtrip.Model.extend({
 	idAttribute: '_id',
+	nameAttribute: 'order', // the human-readable field in the record
 	defaults: {
 		order: "000001",
 		order_date: 0,
 		customer_request_date: 0,
 		release_date: 0,
+		lineitems: [],
 
 		views: 0,
 		edits: 0
@@ -98,6 +100,22 @@ DEF.modules.orders.MainView = Roadtrip.MainView.extend({
 DEF.modules.orders.RecordLine = Roadtrip.RecordLine.extend({
 	module: "orders",
 	template: require("./templates/order_line.html"),
+	templateHelpers: function () {
+		var rs = {
+			total: ' ',
+			lineitems: 0
+		}
+		var lineitems = this.model.get('lineitems');
+		var sum = 0;
+		for (var l = 0; l < lineitems.length; l++)
+			sum += lineitems[l].price;
+		if (sum)
+			rs.total = '$' + sum;
+
+		rs.lineitems = lineitems.length;
+
+		return rs;
+	}
 });
 
 /**

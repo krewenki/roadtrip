@@ -43,7 +43,7 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 	},
 	Go: function (e) {
 		var target = $(e.currentTarget).data('mode');
-		APP.Route('#' + target);
+		APP.Route('#' + target, target);
 		APP.SetMode(target); // set mode immediately, for UI sakes, in case the view has to wait for the collecton to sync
 	}
 });

@@ -26,7 +26,7 @@ DEF.Controller = Backbone.Marionette.Object.extend({
 	},
 
 	Route: function (module, arg1, arg2) {
-		if (module == 'home') {
+		if (module === 'home') {
 			this.GoHome();
 			return;
 		}
@@ -35,6 +35,7 @@ DEF.Controller = Backbone.Marionette.Object.extend({
 			APP.Page = new DEF.modules[module].MainView({
 				cmd: arg1,
 				arg: arg2
+
 			});
 			APP.root.showChildView("main", APP.Page);
 			APP.SetMode(module);
