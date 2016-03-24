@@ -15,9 +15,6 @@ require("./layout.js");
 require("./router.js");
 require("./static.js");
 
-DEF.modules = {} // hold the models definitions
-require("../modules/contacts/contacts.js");
-require("../modules/orders/orders.js");
 
 var MainApp = Backbone.Marionette.Application.extend({
 	setRootLayout: function () {
@@ -90,6 +87,11 @@ var MainApp = Backbone.Marionette.Application.extend({
 
 APP = new MainApp();
 APP.models = {} // hold the collections
+
+DEF.modules = {} // hold the models definitions
+require("../modules/contacts/contacts.js");
+require("../modules/orders/orders.js");
+
 
 APP.Format = {
 	fixed: function (val, dec) {

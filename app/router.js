@@ -14,6 +14,7 @@ DEF.Controller = Backbone.Marionette.Object.extend({
 			var header = new DEF.HeaderLayout({});
 			APP.root.showChildView('header', header);
 			this.init_done = true;
+
 		}
 	},
 	GoHome: function () {
@@ -48,7 +49,7 @@ DEF.Controller = Backbone.Marionette.Object.extend({
 			APP.root.showChildView("main", new DEF.EmptyView({
 				msg: "Loading..."
 			}));
-			APP.models[module] = new DEF.modules[module].Collection();
+			//APP.models[module] = new DEF.modules[module].Collection();
 			this.listenToOnce(APP.models[module], 'sync', this.Route.bind(this, module, cmd, arg))
 		}
 	},
