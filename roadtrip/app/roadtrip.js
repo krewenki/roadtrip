@@ -206,7 +206,8 @@ Roadtrip = {
 			var to = from + this.perpage
 			if (index >= from && index < to)
 				Backbone.Marionette.CollectionView.prototype.addChild.apply(this, arguments);
-		}
+		},
+
 	})
 
 }

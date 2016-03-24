@@ -30,6 +30,8 @@ DEF.modules.orders.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.orders.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/orders',
 });
+APP.models.orders = new DEF.modules.contacts.Collection();
+
 /**
  * A list of commands, automatically tied to the $cmd in  #module/$cmd/$id.  See DoView
  */

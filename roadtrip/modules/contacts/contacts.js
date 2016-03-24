@@ -27,6 +27,7 @@ DEF.modules.contacts.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.contacts.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/contacts',
 });
+APP.models.contacts = new DEF.modules.contacts.Collection()
 
 /**
  * A list of commands, automatically tied to the $cmd in  #module/$cmd/$id.  See DoView
@@ -38,19 +39,9 @@ DEF.modules.contacts.views = {
 	edit: Roadtrip.Edit.extend({
 		module: "contacts",
 		template: require("./templates/edit.html"),
-		//		ui: {
-		//			save: "#save",
-		//			delete: "#delete",
-		//			cancel: "#cancel"
-		//		},
-		//		events: {
-		//			"click @ui.save": "Save",
-		//			"click @ui.delete": "Delete",
-		//			"click @ui.cancel": "Cancel"
-		//		},
 	}),
 	/**
-	 * View a plain, read-only contact
+	 * View a plain, read-only single record
 	 */
 	view: Roadtrip.View.extend({
 		module: "contacts",
@@ -90,15 +81,41 @@ DEF.modules.contacts.RecordLine = Roadtrip.RecordLine.extend({
 DEF.modules.contacts.MainView = Roadtrip.RecordList.extend({
 	id: 'CONTACTS',
 	template: require("./templates/contacts.html"),
+	templateHelpers: function () {
+		return {
+			search: this.search,
+			now: Date.now()
+		}
+	},
 	childView: DEF.modules.contacts.RecordLine,
 	childViewContainer: "#record_list",
+	reorderOnSort: true,
 	ui: {
-		search: "#search"
+		search: "#search",
+		add: "#add"
 	},
 	events: {
-		"keyup @ui.search": "Search"
+		"keyup @ui.search": "Search",
+		"click @ui.add": "Add"
+	},
+	filter: function (model, index, collection) {
+		var string = model.search_string();
+		if (string.indexOf(this.ui.search.val().toUpperCase()) == -1)
+			return false;
+		return true;
+	},
+	onRender: function () {
+		this.ui.search.focus()
 	},
 	Search: function (e) {
-		console.log(this.ui.search.val());
+		console.log(this.ui.search.val(), this.templateHelpers());
+		this.search = this.ui.search.val();
+		this.collection.trigger('sync');
+	},
+	Add: function () {
+		var page = new DEF.modules.contacts.views.edit({
+			model: false,
+		});
+		APP.root.showChildView('main', page);
 	}
 });
