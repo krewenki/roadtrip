@@ -142,7 +142,7 @@ Roadtrip = {
 		className: "table table-full table-left",
 		onShow: function () {
 			this.model.set('views', this.model.get('views') + 1);
-		}
+		},
 	}),
 	Edit: Backbone.Marionette.ItemView.extend({
 		tagName: "table",
@@ -193,24 +193,14 @@ Roadtrip = {
 	RecordLine: Backbone.Marionette.ItemView.extend({
 		tagName: 'tr',
 		className: 'click hover',
-		ui: {
-			cmd: ".cmd"
-		},
 		modelEvents: {
 			"change": "render"
 		},
 		events: {
-			"click @ui.cmd": "DoCommand",
 			"click": "View"
 		},
 		View: function () {
-			this.DoCommand('view')
-		},
-		clickCmd: function (e) {
-			this.DoCommand(e.currentTarget.id);
-		},
-		DoCommand(cmd) {
-			APP.Route("#" + (this.module) + "/" + cmd + "/" + this.model.get('_id'), this.model.get(this.model.nameAttribute));
+			APP.Route("#" + (this.module) + "/view/" + this.model.get('_id'), this.model.get(this.model.nameAttribute));
 		}
 	}),
 	RecordList: Backbone.Marionette.CompositeView.extend({

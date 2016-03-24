@@ -43,6 +43,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 			trigger: trigger
 		})
 		this.SetTitle(title);
+		console.log(route, title);
 	},
 	Icon: function (icon, title) {
 		icons = {
@@ -98,6 +99,10 @@ APP.Format = {
 	},
 	clamp: function (val, min, max) {
 		return Math.max(Math.min(val, max), min);
+	},
+	money: function (val) {
+		var sign = val < 0 ? "negative" : "positive";
+		return '<span class="money ' + sign + '">$' + val.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + "</span>";
 	}
 }
 

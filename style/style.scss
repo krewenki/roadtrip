@@ -76,6 +76,11 @@ body {
 	h1 {
 		font-size: 20px;
 	}
+	.money {
+		&.negative {
+			color: red;
+		}
+	}
 	#empty {
 		color: #999;
 		width: 100%;
