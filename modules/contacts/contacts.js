@@ -73,20 +73,6 @@ DEF.modules.contacts.views = {
 DEF.modules.contacts.RecordLine = Roadtrip.RecordLine.extend({
 	module: "contacts",
 	template: require("./templates/contact_line.html"),
-	templateHelpers: function () {
-		var icons = {
-			Vendor: "building",
-			Customer: "money",
-			Miscellaneous: "question",
-			"Customer,Marine": "ship",
-			Insurance: "wheelchair",
-			"Freight Transportation": "truck"
-		}
-
-		return {
-			icon: icons[this.model.get('kind')]
-		}
-	}
 });
 
 /**
@@ -115,6 +101,15 @@ DEF.modules.contacts.MainView = Roadtrip.RecordList.extend({
 		if (string.indexOf(this.ui.search.val().toUpperCase()) == -1)
 			return false;
 		return true;
+	},
+	initialize: function () {
+		APP.Icon_Lookup["Vendor"] = "building";
+		APP.Icon_Lookup["Customer"] = "money";
+		APP.Icon_Lookup["Miscellaneous"] = "question";
+		APP.Icon_Lookup["Customer,Marine"] = "ship";
+		APP.Icon_Lookup["Insurance"] = "wheelchair";
+		APP.Icon_Lookup["Freight Transportation"] = "truck";
+		APP.Icon_Lookup["Services"] = "thumbs-up";
 	},
 	onRender: function () {
 		this.ui.search.focus().val(this.search); // this search is disgusting
