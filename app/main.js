@@ -42,43 +42,42 @@ var MainApp = Backbone.Marionette.Application.extend({
 		this.SetTitle(title);
 		console.log(route, title);
 	},
+	Icon_Lookup: {
+		calendar: "calendar",
+		contacts: "group",
+		projects: "pie-chart",
+		orders: "money",
+		expenses: "dollar",
+		timeclock: "clock-o",
+
+		warning: "warning",
+		link: "external-link",
+		delete: "remove",
+		rate: "thumbs-up",
+		more: "ellipsis-h",
+		off: "square-o",
+		on: "check-square-o",
+		stats: "bar-chart",
+		up: "chevron-up",
+		down: "chevron-down",
+		settings: "gear",
+		user: "user",
+		report: "bug",
+		data: "rss",
+		edit: "pencil",
+		view: "search",
+		cancel: "remove",
+		delete: "trash",
+		new: "plus"
+	},
 	Icon: function (icon, title) {
-		icons = {
-			calendar: "calendar",
-			contacts: "group",
-			projects: "pie-chart",
-			orders: "money",
-			expenses: "dollar",
-			timeclock: "clock-o",
-
-			warning: "warning",
-			link: "external-link",
-			delete: "remove",
-			rate: "thumbs-up",
-			more: "ellipsis-h",
-			off: "square-o",
-			on: "check-square-o",
-			stats: "bar-chart",
-			up: "chevron-up",
-			down: "chevron-down",
-			settings: "gear",
-			user: "user",
-			report: "bug",
-			data: "rss",
-			edit: "pencil",
-			view: "search",
-			cancel: "remove",
-			delete: "trash",
-			new: "plus"
-		}
-
 		switch (icon) {
 		case 'loading':
 			return "<span class='loading'><i class='fa fa-refresh fa-spin'></i></span>";
 			break;
 		default:
-			if (icons[icon])
-				icon = icons[icon];
+			if (this.Icon_Lookup[icon])
+				icon = this.Icon_Lookup[icon];
 		}
 		return "<i " + (title ? "title='" + title + "'" : "") + " class='icon fa fa-" + icon + "'></i>";
 	},

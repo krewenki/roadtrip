@@ -8,6 +8,7 @@
  */
 DEF.EmptyView = Backbone.Marionette.ItemView.extend({
 	template: require("../templates/empty.html"),
+	id: "empty",
 	ui: {
 		msg: "#msg",
 		submsg: "#submsg",
