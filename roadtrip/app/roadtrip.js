@@ -201,6 +201,7 @@ Roadtrip = {
 		page: 1,
 		perpage: 40,
 		childView: false,
+		childViewContainer: "#record_list", // override if you need to, obviously
 		emptyView: DEF.EmptyView,
 		emptyViewOptions: {
 			icon: "warning",
