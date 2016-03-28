@@ -15,6 +15,9 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 		edits: 0,
 		views: 0
 	},
+	GetLink: function (cmd) {
+		return "#projects/" + cmd + "/" + this.get('_id');
+	}
 });
 
 /**
@@ -71,6 +74,9 @@ DEF.modules.projects.RecordLine = Roadtrip.RecordLine.extend({
 	module: "projects",
 	tagName: "div",
 	template: require("./templates/project_box.html"),
+	Click: function () {
+		APP.Route(this.model.GetLink('view'), this.model.get(this.model.nameAttribute));
+	}
 });
 
 /**
