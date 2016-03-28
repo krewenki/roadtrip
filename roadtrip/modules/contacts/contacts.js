@@ -1,5 +1,11 @@
 DEF.modules.contacts = {}
+DEF.modules.contacts.Route = function (module, cmd, arg) {
+	var page = new DEF.modules[module].views[cmd]({
+		model: APP.models[module].get(arg),
+	});
 
+	return page;
+};
 /**
  * The main model.  SHould be called "Model"
  */

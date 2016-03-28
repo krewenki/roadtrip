@@ -1,4 +1,22 @@
 DEF.modules.projects = {}
+DEF.modules.projects.Route = function (module, cmd, arg) {
+	console.log(module, cmd, arg);
+
+	var page;
+	if (DEF.modules[module].views[cmd]) {
+		page = new DEF.modules[module].views[cmd]({
+			model: APP.models[module].get(arg),
+		});
+	} else {
+		page = new DEF.modules.projects.views.view({
+			model: APP.models.projects.findWhere({
+				project: cmd
+			})
+		});
+	}
+
+	return page;
+};
 
 /**
  * The main model.  SHould be called "Model"
@@ -28,6 +46,7 @@ DEF.modules.projects.Collection = Roadtrip.Collection.extend({
 	url: 'dev.telegauge.com:3000/roadtrip/projects',
 });
 APP.models.projects = new DEF.modules.projects.Collection()
+
 
 /**
  * A list of commands, automatically tied to the $cmd in  #module/$cmd/$id.  See DoView
@@ -73,9 +92,10 @@ DEF.modules.projects.views = {
 DEF.modules.projects.RecordLine = Roadtrip.RecordLine.extend({
 	module: "projects",
 	tagName: "div",
+	className: 'click',
 	template: require("./templates/project_box.html"),
 	Click: function () {
-		APP.Route(this.model.GetLink('view'), this.model.get(this.model.nameAttribute));
+		APP.Route("#projects/" + this.model.get('project'));
 	}
 });
 

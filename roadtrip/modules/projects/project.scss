@@ -6,6 +6,9 @@
 		align-content: space-around;
 		align-items: center;
 		.box {
+			&:hover {
+				background-color: rgba(0, 255, 255, 0.1);
+			}
 			color: #666;
 			border: 3px solid #555;
 			margin: 20px;
