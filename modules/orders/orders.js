@@ -2,13 +2,14 @@ DEF.modules.orders = {
 	views: {}
 }
 require("./lineitem.js");
-DEF.modules.orders.Route = function (module, cmd, arg) {
-	var page = new DEF.modules[module].views[cmd]({
-		model: APP.models[module].get(arg),
-	});
-
-	return page;
-};
+DEF.modules.orders.Router = Roadtrip.Router.extend({
+	module: "orders",
+	routes: {
+		"orders": "ShowRoot",
+		"orders/:cmd": "LoadModule",
+		"orders/:cmd/:arg": "LoadModule",
+	},
+})
 
 /**
  * The main model.  SHould be called "Model"

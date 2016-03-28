@@ -1,22 +1,13 @@
-DEF.modules.projects = {}
-DEF.modules.projects.Route = function (module, cmd, arg) {
-	console.log(module, cmd, arg);
+DEF.modules.projects = {};
+DEF.modules.projects.Router = Roadtrip.Router.extend({
+	module: "projects",
+	routes: {
+		"projects": "ShowRoot",
+		"projects/:cmd": "LoadModule",
+		"projects/:cmd/:arg": "LoadModule",
+	},
+})
 
-	var page;
-	if (DEF.modules[module].views[cmd]) {
-		page = new DEF.modules[module].views[cmd]({
-			model: APP.models[module].get(arg),
-		});
-	} else {
-		page = new DEF.modules.projects.views.view({
-			model: APP.models.projects.findWhere({
-				project: cmd
-			})
-		});
-	}
-
-	return page;
-};
 
 /**
  * The main model.  SHould be called "Model"

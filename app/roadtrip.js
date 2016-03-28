@@ -3,6 +3,50 @@
  * 
  */
 Roadtrip = {
+	Router: Backbone.Marionette.AppRouter.extend({
+		module: "module", // override, of course.
+		routes: {
+			"projects": "ShowRoot",
+			"projects/:cmd": "LoadModule",
+			"projects/:cmd/:arg": "LoadModule",
+		},
+		LoadModule: function (cmd, arg) {
+			var module = this.module;
+
+			if (!_.isUndefined(APP.models[module]) && APP.models[module].length) {
+				console.log("route", module, cmd, arg);
+				if (cmd) {
+					APP.Page = new DEF.modules[module].views[cmd]({
+						model: APP.models[module].get(arg),
+					});
+				} else {
+					APP.Page = new DEF.modules[module].MainView({
+						collection: APP.models[module]
+					});
+				}
+				APP.root.showChildView("main", APP.Page);
+				APP.SetMode(module);
+			} else {
+				APP.root.showChildView("main", new DEF.EmptyView({
+					msg: "Loading..."
+				}));
+				this.listenToOnce(APP.models[module], 'sync', this.LoadModule.bind(this, module, cmd, arg))
+			}
+		},
+		ShowRoot: function () {
+			var module = this.module;
+			console.log("root", module);
+			APP.Page = new DEF.modules[module].MainView({
+				collection: APP.models[module]
+			});
+			APP.root.showChildView("main", APP.Page);
+			APP.SetMode(module);
+			APP.SetTitle(module);
+		}
+
+
+	}),
+
 	Collection: Backbone.Highway.Collection.extend({
 		perpage: 100,
 		page: 1,

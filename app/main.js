@@ -19,6 +19,8 @@ require("./static.js");
 var MainApp = Backbone.Marionette.Application.extend({
 	setRootLayout: function () {
 		this.root = new DEF.RootLayout();
+		var header = new DEF.HeaderLayout({});
+		APP.root.showChildView('header', header);
 	},
 	SetTitle: function (title) {
 		document.title = title + " - roadtrip";
