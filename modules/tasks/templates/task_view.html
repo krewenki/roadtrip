@@ -1,0 +1,40 @@
+<div id='menu'>
+	<span id='title'>Task</span>
+	<%=task_id%>
+		<div class='cmd link' id='edit'>
+			<%=APP.Icon('edit')%> edit
+		</div>
+</div>
+
+<table class='table table-full table-left'>
+	<tr>
+		<th>Priority</th>
+		<td>
+			<meter min=0 max=100 value='<%=priority%>'>
+				<%=priority%>
+			</meter>
+		</td>
+	</tr>
+	<tr>
+		<th>Progress</th>
+		<td>
+			<meter min=0 max=100 value='<%=progress%>'>
+				<%=progress%>
+			</meter>
+		</td>
+	</tr>
+	<tr>
+		<th>Task</th>
+		<td>
+			<%=task%>
+		</td>
+	</tr>
+	<tr>
+		<th colspan=2 class='header_wide'>Description</th>
+	</tr>
+	<tr>
+		<td colspan=2>
+			<%=description%>
+		</td>
+	</tr>
+</table>

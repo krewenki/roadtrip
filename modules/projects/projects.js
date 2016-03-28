@@ -2,6 +2,7 @@ DEF.modules.projects = {};
 DEF.modules.projects.Router = Roadtrip.Router.extend({
 	initialize: function () {
 		APP.models.projects = new DEF.modules.projects.Collection();
+		APP.models.tasks = new DEF.modules.tasks.Collection();
 	},
 	module: "projects",
 	routes: {
@@ -9,14 +10,23 @@ DEF.modules.projects.Router = Roadtrip.Router.extend({
 		"projects/:project": "ShowProject",
 	},
 	ShowProject: function (project) {
-		console.log("project");
-		var view = new DEF.modules.projects.ProjectView({
-			model: APP.models.projects.findWhere({
-				project: project
+		if (!_.isUndefined(APP.models.projects) && APP.models.projects.length) {
+
+			console.log("project");
+			var view = new DEF.modules.projects.ProjectView({
+				model: APP.models.projects.findWhere({
+					project: project
+				}),
+				collection: APP.models.tasks
 			})
-		})
-		APP.root.showChildView("main", view);
-		APP.SetMode("projects");
+			APP.root.showChildView("main", view);
+			APP.SetMode("projects");
+		} else {
+			APP.root.showChildView("main", new DEF.EmptyView({
+				msg: "Loading Projects..."
+			}));
+			this.listenToOnce(APP.models.projects, 'sync', this.ShowProject.bind(this, project))
+		}
 	}
 })
 
@@ -146,6 +156,38 @@ DEF.modules.projects.MainView = Roadtrip.RecordList.extend({
 		APP.root.showChildView('main', page);
 	}
 });
+
+
+
+
+DEF.modules.projects.TaskView = Backbone.Marionette.ItemView.extend({
+	template: require("./templates/taskline.html"),
+	className: "click hover",
+	tagName: "tr",
+	events: {
+		"click": "ViewTask"
+	},
+	ViewTask: function () {
+		APP.Route("#tasks/view/" + this.model.get('_id'));
+	}
+});
+
 DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
-	template: require("./templates/project.html")
+	template: require("./templates/project.html"),
+	childView: DEF.modules.projects.TaskView,
+	childViewContainer: "#tasks", // override if you need to, obviously
+	ui: {
+		new: "#new"
+	},
+	events: {
+		"click @ui.new": "CreateTask"
+	},
+	CreateTask: function () {
+		console.log("x");
+		var page = new DEF.modules.tasks.views.edit({
+			model: false,
+		});
+		APP.root.showChildView('main', page);
+	}
+
 })
