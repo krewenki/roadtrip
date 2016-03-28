@@ -30,18 +30,26 @@ Roadtrip = {
 				APP.root.showChildView("main", new DEF.EmptyView({
 					msg: "Loading..."
 				}));
-				this.listenToOnce(APP.models[module], 'sync', this.LoadModule.bind(this, module, cmd, arg))
+				this.listenToOnce(APP.models[module], 'sync', this.LoadModule.bind(this, cmd, arg))
 			}
 		},
 		ShowRoot: function () {
 			var module = this.module;
-			console.log("root", module);
-			APP.Page = new DEF.modules[module].MainView({
-				collection: APP.models[module]
-			});
-			APP.root.showChildView("main", APP.Page);
-			APP.SetMode(module);
-			APP.SetTitle(module);
+			if (!_.isUndefined(APP.models[module]) && APP.models[module].length) {
+
+				console.log("root", module);
+				APP.Page = new DEF.modules[module].MainView({
+					collection: APP.models[module]
+				});
+				APP.root.showChildView("main", APP.Page);
+				APP.SetMode(module);
+				APP.SetTitle(module);
+			} else {
+				APP.root.showChildView("main", new DEF.EmptyView({
+					msg: "Loading..."
+				}));
+				this.listenToOnce(APP.models[module], 'sync', this.ShowRoot.bind(this))
+			}
 		}
 
 
