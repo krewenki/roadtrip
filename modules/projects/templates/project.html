@@ -1,0 +1,30 @@
+<div id='menu'>
+	<span id='title'><%=project%></span>
+
+	<div class='cmd link' id='edit'>
+		<%=APP.Icon('edit')%> edit
+	</div>
+	<div class='cmd link danger' id='delete'>
+		<%=APP.Icon('delete')%> delete
+	</div>
+</div>
+
+<table class='table'>
+	<tr>
+		<td rowspan=2>
+			<%=APP.Icon(icon)%>
+		</td>
+		<td class='goal'>
+			<%=goal%>
+		</td>
+	</tr>
+	<tr>
+		<td><b>Tasks:</b>
+			<%=tasks%>
+		</td>
+	</tr>
+</table>
+
+<table class='table table-full table-left' id='order'></table>
+<div id='lineitems'>
+</div>

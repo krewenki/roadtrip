@@ -4,6 +4,9 @@ window.moment = require('moment')
 DEF.modules.calendar = {}
 DEF.modules.calendar.Router = Roadtrip.Router.extend({
 	module: "calendar",
+	initialize: function () {
+		APP.models.calendar = new DEF.modules.calendar.Collection()
+	},
 	routes: {
 		"calendar": "ShowRoot",
 		"calendar/:cmd": "LoadModule",
@@ -18,7 +21,7 @@ DEF.modules.calendar.Model = Roadtrip.Model.extend({
 	idAttribute: '_id',
 	nameAttribute: 'date', // the human-readable field in the record
 	defaults: {
-		date: new Date().toISOString().slice(0,10),
+		date: new Date().toISOString().slice(0, 10),
 		title: 'New Event',
 		timestamp: new Date().getTime(),
 		notes: '',
@@ -38,10 +41,9 @@ DEF.modules.calendar.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.calendar.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/calendar',
 });
-APP.models.calendar = new DEF.modules.calendar.Collection()
-	/**
-	 * A list of commands, automatically tied to the $cmd in  #module/$cmd/$id.  See DoView
-	 */
+/**
+ * A list of commands, automatically tied to the $cmd in  #module/$cmd/$id.  See DoView
+ */
 DEF.modules.calendar.views = {
 	/**
 	 * Edit a calendar
@@ -53,7 +55,7 @@ DEF.modules.calendar.views = {
 	inlineEvent: Roadtrip.View.extend({
 		module: "calendar",
 		template: require("./templates/inlineevent.html")
-	}),	
+	}),
 
 	/**
 	 * View a plain, read-only single record
@@ -82,26 +84,26 @@ DEF.modules.calendar.views = {
 	})
 }
 
-DEF.modules.calendar.views.inlineDay = 	Backbone.Marionette.CompositeView.extend({
-		module: "calendar",
-		template: require("./templates/inlineday.html"),
-		childView: DEF.modules.calendar.views.inlineEvent,
-		initialize: function(options){
-			this.options = options;
-			//this.render()
-		},
-		ui: {
-			view: ".event"
-		},
-		events: {
-			"dblclick @ui.view": "View"
-		},
-		View: function(){
-			APP.Route("#calendar/" + "edit" + "/" + this.model.id);
-		},
-		SetDate: function(date){
-			this.date = date;
-		}
+DEF.modules.calendar.views.inlineDay = Backbone.Marionette.CompositeView.extend({
+	module: "calendar",
+	template: require("./templates/inlineday.html"),
+	childView: DEF.modules.calendar.views.inlineEvent,
+	initialize: function (options) {
+		this.options = options;
+		//this.render()
+	},
+	ui: {
+		view: ".event"
+	},
+	events: {
+		"dblclick @ui.view": "View"
+	},
+	View: function () {
+		APP.Route("#calendar/" + "edit" + "/" + this.model.id);
+	},
+	SetDate: function (date) {
+		this.date = date;
+	}
 });
 
 
@@ -129,14 +131,15 @@ DEF.modules.calendar.MainView = Roadtrip.MainView.extend({
 		});
 		APP.root.showChildView('main', page);
 	},
-	onShow: function(){
-		$('.calendar-day').each(function(){
+	onShow: function () {
+		$('.calendar-day').each(function () {
 			var v = new DEF.modules.calendar.views.inlineDay({
 				el: $(this).find('.calendar_events'),
-				collection: new Backbone.Collection(APP.models.calendar.where({ date: '2016-03-'+$(this).attr('data-date') })),
+				collection: new Backbone.Collection(APP.models.calendar.where({
+					date: '2016-03-' + $(this).attr('data-date')
+				})),
 			})
 			v.render();
 		})
 	}
 });
-

@@ -7,10 +7,8 @@ DEF.Router = Backbone.Marionette.AppRouter.extend({
 
 DEF.Controller = Backbone.Marionette.Object.extend({
 	initialize: function () {
-		console.log(DEF, APP);
 		this.routers = {}
 		var modules = Object.keys(DEF.modules);
-		console.log(modules);
 		for (var m = 0; m < modules.length; m++)
 			this.routers[modules[m]] = new DEF.modules[modules[m]].Router();
 	},
