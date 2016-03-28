@@ -42,7 +42,7 @@ APP.models.calendar = new DEF.modules.calendar.Collection()
 	/**
 	 * A list of commands, automatically tied to the $cmd in  #module/$cmd/$id.  See DoView
 	 */
-DEF.modules.calendar.cmds = {
+DEF.modules.calendar.views = {
 	/**
 	 * Edit a calendar
 	 */
