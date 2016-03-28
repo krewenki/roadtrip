@@ -1,0 +1,48 @@
+<div id='menu'>
+	<span id='title'></span>
+	<div class='cmd link ' id='cancel'>
+		<%=APP.Icon('cancel')%> cancel
+	</div>
+	<div class='cmd link' id='save'>
+		<%=APP.Icon('save')%> save
+	</div>
+	<div class='cmd link danger' id='delete'>
+		<%=APP.Icon('user-times')%> delete
+	</div>
+</div>
+
+<table class='table table-full table-left'>
+	<tr>
+		<th>
+			Project:
+		</th>
+		<td>
+			<input class='field' type='text' id='project' placeholder='project' value='<%=project%>'>
+		</td>
+	</tr>
+	<tr>
+		<th>
+			Goal:
+		</th>
+		<td>
+			<input class='field' type='text' id='goal' placeholder='goal' value='<%=goal%>'>
+		</td>
+	</tr>
+	<tr>
+		<th>
+			Icon:
+		</th>
+		<td>
+			<input class='field' type='text' id='icon' placeholder='icon' value='<%=icon%>'>
+		</td>
+	</tr>
+	<tr>
+		<th>Description:
+		</th>
+		<td>
+			<textarea class='field' id='description'>
+				<%=description%>
+			</textarea>
+		</td>
+	</tr>
+</table>
