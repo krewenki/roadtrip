@@ -2,6 +2,14 @@
 
 window.moment = require('moment')
 DEF.modules.calendar = {}
+DEF.modules.calendar.Router = Roadtrip.Router.extend({
+	module: "calendar",
+	routes: {
+		"calendar": "ShowRoot",
+		"calendar/:cmd": "LoadModule",
+		"calendar/:cmd/:arg": "LoadModule",
+	},
+})
 
 /**
  * The main model.  SHould be called "Model"
@@ -31,9 +39,10 @@ DEF.modules.calendar.Collection = Roadtrip.Collection.extend({
 	url: 'dev.telegauge.com:3000/roadtrip/calendar',
 });
 APP.models.calendar = new DEF.modules.calendar.Collection()
-
-
-DEF.modules.calendar.views = {
+	/**
+	 * A list of commands, automatically tied to the $cmd in  #module/$cmd/$id.  See DoView
+	 */
+DEF.modules.calendar.cmds = {
 	/**
 	 * Edit a calendar
 	 */

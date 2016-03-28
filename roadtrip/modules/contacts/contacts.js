@@ -1,11 +1,19 @@
 DEF.modules.contacts = {}
-DEF.modules.contacts.Route = function (module, cmd, arg) {
-	var page = new DEF.modules[module].views[cmd]({
-		model: APP.models[module].get(arg),
-	});
+DEF.modules.contacts.Router = Roadtrip.Router.extend({
+	module: "contacts",
+	routes: {
+		"contacts": "ShowRoot",
+		"contacts/:cmd": "LoadModule",
+		"contacts/:cmd/:arg": "LoadModule",
+	},
+//	Route: function (cmd, arg) {
+//		this.LoadModule("contacts", cmd, arg)
+//	},
+//	Home: function () {
+//		this.ShowRoot("contacts");
+//	}
+})
 
-	return page;
-};
 /**
  * The main model.  SHould be called "Model"
  */
