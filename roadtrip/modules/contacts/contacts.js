@@ -18,6 +18,9 @@ DEF.modules.contacts.Model = Roadtrip.Model.extend({
 		views: 0,
 		edits: 0
 	},
+	GetLink: function (cmd) {
+		return "#contacts/" + cmd + "/" + this.get('_id');
+	}
 });
 
 /**
