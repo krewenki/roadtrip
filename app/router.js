@@ -35,9 +35,7 @@ DEF.Controller = Backbone.Marionette.Object.extend({
 		if (!_.isUndefined(APP.models[module]) && APP.models[module].length) {
 			console.log("route", module, cmd, arg);
 			if (cmd) {
-				APP.Page = new DEF.modules[module].views[cmd]({
-					model: APP.models[module].get(arg),
-				});
+				APP.Page = DEF.modules[module].Route(module, cmd, arg)
 			} else {
 				APP.Page = new DEF.modules[module].MainView({
 					collection: APP.models[module]
