@@ -1,17 +1,20 @@
 DEF.modules.contacts = {}
 DEF.modules.contacts.Router = Roadtrip.Router.extend({
 	module: "contacts",
+	initialize: function () {
+		APP.models.contacts = new DEF.modules.contacts.Collection();
+	},
 	routes: {
 		"contacts": "ShowRoot",
 		"contacts/:cmd": "LoadModule",
 		"contacts/:cmd/:arg": "LoadModule",
 	},
-//	Route: function (cmd, arg) {
-//		this.LoadModule("contacts", cmd, arg)
-//	},
-//	Home: function () {
-//		this.ShowRoot("contacts");
-//	}
+	//	Route: function (cmd, arg) {
+	//		this.LoadModule("contacts", cmd, arg)
+	//	},
+	//	Home: function () {
+	//		this.ShowRoot("contacts");
+	//	}
 })
 
 /**
@@ -44,7 +47,6 @@ DEF.modules.contacts.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.contacts.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/contacts',
 });
-APP.models.contacts = new DEF.modules.contacts.Collection()
 
 /**
  * A list of commands, automatically tied to the $cmd in  #module/$cmd/$id.  See DoView

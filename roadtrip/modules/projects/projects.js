@@ -1,11 +1,23 @@
 DEF.modules.projects = {};
 DEF.modules.projects.Router = Roadtrip.Router.extend({
+	initialize: function () {
+		APP.models.projects = new DEF.modules.projects.Collection();
+	},
 	module: "projects",
 	routes: {
 		"projects": "ShowRoot",
-		"projects/:cmd": "LoadModule",
-		"projects/:cmd/:arg": "LoadModule",
+		"projects/:project": "ShowProject",
 	},
+	ShowProject: function (project) {
+		console.log("project");
+		var view = new DEF.modules.projects.ProjectView({
+			model: APP.models.projects.findWhere({
+				project: project
+			})
+		})
+		APP.root.showChildView("main", view);
+		APP.SetMode("projects");
+	}
 })
 
 
@@ -36,7 +48,6 @@ DEF.modules.projects.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.projects.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/projects',
 });
-APP.models.projects = new DEF.modules.projects.Collection()
 
 
 /**
@@ -135,3 +146,6 @@ DEF.modules.projects.MainView = Roadtrip.RecordList.extend({
 		APP.root.showChildView('main', page);
 	}
 });
+DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
+	template: require("./templates/project.html")
+})

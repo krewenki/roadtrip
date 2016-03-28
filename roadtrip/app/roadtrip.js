@@ -51,8 +51,6 @@ Roadtrip = {
 				this.listenToOnce(APP.models[module], 'sync', this.ShowRoot.bind(this))
 			}
 		}
-
-
 	}),
 
 	Collection: Backbone.Highway.Collection.extend({

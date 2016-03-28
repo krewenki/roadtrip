@@ -3,6 +3,10 @@ DEF.modules.orders = {
 }
 require("./lineitem.js");
 DEF.modules.orders.Router = Roadtrip.Router.extend({
+	initialize: function () {
+		APP.models.orders = new DEF.modules.orders.Collection();
+	},
+
 	module: "orders",
 	routes: {
 		"orders": "ShowRoot",
@@ -43,7 +47,6 @@ DEF.modules.orders.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.orders.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/orders',
 });
-APP.models.orders = new DEF.modules.orders.Collection();
 
 /**
  * A list of commands, automatically tied to the $cmd in  #module/$cmd/$id.  See DoView
