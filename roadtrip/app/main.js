@@ -91,6 +91,7 @@ DEF.modules = {} // hold the models definitions
 require("../modules/contacts/contacts.js");
 require("../modules/orders/orders.js");
 require("../modules/projects/projects.js");
+require("../modules/calendar/calendar.js");
 
 
 APP.Format = {
