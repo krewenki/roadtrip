@@ -71,6 +71,8 @@ var MainApp = Backbone.Marionette.Application.extend({
 		new: "plus"
 	},
 	Icon: function (icon, title) {
+		if (icon.substring(0, 4) == "http")
+			return "<img class='icon' src='" + icon + "'>";
 		switch (icon) {
 		case 'loading':
 			return "<span class='loading'><i class='fa fa-refresh fa-spin'></i></span>";
