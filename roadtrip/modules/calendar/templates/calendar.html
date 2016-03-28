@@ -39,7 +39,7 @@
 				<td>&nbsp;</td>
 			<% } %>
 			<% for(i = skip; i<7; i++){%>
-				<td><%= date %></td>
+				<td class="calendar-day" data-date="<%=date%>"><%= date %><div class="calendar_events"></div></td>
 			<% 
 				date++
 				} %>
