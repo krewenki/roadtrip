@@ -108,6 +108,8 @@ Roadtrip = {
 			}
 		},
 		MakeDirty: function (e) {
+			console.log(e);
+
 			if (e.currentTarget.value == this.model.get(e.currentTarget.id))
 				$(e.currentTarget).removeClass("dirty");
 			else

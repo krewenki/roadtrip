@@ -92,6 +92,7 @@ APP = new MainApp();
 APP.models = {} // hold the collections
 
 DEF.modules = {} // hold the models definitions
+require("../modules/tasks/tasks.js");
 require("../modules/contacts/contacts.js");
 require("../modules/orders/orders.js");
 require("../modules/projects/projects.js");

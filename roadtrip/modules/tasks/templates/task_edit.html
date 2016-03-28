@@ -1,0 +1,56 @@
+<div id='menu'>
+	<span id='title'></span>
+	<div class='cmd link ' id='cancel'>
+		<%=APP.Icon('cancel')%> cancel
+	</div>
+	<div class='cmd link' id='save'>
+		<%=APP.Icon('save')%> save
+	</div>
+	<div class='cmd link danger' id='delete'>
+		<%=APP.Icon('user-times')%> delete
+	</div>
+</div>
+
+<table class='table table-full table-left'>
+	<tr>
+		<th>
+			Task ID:
+		</th>
+		<td>
+			<input class='field' type='text' id='task_id' placeholder='task_id' value='<%=task_id%>'>
+		</td>
+	</tr>
+	<tr>
+		<th>
+			Task:
+		</th>
+		<td>
+			<input class='field' type='text' id='task' placeholder='task' value='<%=task%>'>
+		</td>
+	</tr>
+	<tr>
+		<th>
+			Progress:
+		</th>
+		<td>
+			<input class='field' type='range' id='progress' placeholder='task' value='<%=progress%>' min=0 max=100>
+		</td>
+	</tr>
+	<tr>
+		<th>
+			Priority:
+		</th>
+		<td>
+			<input class='field' type='range' id='priority' placeholder='task' value='<%=priority%>' min=0 max=100>
+		</td>
+	</tr>
+	<tr>
+		<th>Description:
+		</th>
+		<td>
+			<textarea class='field' id='description'>
+				<%=description%>
+			</textarea>
+		</td>
+	</tr>
+</table>

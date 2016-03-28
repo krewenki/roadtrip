@@ -1,11 +1,8 @@
 <div id='menu'>
 	<span id='title'><%=project%></span>
 
-	<div class='cmd link' id='edit'>
-		<%=APP.Icon('edit')%> edit
-	</div>
-	<div class='cmd link danger' id='delete'>
-		<%=APP.Icon('delete')%> delete
+	<div class='cmd link' id='new'>
+		<%=APP.Icon('new')%> new task
 	</div>
 </div>
 
@@ -25,6 +22,12 @@
 	</tr>
 </table>
 
-<table class='table table-full table-left' id='order'></table>
-<div id='lineitems'>
-</div>
+<table class='table table-full table-top' id='tasks'>
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Task</th>
+			<th>Progress</th>
+		</tr>
+	</thead>
+</table>
