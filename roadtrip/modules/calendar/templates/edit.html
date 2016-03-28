@@ -1,0 +1,48 @@
+<div id='menu'>
+	<span id='title'>Calendar:</span>
+	<%=name%>
+		<div class='cmd link ' id='cancel'>
+			<%=APP.Icon('cancel')%> cancel
+		</div>
+		<div class='cmd link' id='save'>
+			<%=APP.Icon('save')%> save
+		</div>
+		<div class='cmd link danger' id='delete'>
+			<%=APP.Icon('user-times')%> delete
+		</div>
+</div>
+
+<table class='table table-full table-left'>
+	<tr>
+		<th>Title</th>
+		<td>
+			<input class='field' type='text' value='<%=title%>' name='title' id='title'>
+		</td>
+	</tr>
+	<tr>
+		<th>Date</th>
+		<td>
+			<input class='field' type='date' value='<%=date%>' name='date' id='date'>
+		</td>
+	</tr>
+	<tr>
+		<th>Notes</th>
+		<td>
+			<textarea class='field' name='notes' id='notes'><%=notes%></textarea>
+		</td>
+	</tr>
+
+
+	
+<tr>
+	<td colspan=2>
+		<button id='save' class='btn default'>
+			<%=APP.Icon("save")%> Save</button>
+		<button id='cancel' class='btn '>
+			<%=APP.Icon("cancel")%> Cancel</button>
+		<button id='delete' class='btn danger '>
+			<%=APP.Icon("delete")%> Delete</button>
+	</td>
+
+</tr>
+</table>
