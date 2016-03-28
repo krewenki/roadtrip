@@ -1,0 +1,14 @@
+#PROJECTS {
+	#record_list {
+		display: flex;
+		.box {
+			border: 3px solid #0FF;
+			margin: 20px;
+			padding: 20px;
+			border-radius: 15px;
+			height: 100px;
+			min-width: 100px;
+			text-align: center;
+		}
+	}
+}
