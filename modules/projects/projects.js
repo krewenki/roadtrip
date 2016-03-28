@@ -7,7 +7,10 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 	nameAttribute: 'name', // the human-readable field in the record
 	defaults: {
 		project: "Project 1",
-		icon: "employee",
+		icon: "anchor",
+		goal: "",
+		tasks: 5,
+		members: 2,
 
 		edits: 0,
 		views: 0
@@ -66,6 +69,7 @@ DEF.modules.projects.views = {
  */
 DEF.modules.projects.RecordLine = Roadtrip.RecordLine.extend({
 	module: "projects",
+	tagName: "div",
 	template: require("./templates/project_box.html"),
 });
 
