@@ -90,6 +90,7 @@ APP.models = {} // hold the collections
 DEF.modules = {} // hold the models definitions
 require("../modules/contacts/contacts.js");
 require("../modules/orders/orders.js");
+require("../modules/projects/projects.js");
 
 
 APP.Format = {
