@@ -8,6 +8,7 @@ DEF.modules.projects.Router = Roadtrip.Router.extend({
 	routes: {
 		"projects": "ShowRoot",
 		"projects/:project": "ShowProject",
+		"projects/:project/edit/:arg": "EditProject",
 	},
 	ShowProject: function (project) {
 		if (!_.isUndefined(APP.models.projects) && APP.models.projects.length) {
@@ -27,6 +28,22 @@ DEF.modules.projects.Router = Roadtrip.Router.extend({
 			}));
 			this.listenToOnce(APP.models.projects, 'sync', this.ShowProject.bind(this, project))
 		}
+	},
+	EditProject: function (project, id) {
+		var module = this.module;
+		if (!_.isUndefined(APP.models[module]) && APP.models[module].length) {
+			APP.Page = new DEF.modules.projects.views.edit({
+				model: APP.models[module].get(id),
+			});
+			APP.root.showChildView("main", APP.Page);
+			APP.SetMode(module);
+		} else {
+			APP.root.showChildView("main", new DEF.EmptyView({
+				msg: "Loading Project..."
+			}));
+			this.listenToOnce(APP.models[module], 'sync', this.EditProject.bind(this, id))
+		}
+
 	}
 })
 
@@ -40,6 +57,7 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 		project: "Project 1",
 		icon: "anchor",
 		goal: "",
+		description: "",
 		tasks: 5,
 		members: 2,
 
@@ -125,29 +143,10 @@ DEF.modules.projects.MainView = Roadtrip.RecordList.extend({
 	childView: DEF.modules.projects.RecordLine,
 	childViewContainer: "#record_list",
 	ui: {
-		search: "#search",
 		add: "#add"
 	},
 	events: {
-		"keyup @ui.search": "Search",
 		"click @ui.add": "Add"
-	},
-	filter: function (model, index, collection) {
-		var string = model.search_string();
-		if (string.indexOf(this.ui.search.val().toUpperCase()) == -1)
-			return false;
-		return true;
-	},
-	initialize: function () {
-		APP.Icon_Lookup["Vendor"] = "building";
-	},
-	onRender: function () {
-		this.ui.search.focus().val(this.search); // this search is disgusting
-	},
-	Search: function (e) {
-		console.log(this.ui.search.val(), this.templateHelpers());
-		this.search = this.ui.search.val();
-		this.render();
 	},
 	Add: function () {
 		var page = new DEF.modules.projects.views.edit({
@@ -177,10 +176,12 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 	childView: DEF.modules.projects.TaskView,
 	childViewContainer: "#tasks", // override if you need to, obviously
 	ui: {
-		new: "#new"
+		new: "#new",
+		edit: "#edit"
 	},
 	events: {
-		"click @ui.new": "CreateTask"
+		"click @ui.new": "CreateTask",
+		"click @ui.edit": "Edit"
 	},
 	CreateTask: function () {
 		console.log("x");
@@ -188,6 +189,9 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 			model: false,
 		});
 		APP.root.showChildView('main', page);
-	}
+	},
+	Edit: function () {
+		APP.Route("#projects/" + this.model.get('project') + "/" + "edit" + "/" + this.model.id);
+	},
 
 })
