@@ -4,6 +4,16 @@
 	}
 	tbody td {
 		text-align: right;
-		height: 100px;
+		height: 10vw;
+		width: 14vw;
+	}
+	tbody td .calendar_events {
+		text-align: left;
+		div {
+			background-color: #def;
+			border-radius: 5px;
+			padding-left: 5px;
+			padding-right: 5px;
+		}
 	}
 }
