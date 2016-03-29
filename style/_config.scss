@@ -1,17 +1,11 @@
-$link_color: #069;
-$link_color_alt: #0FF;
-
-$text_color: #333;
+$link_color      : #069;
+$link_color_alt  : #0FF;
+$text_color      : #333;
 $text_light_color: #999;
-
-$header_bg : black;
-$body_bg : white;
-$footer_bg: white;
-
-$header_text: white;
-$body_text: $text_color;
-$footer_text: black;
-
-$breakpoints: (phone: 640px,
-               tablet: 768px,
-               desktop: 1024px) !default;
+$header_bg       : black;
+$body_bg         : white;
+$footer_bg       : white;
+$header_text     : white;
+$body_text       : $text_color;
+$footer_text     : black;
+$breakpoints     : (phone: 640px, tablet: 768px, desktop: 1024px) !default;
