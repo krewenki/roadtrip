@@ -27,50 +27,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		<%
-		var monthDate = new Date()
-		var m = moment()
-		var first = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1);
-		var skip = first.getDay();
-		var date = 1;
-		%>
-		<tr>
-			<% for(var i = 0; i<skip; i++){ %>
-				<td>&nbsp;</td>
-			<% } %>
-			<% for(i = skip; i<7; i++){%>
-				<td class="calendar-day" data-date="<%=date%>"><%= date %><div class="calendar_events"></div></td>
-			<% 
-				date++
-				} %>
-		</tr>
-		<% 
-		i = 0
-		while( date <= m.daysInMonth() ) {	
-		  if (i == 0) { %>
-			<tr>
-		<% } %>
-			<td class="calendar-day" data-date="<%=date%>"><%= date %><div class="calendar_events"></div></td>
-			
-		<%
-		date++
-		i++
-		
-		 if (i == 7) { 
-				i = 0
-			%>	
-			</tr>
-			<% } 
-		}
-		
-		if(i < 7 && i > 0){
-			for(i=i; i< 7; i++){
-			%> <td></td><%
-			}
-			%>  </tr> <%
-		}
-		
-		 %>
+
 	</tbody>
 </table>
 
