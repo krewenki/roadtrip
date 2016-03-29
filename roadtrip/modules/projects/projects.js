@@ -204,7 +204,6 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 		"click @ui.edit": "Edit"
 	},
 	CreateTask: function () {
-		console.log("x");
 		var page = new DEF.modules.tasks.views.edit({
 			model: false,
 			parent: {
@@ -213,8 +212,7 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 			}
 
 		});
-		APP.root.showChildView('main', page);
-	},
+		APP.root.showChildView('main', page);	},
 	Edit: function () {
 		APP.Route("#projects/" + this.model.get('project') + "/" + "edit" + "/" + this.model.id);
 	},

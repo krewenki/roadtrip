@@ -107,6 +107,9 @@ Roadtrip = {
 				this.model = new DEF.modules[this.module].Model({})
 			}
 		},
+		onShow: function () {
+			$("textarea").val($("textarea").val().trim()); // beautify inserts spaces between <textarea> in the item_edit form
+		},
 		/**
 		 * After edit, what page to load?
 		 */
@@ -117,7 +120,6 @@ Roadtrip = {
 				APP.Route("#" + this.module);
 		},
 		MakeDirty: function (e) {
-			console.log(e);
 
 			if (e.currentTarget.value == this.model.get(e.currentTarget.id))
 				$(e.currentTarget).removeClass("dirty");

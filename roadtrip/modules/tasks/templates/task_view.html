@@ -4,6 +4,9 @@
 		<div class='cmd link' id='edit'>
 			<%=APP.Icon('edit')%> edit
 		</div>
+		<div class='cmd link' id='subtask'>
+			<%=APP.Icon('new')%> add subtask
+		</div>
 </div>
 
 
@@ -52,8 +55,21 @@
 		<th colspan=4 class='header_wide'>Description</th>
 	</tr>
 	<tr>
-		<td colspan=4>
+		<td colspan=4 class='description'>
 			<%=description%>
 		</td>
 
 </table>
+
+<div id='subtasks'>
+	<h2>Subtasks</h2>
+	<table class='table table-full table-top' id='task_list'>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Task</th>
+				<th>Progress</th>
+			</tr>
+		</thead>
+	</table>
+</div>
