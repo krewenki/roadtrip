@@ -59,9 +59,10 @@ DEF.modules.tasks.views = {
 		templateHelpers: function () {
 			var rs = {};
 			if (this.options.parent) {
-				rs.parent_id = this.options.parent_id;
-				rs.parent_module = this.options.parent_module;
+				rs.parent_id = this.options.parent.id;
+				rs.parent_module = this.options.parent.module;
 			}
+			console.log(rs, this.options);
 			return rs;
 		}
 	}),

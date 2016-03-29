@@ -48,6 +48,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 		calendar: "calendar",
 		contacts: "group",
 		projects: "pie-chart",
+		tasks: "inbox",
 		orders: "money",
 		expenses: "dollar",
 		timeclock: "clock-o",
