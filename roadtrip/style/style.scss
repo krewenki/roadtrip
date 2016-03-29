@@ -5,160 +5,157 @@
 @import '../modules/projects/project.scss';
 @import '../modules/tasks/task.scss';
 body {
-	margin: 0px;
-	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+		margin     : 0;
+		font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
 }
-
 .bg1 {
-	color: white;
-	background: repeating-linear-gradient( -55deg, #222, #222 10px, #242424 10px, #242424 20px);
+		color     : white;
+		background: repeating-linear-gradient( -55deg, #222, #222 10px, #242424 10px, #242424 20px);
 }
-
 #HEADER {
-	background-color: black;
-	background: linear-gradient(#333, #000);
-	color: white;
-	padding: 10px;
-	box-shadow: 0px 5px 20px rgba(0, 0, 0, .5);
-	.link {
-		cursor: pointer;
-	}
-	#title {
-		font-size: 40px;
-		text-shadow: 1px 4px 6px black;
-		margin-bottom: 10px;
-		#subtitle {
-			font-size: 20px;
-			color: #555;
+		background-color: black;
+		background      : linear-gradient(#333, #000);
+		color           : white;
+		padding         : 10px;
+		box-shadow      : 0 5px 20px rgba(0, 0, 0, .5);
+		.link {
+				cursor: pointer;
 		}
-		@media screen and (max-width: 700px) {
-			#subtitle {
-				display: none;
-			}
-		}
-	}
-	#usermenu {
-		position: absolute;
-		right: 8px;
-		top: 8px;
-	}
-	#mainmenu {
-		display: flex;
-		flex-wrap: wrap;
-		overflow: hidden;
-		background-color: #333;
-		border: 4px solid #555;
-		padding: 10px;
-		border-radius: 17px;
-		box-shadow: inset 2px 2px 10px 5px rgba(0, 0, 0, 0.2);
-		.menuitem {
-			flex: 1;
-			float: left;
-			padding: 10px 20px;
-			white-space: nowrap;
-			text-align: center;
-			border-radius: 13px;
-			border: 2px solid rgba(0, 0, 0, 0);
-			&.active {
-				background-color: black;
-				border: 2px solid #555;
-				box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
-			}
-			&:hover {}
-		}
-		@media screen and (max-width: 600px) {
-			.menuitem {
-				font-size: 30px;
-				.label {
-					display: none;
-				}
-			}
-		}
-	}
-}
-
-#MAIN {
-	padding: 10px;
-	h1 {
-		font-size: 20px;
-	}
-	.money {
-		&.negative {
-			color: red;
-		}
-	}
-	#empty {
-		color: #999;
-		width: 100%;
-		padding: 50px;
-		text-align: center;
-		box-sizing: border-box;
-		line-height: 30px;
-		#icon {
-			font-size: 50px;
-		}
-		#msg {
-			font-size: 25px;
-		}
-		td {
-			padding: 50px;
-		}
-	}
-	#menu {
-		font-size: 12px;
-		background: linear-gradient(#444, #333);
-		background-color: #555;
-		padding: 10px 20px;
-		margin: 10px 10px 30px 10px;
-		border-radius: 10px;
-		box-shadow: 0px 5px 20px rgba(0, 0, 0, .5);
-		color: #fff;
-		min-height: 20px;
 		#title {
-			font-weight: bold;
+				font-size    : 40px;
+				text-shadow  : 1px 4px 6px black;
+				margin-bottom: 10px;
+				#subtitle {
+						font-size: 20px;
+						color    : #555;
+				}
+				@media screen and (max-width: 700px) {
+						#subtitle {
+								display: none;
+						}
+				}
 		}
-		.cmd {
-			color: white;
-			float: right;
-			padding: 0px 10px;
-			&.danger {
-				color: #Faa;
-			}
-			&:hover {
-				color: #0FF;
-			}
-			&.toggled {
-				text-decoration: underline;
-			}
+		#usermenu {
+				position: absolute;
+				right   : 8px;
+				top     : 8px;
 		}
-		#submenu {
-			text-align: right;
-			padding: 10px;
-			border-top: 1px solid #999;
-			margin-top: 8px;
+		#mainmenu {
+				display         : flex;
+				flex-wrap       : wrap;
+				overflow        : hidden;
+				background-color: #333;
+				border          : 4px solid #555;
+				padding         : 10px;
+				border-radius   : 17px;
+				box-shadow      : inset 2px 2px 10px 5px rgba(0, 0, 0, 0.2);
+				.menuitem {
+						flex         : 1;
+						float        : left;
+						padding      : 10px 20px;
+						white-space  : nowrap;
+						text-align   : center;
+						border-radius: 13px;
+						border       : 2px solid rgba(0, 0, 0, 0);
+						&.active {
+								background-color: black;
+								border          : 2px solid #555;
+								box-shadow      : 0 0 15px rgba(0, 0, 0, 0.2);
+						}
+						&:hover {}
+				}
+				@media screen and (max-width: 600px) {
+						.menuitem {
+								font-size: 30px;
+								.label {
+										display: none;
+								}
+						}
+				}
 		}
-	}
-	.table-left {
-		input {
-			border-top-right-radius: 10px;
-			border-bottom-right-radius: 10px;
-			border: 1px solid #aaa;
-			padding: 5px;
+}
+#MAIN {
+		padding: 20px;
+		h1 {
+				font-size: 20px;
 		}
-		.dirty {
-			// the field has been edited
-			background-color: rgba(0, 255, 255, 0.1);
+		.money {
+				&.negative {
+						color: red;
+				}
 		}
-	}
-	.table {
-		meter {
-			width: 100%;
-			min-width: 100px;
+		#empty {
+				color      : #999;
+				width      : 100%;
+				padding    : 50px;
+				text-align : center;
+				box-sizing : border-box;
+				line-height: 30px;
+				#icon {
+						font-size: 50px;
+				}
+				#msg {
+						font-size: 25px;
+				}
+				td {
+						padding: 50px;
+				}
 		}
-		.icon {
-			width: 20px;
-			text-align: center;
-			color: #555;
+		#menu {
+				font-size       : 12px;
+				background      : linear-gradient(#444, #333);
+				background-color: #555;
+				padding         : 10px 20px;
+				margin          : 0 0 30px;
+				border-radius   : 10px;
+				box-shadow      : 0 5px 20px rgba(0, 0, 0, .5);
+				color           : #fff;
+				min-height      : 20px;
+				#title {
+						font-weight: bold;
+				}
+				.cmd {
+						color  : white;
+						float  : right;
+						padding: 0 10px;
+						&.danger {
+								color: #Faa;
+						}
+						&:hover {
+								color: #0FF;
+						}
+						&.toggled {
+								text-decoration: underline;
+						}
+				}
+				#submenu {
+						text-align: right;
+						padding   : 10px;
+						border-top: 1px solid #999;
+						margin-top: 8px;
+				}
 		}
-	}
+		.table-left {
+				input {
+						border-top-right-radius   : 10px;
+						border-bottom-right-radius: 10px;
+						border                    : 1px solid #aaa;
+						padding                   : 5px;
+				}
+				.dirty {
+						// the field has been edited
+						background-color: rgba(0, 255, 255, 0.1);
+				}
+		}
+		.table {
+				meter {
+						width    : 100%;
+						min-width: 100px;
+				}
+				.icon {
+						width     : 20px;
+						text-align: center;
+						color     : $text_color;
+				}
+		}
 }

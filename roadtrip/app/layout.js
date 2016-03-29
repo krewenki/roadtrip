@@ -1,14 +1,14 @@
 /**
  * Use this as the empty view of a CollectionView.
- * 
+ *
  * options:
  * 	msg: the main message
  *  submsg: a sub message
- *  icon:  a icon.  What documentation!  
+ *  icon:  a icon.  What documentation!
  */
 DEF.EmptyView = Backbone.Marionette.ItemView.extend({
 	template: require("../templates/empty.html"),
-	templateHelpers: function () {
+	templateHelpers: function() {
 		var rs = $.extend({}, {
 			colspan: 0,
 			submsg: "",
@@ -19,7 +19,7 @@ DEF.EmptyView = Backbone.Marionette.ItemView.extend({
 		return rs;
 	},
 	id: "empty",
-	tagName: function () {
+	tagName: function() {
 		return this.options.colspan > 0 ? "tr" : "div"
 	},
 	ui: {
@@ -27,7 +27,7 @@ DEF.EmptyView = Backbone.Marionette.ItemView.extend({
 		submsg: "#submsg",
 		icon: "#icon"
 	},
-	onRender: function () {
+	onRender: function() {
 
 		//		this.ui.msg.html(this.options.msg);
 		//		if (this.options.submsg)
@@ -51,12 +51,17 @@ DEF.RootLayout = Backbone.Marionette.LayoutView.extend({
 DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 	template: require('../templates/header.html'),
 	ui: {
-		button: ".menuitem"
+		button: ".menuitem",
+		title: "#title"
 	},
 	events: {
-		"click @ui.button": "Go"
+		"click @ui.button": "Go",
+		"click @ui.title": "GoHome"
 	},
-	Go: function (e) {
+	GoHome: function() {
+		APP.Route('#');
+	},
+	Go: function(e) {
 		var target = $(e.currentTarget).data('mode');
 		APP.Route('#' + target, target);
 		APP.SetMode(target); // set mode immediately, for UI sakes, in case the view has to wait for the collecton to sync
