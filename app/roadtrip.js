@@ -107,6 +107,15 @@ Roadtrip = {
 				this.model = new DEF.modules[this.module].Model({})
 			}
 		},
+		/**
+		 * After edit, what page to load?
+		 */
+		Return: function () {
+			if (this.model.id)
+				APP.Route("#" + this.module + "/view/" + this.model.id)
+			else
+				APP.Route("#" + this.module);
+		},
 		MakeDirty: function (e) {
 			console.log(e);
 
@@ -125,17 +134,14 @@ Roadtrip = {
 				APP.models[this.module].create(model);
 			else
 				this.model.set('edits', this.model.get('edits') + 1);
-			APP.Route("#" + this.module + "/view/" + this.model.id);
+			this.Return();
 		},
 		Cancel: function (e) {
-			if (this.model.get('_id'))
-				APP.Route("#" + this.module + "/view/" + this.model.get('_id'));
-			else
-				APP.Route("#" + this.module);
+			this.Return();
 		},
 		Delete: function (e) {
 			APP.models[this.module].remove(this.model);
-			APP.Route("#" + this.module + "");
+			this.Return();
 		}
 	}),
 	RecordLine: Backbone.Marionette.ItemView.extend({
