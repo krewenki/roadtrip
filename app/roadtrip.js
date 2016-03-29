@@ -58,7 +58,7 @@ Roadtrip = {
 		page: 1,
 		comparator: function (m) {
 			//var sort = ('00000' + (m.get('views') + m.get('edits'))).substr(-5) + m.get('name');
-			var sort = (m.get('views') + m.get('edits'));
+			var sort = (m.get('_views') + m.get('_edits'));
 			return -sort
 		}
 	}),
@@ -83,7 +83,7 @@ Roadtrip = {
 	 */
 	View: Backbone.Marionette.ItemView.extend({
 		onShow: function () {
-			this.model.set('views', this.model.get('views') + 1);
+			this.model.set('_views', this.model.get('_views') + 1);
 		},
 	}),
 	/**
@@ -132,10 +132,11 @@ Roadtrip = {
 				console.log($el.id, $el.value)
 				model.set($el.id, $el.value);
 			})
+			model.set("_updated", Date.now());
 			if (!this.model.id)
 				APP.models[this.module].create(model);
 			else
-				this.model.set('edits', this.model.get('edits') + 1);
+				this.model.set('_edits', this.model.get('_edits') + 1);
 			this.Return();
 		},
 		Cancel: function (e) {

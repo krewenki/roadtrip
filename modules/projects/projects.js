@@ -13,8 +13,10 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 		tasks: 5,
 		members: 2,
 
-		edits: 0,
-		views: 0
+		group: "task",
+
+		_edits: 0,
+		_views: 0
 	},
 	GetLink: function (cmd) {
 		return "#projects/" + cmd + "/" + this.get('_id');
@@ -137,7 +139,7 @@ DEF.modules.projects.RecordLine = Roadtrip.RecordLine.extend({
 });
 
 /**
- * The MainView.  HAS to be called MainView.  This is where this module begins
+ * The MainView. A bunch of project boxes.
  */
 DEF.modules.projects.MainView = Roadtrip.RecordList.extend({
 	id: 'PROJECTS',
@@ -203,6 +205,18 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 		"click @ui.new": "CreateTask",
 		"click @ui.edit": "Edit"
 	},
+	initialize: function () {
+		APP.Icon_Lookup["Vendor"] = "building";
+		APP.Icon_Lookup["Customer"] = "money";
+		APP.Icon_Lookup["Miscellaneous"] = "question";
+		APP.Icon_Lookup["Customer,Marine"] = "ship";
+		APP.Icon_Lookup["Insurance"] = "wheelchair";
+		APP.Icon_Lookup["Freight Transportation"] = "truck";
+		APP.Icon_Lookup["Services"] = "thumbs-up";
+	},
+	onShow: function () {
+		this.model.set('_views', this.model.get('_views') + 1);
+	},
 	CreateTask: function () {
 		var page = new DEF.modules.tasks.views.edit({
 			model: false,
@@ -212,7 +226,8 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 			}
 
 		});
-		APP.root.showChildView('main', page);	},
+		APP.root.showChildView('main', page);
+	},
 	Edit: function () {
 		APP.Route("#projects/" + this.model.get('project') + "/" + "edit" + "/" + this.model.id);
 	},

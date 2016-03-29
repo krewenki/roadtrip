@@ -72,7 +72,9 @@ DEF.modules.tasks.views = {
 				APP.Route("#");
 		},
 		templateHelpers: function () {
-			var rs = {};
+			var rs = {
+				task_id: this.GenerateTaskID()
+			};
 			if (this.options.parent) {
 				rs.parent_id = this.options.parent.id;
 				rs.parent_module = this.options.parent.module;
@@ -80,6 +82,20 @@ DEF.modules.tasks.views = {
 			console.log(rs, this.options);
 			return rs;
 		},
+		GenerateTaskID: function () {
+			prefix = false;
+			var parent = APP.models[this.options.parent.module].get(this.options.parent.id);
+			if (parent)
+				prefix = parent.get('task_id');
+			var instance = APP.models.tasks.where({
+				parent_module: this.options.parent.module,
+				parent_id: this.options.parent.id
+			}).length
+			if (prefix)
+				return prefix + "." + (instance + 1);
+			else
+				return instance
+		}
 	}),
 
 	/**
