@@ -190,7 +190,7 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 	childViewContainer: "#tasks", // override if you need to, obviously
 	emptyView: DEF.EmptyView,
 	emptyViewOptions: {
-		icon: "bug",
+		icon: "tasks",
 		msg: "There are no tasks",
 		submsg: "<span id='new' class='btn'>" + APP.Icon("new") + " new task</span>",
 		colspan: 3
