@@ -5,11 +5,11 @@
 		<%=APP.Icon('new')%> new task
 	</div>
 	<div class='cmd link' id='edit'>
-		<%=APP.Icon('edit')%> edit
+		<%=APP.Icon('edit')%> edit project
 	</div>
 </div>
 
-<table id='project_header' class='table'>
+<table id='project_header' class='table table-full table-borders'>
 	<tr>
 		<td rowspan=2 class='icon'>
 			<%=APP.Icon(icon)%>
@@ -17,13 +17,26 @@
 		<td class='project'>
 			<%=project%>
 		</td>
+		<td>
+			<b>Views:</b>
+			<%=_views%>
+		</td>
 	</tr>
 	<tr>
 		<td class='goal'>
 			<%=goal%>
 		</td>
+		<td>
+			<b>Edits:</b>
+			<%=_edits%>
+		</td>
 	</tr>
 </table>
+
+<div id='description'>
+	<%=description%>
+</div>
+
 
 <table class='table table-full table-top' id='tasks'>
 	<thead>
