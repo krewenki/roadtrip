@@ -19,11 +19,12 @@ DEF.modules.calendar.Router = Roadtrip.Router.extend({
  */
 DEF.modules.calendar.Model = Roadtrip.Model.extend({
 	idAttribute: '_id',
-	nameAttribute: 'date', // the human-readable field in the record
+	nameAttribute: 'title', // the human-readable field in the record
 	defaults: {
 		date: new Date().toISOString().slice(0, 10),
 		title: 'New Event',
 		timestamp: new Date().getTime(),
+		attendees: [],
 		notes: '',
 		views: 0,
 		edits: 0
@@ -52,11 +53,12 @@ DEF.modules.calendar.views = {
 		module: "calendar",
 		template: require("./templates/edit.html"),
 	}),
-	inlineEvent: Roadtrip.View.extend({
-		module: "calendar",
-		template: require("./templates/inlineevent.html")
-	}),
 
+	event: Roadtrip.View.extend({
+		module: "calendar",
+		template: require("./templates/event.html")
+	}),
+	
 	/**
 	 * View a plain, read-only single record
 	 */
@@ -77,34 +79,56 @@ DEF.modules.calendar.views = {
 		Delete: function () {
 			if (confirm("Are you sure you want to delete " + this.model.get(this.model.nameAttribute))) {
 				console.log("kill it");
-				APP.models.contacts.remove(this.model);
-				APP.Route("#contacts", "contacts");
+				APP.models.calendar.remove(this.model);
+				APP.Route("#calendar", "calendar");
 			}
 		}
 	})
 }
 
-DEF.modules.calendar.views.inlineDay = Backbone.Marionette.CompositeView.extend({
+DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend({
 	module: "calendar",
-	template: require("./templates/inlineday.html"),
-	childView: DEF.modules.calendar.views.inlineEvent,
-	initialize: function (options) {
-		this.options = options;
-		//this.render()
+	template: require('./templates/day.html'),
+	childView: DEF.modules.calendar.views.Event,
+	initialize: function(options){
+		//console.log(options);
 	},
-	ui: {
-		view: ".event"
+    serializeData: function(){
+      var data = {};
+      data.date = this.options.date.getDate();
+      return data;
+    }
+}),
+
+DEF.modules.calendar.views.Week = Backbone.Marionette.LayoutView.extend({
+	template: require('./templates/week.html'),
+	regions: {
+		sunday		: ".sunday",
+		monday		: ".monday",
+		tuesday		: ".tuesday",
+		wednesday	: ".wednesday",
+		thursday	: ".thursday",
+		friday		: ".friday",
+		saturday	: ".saturday"
 	},
-	events: {
-		"dblclick @ui.view": "View"
+	tagName: 'tr',
+	el: '#CALENDAR table tbody',
+	initialize: function(options){
+		var startDate = options.startDate || new Date();
+		var sunday = startDate.getDay() == 0 ? startDate : startDate - (startDate.getDay()*(60*60*24*1000));
+		this.sunday = sunday;
+		this.render()
 	},
-	View: function () {
-		APP.Route("#calendar/" + "edit" + "/" + this.model.id);
-	},
-	SetDate: function (date) {
-		this.date = date;
+	onRender: function(){
+		this.showChildView('sunday',	new DEF.modules.calendar.views.Day({ date: new Date(this.sunday) }), {date: new Date(this.sunday)})
+		this.showChildView('monday',	new DEF.modules.calendar.views.Day({ date: new Date(this.sunday + (86400000))}))
+		this.showChildView('tuesday',	new DEF.modules.calendar.views.Day({ date: new Date(this.sunday + (86400000)*2)}))
+		this.showChildView('wednesday',	new DEF.modules.calendar.views.Day({ date: new Date(this.sunday + (86400000)*3)}))
+		this.showChildView('thursday',	new DEF.modules.calendar.views.Day({ date: new Date(this.sunday + (86400000)*4)}))
+		this.showChildView('friday',	new DEF.modules.calendar.views.Day({ date: new Date(this.sunday + (86400000)*5)}))
+		this.showChildView('saturday',	new DEF.modules.calendar.views.Day({ date: new Date(this.sunday + (86400000)*6)}))
 	}
-});
+})
 
 
 /**
@@ -114,9 +138,6 @@ DEF.modules.calendar.views.inlineDay = Backbone.Marionette.CompositeView.extend(
 DEF.modules.calendar.MainView = Roadtrip.MainView.extend({
 	template: require("./templates/calendar.html"),
 	id: 'CALENDAR',
-	icons: {
-
-	},
 	ui: {
 		search: "#search",
 		add: "#add"
@@ -125,21 +146,13 @@ DEF.modules.calendar.MainView = Roadtrip.MainView.extend({
 		"keyup @ui.search": "Search",
 		"click @ui.add": "Add"
 	},
+	onShow: function(){
+		this.weekView = new DEF.modules.calendar.views.Week();
+	},
 	Add: function () {
 		var page = new DEF.modules.calendar.views.edit({
 			model: false,
 		});
 		APP.root.showChildView('main', page);
-	},
-	onShow: function () {
-		$('.calendar-day').each(function () {
-			var v = new DEF.modules.calendar.views.inlineDay({
-				el: $(this).find('.calendar_events'),
-				collection: new Backbone.Collection(APP.models.calendar.where({
-					date: '2016-03-' + $(this).attr('data-date')
-				})),
-			})
-			v.render();
-		})
 	}
 });
