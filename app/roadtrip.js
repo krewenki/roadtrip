@@ -25,7 +25,6 @@ Roadtrip = {
 					});
 				}
 				APP.root.showChildView("main", APP.Page);
-				APP.SetMode(module);
 			} else {
 				APP.root.showChildView("main", new DEF.EmptyView({
 					msg: "Loading..."
@@ -42,8 +41,6 @@ Roadtrip = {
 					collection: APP.models[module]
 				});
 				APP.root.showChildView("main", APP.Page);
-				APP.SetMode(module);
-				APP.SetTitle(module);
 			} else {
 				APP.root.showChildView("main", new DEF.EmptyView({
 					msg: "Loading..."
@@ -84,7 +81,7 @@ Roadtrip = {
 	View: Backbone.Marionette.ItemView.extend({
 		onShow: function() {
 			this.model.set('_views', this.model.get('_views') + 1);
-			APP.SetTitle(this.model.get(this.model.nameAttribute))
+			APP.SetTitle(this.model.get(this.model.nameAttribute), this.module)
 		},
 	}),
 	/**

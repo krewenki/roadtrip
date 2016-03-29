@@ -16,7 +16,8 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 		group: "task",
 
 		_edits: 0,
-		_views: 0
+		_views: 0,
+		_updated: 0
 	},
 	GetLink: function(cmd) {
 		return "#projects/" + cmd + "/" + this.get('_id');
@@ -155,6 +156,9 @@ DEF.modules.projects.MainView = Roadtrip.RecordList.extend({
 	},
 	events: {
 		"click @ui.add": "Add"
+	},
+	onShow: function() {
+		APP.SetTitle("Projects", "projects");
 	},
 	Add: function() {
 		var page = new DEF.modules.projects.views.edit({

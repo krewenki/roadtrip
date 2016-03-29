@@ -129,7 +129,9 @@ DEF.modules.contacts.MainView = Roadtrip.RecordList.extend({
 			return false;
 		return true;
 	},
-	initialize: function() {},
+	onShow: function() {
+		APP.SetTitle("Contacts", "contacts");
+	},
 	onRender: function() {
 		this.ui.search.focus().val(this.search); // this search is disgusting
 	},
