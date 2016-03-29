@@ -150,7 +150,6 @@ DEF.modules.tasks.views = {
 			"input @ui.progress": "UpdateProgressLabel"
 
 		},
-		onShow: function() {},
 		Edit: function() {
 			APP.Route("#tasks/edit/" + this.model.id);
 		},

@@ -206,6 +206,7 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 	},
 	onShow: function() {
 		this.model.set('_views', this.model.get('_views') + 1);
+		APP.SetTitle(this.model.get('project'));
 	},
 	CreateTask: function() {
 		var page = new DEF.modules.tasks.views.edit({
