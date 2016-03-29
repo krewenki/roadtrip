@@ -146,4 +146,10 @@ body {
 			background-color: rgba(0, 255, 255, 0.1);
 		}
 	}
+	.table {
+		meter {
+			width: 100%;
+			min-width: 100px;
+		}
+	}
 }

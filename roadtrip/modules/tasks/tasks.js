@@ -13,7 +13,9 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 	idAttribute: '_id',
 	nameAttribute: 'task', // the human-readable field in the record
 	defaults: {
-		parent_task: false,
+		parent_id: false,
+		parent_module: false,
+
 		task: "Do a thing",
 		description: "",
 		task_id: "0.0.0",
@@ -48,6 +50,20 @@ DEF.modules.tasks.views = {
 	edit: Roadtrip.Edit.extend({
 		module: "tasks",
 		template: require("./templates/task_edit.html"),
+		Return: function () {
+			if (this.model.get('parent_id'))
+				APP.Route("#" + this.model.get('parent_module') + "/view/" + this.model.get('parent_id'))
+			else
+				APP.Route("#");
+		},
+		templateHelpers: function () {
+			var rs = {};
+			if (this.options.parent) {
+				rs.parent_id = this.options.parent_id;
+				rs.parent_module = this.options.parent_module;
+			}
+			return rs;
+		}
 	}),
 	/**
 	 * View a plain, read-only single record

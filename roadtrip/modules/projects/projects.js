@@ -1,52 +1,4 @@
 DEF.modules.projects = {};
-DEF.modules.projects.Router = Roadtrip.Router.extend({
-	initialize: function () {
-		APP.models.projects = new DEF.modules.projects.Collection();
-		APP.models.tasks = new DEF.modules.tasks.Collection();
-	},
-	module: "projects",
-	routes: {
-		"projects": "ShowRoot",
-		"projects/:project": "ShowProject",
-		"projects/:project/edit/:arg": "EditProject",
-	},
-	ShowProject: function (project) {
-		if (!_.isUndefined(APP.models.projects) && APP.models.projects.length) {
-
-			console.log("project");
-			var view = new DEF.modules.projects.ProjectView({
-				model: APP.models.projects.findWhere({
-					project: project
-				}),
-				collection: APP.models.tasks
-			})
-			APP.root.showChildView("main", view);
-			APP.SetMode("projects");
-		} else {
-			APP.root.showChildView("main", new DEF.EmptyView({
-				msg: "Loading Projects..."
-			}));
-			this.listenToOnce(APP.models.projects, 'sync', this.ShowProject.bind(this, project))
-		}
-	},
-	EditProject: function (project, id) {
-		var module = this.module;
-		if (!_.isUndefined(APP.models[module]) && APP.models[module].length) {
-			APP.Page = new DEF.modules.projects.views.edit({
-				model: APP.models[module].get(id),
-			});
-			APP.root.showChildView("main", APP.Page);
-			APP.SetMode(module);
-		} else {
-			APP.root.showChildView("main", new DEF.EmptyView({
-				msg: "Loading Project..."
-			}));
-			this.listenToOnce(APP.models[module], 'sync', this.EditProject.bind(this, id))
-		}
-
-	}
-})
-
 
 /**
  * The main model.  SHould be called "Model"
@@ -76,6 +28,61 @@ DEF.modules.projects.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.projects.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/projects',
 });
+
+DEF.modules.projects.Router = Roadtrip.Router.extend({
+	initialize: function () {
+		APP.models.projects = new DEF.modules.projects.Collection();
+		APP.models.tasks = new DEF.modules.tasks.Collection();
+	},
+	module: "projects",
+	routes: {
+		"projects": "ShowRoot",
+		"projects/:project": "ShowProject",
+		"projects/:project/edit/:arg": "EditProject",
+		"projects/view/:arg": "RedirectView",
+	},
+	ShowProject: function (project) {
+		if (!_.isUndefined(APP.models.projects) && APP.models.projects.length) {
+			model = APP.models.projects.findWhere({
+				project: project
+			});
+
+			var view = new DEF.modules.projects.ProjectView({
+				model: model,
+				collection: APP.models.tasks,
+				filter: function (m) {
+					return m.get('parent_id') == this.model.id
+				}
+			})
+			APP.root.showChildView("main", view);
+			APP.SetMode("projects");
+		} else {
+			APP.root.showChildView("main", new DEF.EmptyView({
+				msg: "Loading Projects..."
+			}));
+			this.listenToOnce(APP.models.projects, 'sync', this.ShowProject.bind(this, project))
+		}
+	},
+	EditProject: function (project, id) {
+		var module = this.module;
+		if (!_.isUndefined(APP.models[module]) && APP.models[module].length) {
+			APP.Page = new DEF.modules.projects.views.edit({
+				model: APP.models[module].get(id),
+			});
+			APP.root.showChildView("main", APP.Page);
+			APP.SetMode(module);
+		} else {
+			APP.root.showChildView("main", new DEF.EmptyView({
+				msg: "Loading Project..."
+			}));
+			this.listenToOnce(APP.models[module], 'sync', this.EditProject.bind(this, id))
+		}
+	},
+	RedirectView: function (id) {
+		// the "project/view/$id" url gets rewritten to "project/$project"
+		APP.Route("#projects/" + APP.models.projects.get(id).get('project'));
+	}
+})
 
 
 /**
@@ -150,7 +157,7 @@ DEF.modules.projects.MainView = Roadtrip.RecordList.extend({
 	},
 	Add: function () {
 		var page = new DEF.modules.projects.views.edit({
-			model: false,
+			model: false
 		});
 		APP.root.showChildView('main', page);
 	}
@@ -158,7 +165,9 @@ DEF.modules.projects.MainView = Roadtrip.RecordList.extend({
 
 
 
-
+/**
+ * A single line, showing a task on the Project page
+ */
 DEF.modules.projects.TaskView = Backbone.Marionette.ItemView.extend({
 	template: require("./templates/taskline.html"),
 	className: "click hover",
@@ -171,6 +180,9 @@ DEF.modules.projects.TaskView = Backbone.Marionette.ItemView.extend({
 	}
 });
 
+/**
+ * The main project page, with subtasks
+ */
 DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 	template: require("./templates/project.html"),
 	childView: DEF.modules.projects.TaskView,
@@ -187,6 +199,11 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 		console.log("x");
 		var page = new DEF.modules.tasks.views.edit({
 			model: false,
+			parent: {
+				module: "projects",
+				id: this.model.id
+			}
+
 		});
 		APP.root.showChildView('main', page);
 	},

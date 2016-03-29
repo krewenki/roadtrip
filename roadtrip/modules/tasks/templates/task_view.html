@@ -6,13 +6,33 @@
 		</div>
 </div>
 
+
 <table class='table table-full table-left'>
+	<tr>
+		<th>Task</th>
+		<td colspan=3>
+			<%=task%>
+		</td>
+	</tr>
+	<tr>
+		<th>Parent</th>
+		<td colspan=3>
+			<a href="#<%=parent_module%>/view/<%=parent_id%>">
+				<%=parent_module%>:
+					<%=parent_id%>
+			</a>
+		</td>
+	</tr>
 	<tr>
 		<th>Priority</th>
 		<td>
 			<meter min=0 max=100 value='<%=priority%>'>
 				<%=priority%>
 			</meter>
+		</td>
+		<th>Start Date</th>
+		<td>
+			<%=start_date%>
 		</td>
 	</tr>
 	<tr>
@@ -22,31 +42,18 @@
 				<%=progress%>
 			</meter>
 		</td>
-	</tr>
-	<tr>
-		<th>Task</th>
-		<td>
-			<%=task%>
-		</td>
-	</tr>
-	<tr>
-		<th colspan=2 class='header_wide'>Description</th>
-	</tr>
-	<tr>
-		<td colspan=2>
-			<%=description%>
-		</td>
-	</tr>
-	<tr>
-		<th>Start Date</th>
-		<td>
-			<%=start_date%>
-		</td>
-	</tr>
-	<tr>
 		<th>Due Date</th>
 		<td>
 			<%=due_date%>
 		</td>
 	</tr>
+
+	<tr>
+		<th colspan=4 class='header_wide'>Description</th>
+	</tr>
+	<tr>
+		<td colspan=4>
+			<%=description%>
+		</td>
+
 </table>
