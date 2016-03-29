@@ -2,6 +2,16 @@ DEF.modules.tasks = {};
 DEF.modules.tasks.Router = Roadtrip.Router.extend({
 	initialize: function() {
 		APP.models.tasks = new DEF.modules.tasks.Collection();
+		APP.Icon_Lookup["todo"] = "list-ul";
+		APP.Icon_Lookup["bug"] = "bug";
+		APP.Icon_Lookup["feature"] = "lightbulb-o";
+
+		APP.Icon_Lookup['New'] = "battery-0";
+		APP.Icon_Lookup['Accepted'] = "battery-1";
+		APP.Icon_Lookup['In Progress'] = "battery-2";
+		APP.Icon_Lookup['Review'] = "battery-3";
+		APP.Icon_Lookup['Complete'] = "battery-4";
+
 	},
 	module: "tasks",
 	routes: {
@@ -25,6 +35,7 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		due_date: false,
 
 		progress: 0, // scale 0..100
+		progress_label: "New",
 		priority: 0, // scale 0..100
 
 		views: 0,
@@ -129,18 +140,17 @@ DEF.modules.tasks.views = {
 			edit: "#edit",
 			subtask: "#subtask",
 			subtasks: "#subtasks",
-			progress: "#progress"
-		},
-		initialize: function() {
-			APP.Icon_Lookup["todo"] = "list-ul";
-			APP.Icon_Lookup["bug"] = "bug";
-			APP.Icon_Lookup["feature"] = "lightbulb-o";
+			progress: "#progress",
+			progress_label: "#progress_label"
 		},
 		events: {
 			"click @ui.edit": "Edit",
 			"click @ui.subtask": "AddSubtask",
-			"click @ui.progress": "UpdateProgress"
+			"click @ui.progress": "UpdateProgress",
+			"input @ui.progress": "UpdateProgressLabel"
+
 		},
+		onShow: function() {},
 		Edit: function() {
 			APP.Route("#tasks/edit/" + this.model.id);
 		},
@@ -156,7 +166,25 @@ DEF.modules.tasks.views = {
 		},
 		UpdateProgress: function(e) {
 			console.log("progress", this.ui.progress.val());
-			this.model.set('progress', this.ui.progress.val());
+			this.model.set({
+				'progress': this.ui.progress.val(),
+				'progress_label': this.ui.progress_label.html()
+			});
+		},
+		UpdateProgressLabel: function(e) {
+			var val = this.ui.progress.val();
+			var label = "New";
+			if (val > 0)
+				label = "Accepted";
+			if (val > 5)
+				label = "In Progress"
+			if (val > 80)
+				label = "Review";
+			if (val == 100)
+				label = "Complete";
+			this.ui.progress_label.html(APP.Icon(label) + " " + label)
+
+
 		}
 	})
 }
