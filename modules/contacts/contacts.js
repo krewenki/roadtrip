@@ -1,8 +1,16 @@
 DEF.modules.contacts = {}
 DEF.modules.contacts.Router = Roadtrip.Router.extend({
 	module: "contacts",
-	initialize: function () {
+	initialize: function() {
 		APP.models.contacts = new DEF.modules.contacts.Collection();
+		APP.Icon_Lookup["Vendor"] = "building";
+		APP.Icon_Lookup["Customer"] = "money";
+		APP.Icon_Lookup["Miscellaneous"] = "question";
+		APP.Icon_Lookup["Customer,Marine"] = "ship";
+		APP.Icon_Lookup["Insurance"] = "wheelchair";
+		APP.Icon_Lookup["Freight Transportation"] = "truck";
+		APP.Icon_Lookup["Services"] = "thumbs-up";
+
 	},
 	routes: {
 		"contacts": "ShowRoot",
@@ -35,7 +43,7 @@ DEF.modules.contacts.Model = Roadtrip.Model.extend({
 		views: 0,
 		edits: 0
 	},
-	GetLink: function (cmd) {
+	GetLink: function(cmd) {
 		return "#contacts/" + cmd + "/" + this.get('_id');
 	}
 });
@@ -73,10 +81,10 @@ DEF.modules.contacts.views = {
 			"click @ui.edit": "Edit",
 			"click @ui.delete": "Delete"
 		},
-		Edit: function () {
+		Edit: function() {
 			APP.Route("#contacts/" + "edit" + "/" + this.model.id);
 		},
-		Delete: function () {
+		Delete: function() {
 			if (confirm("Are you sure you want to delete " + this.model.get(this.model.nameAttribute))) {
 				console.log("kill it");
 				APP.models.contacts.remove(this.model);
@@ -100,7 +108,7 @@ DEF.modules.contacts.RecordLine = Roadtrip.RecordLine.extend({
 DEF.modules.contacts.MainView = Roadtrip.RecordList.extend({
 	id: 'CONTACTS',
 	template: require("./templates/contacts.html"),
-	templateHelpers: function (x, y, z) {
+	templateHelpers: function(x, y, z) {
 		return {
 			search: this.search,
 		}
@@ -115,30 +123,22 @@ DEF.modules.contacts.MainView = Roadtrip.RecordList.extend({
 		"keyup @ui.search": "Search",
 		"click @ui.add": "Add"
 	},
-	filter: function (model, index, collection) {
+	filter: function(model, index, collection) {
 		var string = model.search_string();
 		if (string.indexOf(this.ui.search.val().toUpperCase()) == -1)
 			return false;
 		return true;
 	},
-	initialize: function () {
-		APP.Icon_Lookup["Vendor"] = "building";
-		APP.Icon_Lookup["Customer"] = "money";
-		APP.Icon_Lookup["Miscellaneous"] = "question";
-		APP.Icon_Lookup["Customer,Marine"] = "ship";
-		APP.Icon_Lookup["Insurance"] = "wheelchair";
-		APP.Icon_Lookup["Freight Transportation"] = "truck";
-		APP.Icon_Lookup["Services"] = "thumbs-up";
-	},
-	onRender: function () {
+	initialize: function() {},
+	onRender: function() {
 		this.ui.search.focus().val(this.search); // this search is disgusting
 	},
-	Search: function (e) {
+	Search: function(e) {
 		console.log(this.ui.search.val(), this.templateHelpers());
 		this.search = this.ui.search.val();
 		this.render();
 	},
-	Add: function () {
+	Add: function() {
 		var page = new DEF.modules.contacts.views.edit({
 			model: false,
 		});

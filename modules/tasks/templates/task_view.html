@@ -1,75 +1,84 @@
 <div id='menu'>
-  <span id='title'>Task</span>
-  <%=task_id%>
-    <div class='cmd link' id='edit'>
-      <%=APP.Icon('edit')%> edit
-    </div>
-    <div class='cmd link' id='subtask'>
-      <%=APP.Icon('new')%> add subtask
-    </div>
+		<span id='title'>Task</span>
+		<%=task_id%>
+				<div class='cmd link' id='edit'>
+						<%=APP.Icon('edit')%> edit
+				</div>
+				<div class='cmd link' id='subtask'>
+						<%=APP.Icon('new')%> add subtask
+				</div>
 </div>
 
 
 <table class='table table-full table-left'>
-  <tr>
-    <th>Task</th>
-    <td colspan=3>
-      <%=APP.Icon(kind)%>
-        <%=task%>
-    </td>
-  </tr>
-  <tr>
-    <th>Parent</th>
-    <td colspan=3>
-      <a href="#<%=parent_module%>/view/<%=parent_id%>">
-        <%=parent_module%>:
-          <%=parent_id%>
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <th>Priority</th>
-    <td>
-      <meter min=0 max=100 value='<%=priority%>'>
-        <%=priority%>
-      </meter>
-    </td>
-    <th>Start Date</th>
-    <td>
-      <%=start_date%>
-    </td>
-  </tr>
-  <tr>
-    <th>Progress</th>
-    <td>
-      <input id='progress' type=range min=0 max=100 value='<%=progress%>'>
+		<tr>
+				<th>Task</th>
+				<td colspan=3>
+						<%=APP.Icon(kind)%>
+								<%=task%>
+				</td>
+		</tr>
+		<tr>
+				<th>Parent</th>
+				<td colspan=3>
+						<a href="#<%=parent_module%>/view/<%=parent_id%>">
+								<%=parent_module%>:
+										<%=parent_id%>
+						</a>
+				</td>
+		</tr>
+		<tr>
+				<th>Priority</th>
+				<td>
+						<meter min=0 max=100 value='<%=priority%>'>
+								<%=priority%>
+						</meter>
+				</td>
+				<th>Start Date</th>
+				<td>
+						<%=start_date%>
+				</td>
+		</tr>
+		<tr>
+				<th>Progress</th>
+				<td>
+						<input id='progress' list='progress_levels' type=range min=0 max=100 value='<%=progress%>'>
+						<div id='progress_label'>
+								<%=APP.Icon(progress_label)%>
+										<%=progress_label%>
+						</div>
+						<datalist id="progress_levels">
+								<option>0</option>
+								<option>5</option>
+								<option>80</option>
+								<option>100</option>
+						</datalist>
+				</td>
+				<th>Due Date</th>
+				<td>
+						<%=due_date%>
+				</td>
+		</tr>
 
-    </td>
-    <th>Due Date</th>
-    <td>
-      <%=due_date%>
-    </td>
-  </tr>
-
-  <tr>
-    <th colspan=4 class='header_wide'>Description</th>
-  </tr>
-  <tr>
-    <td colspan=4 class='description'>
-      <%=APP.Markdown(description)%>
-    </td>
+		<tr>
+				<th colspan=4 class='header_wide'>Description</th>
+		</tr>
+		<tr>
+				<td colspan=4 class='description'>
+						<%=APP.Markdown(description)%>
+				</td>
 
 </table>
 
 <div id='subtasks'>
-  <h2>Subtasks</h2>
-  <table class='table table-full table-top' id='task_list'>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Task</th>
-        <th>Progress</th>
-      </tr>
-    </thead>
-  </table>
+		<h2>Subtasks</h2>
+		<table class='table table-full table-top' id='task_list'>
+				<thead>
+						<tr>
+								<th>ID</th>
+								<th>Task</th>
+								<th>Progress</th>
+						</tr>
+				</thead>
+		</table>
 </div>
