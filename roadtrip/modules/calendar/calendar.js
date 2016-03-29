@@ -26,6 +26,7 @@ DEF.modules.calendar.Model = Roadtrip.Model.extend({
 		timestamp: new Date().getTime(),
 		attendees: [],
 		notes: '',
+		user: '',
 		views: 0,
 		edits: 0
 	},
@@ -54,7 +55,7 @@ DEF.modules.calendar.views = {
 		template: require("./templates/edit.html"),
 	}),
 
-	event: Roadtrip.View.extend({
+	Event: Roadtrip.View.extend({
 		module: "calendar",
 		template: require("./templates/event.html")
 	}),
@@ -91,13 +92,17 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend({
 	template: require('./templates/day.html'),
 	childView: DEF.modules.calendar.views.Event,
 	initialize: function(options){
-		//console.log(options);
+		this.options = options
 	},
-    serializeData: function(){
-      var data = {};
-      data.date = this.options.date.getDate();
-      return data;
-    }
+
+	templateHelpers: function() {
+		var self = this;
+	    return { 
+			date: function(){
+				return self.options.date.getDate()
+			}
+		};
+	}
 }),
 
 DEF.modules.calendar.views.Week = Backbone.Marionette.LayoutView.extend({
@@ -120,13 +125,13 @@ DEF.modules.calendar.views.Week = Backbone.Marionette.LayoutView.extend({
 		this.render()
 	},
 	onRender: function(){
-		this.showChildView('sunday',	new DEF.modules.calendar.views.Day({ date: new Date(this.sunday) }), {date: new Date(this.sunday)})
-		this.showChildView('monday',	new DEF.modules.calendar.views.Day({ date: new Date(this.sunday + (86400000))}))
-		this.showChildView('tuesday',	new DEF.modules.calendar.views.Day({ date: new Date(this.sunday + (86400000)*2)}))
-		this.showChildView('wednesday',	new DEF.modules.calendar.views.Day({ date: new Date(this.sunday + (86400000)*3)}))
-		this.showChildView('thursday',	new DEF.modules.calendar.views.Day({ date: new Date(this.sunday + (86400000)*4)}))
-		this.showChildView('friday',	new DEF.modules.calendar.views.Day({ date: new Date(this.sunday + (86400000)*5)}))
-		this.showChildView('saturday',	new DEF.modules.calendar.views.Day({ date: new Date(this.sunday + (86400000)*6)}))
+		var days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+		var date, collection;
+		for(var i in days){
+			date = new Date(this.sunday + (86400000*i))
+			collection = new Backbone.Collection( APP.models.calendar.where( { date: date.toISOString().slice(0, 10)} ) )
+			this.showChildView(days[i], new DEF.modules.calendar.views.Day( {date: date, collection: collection} ))
+		}
 	}
 })
 
