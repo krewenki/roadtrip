@@ -1,49 +1,49 @@
 <div id='menu'>
-  <span id='title'><%=project%></span>
+		<span id='title'><%=project%></span>
 
-  <div class='cmd link' id='new'>
-    <%=APP.Icon('new')%> new task
-  </div>
-  <div class='cmd link' id='edit'>
-    <%=APP.Icon('edit')%> edit project
-  </div>
+		<div class='cmd link' id='new'>
+				<%=APP.Icon('new')%> new task
+		</div>
+		<div class='cmd link' id='edit'>
+				<%=APP.Icon('edit')%> edit project
+		</div>
 </div>
 
 <table id='project_header' class='table table-full table-borders'>
-  <tr>
-    <td rowspan=2 class='icon'>
-      <%=APP.Icon(icon)%>
-    </td>
-    <td class='project'>
-      <%=project%>
-    </td>
-    <td>
-      <b>Views:</b>
-      <%=_views%>
-    </td>
-  </tr>
-  <tr>
-    <td class='goal'>
-      <%=goal%>
-    </td>
-    <td>
-      <b>Edits:</b>
-      <%=_edits%>
-    </td>
-  </tr>
+		<tr>
+				<td rowspan=2 class='icon'>
+						<%=APP.Icon(icon)%>
+				</td>
+				<td class='project'>
+						<%=project%>
+				</td>
+				<td>
+						<b>Views:</b>
+						<%=_views%>
+				</td>
+		</tr>
+		<tr>
+				<td class='goal'>
+						<%=goal%>
+				</td>
+				<td>
+						<b>Edits:</b>
+						<%=_edits%>
+				</td>
+		</tr>
 </table>
 
 <div id='description'>
-  <%=APP.Markdown(description)%>
+		<%=APP.Markdown(description)%>
 </div>
 
 
-<table class='table table-full table-top' id='tasks'>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Task</th>
-      <th>Progress</th>
-    </tr>
-  </thead>
+<table id='tasks' class='table table-full table-top task_table'>
+		<thead>
+				<tr>
+						<th>ID</th>
+						<th>Task</th>
+						<th>Progress</th>
+				</tr>
+		</thead>
 </table>

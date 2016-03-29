@@ -1,8 +1,14 @@
 #TASKS {
-  .description {
-    padding    : 10px;
-    line-height: 20px;
-    color      : $text_light_color;
-    text-align : justify;
-  }
+		.description {
+				padding    : 10px;
+				line-height: 20px;
+				color      : $text_light_color;
+				text-align : justify;
+		}
+}
+.task_table {
+		.task_id {
+				font-weight: bold;
+				color      : $text-color;
+		}
 }
