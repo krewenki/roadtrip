@@ -1,3 +1,18 @@
-<div id='icon'><i class='fa fa-refresh fa-spin'></i></div>
-<div id='msg'></div>
-<div id='submsg'></div>
+<% if (colspan>0) { %>
+	<td colspan=<%=colspan%>>
+		<% }%>
+
+			<div id='icon'>
+				<%=APP.Icon(icon)%>
+			</div>
+			<div id='msg'>
+				<%=msg%>
+			</div>
+			<div id='submsg'>
+				<%=submsg%>
+			</div>
+
+			<% if (colspan>0) { %>
+	</td>
+
+	<% }%>

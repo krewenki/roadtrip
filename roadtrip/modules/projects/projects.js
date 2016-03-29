@@ -184,9 +184,17 @@ DEF.modules.projects.TaskView = Backbone.Marionette.ItemView.extend({
  * The main project page, with subtasks
  */
 DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
+	id: 'PROJECTS',
 	template: require("./templates/project.html"),
 	childView: DEF.modules.projects.TaskView,
 	childViewContainer: "#tasks", // override if you need to, obviously
+	emptyView: DEF.EmptyView,
+	emptyViewOptions: {
+		icon: "bug",
+		msg: "There are no tasks",
+		submsg: "<span id='new' class='btn'>" + APP.Icon("new") + " new task</span>",
+		colspan: 3
+	},
 	ui: {
 		new: "#new",
 		edit: "#edit"

@@ -8,18 +8,32 @@
  */
 DEF.EmptyView = Backbone.Marionette.ItemView.extend({
 	template: require("../templates/empty.html"),
+	templateHelpers: function () {
+		var rs = $.extend({}, {
+			colspan: 0,
+			submsg: "",
+			msg: "Empty",
+			icon: ""
+		}, this.options);
+		console.log(rs);
+		return rs;
+	},
 	id: "empty",
+	tagName: function () {
+		return this.options.colspan > 0 ? "tr" : "div"
+	},
 	ui: {
 		msg: "#msg",
 		submsg: "#submsg",
 		icon: "#icon"
 	},
 	onRender: function () {
-		this.ui.msg.html(this.options.msg);
-		if (this.options.submsg)
-			this.ui.submsg.html(this.options.submsg);
-		if (this.options.icon)
-			this.ui.icon.html(APP.Icon(this.options.icon));
+
+		//		this.ui.msg.html(this.options.msg);
+		//		if (this.options.submsg)
+		//			this.ui.submsg.html(this.options.submsg);
+		//		if (this.options.icon)
+		//			this.ui.icon.html(APP.Icon(this.options.icon));
 	}
 });
 
