@@ -17,75 +17,76 @@ require("./static.js");
 
 
 var MainApp = Backbone.Marionette.Application.extend({
-	setRootLayout: function () {
-		this.root = new DEF.RootLayout();
-		var header = new DEF.HeaderLayout({});
-		APP.root.showChildView('header', header);
-	},
-	SetTitle: function (title) {
-		document.title = title + " - roadtrip";
-	},
-	SetMode: function (mode) {
-		$("#HEADER #mainmenu .menuitem").removeClass('active')
-		$("#HEADER #mainmenu .menuitem[data-mode=" + mode + "]").addClass('active');
-	},
-	Route: function (route, title, trigger) {
-		if (_.isUndefined(trigger))
-			trigger = true;
+  setRootLayout: function() {
+    this.root = new DEF.RootLayout();
+    var header = new DEF.HeaderLayout({});
+    APP.root.showChildView('header', header);
+  },
+  SetTitle: function(title) {
+    document.title = title + " - roadtrip";
+  },
+  SetMode: function(mode) {
+    $("#HEADER #mainmenu .menuitem").removeClass('active')
+    $("#HEADER #mainmenu .menuitem[data-mode=" + mode + "]").addClass('active');
+  },
+  Route: function(route, title, trigger) {
+    if (_.isUndefined(trigger))
+      trigger = true;
 
-		//		if (history.pushState) {
-		//			history.pushState(null, null, route);
-		//		} else {
-		//			location.hash = route;
-		//		}
-		APP.controller.router.navigate(route, {
-			trigger: trigger
-		})
-		this.SetTitle(title);
-		console.log(route, title);
-	},
-	Icon_Lookup: {
-		calendar: "calendar",
-		contacts: "group",
-		projects: "pie-chart",
-		tasks: "inbox",
-		orders: "money",
-		expenses: "dollar",
-		timeclock: "clock-o",
+    //		if (history.pushState) {
+    //			history.pushState(null, null, route);
+    //		} else {
+    //			location.hash = route;
+    //		}
+    APP.controller.router.navigate(route, {
+      trigger: trigger
+    })
+    this.SetTitle(title);
+    console.log(route, title);
+  },
+  Icon_Lookup: {
+    calendar: "calendar",
+    contacts: "group",
+    projects: "pie-chart",
+    tasks: "inbox",
+    orders: "money",
+    expenses: "dollar",
+    timeclock: "clock-o",
 
-		warning: "warning",
-		link: "external-link",
-		delete: "remove",
-		rate: "thumbs-up",
-		more: "ellipsis-h",
-		off: "square-o",
-		on: "check-square-o",
-		stats: "bar-chart",
-		up: "chevron-up",
-		down: "chevron-down",
-		settings: "gear",
-		user: "user",
-		report: "bug",
-		data: "rss",
-		edit: "pencil",
-		view: "search",
-		cancel: "remove",
-		delete: "trash",
-		new: "plus"
-	},
-	Icon: function (icon, title) {
-		if (icon.substring(0, 4) == "http")
-			return "<img class='icon' src='" + icon + "'>";
-		switch (icon) {
-		case 'loading':
-			return "<span class='loading'><i class='fa fa-refresh fa-spin'></i></span>";
-			break;
-		default:
-			if (this.Icon_Lookup[icon])
-				icon = this.Icon_Lookup[icon];
-		}
-		return "<i " + (title ? "title='" + title + "'" : "") + " class='icon fa fa-" + icon + "'></i>";
-	},
+    warning: "warning",
+    link: "external-link",
+    delete: "remove",
+    rate: "thumbs-up",
+    more: "ellipsis-h",
+    off: "square-o",
+    on: "check-square-o",
+    stats: "bar-chart",
+    up: "chevron-up",
+    down: "chevron-down",
+    settings: "gear",
+    user: "user",
+    report: "bug",
+    data: "rss",
+    edit: "pencil",
+    view: "search",
+    cancel: "remove",
+    delete: "trash",
+    new: "plus"
+  },
+  Icon: function(icon, title) {
+    if (icon.substring(0, 4) == "http")
+      return "<img class='icon' src='" + icon + "'>";
+    switch (icon) {
+      case 'loading':
+        return "<span class='loading'><i class='fa fa-refresh fa-spin'></i></span>";
+        break;
+      default:
+        if (this.Icon_Lookup[icon])
+          icon = this.Icon_Lookup[icon];
+    }
+    return "<i " + (title ? "title='" + title + "'" : "") + " class='icon fa fa-" + icon + "'></i>";
+  },
+  Markdown: require('marked')
 });
 
 
@@ -101,31 +102,31 @@ require("../modules/calendar/calendar.js");
 
 
 APP.Format = {
-	fixed: function (val, dec) {
-		if (!_.isNumber(val))
-			val = 0;
-		return val.toFixed(dec);
-	},
-	clamp: function (val, min, max) {
-		return Math.max(Math.min(val, max), min);
-	},
-	money: function (val) {
-		var sign = val < 0 ? "negative" : "positive";
-		return '<span class="money ' + sign + '">$' + val.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + "</span>";
-	}
+  fixed: function(val, dec) {
+    if (!_.isNumber(val))
+      val = 0;
+    return val.toFixed(dec);
+  },
+  clamp: function(val, min, max) {
+    return Math.max(Math.min(val, max), min);
+  },
+  money: function(val) {
+    var sign = val < 0 ? "negative" : "positive";
+    return '<span class="money ' + sign + '">$' + val.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + "</span>";
+  }
 }
 
 
-APP.on('before:start', function () {
-	APP.setRootLayout();
+APP.on('before:start', function() {
+  APP.setRootLayout();
 });
 
-APP.on('start', function () {
-	APP.controller = new DEF.Controller();
-	APP.controller.router = new DEF.Router({
-		controller: APP.controller
-	});
-	Backbone.history.start();
+APP.on('start', function() {
+  APP.controller = new DEF.Controller();
+  APP.controller.router = new DEF.Router({
+    controller: APP.controller
+  });
+  Backbone.history.start();
 });
 
 

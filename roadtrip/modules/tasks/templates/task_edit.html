@@ -32,19 +32,22 @@
 		</td>
 	</tr>
 	<tr>
+		<th>Kind</th>
+		<td>
+
+			<select class='field' id='kind'>
+				<option <%=kind=='todo' ? "selected": ""%> value='todo'>To-Do</option>
+				<option <%=kind=='feature' ? "selected": ""%> value='feature'>Feature</option>
+				<option <%=kind=='bug' ? "selected": ""%> value='bug'>Bug</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
 		<th>
 			Task:
 		</th>
 		<td>
 			<input class='field' type='text' id='task' placeholder='task' value='<%=task%>'>
-		</td>
-	</tr>
-	<tr>
-		<th>
-			Progress:
-		</th>
-		<td>
-			<input class='field' type='range' id='progress' placeholder='task' value='<%=progress%>' min=0 max=100>
 		</td>
 	</tr>
 	<tr>
