@@ -22,11 +22,14 @@ var MainApp = Backbone.Marionette.Application.extend({
 		var header = new DEF.HeaderLayout({});
 		APP.root.showChildView('header', header);
 	},
-	SetTitle: function(title) {
+	SetTitle: function(title, module) {
 		console.log("title", title);
 		document.title = title + " - roadtrip";
+		if (module)
+			this.SetMode(module);
 	},
 	SetMode: function(mode) {
+		console.trace("mode", mode)
 		$("#HEADER #mainmenu .menuitem").removeClass('active')
 		$("#HEADER #mainmenu .menuitem[data-mode=" + mode + "]").addClass('active');
 	},
@@ -113,6 +116,17 @@ APP.Format = {
 	money: function(val) {
 		var sign = val < 0 ? "negative" : "positive";
 		return '<span class="money ' + sign + '">$' + val.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + "</span>";
+	},
+	date: function(time) {
+		var date = new Date(time);
+		return date.getFullYear() + "-" + ("00" + date.getMonth()).slice(-2) + "-" + ("00" + date.getDay()).slice(-2);
+	},
+	time: function(time) {
+		var date = new Date(time);
+		return date.getHours() + ":" + ("00" + date.getMinutes()).slice(-2) + ":" + ("00" + date.getSeconds()).slice(-2);
+	},
+	datetime: function(time) {
+		return APP.Format.date(time) + " " + APP.Format.time(time);
 	}
 }
 

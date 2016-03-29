@@ -153,6 +153,9 @@ DEF.modules.orders.MainView = Roadtrip.RecordList.extend({
 			return false;
 		return true;
 	},
+	onShow: function() {
+		APP.SetTitle("Orders", "orders");
+	},
 	onRender: function() {
 		this.ui.search.focus().val(this.search); // this search is disgusting
 	},

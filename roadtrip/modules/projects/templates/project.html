@@ -14,8 +14,11 @@
 				<td rowspan=2 class='icon'>
 						<%=APP.Icon(icon)%>
 				</td>
-				<td class='project'>
-						<%=project%>
+				<td>
+						<span class='project'><%=project%></span>
+						<span class='goal'>
+								<%=goal%>
+							</span>
 				</td>
 				<td>
 						<b>Views:</b>
@@ -24,7 +27,7 @@
 		</tr>
 		<tr>
 				<td class='goal'>
-						<%=goal%>
+						<%=APP.Format.datetime(_updated)%>
 				</td>
 				<td>
 						<b>Edits:</b>
