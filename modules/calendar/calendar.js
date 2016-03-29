@@ -57,7 +57,8 @@ DEF.modules.calendar.views = {
 
 	Event: Roadtrip.View.extend({
 		module: "calendar",
-		template: require("./templates/event.html")
+		template: require("./templates/event.html"),
+		className: 'calendar_event'
 	}),
 	
 	/**
@@ -94,7 +95,6 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend({
 	initialize: function(options){
 		this.options = options
 	},
-
 	templateHelpers: function() {
 		var self = this;
 	    return { 
