@@ -23,6 +23,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 		APP.root.showChildView('header', header);
 	},
 	SetTitle: function(title) {
+		console.log("title", title);
 		document.title = title + " - roadtrip";
 	},
 	SetMode: function(mode) {
@@ -41,7 +42,6 @@ var MainApp = Backbone.Marionette.Application.extend({
 		APP.controller.router.navigate(route, {
 			trigger: trigger
 		})
-		this.SetTitle(title);
 		console.log(route, title);
 	},
 	Icon_Lookup: {

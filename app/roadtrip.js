@@ -1,6 +1,6 @@
 /**
  * Project-wide prototypes for convenience.
- * 
+ *
  */
 Roadtrip = {
 	Router: Backbone.Marionette.AppRouter.extend({
@@ -10,7 +10,7 @@ Roadtrip = {
 			"projects/:cmd": "LoadModule",
 			"projects/:cmd/:arg": "LoadModule",
 		},
-		LoadModule: function (cmd, arg) {
+		LoadModule: function(cmd, arg) {
 			var module = this.module;
 
 			if (!_.isUndefined(APP.models[module]) && APP.models[module].length) {
@@ -33,7 +33,7 @@ Roadtrip = {
 				this.listenToOnce(APP.models[module], 'sync', this.LoadModule.bind(this, cmd, arg))
 			}
 		},
-		ShowRoot: function () {
+		ShowRoot: function() {
 			var module = this.module;
 			if (!_.isUndefined(APP.models[module]) && APP.models[module].length) {
 
@@ -56,7 +56,7 @@ Roadtrip = {
 	Collection: Backbone.Highway.Collection.extend({
 		perpage: 100,
 		page: 1,
-		comparator: function (m) {
+		comparator: function(m) {
 			//var sort = ('00000' + (m.get('views') + m.get('edits'))).substr(-5) + m.get('name');
 			var sort = (m.get('_views') + m.get('_edits'));
 			return -sort
@@ -66,11 +66,11 @@ Roadtrip = {
 		idAttribute: '_id',
 		nameAttribute: 'name', // the human-readable field in the record
 		defaults: {},
-		search_string: function () {
+		search_string: function() {
 			var string = JSON.stringify(this.attributes);
 			return string.toUpperCase();
 		},
-		GetLink: function (cmd) {
+		GetLink: function(cmd) {
 			return "#tbd/" + cmd + "/" + this.get('_id');
 		}
 	}),
@@ -82,8 +82,9 @@ Roadtrip = {
 	 * Useful for viewing a single model
 	 */
 	View: Backbone.Marionette.ItemView.extend({
-		onShow: function () {
+		onShow: function() {
 			this.model.set('_views', this.model.get('_views') + 1);
+			APP.SetTitle(this.model.get(this.model.nameAttribute))
 		},
 	}),
 	/**
@@ -102,33 +103,33 @@ Roadtrip = {
 			"click @ui.cancel": "Cancel",
 			"click @ui.delete": "Delete"
 		},
-		onBeforeRender: function () {
+		onBeforeRender: function() {
 			if (!this.model) {
 				this.model = new DEF.modules[this.module].Model({})
 			}
 		},
-		onShow: function () {
+		onShow: function() {
 			$("textarea").val($("textarea").val().trim()); // beautify inserts spaces between <textarea> in the item_edit form
 		},
 		/**
 		 * After edit, what page to load?
 		 */
-		Return: function () {
+		Return: function() {
 			if (this.model.id)
 				APP.Route("#" + this.module + "/view/" + this.model.id)
 			else
 				APP.Route("#" + this.module);
 		},
-		MakeDirty: function (e) {
+		MakeDirty: function(e) {
 
 			if (e.currentTarget.value == this.model.get(e.currentTarget.id))
 				$(e.currentTarget).removeClass("dirty");
 			else
 				$(e.currentTarget).addClass("dirty");
 		},
-		Save: function (e) {
+		Save: function(e) {
 			var model = this.model;
-			$(".field.dirty").each(function (i, $el) {
+			$(".field.dirty").each(function(i, $el) {
 				console.log($el.id, $el.value)
 				model.set($el.id, $el.value);
 			})
@@ -139,10 +140,10 @@ Roadtrip = {
 				this.model.set('_edits', this.model.get('_edits') + 1);
 			this.Return();
 		},
-		Cancel: function (e) {
+		Cancel: function(e) {
 			this.Return();
 		},
-		Delete: function (e) {
+		Delete: function(e) {
 			APP.models[this.module].remove(this.model);
 			this.Return();
 		}
@@ -156,7 +157,7 @@ Roadtrip = {
 		events: {
 			"click": "Click"
 		},
-		Click: function () {
+		Click: function() {
 			APP.Route("#" + (this.module) + "/view/" + this.model.get('_id'), this.model.get(this.model.nameAttribute));
 		}
 	}),
@@ -169,13 +170,14 @@ Roadtrip = {
 		emptyView: DEF.EmptyView,
 		emptyViewOptions: {
 			icon: "warning",
-			msg: "No records found"
+			msg: "No records found",
+			colspan: 5
 		},
 		collectionEvents: {
 			"sync": "render"
 		},
 
-		addChild: function (child, ChildView, index) {
+		addChild: function(child, ChildView, index) {
 			var from = (this.page - 1) * this.perpage;
 			var to = from + this.perpage
 			if (index >= from && index < to)

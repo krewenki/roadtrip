@@ -3,7 +3,7 @@ DEF.modules.orders = {
 }
 require("./lineitem.js");
 DEF.modules.orders.Router = Roadtrip.Router.extend({
-	initialize: function () {
+	initialize: function() {
 		APP.models.orders = new DEF.modules.orders.Collection();
 	},
 
@@ -31,10 +31,10 @@ DEF.modules.orders.Model = Roadtrip.Model.extend({
 		views: 0,
 		edits: 0
 	},
-	GetLink: function (cmd) {
+	GetLink: function(cmd) {
 		return "#orders/" + cmd + "/" + this.get('_id');
 	},
-	search_string: function () {
+	search_string: function() {
 		var string = this.get('order') + "";
 		return string.toUpperCase();
 	}
@@ -72,9 +72,9 @@ DEF.modules.orders.views.view = Backbone.Marionette.LayoutView.extend({
 		"click @ui.edit": "Edit",
 		"click @ui.delete": "Delete"
 	},
-	onShow: function () {
-		this.model.set('views', this.model.get('views') + 1);
-
+	onShow: function() {
+		this.model.set('_views', this.model.get('_views') + 1);
+		APP.SetTitle(this.model.get('order'));
 		this.showChildView('order', new DEF.modules.orders.OrderView({
 			model: this.model,
 		}))
@@ -82,10 +82,10 @@ DEF.modules.orders.views.view = Backbone.Marionette.LayoutView.extend({
 			collection: new Backbone.Collection(this.model.get('lineitems'))
 		}))
 	},
-	Edit: function () {
+	Edit: function() {
 		APP.Route("#orders/" + "edit" + "/" + this.model.id);
 	},
-	Delete: function () {
+	Delete: function() {
 		if (confirm("Are you sure you want to delete " + this.model.get(this.model.nameAttribute))) {
 			console.log("kill it");
 			APP.models.orders.remove(this.model);
@@ -106,7 +106,7 @@ DEF.modules.orders.OrderView = Backbone.Marionette.ItemView.extend({
 DEF.modules.orders.RecordLine = Roadtrip.RecordLine.extend({
 	module: "orders",
 	template: require("./templates/order_line.html"),
-	templateHelpers: function () {
+	templateHelpers: function() {
 		var rs = {
 			total: ' ',
 			lineitems: 0
@@ -134,7 +134,7 @@ DEF.modules.orders.MainView = Roadtrip.RecordList.extend({
 	template: require("./templates/orders.html"),
 	childView: DEF.modules.orders.RecordLine,
 	childViewContainer: "#record_list",
-	templateHelpers: function () {
+	templateHelpers: function() {
 		return {
 			search: this.search,
 		}
@@ -147,21 +147,21 @@ DEF.modules.orders.MainView = Roadtrip.RecordList.extend({
 		"keyup @ui.search": "Search",
 		"click @ui.add": "Add"
 	},
-	filter: function (model, index, collection) {
+	filter: function(model, index, collection) {
 		var string = model.search_string();
 		if (string.indexOf(this.search.toUpperCase()) == -1)
 			return false;
 		return true;
 	},
-	onRender: function () {
+	onRender: function() {
 		this.ui.search.focus().val(this.search); // this search is disgusting
 	},
-	Search: function (e) {
+	Search: function(e) {
 		console.log(this.ui.search.val(), this.templateHelpers());
 		this.search = this.ui.search.val();
 		this.render();
 	},
-	Add: function () {
+	Add: function() {
 		var page = new DEF.modules.contacts.views.edit({
 			model: false,
 		});
