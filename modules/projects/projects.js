@@ -106,22 +106,21 @@ DEF.modules.projects.views = {
 		template: require("./templates/view.html"),
 		ui: {
 			edit: "#edit",
-			delete: "#delete"
+			delete: "#delete",
 		},
 		events: {
 			"click @ui.edit": "Edit",
-			"click @ui.delete": "Delete"
+			"click @ui.delete": "Delete",
 		},
 		Edit: function () {
 			APP.Route("#projects/" + "edit" + "/" + this.model.id);
 		},
 		Delete: function () {
 			if (confirm("Are you sure you want to delete " + this.model.get(this.model.nameAttribute))) {
-				console.log("kill it");
 				APP.models.projects.remove(this.model);
 				APP.Route("#projects", "projects");
 			}
-		}
+		},
 	})
 }
 
@@ -188,7 +187,7 @@ DEF.modules.projects.TaskView = Backbone.Marionette.ItemView.extend({
 DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 	id: 'PROJECTS',
 	template: require("./templates/project.html"),
-	childView: DEF.modules.projects.TaskView,
+	childView: DEF.modules.tasks.TaskView,
 	childViewContainer: "#tasks", // override if you need to, obviously
 	emptyView: DEF.EmptyView,
 	emptyViewOptions: {
@@ -204,15 +203,6 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 	events: {
 		"click @ui.new": "CreateTask",
 		"click @ui.edit": "Edit"
-	},
-	initialize: function () {
-		APP.Icon_Lookup["Vendor"] = "building";
-		APP.Icon_Lookup["Customer"] = "money";
-		APP.Icon_Lookup["Miscellaneous"] = "question";
-		APP.Icon_Lookup["Customer,Marine"] = "ship";
-		APP.Icon_Lookup["Insurance"] = "wheelchair";
-		APP.Icon_Lookup["Freight Transportation"] = "truck";
-		APP.Icon_Lookup["Services"] = "thumbs-up";
 	},
 	onShow: function () {
 		this.model.set('_views', this.model.get('_views') + 1);
