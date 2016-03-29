@@ -43,6 +43,21 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 	}
 });
 
+/**
+ * A single line, showing a task on the Project page
+ */
+DEF.modules.tasks.TaskView = Backbone.Marionette.ItemView.extend({
+	template: require("./templates/taskline.html"),
+	className: "click hover",
+	tagName: "tr",
+	events: {
+		"click": "ViewTask"
+	},
+	ViewTask: function () {
+		APP.Route("#tasks/view/" + this.model.get('_id'));
+	}
+});
+
 DEF.modules.tasks.views = {
 	/**
 	 * Edit a contact
@@ -64,22 +79,52 @@ DEF.modules.tasks.views = {
 			}
 			console.log(rs, this.options);
 			return rs;
-		}
+		},
 	}),
+
 	/**
 	 * View a plain, read-only single record
 	 */
-	view: Roadtrip.View.extend({
+	view: Backbone.Marionette.CompositeView.extend({
+		id: "TASKS",
 		module: "tasks",
 		template: require("./templates/task_view.html"),
+		childView: DEF.modules.tasks.TaskView,
+		childViewContainer: "#task_list",
+		ui: {},
+		collection: APP.models.tasks, // why cant we do this?
+		onBeforeRender: function () {
+			this.collection = APP.models.tasks; // whatever, man..
+			this.filter = function (m) {
+				return m.get('parent_id') == this.model.id
+			}
+		},
+		onShow: function () {
+			if (this.children.length == 0) {
+				this.ui.subtasks.hide();
+			}
+		},
 		ui: {
 			edit: "#edit",
+			subtask: "#subtask",
+			subtasks: "#subtasks"
 		},
 		events: {
 			"click @ui.edit": "Edit",
+			"click @ui.subtask": "AddSubtask"
 		},
 		Edit: function () {
-			APP.Route("#tasks/" + "edit" + "/" + this.model.id);
+			APP.Route("#tasks/edit/" + this.model.id);
+		},
+		AddSubtask: function () {
+			var page = new DEF.modules.tasks.views.edit({
+				model: false,
+				parent: {
+					module: "tasks",
+					id: this.model.id
+				}
+			});
+			APP.root.showChildView('main', page);
 		},
 	})
 }
