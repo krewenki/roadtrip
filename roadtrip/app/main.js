@@ -118,14 +118,20 @@ APP.Format = {
 		return '<span class="money ' + sign + '">$' + val.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + "</span>";
 	},
 	date: function(time) {
+		if (!time)
+			return "--";
 		var date = new Date(time);
 		return date.getFullYear() + "-" + ("00" + date.getMonth()).slice(-2) + "-" + ("00" + date.getDay()).slice(-2);
 	},
 	time: function(time) {
+		if (!time)
+			return "--";
 		var date = new Date(time);
 		return date.getHours() + ":" + ("00" + date.getMinutes()).slice(-2) + ":" + ("00" + date.getSeconds()).slice(-2);
 	},
 	datetime: function(time) {
+		if (!time)
+			return "--";
 		return APP.Format.date(time) + " " + APP.Format.time(time);
 	}
 }

@@ -171,21 +171,6 @@ DEF.modules.projects.MainView = Roadtrip.RecordList.extend({
 
 
 /**
- * A single line, showing a task on the Project page
- */
-DEF.modules.projects.TaskView = Backbone.Marionette.ItemView.extend({
-	template: require("./templates/taskline.html"),
-	className: "click hover",
-	tagName: "tr",
-	events: {
-		"click": "ViewTask"
-	},
-	ViewTask: function() {
-		APP.Route("#tasks/view/" + this.model.get('_id'));
-	}
-});
-
-/**
  * The main project page, with subtasks
  */
 DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({

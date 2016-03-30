@@ -1,7 +1,7 @@
 <td class='task_id'>
 		<%=task_id%>
 </td>
-<td>
+<td class='task'>
 		<%=APP.Icon(kind)%>
 				<%=task%>
 </td>
@@ -9,4 +9,13 @@
 		<meter min=0 max=100 value='<%=progress%>'>
 				<%=progress%>
 		</meter>
+</td>
+<td class='minwidth800'>
+		<%=APP.Format.date(start_date)%>
+</td>
+<td class='minwidth800'>
+		<%=APP.Format.date(due_date)%>
+</td>
+<td class='description minwidth1000'>
+		<%=description%>
 </td>

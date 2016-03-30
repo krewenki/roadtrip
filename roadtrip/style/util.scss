@@ -1,4 +1,14 @@
 @import 'config';
+@media screen and (max-width: 1000px) {
+		.minwidth1000 {
+				display: none;
+		}
+}
+@media screen and (min-width: 1000px) {
+		.maxwidth1000 {
+				display: none;
+		}
+}
 @media screen and (max-width: 800px) {
 		.minwidth800 {
 				display: none;
@@ -6,6 +16,16 @@
 }
 @media screen and (min-width: 800px) {
 		.maxwidth800 {
+				display: none;
+		}
+}
+@media screen and (max-width: 600px) {
+		.minwidth600 {
+				display: none;
+		}
+}
+@media screen and (min-width: 600px) {
+		.maxwidth600 {
 				display: none;
 		}
 }

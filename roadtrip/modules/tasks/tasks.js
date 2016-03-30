@@ -27,15 +27,15 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		parent_module: false,
 
 		kind: "todo",
-		task: "Do a thing",
+		task: "",
 		description: "",
 		task_id: "0.0.0",
 
-		start_date: false,
-		due_date: false,
+		start_date: "",
+		due_date: "",
 
 		progress: 0, // scale 0..100
-		progress_label: "New",
+		progress_label: "New", // this is autoatically calculated based on progress slider
 		priority: 0, // scale 0..100
 
 		views: 0,
@@ -70,6 +70,9 @@ DEF.modules.tasks.TaskView = Backbone.Marionette.ItemView.extend({
 	}
 });
 
+/**
+ *  Task View
+ */
 DEF.modules.tasks.views = {
 	/**
 	 * Edit a contact
@@ -169,6 +172,10 @@ DEF.modules.tasks.views = {
 				'progress': this.ui.progress.val(),
 				'progress_label': this.ui.progress_label.html()
 			});
+			if (!this.model.get('start_date'))
+				this.model.set({
+					start_date: Date.now()
+				})
 		},
 		UpdateProgressLabel: function(e) {
 			var val = this.ui.progress.val();
