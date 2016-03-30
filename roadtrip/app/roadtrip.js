@@ -82,7 +82,7 @@ Roadtrip = {
 		onShow: function() {
 			this.model.set('_views', this.model.get('_views') + 1);
 			APP.SetTitle(this.model.get(this.model.nameAttribute), this.module)
-		},
+		}
 	}),
 	/**
 	 * Useful for supporting edit forms.  Has all the save/dirty logic built in.
@@ -106,7 +106,7 @@ Roadtrip = {
 			}
 		},
 		onShow: function() {
-			$("textarea").val($("textarea").val().trim()); // beautify inserts spaces between <textarea> in the item_edit form
+			$("textarea").val(($("textarea").val() || '').trim()); // beautify inserts spaces between <textarea> in the item_edit form
 		},
 		/**
 		 * After edit, what page to load?
@@ -125,16 +125,18 @@ Roadtrip = {
 				$(e.currentTarget).addClass("dirty");
 		},
 		Save: function(e) {
-			var model = this.model;
+			var model = this.model, save = {};
+			save["_updated"] = Date.now();
 			$(".field.dirty").each(function(i, $el) {
 				console.log($el.id, $el.value)
-				model.set($el.id, $el.value);
+				save[$el.id] = $el.value;
 			})
-			model.set("_updated", Date.now());
-			if (!this.model.id)
-				APP.models[this.module].create(model);
-			else
-				this.model.set('_edits', this.model.get('_edits') + 1);
+			if (!this.model.id) {
+				APP.models[this.module].create(save);
+			} else {
+				save['_edits'] = this.model.get('_edits') + 1;
+				this.model.set(save);
+			}
 			this.Return();
 		},
 		Cancel: function(e) {
@@ -171,7 +173,8 @@ Roadtrip = {
 			colspan: 5
 		},
 		collectionEvents: {
-			"sync": "render"
+			"sync": "render",
+			"change": "render"
 		},
 
 		addChild: function(child, ChildView, index) {
