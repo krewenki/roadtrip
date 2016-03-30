@@ -10,45 +10,62 @@ Roadtrip = {
 			"projects/:cmd": "LoadModule",
 			"projects/:cmd/:arg": "LoadModule",
 		},
+		// route: function(route, name, callback) {
+		// 	console.log(route, name, callback)
+		// 	return Backbone.Router.prototype.route.call(this, route, name, function() {
+		// 		this.trigger.apply(this, ['beforeroute:' + name].concat(_.toArray(arguments)));
+		// 		//callback.apply(this, arguments);
+		// 	});
+		// },
+		execute: function(callback, args, name) {
+			var module = this.module;
+			if (!_.isUndefined(APP.models[module]) && APP.models[module].length) {
+				console.log("execute", callback);
+				return Backbone.Router.prototype.execute.call(this, callback, args, name)
+			} else {
+				console.log("waiting for ", module)
+				APP.root.showChildView("main", new DEF.EmptyView({
+					icon: "loading",
+					msg: "Loading..."
+				}));
+				this.listenToOnce(APP.models[module], 'sync', this.execute.bind(this, callback, args, name))
+			}
+		},
+		// onRoute: function(name, path, args) {
+		// 	console.log("onroute", name, path, args);
+		// 	return false;
+		// },
 		LoadModule: function(cmd, arg) {
 			var module = this.module;
 
-			if (!_.isUndefined(APP.models[module]) && APP.models[module].length) {
-				console.log("route", module, cmd, arg);
-				if (cmd) {
-					APP.Page = new DEF.modules[module].views[cmd]({
-						model: APP.models[module].get(arg),
-					});
-				} else {
-					APP.Page = new DEF.modules[module].MainView({
-						collection: APP.models[module]
-					});
-				}
-				APP.root.showChildView("main", APP.Page);
+			console.log("route", module, cmd, arg);
+			if (cmd) {
+				APP.Page = new DEF.modules[module].views[cmd]({
+					model: APP.models[module].get(arg),
+				});
 			} else {
-				APP.root.showChildView("main", new DEF.EmptyView({
-					icon: "loading",
-					msg: "Loading..."
-				}));
-				this.listenToOnce(APP.models[module], 'sync', this.LoadModule.bind(this, cmd, arg))
-			}
-		},
-		ShowRoot: function() {
-			var module = this.module;
-			if (!_.isUndefined(APP.models[module]) && APP.models[module].length) {
-
-				console.log("root", module);
 				APP.Page = new DEF.modules[module].MainView({
 					collection: APP.models[module]
 				});
-				APP.root.showChildView("main", APP.Page);
-			} else {
-				APP.root.showChildView("main", new DEF.EmptyView({
-					icon: "loading",
-					msg: "Loading..."
-				}));
-				this.listenToOnce(APP.models[module], 'sync', this.ShowRoot.bind(this))
 			}
+			APP.root.showChildView("main", APP.Page);
+		},
+		ShowRoot: function() {
+			var module = this.module;
+			//	if (!_.isUndefined(APP.models[module]) && APP.models[module].length) {
+
+			//console.log("root", module);
+			APP.Page = new DEF.modules[module].MainView({
+				collection: APP.models[module]
+			});
+			APP.root.showChildView("main", APP.Page);
+			// } else {
+			// 	APP.root.showChildView("main", new DEF.EmptyView({
+			// 		icon: "loading",
+			// 		msg: "Loading..."
+			// 	}));
+			// 	this.listenToOnce(APP.models[module], 'sync', this.ShowRoot.bind(this))
+			// }
 		}
 	}),
 

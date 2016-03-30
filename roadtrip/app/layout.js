@@ -15,7 +15,7 @@ DEF.EmptyView = Backbone.Marionette.ItemView.extend({
 			msg: "Empty",
 			icon: ""
 		}, this.options);
-		console.log(rs);
+		//console.log(rs);
 		return rs;
 	},
 	id: "empty",
