@@ -82,6 +82,9 @@ Roadtrip = {
 		onShow: function() {
 			this.model.set('_views', this.model.get('_views') + 1);
 			APP.SetTitle(this.model.get(this.model.nameAttribute), this.module)
+		},
+		modelEvents: {
+			"change": "render" // This shouldn't be necessary, should it?
 		}
 	}),
 	/**
@@ -137,7 +140,7 @@ Roadtrip = {
 				save['_edits'] = this.model.get('_edits') + 1;
 				this.model.set(save);
 			}
-			this.Return();
+			//this.Return();
 		},
 		Cancel: function(e) {
 			this.Return();
