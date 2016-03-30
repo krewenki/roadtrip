@@ -10,8 +10,10 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 		icon: "anchor",
 		goal: "",
 		description: "",
-		tasks: 5,
-		members: 2,
+		tasks: 0,
+		members: 0,
+
+		progress: 0,
 
 
 		_edits: 0,
@@ -192,6 +194,23 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 	events: {
 		"click @ui.new": "CreateTask",
 		"click @ui.edit": "Edit"
+	},
+	onBeforeShow: function() {
+		var subs = APP.models.tasks.where({
+			parent_id: this.model.get('_id')
+		});
+		if (subs.length > 0) {
+			var sum = 0;
+			for (var s = 0; s < subs.length; s++) {
+				var sub = subs[s];
+				sum += (sub.get('progress') | 0);
+			}
+			this.model.set({
+				tasks: subs.length,
+				progress: sum / subs.length,
+			})
+			console.log("Progress automatically set to ", sum / subs.length)
+		}
 	},
 	onShow: function() {
 		this.model.set('_views', this.model.get('_views') + 1);
