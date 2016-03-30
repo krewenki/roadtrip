@@ -33,13 +33,16 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 
 		start_date: "",
 		due_date: "",
+		complete_date: "",
 
 		progress: 0, // scale 0..100
 		progress_label: "New", // this is autoatically calculated based on progress slider
 		priority: 0, // scale 0..100
 
-		views: 0,
-		edits: 0
+		_views: 0,
+		_edits: 0,
+		_updated: Date.now(),
+		_created: Date.now()
 	},
 	search_string: function() {
 		var string = this.get('task') + "";
@@ -58,7 +61,7 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 /**
  * A single line, showing a task on the Project page
  */
-DEF.modules.tasks.TaskView = Backbone.Marionette.ItemView.extend({
+DEF.modules.tasks.TaskLine = Backbone.Marionette.ItemView.extend({
 	template: require("./templates/taskline.html"),
 	className: "click hover",
 	tagName: "tr",
@@ -69,6 +72,71 @@ DEF.modules.tasks.TaskView = Backbone.Marionette.ItemView.extend({
 		APP.Route("#tasks/view/" + this.model.get('_id'));
 	}
 });
+DEF.modules.tasks.TaskList = Backbone.Marionette.CollectionView.extend({
+	tagName: "table",
+	className: "table table-top table-full task-table",
+	childView: DEF.modules.tasks.TaskLine
+})
+
+DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
+	template: require("./templates/task_view.html"),
+	ui: {
+		edit: "#edit",
+		subtask: "#subtask",
+		subtasks: "#subtasks",
+		progress: "#progress",
+		progress_label: "#progress_label"
+	},
+	events: {
+		"click @ui.edit": "Edit",
+		"click @ui.subtask": "AddSubtask",
+		"click @ui.progress": "UpdateProgress",
+		"input @ui.progress": "UpdateProgressLabel"
+
+	},
+	Edit: function() {
+		APP.Route("#tasks/edit/" + this.model.id);
+	},
+	AddSubtask: function() {
+		var page = new DEF.modules.tasks.views.edit({
+			model: false,
+			parent: {
+				module: "tasks",
+				id: this.model.id
+			}
+		});
+		APP.root.showChildView('main', page);
+	},
+	UpdateProgress: function(e) {
+		console.log("progress", this.ui.progress.val());
+		this.model.set({
+			'progress': this.ui.progress.val(),
+			'progress_label': this.ui.progress_label.html()
+		});
+		if (!this.model.get('start_date'))
+			this.model.set({
+				start_date: Date.now()
+			})
+		if (this.ui.progress.val() == 100)
+			this.model.set({
+				complete_date: Date.now()
+			})
+	},
+	UpdateProgressLabel: function(e) {
+		var val = this.ui.progress.val();
+		var label = "New";
+		if (val > 0)
+			label = "Accepted";
+		if (val > 5)
+			label = "In Progress"
+		if (val > 80)
+			label = "Review";
+		if (val == 100)
+			label = "Complete";
+		this.ui.progress_label.html(APP.Icon(label) + " " + label)
+	}
+})
+
 
 /**
  *  Task View
@@ -94,7 +162,6 @@ DEF.modules.tasks.views = {
 				rs.parent_id = this.options.parent.id;
 				rs.parent_module = this.options.parent.module;
 			}
-			console.log(rs, this.options);
 			return rs;
 		},
 		GenerateTaskID: function() {
@@ -116,81 +183,37 @@ DEF.modules.tasks.views = {
 		}
 	}),
 
-	/**
-	 * View a plain, read-only single record
-	 */
-	view: Backbone.Marionette.CompositeView.extend({
+	view: Backbone.Marionette.LayoutView.extend({
 		id: "TASKS",
-		module: "tasks",
-		template: require("./templates/task_view.html"),
-		childView: DEF.modules.tasks.TaskView,
-		childViewContainer: "#task_list",
-		ui: {},
-		collection: APP.models.tasks, // why cant we do this?
-		onBeforeRender: function() {
-			this.collection = APP.models.tasks; // whatever, man..
-			this.filter = function(m) {
-				return m.get('parent_id') == this.model.id
-			}
+		template: require("./templates/task_layout.html"),
+		regions: {
+			task: "#task",
+			open: "#open_subtasks",
+			closed: "#closed_subtasks"
 		},
 		onShow: function() {
-			if (this.children.length == 0) {
-				this.ui.subtasks.hide();
-			}
 			APP.SetTitle(this.model.get(this.model.nameAttribute));
-		},
-		ui: {
-			edit: "#edit",
-			subtask: "#subtask",
-			subtasks: "#subtasks",
-			progress: "#progress",
-			progress_label: "#progress_label"
-		},
-		events: {
-			"click @ui.edit": "Edit",
-			"click @ui.subtask": "AddSubtask",
-			"click @ui.progress": "UpdateProgress",
-			"input @ui.progress": "UpdateProgressLabel"
+			this.model.set('_views', this.model.get('_views') + 1);
 
-		},
-		Edit: function() {
-			APP.Route("#tasks/edit/" + this.model.id);
-		},
-		AddSubtask: function() {
-			var page = new DEF.modules.tasks.views.edit({
-				model: false,
-				parent: {
-					module: "tasks",
-					id: this.model.id
+			var model_id = this.model.id;
+			this.showChildView('task', new DEF.modules.tasks.TaskDetails({
+				model: this.model,
+			}))
+
+			this.showChildView('open', new DEF.modules.tasks.TaskList({
+				collection: APP.models.tasks,
+				template: require("./templates/taskline.html"),
+				filter: function(m) {
+					return m.get('parent_id') == model_id && m.get('progress') != 100
 				}
-			});
-			APP.root.showChildView('main', page);
-		},
-		UpdateProgress: function(e) {
-			console.log("progress", this.ui.progress.val());
-			this.model.set({
-				'progress': this.ui.progress.val(),
-				'progress_label': this.ui.progress_label.html()
-			});
-			if (!this.model.get('start_date'))
-				this.model.set({
-					start_date: Date.now()
-				})
-		},
-		UpdateProgressLabel: function(e) {
-			var val = this.ui.progress.val();
-			var label = "New";
-			if (val > 0)
-				label = "Accepted";
-			if (val > 5)
-				label = "In Progress"
-			if (val > 80)
-				label = "Review";
-			if (val == 100)
-				label = "Complete";
-			this.ui.progress_label.html(APP.Icon(label) + " " + label)
-
-
+			}))
+			this.showChildView('closed', new DEF.modules.tasks.TaskList({
+				template: require("./templates/taskline_closed.html"),
+				collection: APP.models.tasks,
+				filter: function(m) {
+					return m.get('parent_id') == model_id && m.get('progress') == 100
+				}
+			}))
 		}
-	})
+	}),
 }

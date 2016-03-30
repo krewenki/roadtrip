@@ -5,14 +5,9 @@
 		<%=APP.Icon(kind)%>
 				<%=task%>
 </td>
-<td>
-		<meter min=0 max=100 value='<%=progress%>'>
-				<%=progress%>
-		</meter>
-</td>
 <td class='nowrap minwidth800'>
 		<%=APP.Format.date(start_date)%>
 </td>
 <td class='nowrap minwidth800'>
-		<%=APP.Format.date(due_date)%>
+		<%=APP.Format.date(complete_date)%>
 </td>
