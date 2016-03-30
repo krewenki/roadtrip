@@ -89,7 +89,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 		}
 		return "<i " + (title ? "title='" + title + "'" : "") + " class='icon fa fa-" + icon + "'></i>";
 	},
-	Markdown: require('marked')
+
 });
 
 
@@ -133,7 +133,8 @@ APP.Format = {
 		if (!time)
 			return "--";
 		return APP.Format.date(time) + " " + APP.Format.time(time);
-	}
+	},
+	markdown: require('marked')
 }
 
 

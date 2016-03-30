@@ -10,12 +10,15 @@
 </div>
 
 <h2>Details</h2>
-<table class='table table-full table-left Xtable-borders'>
+<table id='task-details' class='table table-full table-left table-borders'>
 		<tr>
-				<th>Task</th>
-				<td>
+				<td class='icon' rowspan=4>
 						<%=APP.Icon(kind)%>
-								<%=task%>
+				</td>
+				<th>Task</th>
+				<td colspan=2>
+
+						<%=task%>
 				</td>
 				<th>Created</th>
 				<td>
@@ -24,7 +27,7 @@
 		</tr>
 		<tr>
 				<th>Parent</th>
-				<td>
+				<td colspan=2>
 						<a href="#<%=parent_module%>/view/<%=parent_id%>">
 								<%=parent_module%>:
 										<%=parent_id%>
@@ -37,7 +40,7 @@
 		</tr>
 		<tr>
 				<th>Priority</th>
-				<td>
+				<td colspan=2>
 						<meter min=0 max=100 value='<%=priority%>'>
 								<%=priority%>
 						</meter>
@@ -50,22 +53,16 @@
 		<tr>
 				<th>Progress</th>
 				<td>
-						<table width="100%">
-								<tr>
-										<td>
-												<input id='progress' list='progress_levels' type=range min=0 max=100 value='<%=progress%>'>
-												<datalist id="progress_levels">
-														<option>0</option>
-														<option>5</option>
-														<option>80</option>
-														<option>100</option>
-												</datalist>
-										</td>
-										<td width="150px" id='progress_label'>
-												<%=progress_label%>
-										</td>
-								</tr>
-						</table>
+						<input value='<%=progress%>' <%=subtasks>0?"disabled":""%> id='progress' list='progress_levels' type=range min=0 max=100 >
+						<datalist id="progress_levels">
+								<option>0</option>
+								<option>5</option>
+								<option>80</option>
+								<option>100</option>
+						</datalist>
+				</td>
+				<td width="150px" id='progress_label'>
+						<%=progress_label%>
 				</td>
 				<th>Completed</th>
 				<td>
@@ -77,5 +74,5 @@
 
 <h2>Description</h2>
 <div class='description'>
-		<%=APP.Markdown(description)%>
+		<%=APP.Format.markdown(description)%>
 </div>

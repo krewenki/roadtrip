@@ -48,6 +48,20 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 	search_string: function() {
 		var string = this.get('task') + "";
 		return string.toUpperCase();
+	},
+	GetProgressLabel: function(val) {
+		if (!val)
+			val = this.get('progress')
+		var label = "New";
+		if (val > 0)
+			label = "Accepted";
+		if (val > 5)
+			label = "In Progress"
+		if (val > 80)
+			label = "Review";
+		if (val == 100)
+			label = "Complete";
+		return label;
 	}
 });
 
@@ -55,7 +69,7 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.tasks.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/tasks',
 	comparator: function(m) {
-		return -m.get('progress') - m.get('priority')
+		return -((m.get('progress') % 100) + m.get('priority') + m.get('views'))
 	}
 });
 
@@ -100,8 +114,8 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	events: {
 		"click @ui.edit": "Edit",
 		"click @ui.subtask": "AddSubtask",
-		"click @ui.progress": "UpdateProgress",
-		"input @ui.progress": "UpdateProgressLabel"
+		"input @ui.progress": "UpdateProgress",
+		//"input @ui.progress": "UpdateProgressLabel"
 
 	},
 	Edit: function() {
@@ -119,9 +133,11 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	},
 	UpdateProgress: function(e) {
 		console.log("progress", this.ui.progress.val());
+		var label = this.model.GetProgressLabel(this.ui.progress.val());
+		this.ui.progress_label.html(label);
 		this.model.set({
 			'progress': this.ui.progress.val(),
-			'progress_label': this.ui.progress_label.html()
+			'progress_label': label
 		});
 		if (!this.model.get('start_date'))
 			this.model.set({
@@ -132,24 +148,15 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 				complete_date: Date.now()
 			})
 	},
-	UpdateProgressLabel: function(e) {
-		var val = this.ui.progress.val();
-		var label = "New";
-		if (val > 0)
-			label = "Accepted";
-		if (val > 5)
-			label = "In Progress"
-		if (val > 80)
-			label = "Review";
-		if (val == 100)
-			label = "Complete";
-		this.ui.progress_label.html(APP.Icon(label) + " " + label)
-	}
+	// UpdateProgressLabel: function(e) {
+	// 	var val = this.ui.progress.val();
+	// 	this.ui.progress_label.html(this.model.GetProgressLabel(val));
+	// }
 })
 
 
 /**
- *  Task View
+ *  General views, defined for use with the router's automatic "$cmd" mechanism.
  */
 DEF.modules.tasks.views = {
 	/**
@@ -213,11 +220,11 @@ DEF.modules.tasks.views = {
 				}
 				this.model.set({
 					subtasks: subs.length,
-					progress: sum / subs.length
+					progress: sum / subs.length,
+					progress_label: this.model.GetProgressLabel(sum / subs.length)
 				})
-				console.log("Progress set to ", sum / subs.length)
+				console.log("Progress automatically set to ", sum / subs.length)
 			}
-
 		},
 		onShow: function() {
 			APP.SetTitle(this.model.get(this.model.nameAttribute));
@@ -235,6 +242,7 @@ DEF.modules.tasks.views = {
 					return m.get('parent_id') == model_id && m.get('progress') != 100
 				}
 			}))
+
 			this.showChildView('closed', new DEF.modules.tasks.TaskList({
 				template: require("./templates/taskline_closed.html"),
 				collection: APP.models.tasks,

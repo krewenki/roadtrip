@@ -163,12 +163,6 @@ fieldset {
 				padding: 5px;
 		}
 }
-.table-borders {
-		td,
-		tr {
-				border: 1px solid #ddd;
-		}
-}
 .table-top {
 		th {
 				padding-left  : 6px;
@@ -198,6 +192,14 @@ fieldset {
 		}
 		td:last-child {
 				border-right: inherit;
+		}
+}
+.table-borders {
+		td {
+				border: 1px solid #ddd;
+		}
+		td:last-child {
+				border: 1px solid #ddd;
 		}
 }
 .table-full.table-left {

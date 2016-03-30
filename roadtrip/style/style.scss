@@ -1,9 +1,5 @@
 @import 'config';
 @import 'util';
-@import '../modules/orders/style.scss';
-@import '../modules/calendar/calendar.scss';
-@import '../modules/projects/project.scss';
-@import '../modules/tasks/task.scss';
 body {
 		margin     : 0;
 		font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
@@ -152,10 +148,14 @@ body {
 						width    : 100%;
 						min-width: 100px;
 				}
-				.icon {
-						width     : 20px;
+				i.icon {
+						//width     : 20px;
 						text-align: center;
 						color     : $text_color;
 				}
 		}
 }
+@import '../modules/orders/style.scss';
+@import '../modules/calendar/calendar.scss';
+@import '../modules/projects/project.scss';
+@import '../modules/tasks/task.scss';

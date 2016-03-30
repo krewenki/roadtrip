@@ -13,7 +13,6 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 		tasks: 5,
 		members: 2,
 
-		group: "task",
 
 		_edits: 0,
 		_views: 0,
@@ -61,6 +60,7 @@ DEF.modules.projects.Router = Roadtrip.Router.extend({
 			APP.SetMode("projects");
 		} else {
 			APP.root.showChildView("main", new DEF.EmptyView({
+				icon: "loading",
 				msg: "Loading Projects..."
 			}));
 			this.listenToOnce(APP.models.projects, 'sync', this.ShowProject.bind(this, project))
