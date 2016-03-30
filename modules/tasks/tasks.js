@@ -54,7 +54,7 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.tasks.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/tasks',
 	comparator: function(m) {
-		return m.get('progress') - m.get('priority')
+		return -m.get('progress') - m.get('priority')
 	}
 });
 
@@ -75,7 +75,16 @@ DEF.modules.tasks.TaskLine = Backbone.Marionette.ItemView.extend({
 DEF.modules.tasks.TaskList = Backbone.Marionette.CollectionView.extend({
 	tagName: "table",
 	className: "table table-top table-full task-table",
-	childView: DEF.modules.tasks.TaskLine
+	childView: DEF.modules.tasks.TaskLine,
+	childViewOptions: function() {
+		return {
+			template: this.options.template
+		}
+	},
+	onShow: function() {
+		if (!this.children.length)
+			this.$el.parent().parent().hide()
+	}
 })
 
 DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
@@ -201,8 +210,8 @@ DEF.modules.tasks.views = {
 			}))
 
 			this.showChildView('open', new DEF.modules.tasks.TaskList({
-				collection: APP.models.tasks,
 				template: require("./templates/taskline.html"),
+				collection: APP.models.tasks,
 				filter: function(m) {
 					return m.get('parent_id') == model_id && m.get('progress') != 100
 				}
