@@ -104,6 +104,9 @@ DEF.modules.tasks.TaskList = Backbone.Marionette.CollectionView.extend({
 
 DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	template: require("./templates/task_view.html"),
+	modelEvents: {
+		"change": "render"
+	},
 	ui: {
 		edit: "#edit",
 		subtask: "#subtask",
