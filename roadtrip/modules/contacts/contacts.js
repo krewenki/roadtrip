@@ -40,8 +40,9 @@ DEF.modules.contacts.Model = Roadtrip.Model.extend({
 		city: "",
 		state: "",
 		zip: "",
-		views: 0,
-		edits: 0
+
+		_views: 0,
+		_edits: 0
 	},
 	GetLink: function(cmd) {
 		return "#contacts/" + cmd + "/" + this.get('_id');

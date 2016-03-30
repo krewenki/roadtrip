@@ -2,15 +2,12 @@ DEF.modules.tasks = {};
 DEF.modules.tasks.Router = Roadtrip.Router.extend({
 	initialize: function() {
 		APP.models.tasks = new DEF.modules.tasks.Collection();
+
 		APP.Icon_Lookup["todo"] = "list-ul";
 		APP.Icon_Lookup["bug"] = "bug";
 		APP.Icon_Lookup["feature"] = "lightbulb-o";
-
-		APP.Icon_Lookup['New'] = "battery-0";
-		APP.Icon_Lookup['Accepted'] = "battery-1";
-		APP.Icon_Lookup['In Progress'] = "battery-2";
-		APP.Icon_Lookup['Review'] = "battery-3";
-		APP.Icon_Lookup['Complete'] = "battery-4";
+		APP.Icon_Lookup["product"] = "car";
+		APP.Icon_Lookup["support"] = "wechat";
 
 	},
 	module: "tasks",
@@ -70,7 +67,7 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 	url: 'dev.telegauge.com:3000/roadtrip/tasks',
 	comparator: function(m) {
 		var rank = 0.0 - (m.get('progress') % 100) - m.get('priority') - m.get('_views') - m.get('subtasks');
-		console.log(rank);
+		//		console.log(rank);
 		return rank
 	}
 });
@@ -173,7 +170,7 @@ DEF.modules.tasks.views = {
 	edit: Roadtrip.Edit.extend({
 		module: "tasks",
 		template: require("./templates/task_edit.html"),
-		Return: function() {
+		XReturn: function() {
 			if (this.model.get('parent_id'))
 				APP.Route("#" + this.model.get('parent_module') + "/view/" + this.model.get('parent_id'))
 			else
@@ -221,17 +218,19 @@ DEF.modules.tasks.views = {
 				parent_id: this.model.get('_id')
 			});
 			if (subs.length > 0) {
-				var sum = 0;
+				var sum = 0,
+					count = 0;
 				for (var s = 0; s < subs.length; s++) {
 					var sub = subs[s];
-					sum += (sub.get('progress') | 0);
+					sum += (sub.get('progress') * sub.get('priority') / 100.0);
+					count += (sub.get('priority') / 100.0)
 				}
 				this.model.set({
 					subtasks: subs.length,
-					progress: sum / subs.length,
-					progress_label: this.model.GetProgressLabel(sum / subs.length)
+					progress: sum / count,
+					progress_label: this.model.GetProgressLabel(sum / count)
 				})
-				console.log("Progress automatically set to ", sum / subs.length)
+				console.log("Progress automatically set to ", sum / count, count)
 			}
 		},
 		onShow: function() {

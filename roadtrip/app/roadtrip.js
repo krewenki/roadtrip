@@ -27,6 +27,7 @@ Roadtrip = {
 				APP.root.showChildView("main", APP.Page);
 			} else {
 				APP.root.showChildView("main", new DEF.EmptyView({
+					icon: "loading",
 					msg: "Loading..."
 				}));
 				this.listenToOnce(APP.models[module], 'sync', this.LoadModule.bind(this, cmd, arg))
@@ -43,6 +44,7 @@ Roadtrip = {
 				APP.root.showChildView("main", APP.Page);
 			} else {
 				APP.root.showChildView("main", new DEF.EmptyView({
+					icon: "loading",
 					msg: "Loading..."
 				}));
 				this.listenToOnce(APP.models[module], 'sync', this.ShowRoot.bind(this))

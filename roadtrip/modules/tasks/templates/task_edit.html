@@ -27,8 +27,11 @@
 						Task ID:
 				</th>
 				<td>
-						<%=task_id%>
-								<input class='field dirty' type='text' id='task_id' placeholder='task_id' value='<%=task_id%>'>
+						<% if ( task) {%>
+								<%=task_id%>
+										<% } else { %>
+												<input class='field dirty' type='text' id='task_id' placeholder='task_id' value='<%=task_id%>'>
+												<% } %>
 				</td>
 		</tr>
 		<tr>
@@ -36,9 +39,11 @@
 				<td>
 
 						<select class='field' id='kind'>
-								<option <%=kind=='todo' ? "selected": ""%> value='todo'>To-Do</option>
+								<option <%=kind=='product' ? "selected": ""%> value='product'>Product</option>
 								<option <%=kind=='feature' ? "selected": ""%> value='feature'>Feature</option>
 								<option <%=kind=='bug' ? "selected": ""%> value='bug'>Bug</option>
+								<option <%=kind=='todo' ? "selected": ""%> value='todo'>To-Do</option>
+								<option <%=kind=='support' ? "selected": ""%> value='support'>Support</option>
 						</select>
 				</td>
 		</tr>

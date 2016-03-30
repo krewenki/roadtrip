@@ -4,6 +4,12 @@
 				line-height: 20px;
 				color      : $text_light_color;
 				text-align : justify;
+				code {
+						background-color: #eee;
+						font-size       : 18px;
+						padding-left    : 5px;
+						padding-right   : 5px;
+				}
 		}
 }
 #task-details {

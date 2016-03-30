@@ -51,7 +51,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 		calendar: "calendar",
 		contacts: "group",
 		projects: "pie-chart",
-		tasks: "inbox",
+		tasks: "tasks",
 		orders: "money",
 		expenses: "dollar",
 		timeclock: "clock-o",
@@ -87,7 +87,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 				if (this.Icon_Lookup[icon])
 					icon = this.Icon_Lookup[icon];
 		}
-		return "<i " + (title ? "title='" + title + "'" : "") + " class='icon fa fa-" + icon + "'></i>";
+		return "<i " + (title ? "title='" + title + "'" : "title='" + icon + "'") + " class='icon fa fa-" + icon + "'></i>";
 	},
 
 });
@@ -121,13 +121,15 @@ APP.Format = {
 		if (!time)
 			return "--";
 		var date = new Date(time);
-		return date.getFullYear() + "-" + ("00" + date.getMonth()).slice(-2) + "-" + ("00" + date.getDay()).slice(-2);
+		var datef = date.getFullYear() + "-" + ("00" + date.getMonth()).slice(-2) + "-" + ("00" + date.getDay()).slice(-2);
+		return "<a href='#calendar/date/" + datef + "'>" + datef + "</a>";
 	},
 	time: function(time) {
 		if (!time)
 			return "--";
 		var date = new Date(time);
-		return date.getHours() + ":" + ("00" + date.getMinutes()).slice(-2) + ":" + ("00" + date.getSeconds()).slice(-2);
+		var datef = date.getHours() + ":" + ("00" + date.getMinutes()).slice(-2) + ":" + ("00" + date.getSeconds()).slice(-2);
+		return datef;
 	},
 	datetime: function(time) {
 		if (!time)
