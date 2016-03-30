@@ -69,7 +69,9 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.tasks.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/tasks',
 	comparator: function(m) {
-		return -((m.get('progress') % 100) + m.get('priority') + m.get('views'))
+		var rank = 0.0 - (m.get('progress') % 100) - m.get('priority') - m.get('_views') - m.get('subtasks');
+		console.log(rank);
+		return rank
 	}
 });
 
