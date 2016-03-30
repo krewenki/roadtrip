@@ -176,7 +176,7 @@ DEF.modules.projects.MainView = Roadtrip.RecordList.extend({
 DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 	id: 'PROJECTS',
 	template: require("./templates/project.html"),
-	childView: DEF.modules.tasks.TaskView,
+	childView: DEF.modules.tasks.TaskLine,
 	childViewContainer: "#tasks",
 	emptyView: DEF.EmptyView,
 	emptyViewOptions: {

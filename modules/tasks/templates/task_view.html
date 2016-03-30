@@ -9,7 +9,7 @@
 				</div>
 </div>
 
-
+<h2>Details</h2>
 <table class='table table-full table-left'>
 		<tr>
 				<th>Task</th>
@@ -36,17 +36,13 @@
 				</td>
 				<th>Start Date</th>
 				<td>
-						<%=start_date%>
+						<%=APP.Format.date(start_date)%>
 				</td>
 		</tr>
 		<tr>
 				<th>Progress</th>
-				<td>
+				<td colspan=2>
 						<input id='progress' list='progress_levels' type=range min=0 max=100 value='<%=progress%>'>
-						<div id='progress_label'>
-								<%=APP.Icon(progress_label)%>
-										<%=progress_label%>
-						</div>
 						<datalist id="progress_levels">
 								<option>0</option>
 								<option>5</option>
@@ -54,34 +50,15 @@
 								<option>100</option>
 						</datalist>
 				</td>
-				<th>Due Date</th>
-				<td>
-						<%=due_date%>
+				<td id='progress_label'>
+						<%=APP.Icon(progress_label)%>
+								<%=progress_label%>
 				</td>
 		</tr>
-
-		<tr>
-				<th colspan=4 class='header_wide'>Description</th>
-		</tr>
-		<tr>
-				<td colspan=4 class='description'>
-						<%=APP.Markdown(description)%>
-				</td>
 
 </table>
 
-<div class='task_table' id='subtasks'>
-		<h2>Subtasks</h2>
-		<table class='task_table table table-full table-top' id='task_list'>
-				<thead>
-						<tr>
-								<th>ID</th>
-								<th>Task</th>
-								<th>Progress</th>
-								<th class='minwidth800'>Start Date</th>
-								<th class='minwidth800'>Due Date</th>
-								<th class='minwidth1000'>Description</th>
-						</tr>
-				</thead>
-		</table>
+<h2>Description</h2>
+<div class='description'>
+		<%=APP.Markdown(description)%>
 </div>

@@ -69,6 +69,10 @@ Roadtrip = {
 		},
 		GetLink: function(cmd) {
 			return "#tbd/" + cmd + "/" + this.get('_id');
+		},
+		GetTitle: function() {
+			return this.model.get(this.nameAttribute);
+
 		}
 	}),
 	MainView: Backbone.Marionette.LayoutView.extend({
@@ -128,7 +132,8 @@ Roadtrip = {
 				$(e.currentTarget).addClass("dirty");
 		},
 		Save: function(e) {
-			var model = this.model, save = {};
+			var model = this.model,
+				save = {};
 			save["_updated"] = Date.now();
 			$(".field.dirty").each(function(i, $el) {
 				console.log($el.id, $el.value)
