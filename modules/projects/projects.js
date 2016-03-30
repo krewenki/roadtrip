@@ -18,7 +18,13 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 
 		_edits: 0,
 		_views: 0,
-		_updated: 0
+		_updated: 0,
+
+		_wiki: {
+			title: "wiki",
+			content: "Here I am!",
+
+		}
 	},
 	GetLink: function(cmd) {
 		return "#projects/" + cmd + "/" + this.get('_id');
@@ -42,50 +48,44 @@ DEF.modules.projects.Router = Roadtrip.Router.extend({
 	routes: {
 		"projects": "ShowRoot",
 		"projects/:project": "ShowProject",
+		"projects/:project/wiki/:article": "ShowWiki",
 		"projects/:project/edit/:arg": "EditProject",
 		"projects/view/:arg": "RedirectView",
 	},
 	ShowProject: function(project) {
-		if (!_.isUndefined(APP.models.projects) && APP.models.projects.length) {
-			model = APP.models.projects.findWhere({
-				project: project
-			});
+		model = APP.models.projects.findWhere({
+			project: project
+		});
 
-			var view = new DEF.modules.projects.ProjectView({
-				model: model,
-				collection: APP.models.tasks,
-				filter: function(m) {
-					return m.get('parent_id') == this.model.id
-				}
-			})
-			APP.root.showChildView("main", view);
-			APP.SetMode("projects");
-		} else {
-			APP.root.showChildView("main", new DEF.EmptyView({
-				icon: "loading",
-				msg: "Loading Projects..."
-			}));
-			this.listenToOnce(APP.models.projects, 'sync', this.ShowProject.bind(this, project))
-		}
+		var view = new DEF.modules.projects.ProjectView({
+			model: model,
+			collection: APP.models.tasks,
+			filter: function(m) {
+				return m.get('parent_id') == this.model.id
+			}
+		})
+		APP.root.showChildView("main", view);
+		APP.SetMode("projects");
 	},
 	EditProject: function(project, id) {
 		var module = this.module;
-		if (!_.isUndefined(APP.models[module]) && APP.models[module].length) {
-			APP.Page = new DEF.modules.projects.views.edit({
-				model: APP.models[module].get(id),
-			});
-			APP.root.showChildView("main", APP.Page);
-			APP.SetMode(module);
-		} else {
-			APP.root.showChildView("main", new DEF.EmptyView({
-				msg: "Loading Project..."
-			}));
-			this.listenToOnce(APP.models[module], 'sync', this.EditProject.bind(this, id))
-		}
+		APP.Page = new DEF.modules.projects.views.edit({
+			model: APP.models[module].get(id),
+		});
+		APP.root.showChildView("main", APP.Page);
+		APP.SetMode(module);
 	},
 	RedirectView: function(id) {
 		// the "project/view/$id" url gets rewritten to "project/$project"
 		APP.Route("#projects/" + APP.models.projects.get(id).get('project'));
+	},
+	ShowWiki: function(project, article) {
+		var wikis = new DEF.modules.wiki.Article({
+			model: new DEF.modules.wiki.Model(APP.models.projects.findWhere({
+				project: project
+			}).get('_wiki'))
+		})
+		APP.root.showChildView('main', wikis);
 	}
 })
 
@@ -189,11 +189,13 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 	},
 	ui: {
 		new: "#new",
-		edit: "#edit"
+		edit: "#edit",
+		wiki: "#wiki"
 	},
 	events: {
 		"click @ui.new": "CreateTask",
-		"click @ui.edit": "Edit"
+		"click @ui.edit": "Edit",
+		"click @ui.wiki": "Wiki"
 	},
 	onBeforeShow: function() {
 		var subs = APP.models.tasks.where({
@@ -232,5 +234,8 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 	Edit: function() {
 		APP.Route("#projects/" + this.model.get('project') + "/" + "edit" + "/" + this.model.id);
 	},
+	Wiki: function() {
+		APP.Route("#projects/" + this.model.get('project') + "/" + "wiki" + "/crap");
+	}
 
 })

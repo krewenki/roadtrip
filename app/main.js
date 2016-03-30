@@ -23,13 +23,11 @@ var MainApp = Backbone.Marionette.Application.extend({
 		APP.root.showChildView('header', header);
 	},
 	SetTitle: function(title, module) {
-		console.log("title", title);
 		document.title = title + " - roadtrip";
 		if (module)
 			this.SetMode(module);
 	},
 	SetMode: function(mode) {
-		console.trace("mode", mode)
 		$("#HEADER #mainmenu .menuitem").removeClass('active')
 		$("#HEADER #mainmenu .menuitem[data-mode=" + mode + "]").addClass('active');
 	},
@@ -43,9 +41,9 @@ var MainApp = Backbone.Marionette.Application.extend({
 		//			location.hash = route;
 		//		}
 		APP.controller.router.navigate(route, {
-			trigger: trigger
-		})
-		console.log(route, title);
+				trigger: trigger
+			})
+			//console.log(route, title);
 	},
 	Icon_Lookup: {
 		calendar: "calendar",
@@ -55,7 +53,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 		orders: "money",
 		expenses: "dollar",
 		timeclock: "clock-o",
-		wiki: "wikipedia-o",
+		wiki: "wikipedia-w",
 
 		warning: "warning",
 		link: "external-link",
@@ -99,6 +97,7 @@ APP.models = {} // hold the collections
 
 DEF.modules = {} // hold the models definitions
 require("../modules/tasks/tasks.js");
+require("../modules/wiki/wiki.js");
 require("../modules/contacts/contacts.js");
 require("../modules/orders/orders.js");
 require("../modules/projects/projects.js");
