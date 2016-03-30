@@ -9,8 +9,11 @@
 .task-table {
 		max-width: 100%;
 		.task_id {
-				font-weight: bold;
-				color      : $text-color;
+				font-weight     : bold;
+				color           : $text-color;
+				width           : 50px;
+				background-color: #eee;
+				text-align      : center;
 		}
 		.task {
 				min-width: 300px;

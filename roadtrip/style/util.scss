@@ -182,6 +182,9 @@ fieldset {
 				vertical-align: top;
 				color         : $text_light_color;
 		}
+		tr:last-child td {
+				border-bottom: inherit;
+		}
 }
 .table-left {
 		th {
@@ -194,13 +197,13 @@ fieldset {
 				color       : $text_light_color;
 		}
 		td:last-child {
-				border: none;
+				border-right: inherit;
 		}
 }
 .table-full.table-left {
 		min-width: 50%;
 		th {
-				width: 25%;
+				min-width: 15%;
 		}
 		th.header_wide {
 				padding-left : 6px;
