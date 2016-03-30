@@ -35,7 +35,7 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 
 		progress: 0, // scale 0..100
 		progress_label: "New", // this is autoatically calculated based on progress slider
-		priority: 0, // scale 0..100
+		priority: 1, // scale 1..100
 
 		_views: 0,
 		_edits: 0,

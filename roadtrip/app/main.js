@@ -55,6 +55,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 		orders: "money",
 		expenses: "dollar",
 		timeclock: "clock-o",
+		wiki: "wikipedia-o",
 
 		warning: "warning",
 		link: "external-link",
