@@ -185,7 +185,7 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 		icon: "tasks",
 		msg: "There are no tasks",
 		submsg: "<span id='new' class='btn'>" + APP.Icon("new") + " new task</span>",
-		colspan: 3
+		colspan: 5
 	},
 	ui: {
 		new: "#new",
@@ -200,16 +200,18 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 			parent_id: this.model.get('_id')
 		});
 		if (subs.length > 0) {
-			var sum = 0;
+			var sum = 0,
+				count = 0;
 			for (var s = 0; s < subs.length; s++) {
 				var sub = subs[s];
-				sum += (sub.get('progress') | 0);
+				sum += (sub.get('progress') * sub.get('priority') / 100.0);
+				count += (sub.get('priority') / 100.0)
 			}
 			this.model.set({
 				tasks: subs.length,
-				progress: sum / subs.length,
+				progress: sum / count,
 			})
-			console.log("Progress automatically set to ", sum / subs.length)
+			console.log("Progress automatically set to ", sum / count, count)
 		}
 	},
 	onShow: function() {
