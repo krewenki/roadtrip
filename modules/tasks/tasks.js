@@ -85,6 +85,9 @@ DEF.modules.tasks.TaskLine = Backbone.Marionette.ItemView.extend({
 	events: {
 		"click": "ViewTask"
 	},
+	modelEvents: {
+		"change": "render"
+	},
 	ViewTask: function() {
 		APP.Route("#tasks/view/" + this.model.get('_id'));
 	}
@@ -106,9 +109,9 @@ DEF.modules.tasks.TaskList = Backbone.Marionette.CollectionView.extend({
 
 DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	template: require("./templates/task_view.html"),
-	modelEvents: {
-		"change": "render"
-	},
+	// modelEvents: {
+	// 	"change": "render"
+	// },
 	ui: {
 		edit: "#edit",
 		subtask: "#subtask",
