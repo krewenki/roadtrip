@@ -84,7 +84,8 @@ Roadtrip = {
 	 */
 	View: Backbone.Marionette.ItemView.extend({
 		onShow: function() {
-			this.model.set('_views', this.model.get('_views') + 1);
+			if(window.location.href.indexOf('increment=false') == -1)
+				this.model.set('_views', this.model.get('_views') + 1);
 			APP.SetTitle(this.model.get(this.model.nameAttribute), this.module)
 		},
 		modelEvents: {
@@ -118,9 +119,9 @@ Roadtrip = {
 		/**
 		 * After edit, what page to load?
 		 */
-		Return: function() {
+		Return: function(querystring) {
 			if (this.model.id)
-				APP.Route("#" + this.module + "/view/" + this.model.id)
+				APP.Route("#" + this.module + "/view/" + this.model.id + querystring)
 			else
 				APP.Route("#" + this.module);
 		},
@@ -145,7 +146,7 @@ Roadtrip = {
 				save['_edits'] = this.model.get('_edits') + 1;
 				this.model.set(save);
 			}
-			//this.Return();
+			this.Return('?increment=false');
 		},
 		Cancel: function(e) {
 			this.Return();
