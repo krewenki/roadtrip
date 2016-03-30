@@ -30,6 +30,7 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		task: "",
 		description: "",
 		task_id: "0.0.0",
+		subtasks: 0,
 
 		start_date: "",
 		due_date: "",
@@ -199,6 +200,24 @@ DEF.modules.tasks.views = {
 			task: "#task",
 			open: "#open_subtasks",
 			closed: "#closed_subtasks"
+		},
+		onBeforeShow: function() {
+			var subs = APP.models.tasks.where({
+				parent_id: this.model.get('_id')
+			});
+			if (subs.length > 0) {
+				var sum = 0;
+				for (var s = 0; s < subs.length; s++) {
+					var sub = subs[s];
+					sum += (sub.get('progress') | 0);
+				}
+				this.model.set({
+					subtasks: subs.length,
+					progress: sum / subs.length
+				})
+				console.log("Progress set to ", sum / subs.length)
+			}
+
 		},
 		onShow: function() {
 			APP.SetTitle(this.model.get(this.model.nameAttribute));
