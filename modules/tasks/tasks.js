@@ -43,6 +43,11 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		progress_label: "New", // this is autoatically calculated based on progress slider
 		priority: 1, // scale 1..100
 
+		_: {
+			views: 0,
+			edits: 0
+		}
+
 	},
 	GetProgressLabel: function(val) {
 		if (!val)
@@ -64,8 +69,7 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.tasks.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/tasks',
 	comparator: function(m) {
-		var rank = 0.0 - (m.get('progress') % 100) - m.get('priority') - m.get('_.views') - m.get('subtasks');
-		//		console.log(rank);
+		var rank = 0.0 - (m.get('progress') % 100) - m.get('priority') - m.get('_').views - m.get('subtasks');
 		return rank
 	}
 });
