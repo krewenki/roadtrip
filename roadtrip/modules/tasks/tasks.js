@@ -111,6 +111,13 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	// modelEvents: {
 	// 	"change": "render"
 	// },
+	templateHelpers: function() {
+		var parent = APP.models[this.model.get('parent_module')].get(this.model.get('parent_id'));
+		return {
+			parent_title: parent.get(parent.nameAttribute),
+			parent_link: parent.GetLink()
+		}
+	},
 	ui: {
 		edit: "#edit",
 		subtask: "#subtask",
