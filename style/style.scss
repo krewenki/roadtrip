@@ -157,6 +157,9 @@ body {
 				#title {
 						font-weight: bold;
 				}
+				a {
+						color: $link_color_alt;
+				}
 				.cmd {
 						color  : white;
 						float  : right;
@@ -176,6 +179,18 @@ body {
 						padding   : 10px;
 						border-top: 1px solid #999;
 						margin-top: 8px;
+				}
+				hr {
+						border-top: 2px solid white;
+				}
+				.table {
+						th {
+								border: none;
+						}
+						td {
+								color : $text_light_color;
+								border: none;
+						}
 				}
 		}
 		.table-left {
