@@ -1,5 +1,8 @@
 DEF.modules.tasks = {};
 DEF.modules.tasks.Router = Roadtrip.Router.extend({
+	collections: [
+		"users", "tasks"
+	],
 	initialize: function() {
 		APP.models.tasks = new DEF.modules.tasks.Collection();
 
