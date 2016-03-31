@@ -41,10 +41,6 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		priority: 1, // scale 1..100
 
 	},
-	search_string: function() {
-		var string = this.get('task') + "";
-		return string;
-	},
 	GetProgressLabel: function(val) {
 		if (!val)
 			val = this.get('progress')
@@ -211,7 +207,7 @@ DEF.modules.tasks.views = {
 			task: "#task",
 			open: "#open_subtasks",
 			closed: "#closed_subtasks",
-			comments: "#comments"
+			comments: "#comment_container"
 		},
 		onBeforeShow: function() {
 			var subs = APP.models.tasks.where({

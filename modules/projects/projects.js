@@ -37,11 +37,11 @@ DEF.modules.projects.Collection = Roadtrip.Collection.extend({
 });
 
 DEF.modules.projects.Router = Roadtrip.Router.extend({
+	module: "projects",
 	initialize: function() {
 		APP.models.projects = new DEF.modules.projects.Collection();
 		APP.models.tasks = new DEF.modules.tasks.Collection();
 	},
-	module: "projects",
 	routes: {
 		"projects": "ShowRoot",
 		"projects/:project": "ShowProject",
