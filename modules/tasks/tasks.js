@@ -19,6 +19,7 @@ DEF.modules.tasks.Router = Roadtrip.Router.extend({
 DEF.modules.tasks.Model = Roadtrip.Model.extend({
 	idAttribute: '_id',
 	nameAttribute: 'task', // the human-readable field in the record
+	module: "tasks",
 	defaults: {
 		parent_id: false,
 		parent_module: false,
@@ -44,7 +45,7 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 	},
 	search_string: function() {
 		var string = this.get('task') + "";
-		return string.toUpperCase();
+		return string;
 	},
 	GetProgressLabel: function(val) {
 		if (!val)

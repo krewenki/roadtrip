@@ -12,6 +12,7 @@ require("font-awesome-webpack");
 
 require("./roadtrip.js");
 require("./layout.js");
+require("./search.js");
 require("./router.js");
 require("./static.js");
 
