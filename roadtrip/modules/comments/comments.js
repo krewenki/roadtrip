@@ -37,6 +37,9 @@ DEF.modules.comments.Comments = Backbone.Marionette.CompositeView.extend({
 	events: {
 		"click @ui.save": "Save"
 	},
+	modelEvents: {
+		"change": "render"
+	},
 	Save: function() {
 		var comments = this.model.get('comments');
 		var comment = {
@@ -48,7 +51,7 @@ DEF.modules.comments.Comments = Backbone.Marionette.CompositeView.extend({
 		this.model.set({
 			comments: comments
 		})
-		console.log(comments);
+		this.model.trigger('change', this.model)
 	}
 
 })
