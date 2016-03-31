@@ -1,5 +1,6 @@
 if(document.cookie == ''){
 	// fall back to a $.getJSON
+	window.U = false;
 } else {
 	var c = document.cookie.split(';');
 	var co = c.map(function(s){ return s.split('=')});
@@ -7,6 +8,6 @@ if(document.cookie == ''){
 	for(var i in co){
 		cookie[co[i][0].trim()] = decodeURIComponent(co[i][1]);
 	}
-	U = JSON.parse(cookie.user);
+	window.U = JSON.parse(cookie.user);
 }
 
