@@ -16,11 +16,6 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 
 		progress: 0,
 
-
-		_edits: 0,
-		_views: 0,
-		_updated: 0,
-
 		_wiki: {
 			title: "wiki",
 			content: "Here I am!",
@@ -117,7 +112,7 @@ DEF.modules.projects.views = {
 			"click @ui.delete": "Delete",
 		},
 		Edit: function() {
-			APP.Route("#projects/" + "edit" + "/" + this.model.id);
+			APP.Route("#projects/" + "edit" + "/" + this.model.id, false);
 		},
 		Delete: function() {
 			if (confirm("Are you sure you want to delete " + this.model.get(this.model.nameAttribute))) {
@@ -218,7 +213,7 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 		}
 	},
 	onShow: function() {
-		this.model.set('_views', this.model.get('_views') + 1);
+		this.model.SetStats("view")
 		APP.SetTitle(this.model.get('project'));
 	},
 	CreateTask: function() {

@@ -35,7 +35,7 @@ DEF.Search = Backbone.Marionette.CompositeView.extend({
 		}
 		this.collection = new Backbone.Collection(matches);
 		this.collection.comparator = function(m) {
-			return -m.get('_views');
+			return -m.get('_.views');
 		}
 	},
 })

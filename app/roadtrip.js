@@ -13,10 +13,9 @@ Roadtrip = {
 		execute: function(callback, args, name) {
 			var module = this.module;
 			if (!_.isUndefined(APP.models[module]) && APP.models[module].length) {
-				console.log("execute", callback);
 				return Backbone.Router.prototype.execute.call(this, callback, args, name)
 			} else {
-				console.log("waiting for ", module)
+				console.log("waiting for collection", module)
 				APP.root.showChildView("main", new DEF.EmptyView({
 					icon: "loading",
 					msg: "Loading " + this.module.toUpperCase() + "&hellip;"
@@ -46,7 +45,7 @@ Roadtrip = {
 		page: 1,
 		comparator: function(m) {
 			//var sort = ('00000' + (m.get('views') + m.get('edits'))).substr(-5) + m.get('name');
-			var sort = (m.get('_views') + m.get('_edits'));
+			var sort = (m.get('_.views') + m.get('_.edits'));
 			return -sort
 		}
 	}),
@@ -54,7 +53,10 @@ Roadtrip = {
 		idAttribute: '_id',
 		module: "tbd", // the name of the collection
 		nameAttribute: 'name', // the human-readable field in the record
-		defaults: {},
+		defaults: {
+			_: this.common
+		},
+
 		icon: function() {
 			return APP.Icon(this.module, this.module);
 		},
@@ -70,18 +72,62 @@ Roadtrip = {
 		GetTitle: function() {
 			return this.model.get(this.nameAttribute);
 
+		},
+		/**
+		 * Use this to quickly set stats for the models
+		 *
+		 * this.model.SetStats({created_by: U.ID})
+		 * this.model.SetStats("views"); // auto-increment
+		 */
+		SetStats: function(stats) {
+			var defaults = { // these attributes go to every model as "_"
+				views: 0,
+				edits: 0,
+				created_on: 0,
+				created_by: 0,
+				edited_on: 0,
+				edited_by: 0
+			}
+			var model = _.extend(defaults, this.get('_'))
+			if (!_.isObject(stats)) {
+				switch (stats) {
+					case "create":
+						stats = {
+							created_by: U.id,
+							created_on: Date.now()
+						}
+						break;
+					case "view":
+						stats = {
+							views: model.views + 1
+						}
+						console.log(model.views);
+						console.log(stats);
+						break;
+					case "edit":
+						stats = {
+							edited_on: Date.now(),
+							edited_by: U.id,
+							edits: model.edits + 1
+						}
+					default:
+						console.warn("unhandled stat", stats);
+				}
+			}
+			this.set({
+				_: _.extend(model, stats)
+			})
 		}
 	}),
 	MainView: Backbone.Marionette.LayoutView.extend({
 
 	}),
-
 	/**
 	 * Useful for viewing a single model
 	 */
 	View: Backbone.Marionette.ItemView.extend({
 		onShow: function() {
-			this.model.set('_views', this.model.get('_views') + 1);
+			this.model.SetStats("view")
 			APP.SetTitle(this.model.get(this.model.nameAttribute), this.module)
 		},
 		modelEvents: {
@@ -131,16 +177,16 @@ Roadtrip = {
 		Save: function(e) {
 			var model = this.model,
 				save = {};
-			save["_updated"] = Date.now();
 			$(".field.dirty").each(function(i, $el) {
 				console.log($el.id, $el.value)
 				save[$el.id] = $el.value;
 			})
 			if (!this.model.id) {
 				APP.models[this.module].create(save);
+				this.model.SetStats("create")
 			} else {
-				save['_edits'] = this.model.get('_edits') + 1;
 				this.model.set(save);
+				this.model.SetStats("edit")
 			}
 			this.Return();
 		},

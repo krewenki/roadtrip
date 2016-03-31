@@ -38,10 +38,6 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		progress_label: "New", // this is autoatically calculated based on progress slider
 		priority: 1, // scale 1..100
 
-		_views: 0,
-		_edits: 0,
-		_updated: Date.now(),
-		_created: Date.now()
 	},
 	search_string: function() {
 		var string = this.get('task') + "";
@@ -67,7 +63,7 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.tasks.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/tasks',
 	comparator: function(m) {
-		var rank = 0.0 - (m.get('progress') % 100) - m.get('priority') - m.get('_views') - m.get('subtasks');
+		var rank = 0.0 - (m.get('progress') % 100) - m.get('priority') - m.get('_.views') - m.get('subtasks');
 		//		console.log(rank);
 		return rank
 	}
@@ -236,7 +232,7 @@ DEF.modules.tasks.views = {
 		},
 		onShow: function() {
 			APP.SetTitle(this.model.get(this.model.nameAttribute));
-			this.model.set('_views', this.model.get('_views') + 1);
+			this.model.SetStats("view");
 
 			var model_id = this.model.id;
 			this.showChildView('task', new DEF.modules.tasks.TaskDetails({
