@@ -1,6 +1,7 @@
 <div id='menu'>
 		<span id='title'>Task</span>
-		<%=task_id%>
+		<%=task_id%>:
+				<span class='path'><%=path%></span>
 				<div class='cmd link' id='edit'>
 						<%=APP.Icon('edit')%> edit task
 				</div>
@@ -11,7 +12,7 @@
 				<hr>
 				<table id='task-details' class='table table-full table-left '>
 						<tr>
-								<td class='icon' rowspan=4>
+								<td id='task_icon' class='' rowspan=4>
 										<%=APP.Icon(kind, kind)%>
 								</td>
 								<th>Task</th>

@@ -36,6 +36,15 @@ var MainApp = Backbone.Marionette.Application.extend({
 		$("#HEADER #mainmenu .menuitem").removeClass('active')
 		$("#HEADER #mainmenu .menuitem[data-mode=" + mode + "]").addClass('active');
 	},
+	/**
+	 * returns the specified models
+	 * @param  {search_string} model module nameAttribute
+	 * @param  {id} id    model  _id
+	 * @return {[type]}       the model
+	 */
+	GetModel: function(module, id) {
+		return APP.models[module].get(id);
+	},
 	Route: function(route, trigger) {
 		if (_.isUndefined(trigger))
 			trigger = true;
