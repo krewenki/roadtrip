@@ -2,6 +2,7 @@ DEF.Router = Backbone.Marionette.AppRouter.extend({
 	appRoutes: {
 		'home': 'GoHome',
 		'': 'GoHome',
+		'login': 'Login'
 	}
 });
 
@@ -16,6 +17,14 @@ DEF.Controller = Backbone.Marionette.Object.extend({
 	GoHome: function () {
 		var page = new DEF.StaticLayout({
 			page: "home"
+		})
+		APP.root.showChildView("main", page);
+		APP.SetMode("home");
+	},
+	
+	Login: function () {
+		var page = new DEF.StaticLayout({
+			page: "login"
 		})
 		APP.root.showChildView("main", page);
 		APP.SetMode("home");
