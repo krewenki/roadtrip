@@ -12,10 +12,11 @@ body {
 #FOOTER {
 		background-color: black;
 		background      : linear-gradient(#333, #000);
-		color           : white;
+		color           : $text_light_color;
 		padding         : 10px;
 		box-shadow      : 0 5px 20px rgba(0, 0, 0, .5);
 		font-size       : 12px;
+		text-align      : center;
 }
 #HEADER {
 		background-color: black;

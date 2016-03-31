@@ -60,7 +60,7 @@ Roadtrip = {
 			return -sort
 		},
 		initialize: function() {
-			this.listenTo(this, "sync", this.Synced, this);
+			this.listenToOnce(this, "sync", this.Synced, this);
 		},
 		Synced: function(x, y, z) {
 			APP.trigger("collection:sync");

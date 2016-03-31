@@ -130,6 +130,9 @@ APP.Format = {
 	clamp: function(val, min, max) {
 		return Math.max(Math.min(val, max), min);
 	},
+	number: function(val) {
+		return val.toFixed(0).replace(/(\d)(?=(\d{3})+$)/g, '$1,') + "</span>";
+	},
 	money: function(val) {
 		var sign = val < 0 ? "negative" : "positive";
 		return '<span class="money ' + sign + '">$' + val.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + "</span>";
