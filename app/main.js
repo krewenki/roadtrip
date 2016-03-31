@@ -10,12 +10,16 @@ require('backbone.highway');
 require('../style/style.scss');
 require("font-awesome-webpack");
 
+require("./auth.js");
 require("./roadtrip.js");
 require("./layout.js");
 require("./search.js");
 require("./router.js");
 require("./static.js");
 
+//$.getJSON('/auth',function(r){
+	//console.log(r);
+//})
 
 var MainApp = Backbone.Marionette.Application.extend({
 	setRootLayout: function() {
