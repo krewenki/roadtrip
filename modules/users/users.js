@@ -2,7 +2,7 @@ DEF.modules.users = {}
 DEF.modules.users.Router = Roadtrip.Router.extend({
 	initialize: function() {
 		APP.models.users = new DEF.modules.users.Collection();
-	}
+	},
 });
 DEF.modules.users.Model = Backbone.Model.extend({
 	defaults: {
