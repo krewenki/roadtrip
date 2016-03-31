@@ -41,11 +41,34 @@ DEF.RootLayout = Backbone.Marionette.LayoutView.extend({
 	el: 'body',
 	regions: {
 		header: '#HEADER',
+		footer: '#FOOTER',
 		main: '#MAIN',
 		search: "#SEARCH"
 	}
 });
 
+DEF.FooterLayout = Backbone.Marionette.ItemView.extend({
+	template: require('../templates/footer.html'),
+	ui: {
+		collections: "#collection_list"
+	},
+	initialize: function() {
+		this.listenTo(APP, "collection:sync", this.render)
+	},
+	onRender: function() {
+		var html = [],
+			total = 0;
+		var collections = Object.keys(APP.models);
+		for (var c = 0; c < collections.length; c++) {
+			var module = collections[c];
+			var count = APP.models[module].length;
+			html.push(module + ": " + count);
+			total += count;
+
+		}
+		this.ui.collections.html("RECORDS: " + total + " || " + html.join(', '));
+	}
+})
 
 // Layout Header View
 // ------------------

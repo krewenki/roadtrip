@@ -1,12 +1,21 @@
 @import 'config';
 @import 'util';
 body {
-		margin     : 0;
-		font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+		margin          : 0;
+		font-family     : "Lucida Grande", Lucida, Verdana, sans-serif;
+		background-color: black;
 }
 .bg1 {
 		color     : white;
 		background: repeating-linear-gradient( -55deg, #222, #222 10px, #242424 10px, #242424 20px);
+}
+#FOOTER {
+		background-color: black;
+		background      : linear-gradient(#333, #000);
+		color           : white;
+		padding         : 10px;
+		box-shadow      : 0 5px 20px rgba(0, 0, 0, .5);
+		font-size       : 12px;
 }
 #HEADER {
 		background-color: black;
@@ -121,7 +130,8 @@ body {
 		}
 }
 #MAIN {
-		padding: 20px;
+		padding         : 20px;
+		background-color: white;
 		h1 {
 				font-size: 20px;
 		}

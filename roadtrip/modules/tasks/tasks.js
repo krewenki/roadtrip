@@ -49,6 +49,10 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		}
 
 	},
+	/**
+	 * Returns the (html) path for this task, by recursively following it's parents
+	 * @return {string} The path
+	 */
 	GetPath: function() {
 		var path = "";
 		var parent = APP.GetModel(this.get('parent_module'), this.get('parent_id'));
@@ -86,7 +90,11 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.tasks.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/tasks',
 	comparator: function(m) {
-		var rank = 0.0 - (m.get('progress') % 100) - m.get('priority') - m.get('_').views - m.get('subtasks');
+		rank = 0;
+		if (m.get('progress') == 100)
+			rank = 10000 - m.get('priority') - m.get('_').views / 10 - m.get('subtasks');
+		else
+			rank = 0.0 - (m.get('progress')) - m.get('priority') - m.get('_').views / 10 - m.get('subtasks');
 		return rank
 	}
 });
@@ -147,9 +155,17 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		//"input @ui.progress": "UpdateProgressLabel"
 
 	},
+	/**
+	 * Show the task edit forms
+	 * @return {[type]} [description]
+	 */
 	Edit: function() {
 		APP.Route("#tasks/edit/" + this.model.id);
 	},
+	/**
+	 * Create a new model and launch the task editor
+	 * @return {[type]} [description]
+	 */
 	AddSubtask: function() {
 		var page = new DEF.modules.tasks.views.edit({
 			model: false,
@@ -160,7 +176,11 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		});
 		APP.root.showChildView('main', page);
 	},
-	UpdateProgress: function(e) {
+	/**
+	 * Someone drug the progress handle, so update stuff
+	 * @return {[type]}   [description]
+	 */
+	UpdateProgress: function() {
 		console.log("progress", this.ui.progress.val());
 		var label = this.model.GetProgressLabel(this.ui.progress.val());
 		this.ui.progress_label.html(label);
