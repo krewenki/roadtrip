@@ -1,0 +1,59 @@
+<div id='menu'>
+		<span id='title'>Calendar:</span>
+		<%=name%>
+				<div class='cmd link' id='edit'>
+						<%=APP.Icon('edit')%> edit
+				</div>
+				<div class='cmd link danger' id='delete'>
+						<%=APP.Icon('delete')%> delete
+				</div>
+</div>
+
+<table class='table table-full table-left'>
+		<tr>
+				<th>Title</th>
+				<td>
+						<%=title%>
+				</td>
+		</tr>
+		<tr>
+				<th>Date</th>
+				<td>
+						<%=date%>
+				</td>
+		</tr>
+
+		<tr>
+				<th>Notes</th>
+				<td>
+						<%=notes%>
+				</td>
+		</tr>
+
+		<tr>
+				<th>Views</th>
+				<td>
+						<%=_.views%>
+				</td>
+		</tr>
+
+		<tr>
+				<th>Edits</th>
+				<td>
+						<%=_.edits%>
+				</td>
+		</tr>
+		<!--
+<tr>
+	<td colspan=2>
+
+		<button class='btn cmd' id='edit'>
+			<%=APP.Icon('edit')%> edit
+		</button>
+		<button class='btn danger cmd' id='delete'>
+			<%=APP.Icon('delete')%> delete
+		</button>
+
+	</td>
+</tr>-->
+</table>
