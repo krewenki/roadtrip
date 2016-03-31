@@ -24,12 +24,11 @@ DEF.modules.calendar.Model = Roadtrip.Model.extend({
 	defaults: {
 		date: new Date().toISOString().slice(0, 10),
 		title: 'New Event',
-		timestamp: new Date().getTime(),
+		startDate: new Date().toISOString().slice(0, 10) + 'T09:00',
+		endDate: new Date().toISOString().slice(0,10) + 'T10:00',
+		allDay: false,
 		attendees: [],
-		notes: '',
-		user: '',
-		views: 0,
-		edits: 0
+		notes: ''
 	},
 });
 
@@ -50,6 +49,12 @@ DEF.modules.calendar.views = {
 	edit: Roadtrip.Edit.extend({
 		module: "calendar",
 		template: require("./templates/edit.html"),
+		modelEvents: {
+			"change" : "setDates"
+		},
+		setDates: function(){
+			this.model.set({ date : this.model.get('startDate').slice(0,10)})
+		}
 	}),
 
 	Event: Roadtrip.View.extend({
@@ -136,9 +141,14 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend({
 			var days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 			var date, collection;
 			for (var i in days) {
-				date = new Date(this.sunday + (86400000 * i))
-				collection = new Backbone.Collection(APP.models.calendar.where({
-					date: date.toISOString().slice(0, 10)
+				date = new Date(this.sunday + (86400000 * i));
+				iso = new Date(date.toISOString().slice(0,10)).getTime()
+
+				collection = new Backbone.Collection(APP.models.calendar.filter(function(c){
+					var startDate = new Date(c.get('startDate')).getTime()
+					var endDate = new Date(new Date(c.get('endDate')).getTime() + 86400000).getTime();
+					console.log(startDate, iso)
+					return startDate <= iso && endDate >= iso;
 				}))
 				this.showChildView(days[i], new DEF.modules.calendar.views.Day({
 					date: date,
