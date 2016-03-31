@@ -93,7 +93,7 @@ Roadtrip = {
 				switch (stats) {
 					case "create":
 						stats = {
-							created_by: U.id,
+							created_by: U._id,
 							created_on: Date.now()
 						}
 						break;
@@ -105,9 +105,10 @@ Roadtrip = {
 					case "edit":
 						stats = {
 							edited_on: Date.now(),
-							edited_by: U.id,
+							edited_by: U._id,
 							edits: model.edits + 1
 						}
+						break;
 					default:
 						console.warn("unhandled stat", stats);
 				}
