@@ -15,6 +15,11 @@ DEF.modules.comments.Collection = Backbone.Collection.extend({
 DEF.modules.comments.Comment = Backbone.Marionette.ItemView.extend({
 	className: "comment",
 	template: require("./templates/comment.html"),
+	templateHelpers: function() {
+		return {
+			username: APP.models.users.get(this.model.get('user_id')).get('name')
+		}
+	}
 
 })
 
@@ -25,7 +30,6 @@ DEF.modules.comments.Comments = Backbone.Marionette.CompositeView.extend({
 	childViewContainer: "#comment_list",
 	emptyView: DEF.EmptyView,
 	emptyViewOptions: {
-		icon: "comments",
 		msg: "No comments yet!",
 	},
 	ui: {
@@ -37,9 +41,6 @@ DEF.modules.comments.Comments = Backbone.Marionette.CompositeView.extend({
 	},
 	modelEvents: {
 		"change": "render"
-	},
-	onRender: function() {
-		console.log("splas");
 	},
 	Save: function() {
 		var comments = this.model.get('comments');
