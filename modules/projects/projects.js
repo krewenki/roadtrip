@@ -29,7 +29,7 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 	},
 	GetLink: function(cmd) {
 		return "#projects/" + cmd + "/" + this.get('_id');
-	}
+	},
 });
 
 /**
