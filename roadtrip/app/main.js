@@ -18,7 +18,7 @@ require("./router.js");
 require("./static.js");
 
 //$.getJSON('/auth',function(r){
-	//console.log(r);
+//console.log(r);
 //})
 
 var MainApp = Backbone.Marionette.Application.extend({
@@ -36,7 +36,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 		$("#HEADER #mainmenu .menuitem").removeClass('active')
 		$("#HEADER #mainmenu .menuitem[data-mode=" + mode + "]").addClass('active');
 	},
-	Route: function(route, title, trigger) {
+	Route: function(route, trigger) {
 		if (_.isUndefined(trigger))
 			trigger = true;
 
