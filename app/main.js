@@ -109,6 +109,7 @@ require("../modules/contacts/contacts.js");
 require("../modules/orders/orders.js");
 require("../modules/projects/projects.js");
 require("../modules/calendar/calendar.js");
+require("../modules/users/users.js");
 
 
 APP.Format = {
