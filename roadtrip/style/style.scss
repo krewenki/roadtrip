@@ -98,8 +98,11 @@ body {
 				#search_result_box {
 						padding: 10px;
 						#results {
-								display  : flex;
-								flex-wrap: wrap;
+								display   : flex;
+								flex-wrap : wrap;
+								max-height: 300px;
+								overflow-y: auto;
+								overflow-x: hidden;
 								.search_result {
 										white-space  : nowrap;
 										border       : 1px solid #999;

@@ -45,9 +45,10 @@ DEF.modules.comments.Comments = Backbone.Marionette.CompositeView.extend({
 			comment: this.ui.comment.val()
 		}
 		comments.push(comment);
-		this.model.save({
+		this.model.set({
 			comments: comments
 		})
+		console.log(comments);
 	}
 
 })

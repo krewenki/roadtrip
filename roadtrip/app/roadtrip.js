@@ -5,13 +5,10 @@
 Roadtrip = {
 	Router: Backbone.Marionette.AppRouter.extend({
 		module: "module", // override, of course.
-		routes: {
-			"projects": "ShowRoot",
-			"projects/:cmd": "LoadModule",
-			"projects/:cmd/:arg": "LoadModule",
-		},
+		routes: {},
 		execute: function(callback, args, name) {
 			var module = this.module;
+			console.log(module);
 			if (!_.isUndefined(APP.models[module]) && APP.models[module].length) {
 				return Backbone.Router.prototype.execute.call(this, callback, args, name)
 			} else {
