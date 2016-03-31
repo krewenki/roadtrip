@@ -24,8 +24,8 @@ require("./static.js");
 var MainApp = Backbone.Marionette.Application.extend({
 	setRootLayout: function() {
 		this.root = new DEF.RootLayout();
-		var header = new DEF.HeaderLayout({});
-		APP.root.showChildView('header', header);
+		APP.root.showChildView('header', new DEF.HeaderLayout({}));
+		APP.root.showChildView('footer', new DEF.FooterLayout({}));
 	},
 	SetTitle: function(title, module) {
 		document.title = title + " - roadtrip";
@@ -138,7 +138,7 @@ APP.Format = {
 		if (!time)
 			return "--";
 		var date = new Date(time);
-		var datef = date.getFullYear() + "-" + ("00" + date.getMonth()).slice(-2) + "-" + ("00" + date.getDay()).slice(-2);
+		var datef = date.getFullYear() + "-" + ("00" + (date.getMonth() + 1)).slice(-2) + "-" + ("00" + date.getDate()).slice(-2);
 		return "<a href='#calendar/date/" + datef + "'>" + datef + "</a>";
 	},
 	time: function(time) {

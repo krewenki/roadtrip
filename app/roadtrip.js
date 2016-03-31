@@ -58,6 +58,12 @@ Roadtrip = {
 			//var sort = ('00000' + (m.get('views') + m.get('edits'))).substr(-5) + m.get('name');
 			var sort = (m.get('_.views') + m.get('_.edits'));
 			return -sort
+		},
+		initialize: function() {
+			this.listenTo(this, "sync", this.Synced, this);
+		},
+		Synced: function(x, y, z) {
+			APP.trigger("collection:sync");
 		}
 	}),
 	Model: Backbone.Model.extend({
