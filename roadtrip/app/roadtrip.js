@@ -5,20 +5,34 @@
 Roadtrip = {
 	Router: Backbone.Marionette.AppRouter.extend({
 		module: "module", // override, of course.
+		collections: [], // list collections required for this module
 		routes: {},
 		execute: function(callback, args, name) {
 			var module = this.module;
-			console.log(module);
-			if (!_.isUndefined(APP.models[module]) && APP.models[module].length) {
+			var missing = this.missing_collections();
+			if (missing === false) {
 				return Backbone.Router.prototype.execute.call(this, callback, args, name)
 			} else {
-				console.log("waiting for collection", module)
+				console.log("waiting for collection", missing)
 				APP.root.showChildView("main", new DEF.EmptyView({
 					icon: "loading",
-					msg: "Loading " + this.module.toUpperCase() + "&hellip;"
+					msg: "Loading " + missing.toUpperCase() + "&hellip;"
 				}));
-				this.listenToOnce(APP.models[module], 'sync', this.execute.bind(this, callback, args, name))
+				this.listenToOnce(APP.models[missing], 'sync', this.execute.bind(this, callback, args, name))
 			}
+		},
+		/**
+		 * returns the name of a missing collection, or FALSE if they are all loaded
+		 */
+		missing_collections: function() {
+			if (this.collections.length == 0)
+				this.collections = [this.module];
+			for (var c = 0; c < this.collections.length; c++) {
+				var collection = this.collections[c];
+				if (_.isUndefined(APP.models[collection]) || APP.models[collection].length == 0)
+					return collection;
+			}
+			return false;
 		},
 		LoadModule: function(cmd, arg) {
 			var module = this.module;
