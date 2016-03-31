@@ -7,78 +7,80 @@
 				<div class='cmd link' id='subtask'>
 						<%=APP.Icon('new')%> add subtask
 				</div>
+
+				<hr>
+				<table id='task-details' class='table table-full table-left '>
+						<tr>
+								<td class='icon' rowspan=4>
+										<%=APP.Icon(kind, kind)%>
+								</td>
+								<th>Task</th>
+								<td>
+
+										<%=task%>
+								</td>
+								<th>Created</th>
+								<td>
+										<%=APP.Format.date(_created)%>
+								</td>
+						</tr>
+						<tr>
+								<th>Parent</th>
+								<td>
+										<a href="#<%=parent_module%>/view/<%=parent_id%>">
+												<%=parent_module%>:
+														<%=parent_id%>
+										</a>
+								</td>
+								<th>Started</th>
+								<td>
+										<%=APP.Format.date(start_date)%>
+								</td>
+						</tr>
+						<tr>
+								<th>Priority</th>
+								<td>
+										<meter min=0 max=100 value='<%=priority%>'>
+												<%=priority%>
+										</meter>
+								</td>
+								<th>Due</th>
+								<td>
+										<%=APP.Format.date(due_date)%>
+								</td>
+						</tr>
+						<tr>
+								<th>Stats</th>
+								<td>
+										Views:
+										<%=_.views%>, Subtasks:
+												<%=subtasks%>
+								</td>
+								<th>Completed</th>
+								<td>
+										<%=APP.Format.date(complete_date)%>
+								</td>
+						</tr>
+						<tr>
+								<th>Progress</th>
+								<td colspan=3>
+										<input value='<%=progress%>' <%=subtasks>0?"disabled":""%> id='progress' list='progress_levels' type=range min=0 max=100 >
+										<datalist id="progress_levels">
+												<option>0</option>
+												<option>5</option>
+												<option>80</option>
+												<option>100</option>
+										</datalist>
+								</td>
+								<td width="150px" id='progress_label'>
+										<%=progress_label%>
+								</td>
+						</tr>
+
+				</table>
+
 </div>
 
-<h2>Details</h2>
-<table id='task-details' class='table table-full table-left table-borders'>
-		<tr>
-				<td class='icon' rowspan=5>
-						<%=APP.Icon(kind, kind)%>
-				</td>
-				<th>Task</th>
-				<td>
-
-						<%=task%>
-				</td>
-				<th>Created</th>
-				<td>
-						<%=APP.Format.date(_created)%>
-				</td>
-		</tr>
-		<tr>
-				<th>Parent</th>
-				<td>
-						<a href="#<%=parent_module%>/view/<%=parent_id%>">
-								<%=parent_module%>:
-										<%=parent_id%>
-						</a>
-				</td>
-				<th>Started</th>
-				<td>
-						<%=APP.Format.date(start_date)%>
-				</td>
-		</tr>
-		<tr>
-				<th>Priority</th>
-				<td>
-						<meter min=0 max=100 value='<%=priority%>'>
-								<%=priority%>
-						</meter>
-				</td>
-				<th>Due</th>
-				<td>
-						<%=APP.Format.date(due_date)%>
-				</td>
-		</tr>
-		<tr>
-				<th>Stats</th>
-				<td>
-						Views:
-						<%=_.views%>, Subtasks:
-								<%=subtasks%>
-				</td>
-				<th>Completed</th>
-				<td>
-						<%=APP.Format.date(complete_date)%>
-				</td>
-		</tr>
-		<tr>
-				<th>Progress</th>
-				<td colspan=2>
-						<input value='<%=progress%>' <%=subtasks>0?"disabled":""%> id='progress' list='progress_levels' type=range min=0 max=100 >
-						<datalist id="progress_levels">
-								<option>0</option>
-								<option>5</option>
-								<option>80</option>
-								<option>100</option>
-						</datalist>
-				</td>
-				<td width="150px" id='progress_label'>
-						<%=progress_label%>
-				</td>
-		</tr>
-
-</table>
 
 <h2>Description</h2>
 <div class='description'>
