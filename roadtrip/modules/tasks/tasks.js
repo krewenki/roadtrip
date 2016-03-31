@@ -253,7 +253,6 @@ DEF.modules.tasks.views = {
 					return m.get('parent_id') == model_id && m.get('progress') == 100
 				}
 			}))
-
 			var comments = new DEF.modules.comments.Collection(this.model.get('comments'));
 			this.showChildView('comments', new DEF.modules.comments.Comments({
 				model: this.model,

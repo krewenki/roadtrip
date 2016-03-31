@@ -9,9 +9,7 @@ DEF.modules.comments.Model = Backbone.Model.extend({
 })
 DEF.modules.comments.Collection = Backbone.Collection.extend({
 	model: DEF.modules.comments.Model,
-	comparator: function(m) {
-		return -m.get('datetime')
-	}
+	comparator: 'datetime'
 })
 
 DEF.modules.comments.Comment = Backbone.Marionette.ItemView.extend({
@@ -40,6 +38,9 @@ DEF.modules.comments.Comments = Backbone.Marionette.CompositeView.extend({
 	modelEvents: {
 		"change": "render"
 	},
+	onRender: function() {
+		console.log("splas");
+	},
 	Save: function() {
 		var comments = this.model.get('comments');
 		var comment = {
@@ -51,7 +52,8 @@ DEF.modules.comments.Comments = Backbone.Marionette.CompositeView.extend({
 		this.model.set({
 			comments: comments
 		})
-		this.model.trigger('change', this.model)
+		this.model.trigger('change', this.model) // manually trigger a change, because Highway
+		this.collection.push(new DEF.modules.comments.Model(comment)); // manually add to the collection
 	}
 
 })
