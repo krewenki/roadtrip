@@ -101,8 +101,6 @@ Roadtrip = {
 						stats = {
 							views: model.views + 1
 						}
-						console.log(model.views);
-						console.log(stats);
 						break;
 					case "edit":
 						stats = {

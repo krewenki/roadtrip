@@ -34,6 +34,8 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		due_date: "",
 		complete_date: "",
 
+		comments: [],
+
 		progress: 0, // scale 0..100
 		progress_label: "New", // this is autoatically calculated based on progress slider
 		priority: 1, // scale 1..100
@@ -208,7 +210,8 @@ DEF.modules.tasks.views = {
 		regions: {
 			task: "#task",
 			open: "#open_subtasks",
-			closed: "#closed_subtasks"
+			closed: "#closed_subtasks",
+			comments: "#comments"
 		},
 		onBeforeShow: function() {
 			var subs = APP.models.tasks.where({
@@ -254,6 +257,13 @@ DEF.modules.tasks.views = {
 					return m.get('parent_id') == model_id && m.get('progress') == 100
 				}
 			}))
+
+			var comments = new DEF.modules.comments.Collection(this.model.get('comments'));
+			this.showChildView('comments', new DEF.modules.comments.Comments({
+				model: this.model,
+				collection: comments
+			}))
+
 		}
 	}),
 }

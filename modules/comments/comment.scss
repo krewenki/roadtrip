@@ -1,0 +1,11 @@
+#COMMENTS {
+		.comment {
+				color        : $text-color;
+				text-align   : justify;
+				padding      : 10px;
+				border-bottom: 1px solid $text_light_color;
+				.datetime {
+						font-weight: bold;
+				}
+		}
+}
