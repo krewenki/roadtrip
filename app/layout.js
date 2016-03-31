@@ -55,12 +55,14 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 		button: ".menuitem",
 		title: "#title",
 		search: "#search",
-		results: "#SEARCH"
+		results: "#SEARCH",
+		login: "#login"
 	},
 	events: {
 		"click @ui.button": "Go",
 		"click @ui.title": "GoHome",
-		"keyup @ui.search": "Search"
+		"keyup @ui.search": "Search",
+		"click @ui.login": "Login"
 	},
 	Search: function() {
 		if (this.ui.search.val().length) {
@@ -80,5 +82,8 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 		var target = $(e.currentTarget).data('mode');
 		APP.Route('#' + target, target);
 		APP.SetMode(target); // set mode immediately, for UI sakes, in case the view has to wait for the collecton to sync
+	},
+	Login: function() {
+		APP.Route('#login');
 	}
 });

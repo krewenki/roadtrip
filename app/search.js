@@ -21,6 +21,7 @@ DEF.Search = Backbone.Marionette.CompositeView.extend({
 	template: require("../templates/search_results.html"),
 	childView: DEF.Search_Result,
 	childViewContainer: "#results",
+	id: "search_result_box",
 	onBeforeRender: function() {
 		var search = this.options.search.toUpperCase();
 		var matches = [];
@@ -33,5 +34,8 @@ DEF.Search = Backbone.Marionette.CompositeView.extend({
 			})
 		}
 		this.collection = new Backbone.Collection(matches);
+		this.collection.comparator = function(m) {
+			return -m.get('_views');
+		}
 	},
 })

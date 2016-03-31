@@ -6,6 +6,7 @@
 <div id='searchbox'>
 		<input type='search' id='search' placeholder='Search...'>
 </div>
+<div id='SEARCH' style=''></div>
 <!--
 I use data-id here, because when i did stuff like 'id=contacts', then clicking on it caused the browser to want to scroll to it
 -->
@@ -31,12 +32,13 @@ I use data-id here, because when i did stuff like 'id=contacts', then clicking o
 		</div>
 </div>
 
-<div id='usermenu'>
-	<% if(!U){ %>
-		<button class='btn'>Login</button>
-	<% } else { %>
-		<%=U.name%> <button class='btn'>Logout</button>
-	<% } %>
+<div id='usermenu' class='nowrap'>
+		<% if(!U){ %>
+				<button id='login' class='btn'>Login</button>
+				<% } else { %>
+						<%=U.name%>
+								<span id='settings' class='click'>
+										<%=APP.Icon('gear')%>
+								</span>
+								<% } %>
 </div>
-
-<div id='SEARCH' style=''></div>

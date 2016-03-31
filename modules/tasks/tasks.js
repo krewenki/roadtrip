@@ -60,7 +60,7 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		if (val == 100)
 			label = "Complete";
 		return label;
-	}
+	},
 });
 
 DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
