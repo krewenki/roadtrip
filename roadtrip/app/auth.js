@@ -7,6 +7,6 @@ if(document.cookie == ''){
 	for(var i in co){
 		cookie[co[i][0].trim()] = decodeURIComponent(co[i][1]);
 	}
-	window.U = JSON.parse(cookie.user);
+	U = JSON.parse(cookie.user);
 }
 
