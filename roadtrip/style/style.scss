@@ -18,17 +18,23 @@ body {
 				cursor: pointer;
 		}
 		#SEARCH {
-				#results {
-						display  : flex;
-						flex-wrap: wrap;
-						.search_result {
-								flex       : 1;
-								white-space: nowrap;
-								border     : 1px solid white;
-								padding    : 5px;
-								margin     : 5px;
-								&:hover {
-										background-color: #333;
+				#search_result_box {
+						padding: 10px;
+						#results {
+								display  : flex;
+								flex-wrap: wrap;
+								.search_result {
+										white-space  : nowrap;
+										border       : 1px solid #999;
+										border-radius: 5px;
+										padding      : 5px;
+										margin       : 5px;
+										max-width    : 250px;
+										overflow     : hidden;
+										text-overflow: ellipsis;
+										&:hover {
+												background-color: #333;
+										}
 								}
 						}
 				}
@@ -177,7 +183,7 @@ body {
 				}
 		}
 		.table-left {
-				input {
+				input:not([class=btn]) {
 						border-top-right-radius   : 10px;
 						border-bottom-right-radius: 10px;
 						border                    : 1px solid #aaa;

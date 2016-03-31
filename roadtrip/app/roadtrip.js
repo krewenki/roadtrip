@@ -52,10 +52,11 @@ Roadtrip = {
 	}),
 	Model: Backbone.Model.extend({
 		idAttribute: '_id',
+		module: "tbd", // the name of the collection
 		nameAttribute: 'name', // the human-readable field in the record
 		defaults: {},
 		icon: function() {
-			return APP.Icon(this.module);
+			return APP.Icon(this.module, this.module);
 		},
 		search_string: function() {
 			var string = this.get(this.nameAttribute)
@@ -64,7 +65,7 @@ Roadtrip = {
 		GetLink: function(cmd) {
 			if (!cmd)
 				cmd = "view";
-			return "#tbd/" + cmd + "/" + this.get('_id');
+			return "#" + this.module + "/" + cmd + "/" + this.get('_id');
 		},
 		GetTitle: function() {
 			return this.model.get(this.nameAttribute);

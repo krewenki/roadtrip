@@ -1,11 +1,11 @@
 DEF.StaticLayout = Backbone.Marionette.ItemView.extend({
 	className: 'pad10',
-	onBeforeRender: function () {
+	onBeforeRender: function() {
 		var templates = {
 			"home": require('../pages/home.md'),
-			"login": require('../pages/login.md')
+			"login": require('../templates/login.html')
 		};
-		this.template = function () {
+		this.template = function() {
 			return templates[this.options.page];
 		}.bind(this);
 
@@ -13,7 +13,7 @@ DEF.StaticLayout = Backbone.Marionette.ItemView.extend({
 	ui: {
 		tables: "table"
 	},
-	onRender: function () {
+	onRender: function() {
 		APP.SetTitle(this.options.page);
 		this.ui.tables.addClass("table");
 	},
