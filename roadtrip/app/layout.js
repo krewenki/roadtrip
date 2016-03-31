@@ -42,6 +42,7 @@ DEF.RootLayout = Backbone.Marionette.LayoutView.extend({
 	regions: {
 		header: '#HEADER',
 		main: '#MAIN',
+		search: "#SEARCH"
 	}
 });
 
@@ -52,11 +53,25 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 	template: require('../templates/header.html'),
 	ui: {
 		button: ".menuitem",
-		title: "#title"
+		title: "#title",
+		search: "#search",
+		results: "#SEARCH"
 	},
 	events: {
 		"click @ui.button": "Go",
-		"click @ui.title": "GoHome"
+		"click @ui.title": "GoHome",
+		"keyup @ui.search": "Search"
+	},
+	Search: function() {
+		if (this.ui.search.val().length) {
+			var search = new DEF.Search({
+				search: this.ui.search.val()
+			})
+			this.ui.results.show();
+			APP.root.showChildView('search', search)
+		} else {
+			this.ui.results.hide();
+		}
 	},
 	GoHome: function() {
 		APP.Route('#');

@@ -4,7 +4,8 @@ DEF.modules.projects = {};
  * The main model.  SHould be called "Model"
  */
 DEF.modules.projects.Model = Roadtrip.Model.extend({
-	nameAttribute: 'name', // the human-readable field in the record
+	nameAttribute: 'project', // the human-readable field in the record
+	module: "projects",
 	defaults: {
 		project: "Project 1",
 		icon: "anchor",

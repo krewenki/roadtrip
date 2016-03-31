@@ -30,6 +30,7 @@ DEF.modules.contacts.Router = Roadtrip.Router.extend({
  */
 DEF.modules.contacts.Model = Roadtrip.Model.extend({
 	nameAttribute: 'name', // the human-readable field in the record
+	module: "contacts",
 	defaults: {
 		name: "Person 1",
 		kind: "employee",
@@ -46,6 +47,9 @@ DEF.modules.contacts.Model = Roadtrip.Model.extend({
 	},
 	GetLink: function(cmd) {
 		return "#contacts/" + cmd + "/" + this.get('_id');
+	},
+	search_string: function() {
+		return this.get('name');
 	}
 });
 

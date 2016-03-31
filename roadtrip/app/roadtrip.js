@@ -10,13 +10,6 @@ Roadtrip = {
 			"projects/:cmd": "LoadModule",
 			"projects/:cmd/:arg": "LoadModule",
 		},
-		// route: function(route, name, callback) {
-		// 	console.log(route, name, callback)
-		// 	return Backbone.Router.prototype.route.call(this, route, name, function() {
-		// 		this.trigger.apply(this, ['beforeroute:' + name].concat(_.toArray(arguments)));
-		// 		//callback.apply(this, arguments);
-		// 	});
-		// },
 		execute: function(callback, args, name) {
 			var module = this.module;
 			if (!_.isUndefined(APP.models[module]) && APP.models[module].length) {
@@ -26,46 +19,25 @@ Roadtrip = {
 				console.log("waiting for ", module)
 				APP.root.showChildView("main", new DEF.EmptyView({
 					icon: "loading",
-					msg: "Loading..."
+					msg: "Loading " + this.module.toUpperCase() + "&hellip;"
 				}));
 				this.listenToOnce(APP.models[module], 'sync', this.execute.bind(this, callback, args, name))
 			}
 		},
-		// onRoute: function(name, path, args) {
-		// 	console.log("onroute", name, path, args);
-		// 	return false;
-		// },
 		LoadModule: function(cmd, arg) {
 			var module = this.module;
 
-			console.log("route", module, cmd, arg);
-			if (cmd) {
-				APP.Page = new DEF.modules[module].views[cmd]({
-					model: APP.models[module].get(arg),
-				});
-			} else {
-				APP.Page = new DEF.modules[module].MainView({
-					collection: APP.models[module]
-				});
-			}
+			APP.Page = new DEF.modules[module].views[cmd]({
+				model: APP.models[module].get(arg),
+			});
 			APP.root.showChildView("main", APP.Page);
 		},
 		ShowRoot: function() {
 			var module = this.module;
-			//	if (!_.isUndefined(APP.models[module]) && APP.models[module].length) {
-
-			//console.log("root", module);
 			APP.Page = new DEF.modules[module].MainView({
 				collection: APP.models[module]
 			});
 			APP.root.showChildView("main", APP.Page);
-			// } else {
-			// 	APP.root.showChildView("main", new DEF.EmptyView({
-			// 		icon: "loading",
-			// 		msg: "Loading..."
-			// 	}));
-			// 	this.listenToOnce(APP.models[module], 'sync', this.ShowRoot.bind(this))
-			// }
 		}
 	}),
 
@@ -82,11 +54,16 @@ Roadtrip = {
 		idAttribute: '_id',
 		nameAttribute: 'name', // the human-readable field in the record
 		defaults: {},
+		icon: function() {
+			return APP.Icon(this.module);
+		},
 		search_string: function() {
-			var string = JSON.stringify(this.attributes);
-			return string.toUpperCase();
+			var string = this.get(this.nameAttribute)
+			return string;
 		},
 		GetLink: function(cmd) {
+			if (!cmd)
+				cmd = "view";
 			return "#tbd/" + cmd + "/" + this.get('_id');
 		},
 		GetTitle: function() {
