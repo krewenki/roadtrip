@@ -59,6 +59,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 		expenses: "dollar",
 		timeclock: "clock-o",
 		wiki: "wikipedia-w",
+		comments: "wechat",
 
 		warning: "warning",
 		link: "external-link",
@@ -101,6 +102,7 @@ APP = new MainApp();
 APP.models = {} // hold the collections
 
 DEF.modules = {} // hold the models definitions
+require("../modules/comments/comments.js");
 require("../modules/tasks/tasks.js");
 require("../modules/wiki/wiki.js");
 require("../modules/contacts/contacts.js");

@@ -16,6 +16,7 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 
 		progress: 0,
 
+		comments: [],
 		_wiki: {
 			title: "wiki",
 			content: "Here I am!",
@@ -186,7 +187,8 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 	ui: {
 		new: "#new",
 		edit: "#edit",
-		wiki: "#wiki"
+		wiki: "#wiki",
+		comments: "#comments"
 	},
 	events: {
 		"click @ui.new": "CreateTask",
@@ -209,12 +211,13 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 				tasks: subs.length,
 				progress: sum / count,
 			})
-			console.log("Progress automatically set to ", sum / count, count)
+			console.log("Progress automatically set to ", sum / count)
 		}
 	},
 	onShow: function() {
 		this.model.SetStats("view")
 		APP.SetTitle(this.model.get('project'));
+
 	},
 	CreateTask: function() {
 		var page = new DEF.modules.tasks.views.edit({

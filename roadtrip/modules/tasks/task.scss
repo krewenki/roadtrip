@@ -14,10 +14,11 @@
 }
 #task-details {
 		.icon {
-				font-size : 100px;
-				border    : none;
-				text-align: center;
-				color     : $text_light_color;
+				font-size  : 100px;
+				border     : none;
+				text-align : center;
+				color      : $text_light_color;
+				text-shadow: 1px 2px 25px rgba(0,0,0,0.4);
 		}
 }
 .task-table {
