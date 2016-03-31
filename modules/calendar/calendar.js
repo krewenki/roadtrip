@@ -55,7 +55,18 @@ DEF.modules.calendar.views = {
 	Event: Roadtrip.View.extend({
 		module: "calendar",
 		template: require("./templates/event.html"),
-		className: 'calendar_event'
+		className: 'calendar_event',
+		attributes: function(){
+			return {
+				"data-id" : this.model.id
+			}
+		},
+		events: {
+			"click" : "handleClick"
+		},
+		handleClick: function(){
+			APP.Route("#calendar/view/"+this.model.id, "calendar");
+		}
 	}),
 
 	/**
