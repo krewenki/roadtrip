@@ -49,6 +49,23 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		}
 
 	},
+	GetPath: function() {
+		var path = "";
+		var parent = APP.GetModel(this.get('parent_module'), this.get('parent_id'));
+		if (parent.GetPath)
+			path = parent.GetPath();
+		else {
+			path = "<a href='" + parent.GetLink() + "'>" + parent.get(parent.nameAttribute) + "</a>";
+		}
+		path += " / <a href='" + this.GetLink() + "'>" + this.get(this.nameAttribute) + "</a>";
+		return path;
+	},
+
+	/**
+	 * Translate the progress value to a state
+	 * @param  {[type]} val 0..100
+	 * @return {[type]}     human readable text
+	 */
 	GetProgressLabel: function(val) {
 		if (!val)
 			val = this.get('progress')
@@ -108,14 +125,12 @@ DEF.modules.tasks.TaskList = Backbone.Marionette.CollectionView.extend({
 
 DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	template: require("./templates/task_view.html"),
-	// modelEvents: {
-	// 	"change": "render"
-	// },
 	templateHelpers: function() {
 		var parent = APP.models[this.model.get('parent_module')].get(this.model.get('parent_id'));
 		return {
-			parent_title: parent.get(parent.nameAttribute),
-			parent_link: parent.GetLink()
+			parent_title: APP.Icon(parent.module) + " " + parent.get(parent.nameAttribute),
+			parent_link: parent.GetLink(),
+			path: this.model.GetPath()
 		}
 	},
 	ui: {
