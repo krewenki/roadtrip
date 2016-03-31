@@ -32,7 +32,11 @@ I use data-id here, because when i did stuff like 'id=contacts', then clicking o
 </div>
 
 <div id='usermenu'>
+	<% if(!U){ %>
 		<button class='btn'>Login</button>
+	<% } else { %>
+		<%=U.name%> <button class='btn'>Logout</button>
+	<% } %>
 </div>
 
 <div id='SEARCH' style=''></div>
