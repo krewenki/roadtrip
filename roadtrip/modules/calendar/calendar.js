@@ -50,6 +50,9 @@ DEF.modules.calendar.views = {
 		modelEvents: {
 			"change" : "setDates"
 		},
+		onBeforeShow: function(){
+			this.setDates();
+		},
 		setDates: function(){
 			var start = new Date(this.model.get('startLocal')).getTime();
 			var end = new Date(this.model.get('endLocal')).getTime();
