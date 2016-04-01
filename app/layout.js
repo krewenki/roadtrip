@@ -66,7 +66,8 @@ DEF.FooterLayout = Backbone.Marionette.ItemView.extend({
 			total += count;
 
 		}
-		this.ui.collections.html("RECORDS: " + APP.Format.number(total) + " || " + html.join(', '));
+		console.log("footer render");
+		this.ui.collections.html("Total Records: " + APP.Format.number(total) + " &vellip; " + html.join(' &bull; '));
 	}
 })
 

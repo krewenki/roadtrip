@@ -40,7 +40,7 @@
 						<tr>
 								<th>Priority</th>
 								<td>
-										<meter min=0 max=100 value='<%=priority%>'>
+										<meter min=-1 max=100 value='<%=priority%>'>
 												<%=priority%>
 										</meter>
 								</td>
@@ -61,11 +61,16 @@
 										<%=APP.Format.date(complete_date)%>
 								</td>
 						</tr>
+
+				</table>
+
+				<table id='progress-table' class='table table-full table-left'>
 						<tr>
 								<th>Progress</th>
-								<td colspan=3>
-										<input value='<%=progress%>' <%=subtasks>0?"disabled":""%> id='progress' list='progress_levels' type=range min=0 max=100 >
+								<td>
+										<input value='<%=progress%>' <%=subtasks>0?"disabled":""%> id='progress' list='progress_levels' type=range min=-1 max=100 >
 										<datalist id="progress_levels">
+												<option>-1</option>
 												<option>0</option>
 												<option>5</option>
 												<option>80</option>
@@ -74,9 +79,16 @@
 								</td>
 								<td width="150px" id='progress_label'>
 										<%=progress_label%>
+												<!-- <select id='progress_label'>
+												<option value='New'>New</option>
+												<option value='Accepted'>Accepted</option>
+												<option value='In Progress'>In Progress</option>
+												<option value='Review'>Review</option>
+												<option value='Complete'>Complete</option>
+												<option value='Rejected'>Rejected</option>
+										</select> -->
 								</td>
 						</tr>
-
 				</table>
 
 </div>

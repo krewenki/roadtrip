@@ -1,4 +1,9 @@
-<span class='user'><%=username%></span> @ <span class='datetime'>
+<div class='details'>
+		<span class='user'><%=username%></span> @ <span class='datetime'>
+
 		<%=APP.Format.datetime(datetime)%>
 </span>
-<%=comment%>
+</div>
+<div class='content'>
+		<%=APP.Format.markdown(comment)%>
+</div>
