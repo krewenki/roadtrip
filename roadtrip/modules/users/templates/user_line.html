@@ -1,6 +1,19 @@
 <td>
 		<%=name%>
 </td>
-<td>
+<td class='minwidth800'>
 		<%=email%>
 </td>
+<%
+	var modules = Object.keys(APP.models);
+	for( var m in modules) {
+		var module = modules[m];
+		var perm = perms[module];
+		%>
+		<td class='nowrap'>
+				<input id='<%=module%>.create' class='perms' type='checkbox' <%=(perm.create? "checked": "")%> >
+				<input id='<%=module%>.read' class='perms' type='checkbox' <%=perm.read? "checked": ""%> >
+				<input id='<%=module%>.update' class='perms' type='checkbox' <%=perm.update? "checked": ""%> >
+				<input id='<%=module%>.delete' class='perms' type='checkbox' <%=perm.delete? "checked": ""%> >
+		</td>
+		<% } %>

@@ -225,8 +225,22 @@ Roadtrip = {
 			var model = this.model,
 				save = {};
 			$(".field.dirty").each(function(i, $el) {
-				console.log($el.id, $el.value)
-				save[$el.id] = $el.value;
+				var val = $el.value;
+				switch ($el.type) {
+					case "checkbox":
+						val = $el.checked;
+						break;
+				}
+				// if ($el.id.indexOf(".")) {
+				// 	var parts = $el.id.split('.');
+				// 	if (!save[parts[0]])
+				// 		save[parts[0]] = {}
+				// 	if (!save[parts[0]][parts[1]])
+				// 		save[parts[0]][parts[1]] = {}
+				// 	save[parts[0]][parts[1]][parts[2]] = val;
+				// } else {
+				save[$el.id] = val;
+				//				}
 			})
 			if (!this.model.id) {
 				save["_"] = {
@@ -236,6 +250,7 @@ Roadtrip = {
 				APP.models[this.module].create(save);
 				//this.model.SetStats("create");
 			} else {
+				console.log("save", save);
 				this.model.set(save);
 				this.model.SetStats("edit")
 			}
