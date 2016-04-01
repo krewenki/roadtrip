@@ -56,10 +56,12 @@ var hw = new Highway({
 	http: app,
 	io: io,
 	auth: [
-		{ 
+		{
 			strategy: 'local',
+			sessionLength: 60*60*24*365,
+			forceRootAuth: false,
 			routes : {
-				login : '/login.html'
+				login : '/#login'
 			},
 			homeCallback: function(req,res){
 				if(!req.session || !req.session.passport.user){
