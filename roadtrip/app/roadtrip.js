@@ -147,8 +147,26 @@ Roadtrip = {
 			this.model.SetStats("view")
 			APP.SetTitle(this.model.get(this.model.nameAttribute), this.module)
 		},
+		ui: {
+			edit: "#edit",
+			delete: "#delete"
+		},
+		events: {
+			"click @ui.edit": "Edit",
+			"click @ui.delete": "Delete"
+		},
 		modelEvents: {
 			"change": "render" // This shouldn't be necessary, should it?
+		},
+		Edit: function() {
+			APP.Route("#" + this.module + "/" + "edit" + "/" + this.model.id);
+		},
+		Delete: function() {
+			if (confirm("Are you sure you want to delete " + this.model.get(this.model.nameAttribute))) {
+				console.log("kill it");
+				APP.models[this.module].remove(this.model);
+				APP.Route("#" + this.module);
+			}
 		}
 	}),
 	/**
@@ -176,13 +194,22 @@ Roadtrip = {
 			$("textarea").val(($("textarea").val() || '').trim()); // beautify inserts spaces between <textarea> in the item_edit form
 		},
 		/**
-		 * After edit, what page to load?
+		 * Where to go, by default, after some action.  This is kind of a dumb
+		 * function, but i was tired of making up routes all the time, and thought
+		 * each module could override it, or something.
+		 * @param  {bool} go_parent [don't go back to self, go to parent]
 		 */
 		Return: function(go_parent) {
 			if (this.model.id) {
-				if (go_parent)
-					APP.Route(APP.GetModel(this.model.get('parent_module'), this.model.get('parent_id')).GetLink())
-				else
+				if (go_parent) {
+					var module = this.model.get('parent_module'),
+						id = this.model.get('parent_id');
+					if (module)
+						APP.Route(APP.GetModel(module, id).GetLink())
+					else {
+						APP.Route("#" + this.module + "/view/" + this.model.id)
+					}
+				} else
 					APP.Route("#" + this.module + "/view/" + this.model.id)
 			} else
 				APP.Route("#" + this.module);

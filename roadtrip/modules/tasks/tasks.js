@@ -198,10 +198,6 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 				complete_date: Date.now()
 			})
 	},
-	// UpdateProgressLabel: function(e) {
-	// 	var val = this.ui.progress.val();
-	// 	this.ui.progress_label.html(this.model.GetProgressLabel(val));
-	// }
 })
 
 

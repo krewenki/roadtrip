@@ -1,5 +1,7 @@
 <div class='details'>
-		<span class='user'><%=username%></span> @ <span class='datetime'>
+		<a class='user' href='#users/view/<%=user_id%>'>
+				<%=username%>
+		</a> @ <span class='datetime'>
 
 		<%=APP.Format.datetime(datetime)%>
 </span>
