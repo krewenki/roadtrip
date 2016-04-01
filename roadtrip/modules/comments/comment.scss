@@ -1,11 +1,17 @@
 #COMMENTS {
 		.comment {
-				color        : $text-color;
+				color        : $text_light_color;
 				text-align   : justify;
 				padding      : 10px;
 				border-bottom: 1px solid $text_light_color;
+				.details {
+						color: $text-color;
+				}
 				.datetime {
 						font-weight: bold;
+				}
+				&:last-child {
+						border-bottom: none;
 				}
 		}
 }

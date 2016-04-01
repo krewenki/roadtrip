@@ -74,6 +74,8 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		if (!val)
 			val = this.get('progress')
 		var label = "New";
+		if (val < 0)
+			label = "Rejected";
 		if (val > 0)
 			label = "Accepted";
 		if (val > 5)
@@ -91,7 +93,7 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 	url: 'dev.telegauge.com:3000/roadtrip/tasks',
 	comparator: function(m) {
 		rank = 0;
-		if (m.get('progress') == 100)
+		if (m.get('progress') == 100 || m.get('progress') < 0)
 			rank = 10000 - m.get('priority') - m.get('_').views / 10 - m.get('subtasks');
 		else
 			rank = 0.0 - (m.get('progress')) - m.get('priority') - m.get('_').views / 10 - m.get('subtasks');
@@ -181,7 +183,6 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	 * @return {[type]}   [description]
 	 */
 	UpdateProgress: function() {
-		console.log("progress", this.ui.progress.val());
 		var label = this.model.GetProgressLabel(this.ui.progress.val());
 		this.ui.progress_label.html(label);
 		this.model.set({
@@ -192,7 +193,7 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 			this.model.set({
 				start_date: Date.now()
 			})
-		if (this.ui.progress.val() == 100)
+		if (this.ui.progress.val() == 100 || this.ui.progress.val() < 0)
 			this.model.set({
 				complete_date: Date.now()
 			})
@@ -214,12 +215,6 @@ DEF.modules.tasks.views = {
 	edit: Roadtrip.Edit.extend({
 		module: "tasks",
 		template: require("./templates/task_edit.html"),
-		XReturn: function() {
-			if (this.model.get('parent_id'))
-				APP.Route("#" + this.model.get('parent_module') + "/view/" + this.model.get('parent_id'))
-			else
-				APP.Route("#");
-		},
 		templateHelpers: function() {
 			var rs = {
 				task_id: this.GenerateTaskID()
@@ -230,18 +225,33 @@ DEF.modules.tasks.views = {
 			}
 			return rs;
 		},
+		/**
+		 * Generate the task ID, by incrementing the max task_id, including parents, if available.
+		 * @return {string} [1.2.3.5]
+		 */
 		GenerateTaskID: function() {
 			if (this.model.id) // this model has been saved
 				return this.model.get('task_id'); // so do not generate a task_id
 
-			prefix = false;
+			var prefix = false,
+				instance = 0;
+
 			var parent = APP.models[this.options.parent.module].get(this.options.parent.id);
 			if (parent)
 				prefix = parent.get('task_id');
-			var instance = APP.models.tasks.where({
+			var models = APP.models.tasks.where({
 				parent_module: this.options.parent.module,
 				parent_id: this.options.parent.id
-			}).length + 1
+			})
+
+			for (var m in models) {
+				var model = models[m];
+				var task_id = model.get('task_id');
+				console.log(task_id);
+				instance = Math.max(instance, task_id.split('.').pop())
+			}
+			instance++;
+
 			if (prefix)
 				return prefix + "." + instance;
 			else
@@ -275,7 +285,10 @@ DEF.modules.tasks.views = {
 					progress: sum / count,
 					progress_label: this.model.GetProgressLabel(sum / count)
 				})
-				console.log("Progress automatically set to ", sum / count, count)
+			} else if (this.model.get('subtasks')) {
+				this.model.set({
+					subtasks: 0
+				})
 			}
 		},
 		onShow: function() {
@@ -291,7 +304,7 @@ DEF.modules.tasks.views = {
 				template: require("./templates/taskline.html"),
 				collection: APP.models.tasks,
 				filter: function(m) {
-					return m.get('parent_id') == model_id && m.get('progress') != 100
+					return m.get('parent_id') == model_id && m.get('progress') != 100 && m.get('progress') >= 0
 				}
 			}))
 
@@ -299,7 +312,7 @@ DEF.modules.tasks.views = {
 				template: require("./templates/taskline_closed.html"),
 				collection: APP.models.tasks,
 				filter: function(m) {
-					return m.get('parent_id') == model_id && m.get('progress') == 100
+					return m.get('parent_id') == model_id && (m.get('progress') == 100 || m.get('progress') < 0)
 				}
 			}))
 			var comments = new DEF.modules.comments.Collection(this.model.get('comments'));
