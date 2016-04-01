@@ -108,11 +108,12 @@ Roadtrip = {
 			var model = _.extend(defaults, this.get('_'))
 			if (!_.isObject(stats)) {
 				switch (stats) {
-					case "create":
+					case "create": // this will not run, as there is no model yet
 						stats = {
 							created_by: U._id,
 							created_on: Date.now()
 						}
+						console.log("create", stats);
 						break;
 					case "view":
 						stats = {
@@ -198,8 +199,12 @@ Roadtrip = {
 				save[$el.id] = $el.value;
 			})
 			if (!this.model.id) {
+				save["_"] = {
+					created_by: U._id,
+					created_on: Date.now()
+				}
 				APP.models[this.module].create(save);
-				this.model.SetStats("create")
+				//this.model.SetStats("create");
 			} else {
 				this.model.set(save);
 				this.model.SetStats("edit")
