@@ -45,7 +45,8 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 
 		_: {
 			views: 0,
-			edits: 0
+			edits: 0,
+			created_by: APP.anon
 		}
 
 	},
