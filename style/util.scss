@@ -161,7 +161,7 @@ fieldset {
 }
 .table {
 		padding: 20px;
-		input:not([type=radio]) {
+		input:not([type=radio]):not([type=checkbox]) {
 				width: 95%;
 		}
 		textarea {

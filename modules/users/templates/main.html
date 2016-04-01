@@ -9,7 +9,17 @@
 		<thead>
 				<tr>
 						<th>Name</th>
-						<th>E-Mail</th>
+						<th class='minwidth800'>E-Mail</th>
+						<%
+					var modules = Object.keys(APP.models);
+					for( var m in modules) {
+						var module = modules[m];
+						%>
+								<th>
+										<%=module%>
+								</th>
+
+								<% } %>
 				</tr>
 		</thead>
 </table>
