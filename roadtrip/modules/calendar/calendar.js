@@ -1,6 +1,3 @@
-// this module uses moment.js for now
-
-window.moment = require('moment')
 DEF.modules.calendar = {}
 DEF.modules.calendar.Router = Roadtrip.Router.extend({
 	module: "calendar",
@@ -22,10 +19,11 @@ DEF.modules.calendar.Model = Roadtrip.Model.extend({
 	nameAttribute: 'title', // the human-readable field in the record
 	module: "calendar",
 	defaults: {
-		date: new Date().toISOString().slice(0, 10),
 		title: 'New Event',
-		startDate: new Date().toISOString().slice(0, 10) + 'T09:00',
-		endDate: new Date().toISOString().slice(0,10) + 'T10:00',
+		startLocal: new Date().toISOString().slice(0, 10) + 'T09:00',
+		endLocal: new Date().toISOString().slice(0,10) + 'T10:00',
+		start: Date.now(),
+		end: Date.now(),
 		allDay: false,
 		attendees: [],
 		notes: ''
@@ -53,7 +51,9 @@ DEF.modules.calendar.views = {
 			"change" : "setDates"
 		},
 		setDates: function(){
-			this.model.set({ date : this.model.get('startDate').slice(0,10)})
+			var start = new Date(this.model.get('startLocal')).getTime();
+			var end = new Date(this.model.get('endLocal')).getTime();
+			this.model.set({ start: start, end: end});
 		}
 	}),
 
@@ -142,13 +142,12 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend({
 			var date, collection;
 			for (var i in days) {
 				date = new Date(this.sunday + (86400000 * i));
-				iso = new Date(date.toISOString().slice(0,10)).getTime()
+				iso = new Date(date.toISOString().slice(0,10)+'T00:00').getTime()
 
 				collection = new Backbone.Collection(APP.models.calendar.filter(function(c){
-					var startDate = new Date(c.get('startDate')).getTime()
-					var endDate = new Date(new Date(c.get('endDate')).getTime() + 86400000).getTime();
-					console.log(startDate, iso)
-					return startDate <= iso && endDate >= iso;
+					var start = c.get('start');
+					var end = c.get('end');
+					return start <= iso && iso <= end;
 				}))
 				this.showChildView(days[i], new DEF.modules.calendar.views.Day({
 					date: date,
