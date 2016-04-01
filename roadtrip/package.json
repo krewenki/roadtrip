@@ -51,6 +51,5 @@
   "author": "team telegauge",
   "license": "ISC",
   "dependencies": {
-    "moment": "^2.12.0"
   }
 }
