@@ -21,37 +21,43 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 				create: false,
 				read: true,
 				update: false,
-				delete: false
+				delete: false,
+				comment: true
 			},
 			orders: {
 				create: false,
 				read: true,
 				update: false,
-				delete: false
+				delete: false,
+				comment: true
 			},
 			contacts: {
 				create: false,
 				read: true,
 				update: false,
-				delete: false
+				delete: false,
+				comment: true
 			},
 			projects: {
 				create: false,
 				read: true,
 				update: false,
-				delete: false
+				delete: false,
+				comment: true
 			},
 			calendar: {
 				create: false,
 				read: true,
 				update: false,
-				delete: false
+				delete: false,
+				comment: true
 			},
 			users: {
 				create: false,
 				read: true,
 				update: false,
-				delete: false
+				delete: false,
+				comment: true
 			},
 		}
 	}

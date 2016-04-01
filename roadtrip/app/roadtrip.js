@@ -71,7 +71,7 @@ Roadtrip = {
 		module: "tbd", // the name of the collection
 		nameAttribute: 'name', // the human-readable field in the record
 		defaults: {
-			_: this.common
+			_: {}
 		},
 
 		icon: function() {
