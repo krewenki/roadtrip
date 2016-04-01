@@ -66,7 +66,6 @@ DEF.FooterLayout = Backbone.Marionette.ItemView.extend({
 			total += count;
 
 		}
-		console.log("footer render");
 		this.ui.collections.html("Total Records: " + APP.Format.number(total) + " &vellip; " + html.join(' &bull; '));
 	}
 })
@@ -89,7 +88,7 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 		"click @ui.login": "Login"
 	},
 	Search: function() {
-		if (this.ui.search.val().length) {
+		if (this.ui.search.val().length > 3) {
 			var search = new DEF.Search({
 				search: this.ui.search.val()
 			})

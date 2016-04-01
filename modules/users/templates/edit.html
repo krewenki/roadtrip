@@ -1,0 +1,27 @@
+<div id='menu'>
+		<div class='cmd link ' id='cancel'>
+				<%=APP.Icon('cancel')%> cancel
+		</div>
+		<div class='cmd link' id='save'>
+				<%=APP.Icon('save')%> save
+		</div>
+		<div class='cmd link danger' id='delete'>
+				<%=APP.Icon('user-times')%> delete
+		</div>
+		<span id='title'><%=name%></span>
+</div>
+
+<table class='table table-left table-full'>
+		<tr>
+				<th>Name</th>
+				<td>
+						<input type='text' id='name' class='field' value='<%=name%>'>
+				</td>
+		</tr>
+		<tr>
+				<th>E-Mail</th>
+				<td>
+						<input type='email' id='email' class='field' value='<%=email%>'>
+				</td>
+		</tr>
+</table>
