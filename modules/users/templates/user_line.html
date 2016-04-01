@@ -11,9 +11,10 @@
 		var perm = perms[module];
 		%>
 		<td class='nowrap'>
-				<input id='<%=module%>.create' class='perms' type='checkbox' <%=(perm.create? "checked": "")%> >
-				<input id='<%=module%>.read' class='perms' type='checkbox' <%=perm.read? "checked": ""%> >
-				<input id='<%=module%>.update' class='perms' type='checkbox' <%=perm.update? "checked": ""%> >
-				<input id='<%=module%>.delete' class='perms' type='checkbox' <%=perm.delete? "checked": ""%> >
+				<input title='Create' id='<%=module%>.create' class='perms' type='checkbox' <%=(perm.create? "checked": "")%> >
+				<input title='Read' id='<%=module%>.read' class='perms' type='checkbox' <%=perm.read? "checked": ""%> >
+				<input title='Update' id='<%=module%>.update' class='perms' type='checkbox' <%=perm.update? "checked": ""%> >
+				<input title='Delete' id='<%=module%>.delete' class='perms' type='checkbox' <%=perm.delete? "checked": ""%> >
+				<input title='Comment' id='<%=module%>.comment' class='perms' type='checkbox' <%=perm.comment? "checked": ""%> >
 		</td>
 		<% } %>
