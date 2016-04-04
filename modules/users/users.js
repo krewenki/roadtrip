@@ -72,13 +72,23 @@ DEF.modules.users.Collection = Backbone.Highway.Collection.extend({
 	url: 'dev.telegauge.com:3000/roadtrip/users',
 	initialize: function() {
 		this.listenTo(this, "sync", this.UpdateUserTaskCount)
-		this.listenTo(APP.models.tasks, "change:assigned_to", this.UpdateUserTaskCount)
+		this.listenTo(APP.models.tasks, "change:assigned_to change:progress_label", this.UpdateUserTaskCount)
 	},
+	// get : function(id) {
+	// 	var out = Backbone.Highway.Collection.prototype.get.call(this, id);
+	// 	if (!out) {
+	// 		debugger
+	// 		out = Backbone.Highway.Collection.prototype.get.call(this, APP.anon);
+	// 	}
+	// 		return out;
+	// },
 	UpdateUserTaskCount: function() {
 		console.log("update");
 		var length = APP.models.tasks.filter(APP.models.tasks.filters.Assigned(APP.models.users.get(U._id))).length;
 		if (length) {
 			$("#HEADER #taskcount").html("" + APP.Icon("tasks") + "" + length + "");
+		} else {
+			$("#HEADER #taskcount").html("");
 		}
 	}
 });
