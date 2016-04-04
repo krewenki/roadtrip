@@ -152,6 +152,7 @@ require("../modules/orders/orders.js");
 require("../modules/projects/projects.js");
 require("../modules/calendar/calendar.js");
 require("../modules/users/users.js");
+require("../modules/expenses/expenses.js");
 
 
 APP.Format = {

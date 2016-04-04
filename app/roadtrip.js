@@ -36,9 +36,13 @@ Roadtrip = {
 		},
 		LoadModule: function(cmd, arg) {
 			var module = this.module;
+			var model = APP.models[module].get(arg);
+			if (!model) {
+				console.error("Model not found", module, arg);
+			}
 
 			APP.Page = new DEF.modules[module].views[cmd]({
-				model: APP.models[module].get(arg),
+				model: model,
 			});
 			APP.root.showChildView("main", APP.Page);
 		},

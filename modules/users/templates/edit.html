@@ -24,8 +24,15 @@
 						<input type='email' id='email' class='field' value='<%=email%>'>
 				</td>
 		</tr>
-</table>
+		<Tr>
+				<th>Boss</th>
+				<td>
+						<%=APP.HTML.Select("boss", APP.models.users,"name","_id",boss,"field", true)%>
+				</td>
+		</tr>
 
+</table>
+<!--
 
 <h2>Permissions</h2>
 <table class='table table-left table-full'>
@@ -50,4 +57,4 @@
 				<%
 		}
 %>
-</table>
+</table> -->

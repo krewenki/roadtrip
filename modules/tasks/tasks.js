@@ -99,6 +99,8 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 			rank = 10000 - m.get('priority') - m.get('_').views / 10 - m.get('subtasks');
 		else
 			rank = 0.0 - (m.get('progress')) - m.get('priority') - m.get('_').views / 10 - m.get('subtasks');
+		if (m.get('kind') == 'bug')
+			rank *=1.5+10;
 		return rank
 	},
 	filters: {
