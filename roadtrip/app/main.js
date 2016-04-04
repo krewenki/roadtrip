@@ -22,7 +22,7 @@ require("./static.js");
 //})
 
 var MainApp = Backbone.Marionette.Application.extend({
-	anon: "56fea65b54d49c036c802e54", // the anonymous user id
+	anon: "56fea5cc54d49c036c802e53", // the anonymous user id
 	setRootLayout: function() {
 		this.root = new DEF.RootLayout();
 		APP.root.showChildView('header', new DEF.HeaderLayout({}));

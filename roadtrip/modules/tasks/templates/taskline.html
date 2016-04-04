@@ -20,10 +20,10 @@
 		<%=_.edits%>
 </td>
 <td class='nowrap minwidth1000'>
-		<%=APP.Format.date(start_date)%>
+		<%=_.created_by? (APP.models.users.get(_.created_by)?APP.models.users.get(_.created_by).Link():"??" ):"--"%>
 </td>
 <td class='nowrap minwidth1000'>
-		<%=APP.Format.date(due_date)%>
+		<%=assigned_to? (APP.models.users.get(assigned_to)?APP.models.users.get(assigned_to).Link():"??") :"--"%>
 </td>
 <td align='right' class='nowrap minwidth1000'>
 		<%=priority%>
