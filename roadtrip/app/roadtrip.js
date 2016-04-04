@@ -81,6 +81,20 @@ Roadtrip = {
 			var string = this.get(this.nameAttribute)
 			return string;
 		},
+		/**
+		 * Returns a pre-fabricated <a> tag, with optional display field
+		 * @param  {[text]} field Which field to displa in the <a> tag
+		 * @return {html}      "<a href='linl'>field</a>"
+		 */
+		Link: function(field) {
+			field = field || this.nameAttribute;
+			return "<a href='" + this.GetLink() + "'>" + this.get(field) + "</a>";
+		},
+		/**
+		 * Generate a URL for a record
+		 * @param  {string} cmd value to use in the "cmd" portion of the URL
+		 * @return {text}     "#module/cmd/id"
+		 */
 		GetLink: function(cmd) {
 			if (!cmd)
 				cmd = "view";
@@ -142,7 +156,7 @@ Roadtrip = {
 	/**
 	 * Useful for viewing a single model
 	 */
-	View: Backbone.Marionette.ItemView.extend({
+	View: Backbone.Marionette.LayoutView.extend({
 		onShow: function() {
 			this.model.SetStats("view")
 			APP.SetTitle(this.model.get(this.model.nameAttribute), this.module)
@@ -254,7 +268,7 @@ Roadtrip = {
 				this.model.set(save);
 				this.model.SetStats("edit")
 			}
-			this.Return(true);
+			this.Return(false);
 		},
 		Cancel: function(e) {
 			this.Return();

@@ -91,6 +91,12 @@ var MainApp = Backbone.Marionette.Application.extend({
 		delete: "trash",
 		new: "plus"
 	},
+	/**
+	 * Get an icon
+	 * @param  {string} icon  Which icon.  See font-asesome
+	 * @param  {string} title Tooltip title
+	 * @return {string}       <i...>
+	 */
 	Icon: function(icon, title) {
 		if (icon.substring(0, 4) == "http")
 			return "<img class='icon' src='" + icon + "'>";
@@ -105,6 +111,17 @@ var MainApp = Backbone.Marionette.Application.extend({
 		return "<i " + (title ? "title='" + title + "'" : "title='" + icon + "'") + " class='icon fa fa-" + icon + "'></i>";
 	},
 	HTML: {
+		/**
+		 * Generate a HTML <select> element
+		 * @param  {string} id          HTML ID
+		 * @param  {collection} collection  A backbone collection
+		 * @param  {string} display     Which field to display in the select
+		 * @param  {string} key         The id of the value field
+		 * @param  {string} value       The currently selected value
+		 * @param  {string} className   HTML className
+		 * @param  {bool} leave_empty Leave a blank line at the top
+		 * @return {string}             "<select...>"
+		 */
 		Select: function(id, collection, display, key, value, className, leave_empty) {
 			key = key || "_id";
 			var html = "<select id='" + id + "' class='" + (className || "") + "'>";
@@ -138,17 +155,40 @@ require("../modules/users/users.js");
 
 
 APP.Format = {
+	/**
+	 * Returns a float, truncated to the number of decimals
+	 * @param  {float} val The original value
+	 * @param  {int} dec Number of decimals
+	 * @return {string}     "5.50"
+	 */
 	fixed: function(val, dec) {
 		if (!_.isNumber(val))
 			val = 0;
 		return val.toFixed(dec);
 	},
+	/**
+	 * Returns a value not exceeding min or max
+	 * @param  {float} val value
+	 * @param  {float} min Min value
+	 * @param  {float} max Max value
+	 * @return {float}     Value, not exceeding Min or Max
+	 */
 	clamp: function(val, min, max) {
 		return Math.max(Math.min(val, max), min);
 	},
+	/**
+	 * Returns a number with commas inserted appropriately
+	 * @param  {float} val A number
+	 * @return {string}     A number, with , in the thousands
+	 */
 	number: function(val) {
-		return val.toFixed(0).replace(/(\d)(?=(\d{3})+$)/g, '$1,') + "</span>";
+		return val.toFixed(0).replace(/(\d)(?=(\d{3})+$)/g, '$1,');
 	},
+	/**
+	 * Returns the value formatted as money
+	 * @param  {float} val The money value
+	 * @return {string}     $5.50
+	 */
 	money: function(val) {
 		var sign = val < 0 ? "negative" : "positive";
 		return '<span class="money ' + sign + '">$' + val.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + "</span>";
@@ -172,6 +212,11 @@ APP.Format = {
 			return "--";
 		return APP.Format.date(time) + " " + APP.Format.time(time);
 	},
+	/**
+	 * Returns html, given markdown
+	 * @param  {text} 'marked' Markdown formatted text
+	 * @return {html}          HTML formatted text
+	 */
 	markdown: require('marked')
 }
 

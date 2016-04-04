@@ -11,11 +11,13 @@
 				<% if(!U){ %>
 						<button id='login' class='btn'>Login</button>
 						<% } else { %>
-								<%=U.name%>
-										<span id='settings' class='click'>
+								<a href="#users/view/<%=U._id%>">
+										<%=U.name%>
+								</a>
+								<span id='settings' class='click'>
 												<%=APP.Icon('gear')%>
 										</span>
-										<% } %>
+								<% } %>
 		</div>
 </div>
 <div id='SEARCH' style=''></div>
