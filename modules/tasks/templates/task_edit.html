@@ -64,6 +64,14 @@
 						<input class='field' type='range' id='priority' placeholder='task' value='<%=priority%>' min=1 max=100>
 				</td>
 		</tr>
+		<Tr>
+				<th>Assigned To</th>
+				<td>
+						<%=APP.HTML.Select("assigned_to", APP.models.users,"name","_id",assigned_to,"field", true)%>
+								<%=assigned_to%>
+				</td>
+		</tr>
+
 		<tr>
 				<th>Description:
 				</th>

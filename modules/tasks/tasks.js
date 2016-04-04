@@ -32,6 +32,7 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		description: "",
 		task_id: "0.0.0",
 		subtasks: 0,
+		assigned_to: false,
 
 		start_date: "",
 		due_date: "",
@@ -44,7 +45,7 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		priority: 1, // scale 1..100
 
 		_: {
-			views: 0,
+			views: 1,
 			edits: 0,
 			created_by: APP.anon
 		}
