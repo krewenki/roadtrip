@@ -114,7 +114,7 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 		},
 		Assigned: function(model) {
 			return function(m) {
-				return m.get('assigned_to') == model.id
+				return m.get('assigned_to') == model.id && m.get('progress') != 100 && m.get('progress') >= 0
 			}
 		}
 	}
