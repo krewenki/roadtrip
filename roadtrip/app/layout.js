@@ -88,17 +88,17 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 		"keyup @ui.search": "Search",
 		"click @ui.login": "Login"
 	},
-	onShow: _.defer(function() {
-		console.log(APP.models.tasks);
-		APP.listenTo(APP.models.tasks, 'sync', function() {
-			var length = APP.models.tasks.where({
-				assigned_to: U._id
-			}).length;
-			if (length) {
-				$("#HEADER #taskcount").html("" + APP.Icon("tasks") + "" + length + "");
-			}
-		})
-	}),
+	// onShow: _.defer(function() {
+	// 	console.log(APP.models.tasks);
+	// 	APP.listenTo(APP.models.tasks, 'sync', function() {
+	// 		var length = APP.models.tasks.where({
+	// 			assigned_to: U._id
+	// 		}).length;
+	// 		if (length) {
+	// 			$("#HEADER #taskcount").html("" + APP.Icon("tasks") + "" + length + "");
+	// 		}
+	// 	})
+	// }),
 	Search: function() {
 		if (this.ui.search.val().length > 3) {
 			var search = new DEF.Search({
