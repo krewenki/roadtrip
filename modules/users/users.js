@@ -70,6 +70,17 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 DEF.modules.users.Collection = Backbone.Highway.Collection.extend({
 	model: DEF.modules.users.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/users',
+	initialize: function() {
+		this.listenTo(this, "sync", this.UpdateUserTaskCount)
+		this.listenTo(APP.models.tasks, "change:assigned_to", this.UpdateUserTaskCount)
+	},
+	UpdateUserTaskCount: function() {
+		console.log("update");
+		var length = APP.models.tasks.filter(APP.models.tasks.filters.Assigned(APP.models.users.get(U._id))).length;
+		if (length) {
+			$("#HEADER #taskcount").html("" + APP.Icon("tasks") + "" + length + "");
+		}
+	}
 });
 
 DEF.modules.users.views = {
@@ -79,13 +90,6 @@ DEF.modules.users.views = {
 	edit: Roadtrip.Edit.extend({
 		module: "users",
 		template: require("./templates/edit.html"),
-		// Save: function() {
-		// 	return Roadtrip.Edit.prototype.Save.call(this)
-		// 	debugger
-		// 	$(".field.dirty").each(function(i, $el) {
-		//
-		// 	})
-		// }
 	}),
 	/**
 	 * View a plain, read-only single record
