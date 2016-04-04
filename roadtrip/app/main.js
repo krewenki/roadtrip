@@ -104,7 +104,22 @@ var MainApp = Backbone.Marionette.Application.extend({
 		}
 		return "<i " + (title ? "title='" + title + "'" : "title='" + icon + "'") + " class='icon fa fa-" + icon + "'></i>";
 	},
+	HTML: {
+		Select: function(id, collection, display, key, value, className, leave_empty) {
+			key = key || "_id";
+			var html = "<select id='" + id + "' class='" + (className || "") + "'>";
+			if (leave_empty) {
+				html += "<option></option>";
+			}
+			collection.each(function(model) {
+				html += "<option " + (value == model.get(key) ? "selected" : "") + " value='" + model.get(key) + "'>" + model.get(display) + "</option>";
+			})
 
+			html += "</select>";
+			return html;
+
+		}
+	}
 });
 
 

@@ -12,7 +12,7 @@
 		<hr>
 		<table id='task-details' class='table table-full table-left '>
 				<tr>
-						<td id='task_icon' class='' rowspan=4>
+						<td id='task_icon' class='' rowspan=55>
 								<%=APP.Icon(kind, kind)%>
 						</td>
 						<th>Task</th>
@@ -51,12 +51,27 @@
 						<th>Stats</th>
 						<td>
 								Views:
-								<%=_.views%>, Subtasks:
-										<%=subtasks%>
+								<%=_.views%>, Edits:
+										<%=_.edits%>, Subtasks:
+												<%=subtasks%>
 						</td>
 						<th>Completed</th>
 						<td>
 								<%=APP.Format.date(complete_date)%>
+						</td>
+				</tr>
+				<tr>
+						<th>
+								Created body
+						</th>
+						<td>
+								<%=APP.models.users.get(_.created_by).get('name')%>
+						</td>
+						<th>
+								Assigned To
+						</th>
+						<td>
+								<%=(assigned_to?APP.models.users.get(assigned_to).get('name'):"--")%>
 						</td>
 				</tr>
 
