@@ -1,7 +1,7 @@
 <td>
 		<%=name%>
 </td>
-<td class='minwidth800'>
+<td class='minwidth1000'>
 		<%=email%>
 </td>
 <%
@@ -10,11 +10,11 @@
 		var module = modules[m];
 		var perm = perms[module];
 		%>
-		<td class='nowrap'>
-				<input title='Create' id='<%=module%>.create' class='perms' type='checkbox' <%=(perm.create? "checked": "")%> >
-				<input title='Read' id='<%=module%>.read' class='perms' type='checkbox' <%=perm.read? "checked": ""%> >
-				<input title='Update' id='<%=module%>.update' class='perms' type='checkbox' <%=perm.update? "checked": ""%> >
-				<input title='Delete' id='<%=module%>.delete' class='perms' type='checkbox' <%=perm.delete? "checked": ""%> >
-				<input title='Comment' id='<%=module%>.comment' class='perms' type='checkbox' <%=perm.comment? "checked": ""%> >
+		<td>
+				<input title='Create' id='<%=module%>.create' class='fancy_checkbox perms' type='checkbox' <%=perm.create? "checked": ""%> >
+				<input title='Read' id='<%=module%>.read' class='fancy_checkbox perms' type='checkbox' <%=perm.read? "checked": ""%> >
+				<input title='Update' id='<%=module%>.update' class='fancy_checkbox perms' type='checkbox' <%=perm.update? "checked": ""%> >
+				<input title='Delete' id='<%=module%>.delete' class='fancy_checkbox perms' type='checkbox' <%=perm.delete? "checked": ""%> >
+				<input title='Comment' id='<%=module%>.comment' class='fancy_checkbox perms' type='checkbox' <%=perm.comment? "checked": ""%> >
 		</td>
 		<% } %>

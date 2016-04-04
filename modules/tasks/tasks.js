@@ -100,6 +100,23 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 		else
 			rank = 0.0 - (m.get('progress')) - m.get('priority') - m.get('_').views / 10 - m.get('subtasks');
 		return rank
+	},
+	filters: {
+		Open: function(model) {
+			return function(m) {
+				return m.get('parent_id') == model.id && m.get('progress') != 100 && m.get('progress') >= 0
+			}
+		},
+		Closed: function(model) {
+			return function(m) {
+				return m.get('parent_id') == model.id && (m.get('progress') == 100 || m.get('progress') < 0)
+			}
+		},
+		Assigned: function(model) {
+			return function(m) {
+				return m.get('assigned_to') == model.id
+			}
+		}
 	}
 });
 
@@ -301,17 +318,13 @@ DEF.modules.tasks.views = {
 			this.showChildView('open', new DEF.modules.tasks.TaskList({
 				template: require("./templates/taskline.html"),
 				collection: APP.models.tasks,
-				filter: function(m) {
-					return m.get('parent_id') == model_id && m.get('progress') != 100 && m.get('progress') >= 0
-				}
+				filter: APP.models.tasks.filters.Open(this.model)
 			}))
 
 			this.showChildView('closed', new DEF.modules.tasks.TaskList({
 				template: require("./templates/taskline_closed.html"),
 				collection: APP.models.tasks,
-				filter: function(m) {
-					return m.get('parent_id') == model_id && (m.get('progress') == 100 || m.get('progress') < 0)
-				}
+				filter: APP.models.tasks.filters.Closed(this.model)
 			}))
 			var comments = new DEF.modules.comments.Collection(this.model.get('comments'));
 			this.showChildView('comments', new DEF.modules.comments.Comments({

@@ -59,6 +59,10 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 				delete: false,
 				comment: true
 			},
+		},
+		Can: function(module, perm) {
+			var perms = this.get('perms');
+			return perms[module][perm] || false;
 		}
 	}
 });
@@ -89,6 +93,17 @@ DEF.modules.users.views = {
 	view: Roadtrip.View.extend({
 		module: "users",
 		template: require("./templates/view.html"),
+		regions: {
+			//	details: "#details",
+			tasklist: "#task_list"
+		},
+		onShow: function() {
+			this.showChildView('tasklist', new DEF.modules.tasks.TaskList({
+				template: require("./templates/taskline.html"),
+				collection: APP.models.tasks,
+				filter: APP.models.tasks.filters.Assigned(this.model)
+			}))
+		}
 	})
 }
 
@@ -100,11 +115,12 @@ DEF.modules.users.RecordLine = Roadtrip.RecordLine.extend({
 		perm: ".perms"
 	},
 	events: {
-		"click @ui.perm": "SetPerm"
+		"click @ui.perm": "SetPerm",
+		"click": "Click"
 	},
 	SetPerm: function(e) {
 		$el = e.currentTarget;
-		console.log(e.currentTarget);
+		console.log($el);
 		var parts = $el.id.split('.');
 		var perms = this.model.get('perms');
 		perms[parts[0]][parts[1]] = $el.checked;
@@ -112,7 +128,7 @@ DEF.modules.users.RecordLine = Roadtrip.RecordLine.extend({
 			perms: perms
 		});
 		this.model.trigger('change', this.model);
-		console.log(perms);
+		return false; // stop propagation
 	}
 });
 
