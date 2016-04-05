@@ -206,6 +206,10 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	UpdateProgress: function() {
 		var label = this.model.GetProgressLabel(this.ui.progress.val());
 		this.ui.progress_label.html(label);
+		if (label == 'Accepted' && !this.model.get('assigned_to'))
+			this.model.set({
+				assigned_to: U._id
+			})
 		this.model.set({
 			'progress': this.ui.progress.val(),
 			'progress_label': label
