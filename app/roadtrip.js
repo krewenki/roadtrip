@@ -112,7 +112,6 @@ Roadtrip = {
 		 * Use this to quickly set stats for the models
 		 *
 		 * this.model.SetStats({created_by: U.ID})
-		 * this.model.SetStats("views"); // auto-increment
 		 */
 		SetStats: function(stats) {
 			var defaults = { // these attributes go to every model as "_"
@@ -132,11 +131,6 @@ Roadtrip = {
 							created_on: Date.now()
 						}
 						console.log("create", stats);
-						break;
-					case "view":
-						stats = {
-							views: model.views + 1
-						}
 						break;
 					case "edit":
 						stats = {
@@ -164,6 +158,7 @@ Roadtrip = {
 			this.set({
 				_:  stats
 			})
+			this.trigger('change', this) // manually trigger a change, because Highway
 		}
 	}),
 	MainView: Backbone.Marionette.LayoutView.extend({
@@ -174,7 +169,7 @@ Roadtrip = {
 	 */
 	View: Backbone.Marionette.LayoutView.extend({
 		onShow: function() {
-			this.model.SetStats("view")
+			this.model.IncStat("views")
 			APP.SetTitle(this.model.get(this.model.nameAttribute), this.module)
 		},
 		ui: {
