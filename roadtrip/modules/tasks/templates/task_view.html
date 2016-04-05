@@ -1,99 +1,103 @@
 <div id='menu'>
-		<div class='cmd link' id='edit'>
-				<%=APP.Icon('edit')%> edit task
-		</div>
-		<div class='cmd link' id='subtask'>
-				<%=APP.Icon('new')%> add subtask
-		</div>
-		<span id='title'>Task <%=task_id%></span>
+	<div class='cmd link' id='edit'>
+		<%=APP.Icon('edit')%> edit task
+	</div>
+	<div class='cmd link' id='subtask'>
+		<%=APP.Icon('new')%> add subtask
+	</div>
+	<span id='title'>Task <%=task_id%></span>
 
-		<span class='path'><%=path%></span>
+	<span class='path'><%=path%></span>
 
-		<hr>
-		<table id='task-details' class='table table-full table-left '>
-				<tr>
-						<td id='task_icon' class='' rowspan=55>
-								<%=APP.Icon(kind, kind)%>
-						</td>
-						<th>Task</th>
-						<td>
+	<hr>
 
-								<%=task%>
-						</td>
-						<th>Created</th>
-						<td>
-								<%=APP.Format.date(_.created_on)%>
-						</td>
-				</tr>
-				<tr>
-						<th>Priority</th>
-						<td>
-								<meter min=-1 max=100 value='<%=priority%>'>
-										<%=priority%>
-								</meter>
-						</td>
-						<th>Started</th>
-						<td>
-								<%=APP.Format.date(start_date)%>
-						</td>
-				</tr>
-				<tr>
-						<th>
-								Created body
-						</th>
-						<td>
-								<%=(_.created_by?APP.models.users.get(_.created_by).Link('name'):"--")%>
-						</td>
-						<th>Due</th>
-						<td>
-								<%=APP.Format.date(due_date)%>
-						</td>
-				</tr>
-				<tr>
-						<th>
-								Assigned To
-						</th>
-						<td>
-								<%=(assigned_to?APP.models.users.get(assigned_to).Link('name'):"--")%>
-						</td>
-						<th>Completed</th>
-						<td>
-								<%=APP.Format.date(complete_date)%>
-						</td>
-				</tr>
-		</table>
+	<table id='task-details' class='table table-full table-left '>
+		<tr>
+			<td id='task_icon' class='' rowspan=55>
+				<%=APP.Icon(kind, kind)%>
+			</td>
+			<th>Task</th>
+			<td>
 
-		<table id='progress-table' class='shadow_box_dark table table-full table-left'>
-				<tr>
-						<th>Progress</th>
-						<td>
-								<input value='<%=progress%>' <%=subtasks>0?"disabled":""%> id='progress' list='progress_levels' type=range min=-1 max=100 >
-								<datalist id="progress_levels">
-										<option>-1</option>
-										<option>0</option>
-										<option>5</option>
-										<option>80</option>
-										<option>100</option>
-								</datalist>
-						</td>
-						<td width="150px" id='progress_label'>
-								<%=progress_label%>
-										<!-- <select id='progress_label'>
-												<option value='New'>New</option>
-												<option value='Accepted'>Accepted</option>
-												<option value='In Progress'>In Progress</option>
-												<option value='Review'>Review</option>
-												<option value='Complete'>Complete</option>
-												<option value='Rejected'>Rejected</option>
-										</select> -->
-						</td>
-				</tr>
-		</table>
+				<%=task%>
+			</td>
+			<th>Created</th>
+			<td>
+				<%=APP.Format.date(_.created_on)%>
+			</td>
+		</tr>
+		<tr>
+			<th>Priority</th>
+			<td>
+				<meter min=-1 max=100 value='<%=priority%>'>
+					<%=priority%>
+				</meter>
+			</td>
+			<th>Started</th>
+			<td>
+				<%=APP.Format.date(start_date)%>
+			</td>
+		</tr>
+		<tr>
+			<th>
+				Created body
+			</th>
+			<td>
+				<%=(_.created_by?APP.models.users.get(_.created_by).Link('name'):"--")%>
+			</td>
+			<th>Due</th>
+			<td>
+				<%=APP.Format.date(due_date)%>
+			</td>
+		</tr>
+		<tr>
+			<th>
+				Assigned To
+			</th>
+			<td>
+				<%=(assigned_to?APP.models.users.get(assigned_to).Link('name'):"--")%>
+			</td>
+			<th>Completed</th>
+			<td>
+				<%=APP.Format.date(complete_date)%>
+			</td>
+		</tr>
+	</table>
+
+	<table id='progress-table' class='shadow_box_dark table table-full table-left'>
+		<tr>
+			<th>Progress</th>
+			<td>
+				<% if (subtasks==0) { %>
+					<input value='<%=progress%>' <%=subtasks>0?"disabled":""%> id='progress' list='progress_levels' type=range min=-1 max=100 >
+					<datalist id="progress_levels">
+						<option>-1</option>
+						<option>0</option>
+						<option>5</option>
+						<option>80</option>
+						<option>100</option>
+					</datalist>
+					<% } else { %>
+						<meter value='<%=progress%>' min=0 max=100>
+							<% } %>
+			</td>
+			<td width="150px" id=''>
+				<select id='progress_label'>
+					<option <%=(progress_label=='New' ? "selected": "")%> value='New'>New</option>
+					<option <%=(progress_label=='Accepted' ? "selected": "")%> value='Accepted'>Accepted</option>
+					<option <%=(progress_label=='In Progress' ? "selected": "")%> value='In Progress'>In Progress</option>
+					<option <%=(progress_label=='Review' ? "selected": "")%> value='Review'>Review</option>
+					<option <%=(progress_label=='Complete' ? "selected": "")%> value='Complete'>Complete</option>
+					<option <%=(progress_label=='Rejected' ? "selected": "")%> value='Rejected'>Rejected</option>
+				</select>
+			</td>
+		</tr>
+	</table>
 
 </div>
 
 
 <h2>Description</h2>
 <div class='description'>
-		<%=APP.Format.markdown(description)%>
+	<%=APP.Format.markdown(description)%>
 </div>

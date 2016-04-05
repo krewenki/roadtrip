@@ -84,7 +84,7 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 			label = "Accepted";
 		if (val > 5)
 			label = "In Progress"
-		if (val > 80)
+		if (val >= 80)
 			label = "Review";
 		if (val == 100)
 			label = "Complete";
@@ -177,7 +177,8 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		"click @ui.edit": "Edit",
 		"click @ui.subtask": "AddSubtask",
 		"input @ui.progress": "UpdateProgress",
-		//"input @ui.progress": "UpdateProgressLabel"
+		//"input @ui.progress": "UpdateProgressLabel",
+		"change @ui.progress_label": "UpdateProgressLabel"
 
 	},
 	/**
@@ -205,9 +206,9 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	 * Someone drug the progress handle, so update stuff
 	 * @return {[type]}   [description]
 	 */
-	UpdateProgress: function() {
+	UpdateProgress: function(label) {
 		var label = this.model.GetProgressLabel(this.ui.progress.val());
-		this.ui.progress_label.html(label);
+		this.ui.progress_label.val(label);
 		if (label == 'Accepted' && !this.model.get('assigned_to'))
 			this.model.set({
 				assigned_to: U._id
@@ -225,6 +226,22 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 				complete_date: Date.now()
 			})
 	},
+	UpdateProgressLabel: function() {
+		switch (this.ui.progress_label.val()) {
+			case "In Progress":
+				this.ui.progress.val(Math.max(5, this.ui.progress.val()))
+				this.UpdateProgress();
+				break;
+			case "Review":
+				this.ui.progress.val(Math.max(80, this.ui.progress.val()))
+				this.UpdateProgress();
+				break;
+			case "Complete":
+				this.ui.progress.val(Math.max(100, this.ui.progress.val()))
+				this.UpdateProgress();
+				break;
+		}
+	}
 })
 
 
