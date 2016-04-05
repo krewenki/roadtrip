@@ -3,86 +3,89 @@
  *
  */
 Roadtrip = {
-	Router: Backbone.Marionette.AppRouter.extend( {
+	Router: Backbone.Marionette.AppRouter.extend({
 		module: "module", // override, of course.
 		collections: [], // list collections required for this module
 		routes: {},
-		execute: function( callback, args, name ) {
+		execute: function(callback, args, name) {
 			var module = this.module;
 			var missing = this.missing_collections();
-			if ( missing === false ) {
-				return Backbone.Router.prototype.execute.call( this, callback, args, name )
+			if (missing === false) {
+				return Backbone.Router.prototype.execute.call(this, callback, args, name)
 			} else {
-				console.log( "waiting for collection", missing )
-				APP.root.showChildView( "main", new DEF.EmptyView( {
+				console.log("waiting for collection", missing)
+				APP.root.showChildView("main", new DEF.EmptyView({
 					icon: "loading",
 					msg: "Loading " + missing.toUpperCase() + "&hellip;"
-				} ) );
-				this.listenToOnce( APP.models[ missing ], 'sync', this.execute.bind( this, callback, args, name ) )
+				}));
+				this.listenToOnce(APP.models[missing], 'sync', this.execute.bind(this, callback, args, name))
 			}
 		},
 		/**
 		 * returns the name of a missing collection, or FALSE if they are all loaded
 		 */
 		missing_collections: function() {
-			if ( this.collections.length == 0 )
-				this.collections = [ this.module ];
-			for ( var c = 0; c < this.collections.length; c++ ) {
-				var collection = this.collections[ c ];
-				if ( _.isUndefined( APP.models[ collection ] ) || APP.models[ collection ].length == 0 )
+			if (this.collections.length == 0)
+				this.collections = [this.module];
+			for (var c = 0; c < this.collections.length; c++) {
+				var collection = this.collections[c];
+				if (_.isUndefined(APP.models[collection]) || APP.models[collection].length == 0)
 					return collection;
 			}
 			return false;
 		},
-		LoadModule: function( cmd, arg ) {
+		LoadModule: function(cmd, arg) {
 			var module = this.module;
-			var model = APP.models[ module ].get( arg );
-			if ( !model ) {
-				console.error( "Model not found", module, arg );
+			var model = APP.models[module].get(arg);
+			if (!model) {
+				console.error("Model not found", module, arg);
 			}
 
-			APP.Page = new DEF.modules[ module ].views[ cmd ]( {
+			APP.Page = new DEF.modules[module].views[cmd]({
 				model: model,
-			} );
-			APP.root.showChildView( "main", APP.Page );
+			});
+			APP.root.showChildView("main", APP.Page);
 		},
 		ShowRoot: function() {
 			var module = this.module;
-			APP.Page = new DEF.modules[ module ].MainView( {
-				collection: APP.models[ module ]
-			} );
-			APP.root.showChildView( "main", APP.Page );
+			APP.Page = new DEF.modules[module].MainView({
+				collection: APP.models[module]
+			});
+			APP.root.showChildView("main", APP.Page);
 		}
-	} ),
+	}),
 
-	Collection: Backbone.Highway.Collection.extend( {
+	Collection: Backbone.Highway.Collection.extend({
 		perpage: 100,
 		page: 1,
-		comparator: function( m ) {
+		comparator: function(m) {
 			//var sort = ('00000' + (m.get('views') + m.get('edits'))).substr(-5) + m.get('name');
-			var sort = ( m.get( '_.views' ) + m.get( '_.edits' ) );
+			var sort = (m.get('_.views') + m.get('_.edits'));
 			return -sort
 		},
 		initialize: function() {
-			this.listenToOnce( this, "sync", this.Synced, this );
+			this.listenToOnce(this, "sync", this.Synced, this);
 		},
-		Synced: function( x, y, z ) {
-			APP.trigger( "collection:sync" );
+		Synced: function(x, y, z) {
+			APP.trigger("collection:sync");
 		}
-	} ),
-	Model: Backbone.Model.extend( {
+	}),
+	Model: Backbone.Model.extend({
 		idAttribute: '_id',
 		module: "tbd", // the name of the collection
 		nameAttribute: 'name', // the human-readable field in the record
 		defaults: {
-			_: {}
+			_: {
+				views: 0,
+				edits: 0
+			}
 		},
 
 		icon: function() {
-			return APP.Icon( this.module, this.module );
+			return APP.Icon(this.module, this.module);
 		},
 		search_string: function() {
-			var string = this.get( this.nameAttribute )
+			var string = this.get(this.nameAttribute)
 			return string;
 		},
 		/**
@@ -90,22 +93,22 @@ Roadtrip = {
 		 * @param  {[text]} field Which field to displa in the <a> tag
 		 * @return {html}      "<a href='linl'>field</a>"
 		 */
-		Link: function( field ) {
+		Link: function(field) {
 			field = field || this.nameAttribute;
-			return "<a href='" + this.GetLink() + "'>" + this.get( field ) + "</a>";
+			return "<a href='" + this.GetLink() + "'>" + this.get(field) + "</a>";
 		},
 		/**
 		 * Generate a URL for a record
 		 * @param  {string} cmd value to use in the "cmd" portion of the URL
 		 * @return {text}     "#module/cmd/id"
 		 */
-		GetLink: function( cmd ) {
-			if ( !cmd )
+		GetLink: function(cmd) {
+			if (!cmd)
 				cmd = "view";
-			return "#" + this.module + "/" + cmd + "/" + this.get( '_id' );
+			return "#" + this.module + "/" + cmd + "/" + this.get('_id');
 		},
 		GetTitle: function() {
-			return this.model.get( this.nameAttribute );
+			return this.model.get(this.nameAttribute);
 
 		},
 		/**
@@ -113,7 +116,7 @@ Roadtrip = {
 		 *
 		 * this.model.SetStats({created_by: U.ID})
 		 */
-		SetStats: function( stats ) {
+		SetStats: function(stats) {
 			var defaults = { // these attributes go to every model as "_"
 				views: 0,
 				edits: 0,
@@ -122,15 +125,15 @@ Roadtrip = {
 				edited_on: 0,
 				edited_by: 0
 			}
-			var model = _.extend( defaults, this.get( '_' ) )
-			if ( !_.isObject( stats ) ) {
-				switch ( stats ) {
+			var model = _.extend(defaults, this.get('_'))
+			if (!_.isObject(stats)) {
+				switch (stats) {
 					case "create": // this will not run, as there is no model yet
 						stats = {
 							created_by: U._id,
 							created_on: Date.now()
 						}
-						console.log( "create", stats );
+						console.log("create", stats);
 						break;
 					case "edit":
 						stats = {
@@ -140,37 +143,37 @@ Roadtrip = {
 						}
 						break;
 					default:
-						console.warn( "unhandled stat", stats );
+						console.warn("unhandled stat", stats);
 				}
 			}
-			this.set( {
-				_: _.extend( model, stats )
-			} )
+			this.set({
+				_: _.extend(model, stats)
+			})
 		},
 		/**
 		 * Increment the stat by 1
 		 * @param  {string} stat Name of stat
 		 * @return {null}      [description]
 		 */
-		IncStat: function( stat ) {
-			var stats = this.get( '_' );
-			stats[ stat ] = ( stats[ stat ] + 1 ) || 1
-			this.set( {
+		IncStat: function(stat) {
+			var stats = this.get('_');
+			stats[stat] = (stats[stat] + 1) || 1
+			this.set({
 				_: stats
-			} )
-			this.trigger( 'change', this ) // manually trigger a change, because Highway
+			})
+			this.trigger('change', this) // manually trigger a change, because Highway
 		}
-	} ),
-	MainView: Backbone.Marionette.LayoutView.extend( {
+	}),
+	MainView: Backbone.Marionette.LayoutView.extend({
 
-	} ),
+	}),
 	/**
 	 * Useful for viewing a single model
 	 */
-	View: Backbone.Marionette.LayoutView.extend( {
+	View: Backbone.Marionette.LayoutView.extend({
 		onShow: function() {
-			this.model.IncStat( "views" )
-			APP.SetTitle( this.model.get( this.model.nameAttribute ), this.module )
+			this.model.IncStat("views")
+			APP.SetTitle(this.model.get(this.model.nameAttribute), this.module)
 		},
 		ui: {
 			edit: "#edit",
@@ -184,20 +187,20 @@ Roadtrip = {
 			"change": "render" // This shouldn't be necessary, should it?
 		},
 		Edit: function() {
-			APP.Route( "#" + this.module + "/" + "edit" + "/" + this.model.id );
+			APP.Route("#" + this.module + "/" + "edit" + "/" + this.model.id);
 		},
 		Delete: function() {
-			if ( confirm( "Are you sure you want to delete " + this.model.get( this.model.nameAttribute ) ) ) {
-				console.log( "kill it" );
-				APP.models[ this.module ].remove( this.model );
-				APP.Route( "#" + this.module );
+			if (confirm("Are you sure you want to delete " + this.model.get(this.model.nameAttribute))) {
+				console.log("kill it");
+				APP.models[this.module].remove(this.model);
+				APP.Route("#" + this.module);
 			}
 		}
-	} ),
+	}),
 	/**
 	 * Useful for supporting edit forms.  Has all the save/dirty logic built in.
 	 */
-	Edit: Backbone.Marionette.ItemView.extend( {
+	Edit: Backbone.Marionette.ItemView.extend({
 		ui: {
 			"field": ".field",
 			"save": "#save",
@@ -211,12 +214,12 @@ Roadtrip = {
 			"click @ui.delete": "Delete"
 		},
 		onBeforeRender: function() {
-			if ( !this.model ) {
-				this.model = new DEF.modules[ this.module ].Model( {} )
+			if (!this.model) {
+				this.model = new DEF.modules[this.module].Model({})
 			}
 		},
 		onShow: function() {
-			$( "textarea" ).val( ( $( "textarea" ).val() || '' ).trim() ); // beautify inserts spaces between <textarea> in the item_edit form
+			$("textarea").val(($("textarea").val() || '').trim()); // beautify inserts spaces between <textarea> in the item_edit form
 		},
 		/**
 		 * Where to go, by default, after some action.  This is kind of a dumb
@@ -224,34 +227,34 @@ Roadtrip = {
 		 * each module could override it, or something.
 		 * @param  {bool} go_parent [don't go back to self, go to parent]
 		 */
-		Return: function( go_parent ) {
-			if ( this.model.id ) {
-				if ( go_parent ) {
-					var module = this.model.get( 'parent_module' ),
-						id = this.model.get( 'parent_id' );
-					if ( module )
-						APP.Route( APP.GetModel( module, id ).GetLink() )
+		Return: function(go_parent) {
+			if (this.model.id) {
+				if (go_parent) {
+					var module = this.model.get('parent_module'),
+						id = this.model.get('parent_id');
+					if (module)
+						APP.Route(APP.GetModel(module, id).GetLink())
 					else {
-						APP.Route( "#" + this.module + "/view/" + this.model.id )
+						APP.Route("#" + this.module + "/view/" + this.model.id)
 					}
 				} else
-					APP.Route( "#" + this.module + "/view/" + this.model.id )
+					APP.Route("#" + this.module + "/view/" + this.model.id)
 			} else
-				APP.Route( "#" + this.module );
+				APP.Route("#" + this.module);
 		},
-		MakeDirty: function( e ) {
+		MakeDirty: function(e) {
 
-			if ( e.currentTarget.value == this.model.get( e.currentTarget.id ) )
-				$( e.currentTarget ).removeClass( "dirty" );
+			if (e.currentTarget.value == this.model.get(e.currentTarget.id))
+				$(e.currentTarget).removeClass("dirty");
 			else
-				$( e.currentTarget ).addClass( "dirty" );
+				$(e.currentTarget).addClass("dirty");
 		},
-		Save: function( e ) {
+		Save: function(e) {
 			var model = this.model,
 				save = {};
-			$( ".field.dirty" ).each( function( i, $el ) {
+			$(".field.dirty").each(function(i, $el) {
 				var val = $el.value;
-				switch ( $el.type ) {
+				switch ($el.type) {
 					case "checkbox":
 						val = $el.checked;
 						break;
@@ -264,32 +267,32 @@ Roadtrip = {
 				// 		save[parts[0]][parts[1]] = {}
 				// 	save[parts[0]][parts[1]][parts[2]] = val;
 				// } else {
-				save[ $el.id ] = val;
+				save[$el.id] = val;
 				//				}
-			} )
-			if ( !this.model.id ) {
-				save[ "_" ] = {
+			})
+			if (!this.model.id) {
+				save["_"] = {
 					created_by: U._id,
 					created_on: Date.now()
 				}
-				APP.models[ this.module ].create( save );
+				APP.models[this.module].create(save);
 				//this.model.SetStats("create");
 			} else {
-				console.log( "save", save );
-				this.model.set( save );
-				this.model.SetStats( "edit" )
+				console.log("save", save);
+				this.model.set(save);
+				this.model.SetStats("edit")
 			}
-			this.Return( false );
+			this.Return(false);
 		},
-		Cancel: function( e ) {
+		Cancel: function(e) {
 			this.Return();
 		},
-		Delete: function( e ) {
-			APP.models[ this.module ].remove( this.model );
-			this.Return( true );
+		Delete: function(e) {
+			APP.models[this.module].remove(this.model);
+			this.Return(true);
 		}
-	} ),
-	RecordLine: Backbone.Marionette.ItemView.extend( {
+	}),
+	RecordLine: Backbone.Marionette.ItemView.extend({
 		tagName: 'tr',
 		className: 'click hover',
 		modelEvents: {
@@ -299,9 +302,9 @@ Roadtrip = {
 			"click": "Click"
 		},
 		Click: function() {
-			APP.Route( "#" + ( this.module ) + "/view/" + this.model.get( '_id' ), this.model.get( this.model.nameAttribute ) );
+			APP.Route("#" + (this.module) + "/view/" + this.model.get('_id'), this.model.get(this.model.nameAttribute));
 		}
-	} ),
+	}),
 
 
 
@@ -314,7 +317,7 @@ Roadtrip = {
 
 
 	 */
-	RecordList: Backbone.Marionette.CompositeView.extend( {
+	RecordList: Backbone.Marionette.CompositeView.extend({
 		template: false,
 		page: 1,
 		perpage: 40,
@@ -331,13 +334,13 @@ Roadtrip = {
 			"change": "render"
 		},
 
-		addChild: function( child, ChildView, index ) {
-			var from = ( this.page - 1 ) * this.perpage;
+		addChild: function(child, ChildView, index) {
+			var from = (this.page - 1) * this.perpage;
 			var to = from + this.perpage
-			if ( index >= from && index < to )
-				Backbone.Marionette.CollectionView.prototype.addChild.apply( this, arguments );
+			if (index >= from && index < to)
+				Backbone.Marionette.CollectionView.prototype.addChild.apply(this, arguments);
 		},
 
-	} )
+	})
 
 }
