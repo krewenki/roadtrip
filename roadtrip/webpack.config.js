@@ -9,6 +9,9 @@ var mainPath = path.resolve(__dirname, 'app', 'main.js');
 var marked = require("marked");
 var mdrenderer = new marked.Renderer();
 
+var WebpackNotifierPlugin = require('webpack-notifier');
+
+
 var config = {
 	resolve: {
 		extensions: ["", ".js", ".jsx", ".node", ".webpack-loader.js", ".web-loader.js", ".loader.js"]
@@ -81,7 +84,8 @@ var config = {
 	// We have to manually add the Hot Replacement plugin when running
 	// from Node
 	plugins: [
-		new Webpack.HotModuleReplacementPlugin()
+		new Webpack.HotModuleReplacementPlugin(),
+		new WebpackNotifierPlugin()
 	]
 };
 

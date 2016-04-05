@@ -30,26 +30,26 @@ DEF.modules.contacts.Router = Roadtrip.Router.extend({
  */
 DEF.modules.contacts.Model = Roadtrip.Model.extend({
 	nameAttribute: 'name', // the human-readable field in the record
-	module: "contacts",
-	defaults: {
-		name: "Person 1",
-		kind: "employee",
-		address: "",
-		address2: "",
-		phone: "",
-		email: "",
-		city: "",
-		state: "",
-		zip: "",
+	module:        "contacts",
+	defaults:      {
+		name:         "Person 1",
+		kind:         "employee",
+		address:      "",
+		address2:     "",
+		phone:        "",
+		email:        "",
+		city:         "",
+		state:        "",
+		zip:          "",
 
 	},
-	GetLink: function(cmd) {
+	GetLink:       function(cmd) {
 		return "#contacts/" + cmd + "/" + this.get('_id');
 	},
 	search_string: function() {
 		return this.get('name');
 	}
-});
+})
 
 /**
  * The main collection.  MUST be called "Collection"
