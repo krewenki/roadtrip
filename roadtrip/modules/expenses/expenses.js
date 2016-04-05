@@ -28,7 +28,7 @@ DEF.modules.expenses.Router = Roadtrip.Router.extend({
 		"expenses/:cmd/:arg": "LoadModule",
 	},
 });
-DEF.modules.expenses.Model = Backbone.Model.extend({
+DEF.modules.expenses.Model = Roadtrip.Model.extend({
 	nameAttribute: 'name', // the human-readable field in the record
 	module:        "expenses",
 	defaults:      {
@@ -45,6 +45,7 @@ DEF.modules.expenses.Collection = Backbone.Highway.Collection.extend({
 	model: DEF.modules.expenses.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/expenses',
 });
+
 
 DEF.modules.expenses.Expense = Roadtrip.Model.extend({
 	defaults: {
@@ -65,20 +66,27 @@ DEF.modules.expenses.views = {
 		childView: DEF.modules.expenses.ExpenseList,
 		childViewContainer: "#expenses",
 		onBeforeRender: function() {
-			// this.collection = new DEF.modules.expenses.ExpenseCollection();
-			// for (var i = 0; i< 3; i++) {
-			// 	this.collection.push(new DEF.modules.expenses.Expense({
-			// 		day: i,
-			// 		kind: "meal"
-			// 	}))
-			// }
-			// console.log(this.collection);
+			if (!this.model) {
+				this.model = new DEF.modules[this.module].Model({})
+			}
+			console.log(this.model);
+
+			this.collection = new DEF.modules.expenses.ExpenseCollection();
+			for (var i = 0; i< 3; i++) {
+				this.collection.push(new DEF.modules.expenses.Expense({
+					day: i,
+					kind: "meal"
+				}))
+			}
+			console.log(this.collection);
+
 		},
+
 		templateHelpers: function() {
-			// var rs = {
-			// 	expense_id: this.GenerateTaskID()
-			// }
-			// return rs;
+			var rs = {
+				expense_id: this.GenerateTaskID()
+			}
+			return rs;
 		},
 		GenerateTaskID: function() {
 			if (this.model.id) // this model has been saved

@@ -6,9 +6,11 @@
 </td>
 <%
 	var modules = Object.keys(APP.models);
+	var perm;
 	for( var m in modules) {
 		var module = modules[m];
-		var perm = perms[module];
+		if (perms[module]) // a module may not exist when this record had been created
+			perm = perms[module] // but if it does, use it.  Else, use the last.
 		%>
 		<td>
 				<input title='Create' id='<%=module%>.create' class='fancy_checkbox perms' type='checkbox' <%=perm.create? "checked": ""%> >

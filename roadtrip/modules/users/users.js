@@ -60,6 +60,13 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 				delete:     false,
 				comment:    true
 			},
+			expenses:       {
+				create:     false,
+				read:       false,
+				update:     false,
+				delete:     false,
+				comment:    false
+			},
 		},
 		Can:          function(module, perm) {
 			var perms = this.get('perms');
@@ -84,7 +91,6 @@ DEF.modules.users.Collection = Backbone.Highway.Collection.extend({
 	// 		return out;
 	// },
 	UpdateUserTaskCount: function() {
-		console.log("update");
 		var length = APP.models.tasks.filter(APP.models.tasks.filters.Assigned(APP.models.users.get(U._id))).length;
 		if (length) {
 			$("#HEADER #taskcount").html("" + APP.Icon("tasks") + "" + length + "");
@@ -137,7 +143,7 @@ DEF.modules.users.RecordLine = Roadtrip.RecordLine.extend({
 		$el = e.currentTarget;
 		console.log($el);
 		var parts = $el.id.split('.');
-		var perms = this.model.get('perms');
+		var perms = _.extend(this.model.defaults.perms, this.model.get('perms'))
 		perms[parts[0]][parts[1]] = $el.checked;
 		this.model.set({
 			perms: perms
