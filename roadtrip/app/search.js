@@ -29,7 +29,8 @@ DEF.Search = Backbone.Marionette.CompositeView.extend({
 		for (var m = 0; m < modules.length; m++) {
 			var module = modules[m];
 			APP.models[module].each(function(model, index) {
-				if (model.search_string().toUpperCase().indexOf(search) != -1)
+				var string = model.search_string();
+				if (string && string.toUpperCase().indexOf(search) != -1)
 					matches.push(model);
 			})
 		}

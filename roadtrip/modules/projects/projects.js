@@ -220,7 +220,7 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 		}
 	},
 	onShow: function() {
-		this.model.SetStats("view")
+		this.model.IncStat("views")
 		APP.SetTitle(this.model.get('project'));
 
 	},

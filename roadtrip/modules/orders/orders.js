@@ -74,7 +74,7 @@ DEF.modules.orders.views.view = Backbone.Marionette.LayoutView.extend({
 		"click @ui.delete": "Delete"
 	},
 	onShow: function() {
-		this.model.SetStats("view");
+		this.model.IncStat("views")
 		APP.SetTitle(this.model.get('order'));
 		this.showChildView('order', new DEF.modules.orders.OrderView({
 			model: this.model,

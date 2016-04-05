@@ -310,7 +310,7 @@ DEF.modules.tasks.views = {
 		},
 		onShow: function() {
 			APP.SetTitle(this.model.get(this.model.nameAttribute));
-			this.model.SetStats("view");
+			this.model.IncStat("views")
 
 			var model_id = this.model.id;
 			this.showChildView('task', new DEF.modules.tasks.TaskDetails({

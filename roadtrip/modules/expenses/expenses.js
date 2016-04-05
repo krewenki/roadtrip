@@ -31,6 +31,9 @@ DEF.modules.expenses.Router = Roadtrip.Router.extend({
 DEF.modules.expenses.Model = Roadtrip.Model.extend({
 	nameAttribute: 'name', // the human-readable field in the record
 	module:        "expenses",
+	search_string: function() {
+		return false
+	},
 	defaults:      {
 		expense_id:   1,
 		state:        "New", // submitted, approved, completed
