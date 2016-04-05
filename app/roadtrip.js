@@ -152,6 +152,18 @@ Roadtrip = {
 			this.set({
 				_: _.extend(model, stats)
 			})
+		},
+		/**
+		 * Increment the stat by 1
+		 * @param  {string} stat Name of stat
+		 * @return {null}      [description]
+		 */
+		IncStat : function(stat) {
+			var stats = this.get('_');
+			stats[stat] = (stats[stat]+1) || 1
+			this.set({
+				_:  stats
+			})
 		}
 	}),
 	MainView: Backbone.Marionette.LayoutView.extend({
