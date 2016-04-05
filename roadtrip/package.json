@@ -8,7 +8,7 @@
     "JSON2": "^0.1.0",
     "babel-core": "^6.5.2",
     "babel-loader": "^6.2.2",
-    "backbone.highway": "^1.0.0",
+    "backbone.highway": "^1.0.4",
     "backbone.marionette": "2.4.5",
     "bootstrap": "^3.3.6",
     "css-loader": "^0.23.1",
