@@ -277,7 +277,6 @@ Roadtrip = {
 				}
 				return APP.models[this.module].create(save, {
 					success: function(model){
-						console.log(model);
 						this.model.id = model._id; // _id because it's just a mongo object
 						this.Return(false);
 					}.bind(this)});
