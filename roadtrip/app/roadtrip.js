@@ -275,14 +275,19 @@ Roadtrip = {
 					created_by: U._id,
 					created_on: Date.now()
 				}
-				APP.models[this.module].create(save);
+				return APP.models[this.module].create(save, {
+					success: function(model){
+						console.log(model);
+						this.model.id = model._id; // _id because it's just a mongo object
+						this.Return(false);
+					}.bind(this)});
 				//this.model.SetStats("create");
 			} else {
 				console.log("save", save);
 				this.model.set(save);
 				this.model.SetStats("edit")
 			}
-			this.Return(false);
+			return this.Return(false);
 		},
 		Cancel: function(e) {
 			this.Return();
