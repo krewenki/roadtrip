@@ -15,7 +15,7 @@ Roadtrip = {
 			} else {
 				console.log("waiting for collection", missing)
 				APP.root.showChildView("main", new DEF.EmptyView({
-					icon: "loading",
+					icon: missing,
 					msg: "Loading " + missing.toUpperCase() + "&hellip;"
 				}));
 				this.listenToOnce(APP.models[missing], 'sync', this.execute.bind(this, callback, args, name))
@@ -276,10 +276,11 @@ Roadtrip = {
 					created_on: Date.now()
 				}
 				return APP.models[this.module].create(save, {
-					success: function(model){
+					success: function(model) {
 						this.model.id = model._id; // _id because it's just a mongo object
 						this.Return(false);
-					}.bind(this)});
+					}.bind(this)
+				});
 				//this.model.SetStats("create");
 			} else {
 				console.log("save", save);
