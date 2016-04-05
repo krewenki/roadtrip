@@ -305,7 +305,6 @@ DEF.modules.tasks.views = {
 			for (var m in models) {
 				var model = models[m];
 				var task_id = model.get('task_id');
-				console.log(task_id);
 				instance = Math.max(instance, task_id.split('.').pop())
 			}
 			instance++;
@@ -321,7 +320,7 @@ DEF.modules.tasks.views = {
 		id: "TASKS",
 		template: require("./templates/task_layout.html"),
 		regions: {
-			task: "#task",
+			task: "#task_view",
 			open: "#open_subtasks",
 			closed: "#closed_subtasks",
 			comments: "#comment_container"

@@ -1,41 +1,76 @@
-require( 'backbone.marionette' );
+require('backbone.marionette');
 
-$ = require( 'jquery' );
-_ = require( 'underscore' );
+$ = require('jquery');
+_ = require('underscore');
 APP = {}; // DEFINE THE MAIN APP OBJECT
 DEF = {}; // HOLD THE DEFINITIONS. ALL THE MODULES, ETC...
 
-require( 'backbone.highway' );
+require('backbone.highway');
 
-require( '../style/style.scss' );
-require( "font-awesome-webpack" );
+require('../style/style.scss');
+require("font-awesome-webpack");
 
-require( "./auth.js" );
-require( "./roadtrip.js" );
-require( "./layout.js" );
-require( "./search.js" );
-require( "./router.js" );
-require( "./static.js" );
+require("./auth.js");
+require("./roadtrip.js");
+require("./layout.js");
+require("./search.js");
+require("./router.js");
+require("./static.js");
 
 //$.getJSON('/auth',function(r){
 //console.log(r);
 //})
 
-var MainApp = Backbone.Marionette.Application.extend( {
+var MainApp = Backbone.Marionette.Application.extend({
 	anon: "56fea5cc54d49c036c802e53", // the anonymous user id
+
 	setRootLayout: function() {
 		this.root = new DEF.RootLayout();
-		APP.root.showChildView( 'header', new DEF.HeaderLayout( {} ) );
-		APP.root.showChildView( 'footer', new DEF.FooterLayout( {} ) );
+		APP.root.showChildView('header', new DEF.HeaderLayout({}));
+		APP.root.showChildView('footer', new DEF.FooterLayout({}));
 	},
-	SetTitle: function( title, module ) {
+	/**
+	 * When the URL changes, scroll to the top, unless the url changed via Browser Back (when the
+	 * mouse was not in the doc)
+	 * @return  null
+	 */
+	SetUpScrollToTop: function() {
+		document.onmouseover = function() {
+			//User's mouse is inside the page. (This is working)
+			window.innerDocClick = true;
+		}
+		document.onmouseleave = function() {
+			//User's mouse has left the page. (this is working)
+			window.innerDocClick = false;
+		}
+		window.onhashchange = function() {
+			if (window.innerDocClick) {
+				$("html, body").animate({
+					scrollTop: 0
+				}, 100);
+				//window.scrollTo(0, 0)
+			}
+		}
+	},
+	SetTitle: function(title, module) {
 		document.title = title + " - roadtrip";
-		if ( module )
-			this.SetMode( module );
+		if (module)
+			this.SetMode(module);
 	},
-	SetMode: function( mode ) {
-		$( "#HEADER #mainmenu .menuitem" ).removeClass( 'active' )
-		$( "#HEADER #mainmenu .menuitem[data-mode=" + mode + "]" ).addClass( 'active' );
+	SetMode: function(mode) {
+		$("#HEADER #mainmenu .menuitem").removeClass('active')
+		$("#HEADER #mainmenu .menuitem[data-mode=" + mode + "]").addClass('active');
+	},
+	/**
+	 * Yet another "GetLink".  Returns a <a href...
+	 * @param  {string} module Name of the module ("orders")
+	 * @param  {string} id     _id
+	 * @param  {string} cmd    "view", by default
+	 * @return {string}        <a href...
+	 */
+	GetLink: function(module, id, cmd = 'view') {
+		var model = APP.models[module].get(id);
+		return `<a href='#${module}/${cmd}/${id}'>` + APP.Icon(module) + " " + model.get(model.nameAttribute) + "</a>";
 	},
 	/**
 	 * returns the specified models
@@ -43,21 +78,19 @@ var MainApp = Backbone.Marionette.Application.extend( {
 	 * @param  {id} id    model  _id
 	 * @return {[type]}       the model
 	 */
-	GetModel: function( module, id ) {
-		return APP.models[ module ].get( id );
+	GetModel: function(module, id) {
+		return APP.models[module].get(id);
 	},
-	Route: function( route, trigger ) {
-		if ( _.isUndefined( trigger ) )
-			trigger = true;
+	Route: function(route, trigger = true) {
 
 		//		if (history.pushState) {
 		//			history.pushState(null, null, route);
 		//		} else {
 		//			location.hash = route;
 		//		}
-		APP.controller.router.navigate( route, {
+		APP.controller.router.navigate(route, {
 				trigger: trigger
-			} )
+			})
 			//console.log(route, title);
 	},
 	Icon_Lookup: {
@@ -97,18 +130,18 @@ var MainApp = Backbone.Marionette.Application.extend( {
 	 * @param  {string} title Tooltip title
 	 * @return {string}       <i...>
 	 */
-	Icon: function( icon, title ) {
-		if ( icon.substring( 0, 4 ) == "http" )
+	Icon: function(icon, title) {
+		if (icon.substring(0, 4) == "http")
 			return "<img class='icon' src='" + icon + "'>";
-		switch ( icon ) {
+		switch (icon) {
 			case 'loading':
 				return "<span class='loading'><i class='fa fa-refresh fa-spin'></i></span>";
 				break;
 			default:
-				if ( this.Icon_Lookup[ icon ] )
-					icon = this.Icon_Lookup[ icon ];
+				if (this.Icon_Lookup[icon])
+					icon = this.Icon_Lookup[icon];
 		}
-		return "<i " + ( title ? "title='" + title + "'" : "title='" + icon + "'" ) + " class='icon fa fa-" + icon + "'></i>";
+		return "<i " + (title ? "title='" + title + "'" : "title='" + icon + "'") + " class='icon fa fa-" + icon + "'></i>";
 	},
 	HTML: {
 		/**
@@ -122,37 +155,37 @@ var MainApp = Backbone.Marionette.Application.extend( {
 		 * @param  {bool} leave_empty Leave a blank line at the top
 		 * @return {string}             "<select...>"
 		 */
-		Select: function( id, collection, display, key, value, className, leave_empty ) {
+		Select: function(id, collection, display, key, value, className, leave_empty) {
 			key = key || "_id";
-			var html = "<select id='" + id + "' class='" + ( className || "" ) + "'>";
-			if ( leave_empty ) {
+			var html = "<select id='" + id + "' class='" + (className || "") + "'>";
+			if (leave_empty) {
 				html += "<option></option>";
 			}
-			collection.each( function( model ) {
-				html += "<option " + ( value == model.get( key ) ? "selected" : "" ) + " value='" + model.get( key ) + "'>" + model.get( display ) + "</option>";
-			} )
+			collection.each(function(model) {
+				html += "<option " + (value == model.get(key) ? "selected" : "") + " value='" + model.get(key) + "'>" + model.get(display) + "</option>";
+			})
 
 			html += "</select>";
 			return html;
 
 		}
 	}
-} );
+});
 
 
 APP = new MainApp();
 APP.models = {} // hold the collections
 
 DEF.modules = {} // hold the models definitions
-require( "../modules/users/users.js" );
-require( "../modules/comments/comments.js" );
-require( "../modules/tasks/tasks.js" );
-require( "../modules/wiki/wiki.js" );
-require( "../modules/contacts/contacts.js" );
-require( "../modules/orders/orders.js" );
-require( "../modules/projects/projects.js" );
-require( "../modules/calendar/calendar.js" );
-require( "../modules/expenses/expenses.js" );
+require("../modules/users/users.js");
+require("../modules/comments/comments.js");
+require("../modules/tasks/tasks.js");
+require("../modules/wiki/wiki.js");
+require("../modules/contacts/contacts.js");
+require("../modules/orders/orders.js");
+require("../modules/projects/projects.js");
+require("../modules/calendar/calendar.js");
+require("../modules/expenses/expenses.js");
 
 
 APP.Format = {
@@ -162,10 +195,10 @@ APP.Format = {
 	 * @param  {int} dec Number of decimals
 	 * @return {string}     "5.50"
 	 */
-	fixed: function( val, dec ) {
-		if ( !_.isNumber( val ) )
+	fixed: function(val, dec) {
+		if (!_.isNumber(val))
 			val = 0;
-		return val.toFixed( dec );
+		return val.toFixed(dec);
 	},
 	/**
 	 * Returns a value not exceeding min or max
@@ -174,65 +207,66 @@ APP.Format = {
 	 * @param  {float} max Max value
 	 * @return {float}     Value, not exceeding Min or Max
 	 */
-	clamp: function( val, min, max ) {
-		return Math.max( Math.min( val, max ), min );
+	clamp: function(val, min, max) {
+		return Math.max(Math.min(val, max), min);
 	},
 	/**
 	 * Returns a number with commas inserted appropriately
 	 * @param  {float} val A number
 	 * @return {string}     A number, with , in the thousands
 	 */
-	number: function( val ) {
-		return val.toFixed( 0 ).replace( /(\d)(?=(\d{3})+$)/g, '$1,' );
+	number: function(val) {
+		return val.toFixed(0).replace(/(\d)(?=(\d{3})+$)/g, '$1,');
 	},
 	/**
 	 * Returns the value formatted as money
 	 * @param  {float} val The money value
 	 * @return {string}     $5.50
 	 */
-	money: function( val ) {
+	money: function(val) {
 		var sign = val < 0 ? "negative" : "positive";
-		return '<span class="money ' + sign + '">$' + val.toFixed( 2 ).replace( /(\d)(?=(\d{3})+\.)/g, '$1,' ) + "</span>";
+		return '<span class="money ' + sign + '">$' + val.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + "</span>";
 	},
-	date: function( time ) {
-		if ( !time )
+	date: function(time) {
+		if (!time)
 			return "--";
-		var date = new Date( time );
-		var datef = date.getFullYear() + "-" + ( "00" + ( date.getMonth() + 1 ) ).slice( -2 ) + "-" + ( "00" + date.getDate() ).slice( -2 );
+		var date = new Date(time);
+		var datef = date.getFullYear() + "-" + ("00" + (date.getMonth() + 1)).slice(-2) + "-" + ("00" + date.getDate()).slice(-2);
 		return "<a href='#calendar/date/" + datef + "'>" + datef + "</a>";
 	},
-	time: function( time ) {
-		if ( !time )
+	time: function(time) {
+		if (!time)
 			return "--";
-		var date = new Date( time );
-		var datef = date.getHours() + ":" + ( "00" + date.getMinutes() ).slice( -2 ) + ":" + ( "00" + date.getSeconds() ).slice( -2 );
+		var date = new Date(time);
+		var datef = date.getHours() + ":" + ("00" + date.getMinutes()).slice(-2) + ":" + ("00" + date.getSeconds()).slice(-2);
 		return datef;
 	},
-	datetime: function( time ) {
-		if ( !time )
+	datetime: function(time) {
+		if (!time)
 			return "--";
-		return APP.Format.date( time ) + " " + APP.Format.time( time );
+		return APP.Format.date(time) + " " + APP.Format.time(time);
 	},
 	/**
 	 * Returns html, given markdown
 	 * @param  {text} 'marked' Markdown formatted text
 	 * @return {html}          HTML formatted text
 	 */
-	markdown: require( 'marked' )
+	markdown: require('marked')
 }
 
 
-APP.on( 'before:start', function() {
+APP.on('before:start', function() {
+	APP.SetUpScrollToTop();
 	APP.setRootLayout();
-} );
+});
 
-APP.on( 'start', function() {
+APP.on('start', function() {
 	APP.controller = new DEF.Controller();
-	APP.controller.router = new DEF.Router( {
+	APP.controller.router = new DEF.Router({
 		controller: APP.controller
-	} );
+	});
 	Backbone.history.start();
-} );
+});
 
 
 APP.start();

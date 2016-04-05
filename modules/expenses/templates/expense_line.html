@@ -1,20 +1,43 @@
-<td>
-	<select id='category'>
-		<option></option>
-		<option>car</option>
-		<option>cab</option>
-		<option>plane</option>
-		<option>train</option>
-		<option>hotel</option>
-		<option>meals</option>
-		<option>baggage</option>
-		<option>cash</option>
-		<option>delivery</option>
-		<option>education</option>
-		<option>tools</option>
-		<option>fuel</option>
-	</select>
+<td class='nowrap category'>
+	<%=APP.Icon(category)%>
+		<select id='category'>
+			<option value="miscellaneous" <%=category=="miscellaneous" ? "selected": ""%>>Miscellaneous</option>
+			<optgroup label='Personal'>
+				<option value="food" <%=category=="food" ? "selected": ""%>>Food</option>
+				<option value="cash" <%=category=="cash" ? "selected": ""%>>Cash</option>
+				<option value="education" <%=category=="education" ? "selected": ""%>>Education</option>
+			</optgroup>
+			<optgroup label='Travel'>
+				<option value="plane" <%=category=="plane" ? "selected": ""%>>Plane</option>
+				<option value="train" <%=category=="train" ? "selected": ""%>>Train</option>
+				<option value="baggage" <%=category=="baggage" ? "selected": ""%>>Baggage</option>
+			</optgroup>
+			<optgroup label='Transportation'>
+				<option value="car" <%=category=="car" ? "selected": ""%>>Car</option>
+				<option value="cab" <%=category=="cab" ? "selected": ""%>>Cab</option>
+				<option value="gas" <%=category=="fuel" ? "selected": ""%>>Gas</option>
+			</optgroup>
+			<optgroup label='Lodging'>
+				<option value="hotel" <%=category=="hotel" ? "selected": ""%>>Hotel</option>
+			</optgroup>
+			<optgroup label='Services'>
+				<option value="delivery" <%=category=="delivery" ? "selected": ""%>>Delivery</option>
+				<option value="equipment" <%=category=="equipment" ? "selected": ""%>>Equipment</option>
+				<option value="tools" <%=category=="tools" ? "selected": ""%>>Tools</option>
+			</optgroup>
+		</select>
 </td>
-<td>
-	<%=day%>
-</td>
+<% for (var d = 0; d< expenses.length; d++) { %>
+	<td>
+		<input class='money' type='number' value="<%=expenses[d]%>">
+	</td>
+	<% } %>
+		<td class='total'>
+			<%=APP.Format.money(total)%>
+		</td>
+		<td class='paid_by_employer'>
+			<%=APP.Format.money(paid_by_employer)%>
+		</td>
+		<td class='paid_by_employee'>
+			<%=APP.Format.money(paid_by_employee)%>
+		</td>

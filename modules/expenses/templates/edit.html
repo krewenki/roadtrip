@@ -1,43 +1,56 @@
 <div id='menu'>
-				<div class='cmd link ' id='cancel'>
-								<%=APP.Icon('cancel')%> cancel
-				</div>
-				<div class='cmd link' id='save'>
-								<%=APP.Icon('save')%> save
-				</div>
-				<div class='cmd link danger' id='delete'>
-								<%=APP.Icon('user-times')%> delete
-				</div>
-				<span id='title'><%=name%></span>
+	<div class='cmd link ' id='cancel'>
+		<%=APP.Icon('cancel')%> cancel
+	</div>
+	<div class='cmd link' id='save'>
+		<%=APP.Icon('save')%> save
+	</div>
+	<div class='cmd link danger' id='delete'>
+		<%=APP.Icon('user-times')%> delete
+	</div>
+	<span id='title'>Expense Report</span>
 </div>
 
 <table class='table table-left table-full'>
-				<tr>
-								<th>Expense ID</th>
-								<td>
-												<input type='text' id='expense_id' class='field dirty' value='<%=expense_id%>'>
-								</td>
-				</tr>
-				<tr>
-								<th>Start Date</th>
-								<td>
-												<input type='date' id='start_date' class='field' value='<%=start_date%>'>
-								</td>
-				</tr>
-
-				<tr>
-								<th>Duration (days)</th>
-								<td>
-												<input type='number' id='duration' class='field' value='<%=duration%>'>
-								</td>
-				</tr>
+	<tr>
+		<th>Expense ID</th>
+		<td colspan=3>
+			<%=expense_id%>
+		</td>
+	</tr>
+	<tr>
+		<th>Job</th>
+		<td>
+			<%=APP.HTML.Select("job", APP.models.orders,"order","_id",job,"field", true)%>
+		</td>
+		<th>Purpose</th>
+		<td>
+			<input type='text' id='purpose' class='field' value='<%=purpose%>' placeholder="Purpose of trip">
+		</td>
+	</tr>
+	<tr>
+		<th>Start Date</th>
+		<td>
+			<input type='date' id='start_date' class='field' value='<%=start_date%>'>
+		</td>
+		<th>Duration (days)</th>
+		<td>
+			<input type='number' id='duration' class='field' value='<%=duration%>'>
+		</td>
+	</tr>
 </table>
 
 <table id='expenses' class='table table-full table-top'>
-				<thead>
-								<th>
-												Category
-								</th>
-				</thead>
-
-</table>
+	<thead>
+		<th>
+			Category
+		</th>
+		<% for (var d = 1; d<= duration; d++) { %>
+			<th>
+				<%=APP.Format.date(new Date(start_date).getTime()+1000*3600*24*d)%>
+			</th>
+			<% } %>
+				<th class='total'>Total</th>
+				<th class='paid_by_employer'>Employer</th>
+				<th class='paid_by_employee'>Employee</th>
+	</thead>
