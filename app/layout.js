@@ -62,7 +62,8 @@ DEF.FooterLayout = Backbone.Marionette.ItemView.extend({
 		for (var c = 0; c < collections.length; c++) {
 			var module = collections[c];
 			var count = APP.models[module].length;
-			html.push(module + ": " + APP.Format.number(count));
+			if (count)
+				html.push(module + ": " + APP.Format.number(count));
 			total += count;
 
 		}

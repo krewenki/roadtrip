@@ -12,56 +12,56 @@ DEF.modules.users.Router = Roadtrip.Router.extend({
 });
 DEF.modules.users.Model = Roadtrip.Model.extend({
 	nameAttribute: 'name', // the human-readable field in the record
-	module: "users",
-	defaults: {
-		name: "Joe",
-		email: "crap@fart.com",
-		boss: false,
-		perms: {
-			tasks: {
-				create: false,
-				read: true,
-				update: false,
-				delete: false,
-				comment: true
+	module:        "users",
+	defaults:      {
+		name:         "Joe",
+		email:        "crap@fart.com",
+		boss:         false,
+		perms:        {
+			tasks:       {
+				create:     false,
+				read:       true,
+				update:     false,
+				delete:     false,
+				comment:    true
 			},
-			orders: {
-				create: false,
-				read: true,
-				update: false,
-				delete: false,
-				comment: true
+			orders:      {
+				create:     false,
+				read:       true,
+				update:     false,
+				delete:     false,
+				comment:    true
 			},
-			contacts: {
-				create: false,
-				read: true,
-				update: false,
-				delete: false,
-				comment: true
+			contacts:    {
+				create:     false,
+				read:       true,
+				update:     false,
+				delete:     false,
+				comment:    true
 			},
-			projects: {
-				create: false,
-				read: true,
-				update: false,
-				delete: false,
-				comment: true
+			projects:    {
+				create:     false,
+				read:       true,
+				update:     false,
+				delete:     false,
+				comment:    true
 			},
-			calendar: {
-				create: false,
-				read: true,
-				update: false,
-				delete: false,
-				comment: true
+			calendar:    {
+				create:     false,
+				read:       true,
+				update:     false,
+				delete:     false,
+				comment:    true
 			},
-			users: {
-				create: false,
-				read: true,
-				update: false,
-				delete: false,
-				comment: true
+			users:       {
+				create:     false,
+				read:       true,
+				update:     false,
+				delete:     false,
+				comment:    true
 			},
 		},
-		Can: function(module, perm) {
+		Can:          function(module, perm) {
 			var perms = this.get('perms');
 			return perms[module][perm] || false;
 		}

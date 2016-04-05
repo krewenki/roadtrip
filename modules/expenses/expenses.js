@@ -6,24 +6,39 @@ DEF.modules.expenses.Router = Roadtrip.Router.extend({
 	],
 	initialize: function() {
 		APP.models.expenses = new DEF.modules.expenses.Collection();
+
+		APP.Icon_Lookup["car"]       = "car";
+		APP.Icon_Lookup["cab"]       = "cab";
+		APP.Icon_Lookup["plane"]     = "plane";
+		APP.Icon_Lookup["train"]     = "train";
+		APP.Icon_Lookup["hotel"]     = "bed";
+		APP.Icon_Lookup["meals"]     = "cutlery";
+		APP.Icon_Lookup["baggage"]   = "suitcase";
+		APP.Icon_Lookup["cash"]      = "money";
+		APP.Icon_Lookup["delivery"]  = "truck";
+		APP.Icon_Lookup["education"] = "graduation-cap";
+		APP.Icon_Lookup["tools"]     = "wrench";
+		APP.Icon_Lookup["fuel"]      = "battery-full";
+
+
 	},
 	routes: {
-		"expenses": "ShowRoot",
-		"expenses/:cmd": "LoadModule",
+		"expenses":           "ShowRoot",
+		"expenses/:cmd":      "LoadModule",
 		"expenses/:cmd/:arg": "LoadModule",
 	},
 });
 DEF.modules.expenses.Model = Backbone.Model.extend({
 	nameAttribute: 'name', // the human-readable field in the record
-	module: "expenses",
-	defaults: {
-		expense_id: 1,
-		state: "New", // submitted, approved, completed
-		job: false, // aka Order Line item?
-		approved_by: false,
-		start_date: false,
-		duration: 5,// in days
-		expenses: {}
+	module:        "expenses",
+	defaults:      {
+		expense_id:   1,
+		state:        "New", // submitted, approved, completed
+		job:          false, // aka Order Line item?
+		approved_by:  false,
+		start_date:   false,
+		duration:     5,// in days
+		expenses:     {}
 	}
 });
 DEF.modules.expenses.Collection = Backbone.Highway.Collection.extend({
@@ -88,8 +103,8 @@ DEF.modules.expenses.views = {
 	})
 }
 DEF.modules.expenses.ExpenseLine = Roadtrip.RecordLine.extend({
-	tagName: "tr",
-	module: "expenses",
+	tagName:  "tr",
+	module:   "expenses",
 	template: require("./templates/expense_line.html")
 })
 DEF.modules.expenses.ExpenseList = Roadtrip.RecordList.extend({
@@ -99,10 +114,10 @@ DEF.modules.expenses.ExpenseList = Roadtrip.RecordList.extend({
 })
 
 DEF.modules.expenses.RecordLine = Roadtrip.RecordLine.extend({
-	tagName: "tr",
-	module: "expenses",
+	tagName:  "tr",
+	module:   "expenses",
 	template: require("./templates/line.html"),
-	events: {
+	events:   {
 		"click": "Click"
 	},
 });
