@@ -60,13 +60,18 @@ DEF.modules.expenses.ExpenseCollection = Backbone.Collection.extend( {
 	model: DEF.modules.expenses.Expense,
 } )
 
+DEF.modules.expenses.ExpenseLine = Backbone.Marionette.ItemView.extend( {
+	tagName: "tr",
+	module: "expenses",
+	template: require( "./templates/expense_line.html" ),
+} )
 
 DEF.modules.expenses.views = {
-	edit: Roadtrip.Edit.extend( {
+	edit: Backbone.Marionette.CompositeView.extend( {
 		module: "expenses",
 		template: require( "./templates/edit.html" ),
 		id: 'EXPENSES',
-		childView: DEF.modules.expenses.ExpenseList,
+		childView: DEF.modules.expenses.ExpenseLine,
 		childViewContainer: "#expenses",
 		onBeforeRender: function() {
 			if ( !this.model ) {
@@ -74,14 +79,16 @@ DEF.modules.expenses.views = {
 			}
 			console.log( this.model );
 
-			// this.collection = new DEF.modules.expenses.ExpenseCollection();
-			// for (var i = 0; i< 3; i++) {
-			// 	this.collection.push(new DEF.modules.expenses.Expense({
-			// 		day: i,
-			// 		kind: "meal"
-			// 	}))
-			// }
-			// console.log(this.collection);
+			this.collection = new DEF.modules.expenses.ExpenseCollection();
+			for ( var i = 0; i < 3; i++ ) {
+				this.collection.push( new DEF.modules.expenses.Expense( {
+					day: i,
+					kind: "meal",
+					start_date: "1",
+					duration: "1"
+				} ) )
+			}
+			console.log( this.collection );
 
 		},
 
@@ -113,11 +120,6 @@ DEF.modules.expenses.views = {
 		template: require( "./templates/view.html" ),
 	} )
 }
-DEF.modules.expenses.ExpenseLine = Roadtrip.RecordLine.extend( {
-	tagName: "tr",
-	module: "expenses",
-	template: require( "./templates/expense_line.html" )
-} )
 DEF.modules.expenses.ExpenseList = Roadtrip.RecordList.extend( {
 	childView: DEF.modules.expenses.RecordLine,
 	childViewContainer: "#expenses",

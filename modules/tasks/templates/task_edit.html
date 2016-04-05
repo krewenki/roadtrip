@@ -1,91 +1,92 @@
 <div id='menu'>
-		<span id='title'></span>
-		<div class='cmd link ' id='cancel'>
-				<%=APP.Icon('cancel')%> cancel
-		</div>
-		<div class='cmd link' id='save'>
-				<%=APP.Icon('save')%> save
-		</div>
-		<div class='cmd link danger' id='delete'>
-				<%=APP.Icon('user-times')%> delete
-		</div>
+	<span id='title'></span>
+	<div class='cmd link ' id='cancel'>
+		<%=APP.Icon('cancel')%> cancel
+	</div>
+	<div class='cmd link' id='save'>
+		<%=APP.Icon('save')%> save
+	</div>
+	<div class='cmd link danger' id='delete'>
+		<%=APP.Icon('user-times')%> delete
+	</div>
 </div>
 
 <table class='table table-full table-left'>
-		<tr>
-				<th>Parent</th>
-				<td>
-						<%=parent_module%>:
-								<%=parent_id%>
-										<input class='field dirty' type='hidden' id='parent_module' value='<%=parent_module%>'>
-										<input class='field dirty' type='hidden' id='parent_id' value='<%=parent_id%>'>
+	<tr>
+		<th>Parent</th>
+		<td>
+			<%=parent_module%>:
+				<%=parent_id%>
+					<input class='field dirty' type='hidden' id='parent_module' value='<%=parent_module%>'>
+					<input class='field dirty' type='hidden' id='parent_id' value='<%=parent_id%>'>
 
-				</td>
-		</tr>
-		<tr>
-				<th>
-						Task ID:
-				</th>
-				<td>
-						<% if ( task) {%>
-								<%=task_id%>
-										<% } else { %>
-												<input class='field dirty' type='text' id='task_id' placeholder='task_id' value='<%=task_id%>'>
-												<% } %>
-				</td>
-		</tr>
-		<tr>
-				<th>Kind</th>
-				<td>
+		</td>
+	</tr>
+	<tr>
+		<th>
+			Task ID:
+		</th>
+		<td>
+			<% if ( task) {%>
+				<%=task_id%>
+					<% } else { %>
+						<input class='field dirty' type='text' id='task_id' placeholder='task_id' value='<%=task_id%>'>
+						<% } %>
+		</td>
+	</tr>
+	<tr>
+		<th>Kind</th>
+		<td>
 
-						<select class='field' id='kind'>
-								<option <%=kind=='product' ? "selected": ""%> value='product'>Product</option>
-								<option <%=kind=='feature' ? "selected": ""%> value='feature'>Feature</option>
-								<option <%=kind=='bug' ? "selected": ""%> value='bug'>Bug</option>
-								<option <%=kind=='todo' ? "selected": ""%> value='todo'>To-Do</option>
-								<option <%=kind=='support' ? "selected": ""%> value='support'>Support</option>
-								<option <%=kind=='folder' ? "selected": ""%> value='folder'>Folder</option>
-						</select>
-				</td>
-		</tr>
-		<tr>
-				<th>
-						Task:
-				</th>
-				<td>
-						<input class='field' type='text' id='task' placeholder='task' value='<%=task%>'>
-				</td>
-		</tr>
-		<tr>
-				<th>
-						Priority:
-				</th>
-				<td>
-						<input class='field' type='range' id='priority' placeholder='task' value='<%=priority%>' min=1 max=100>
-				</td>
-		</tr>
-		<Tr>
-				<th>Assigned To</th>
-				<td>
-						<%=APP.HTML.Select("assigned_to", APP.models.users,"name","_id",assigned_to,"field", true)%>
-				</td>
-		</tr>
+			<select class='field' id='kind'>
+				<option <%=kind=='product' ? "selected": ""%> value='product'>Product</option>
+				<option <%=kind=='feature' ? "selected": ""%> value='feature'>Feature</option>
+				<option <%=kind=='idea' ? "selected": ""%> value='idea'>Idea</option>
+				<option <%=kind=='bug' ? "selected": ""%> value='bug'>Bug</option>
+				<option <%=kind=='todo' ? "selected": ""%> value='todo'>To-Do</option>
+				<option <%=kind=='support' ? "selected": ""%> value='support'>Support</option>
+				<option <%=kind=='folder' ? "selected": ""%> value='folder'>Folder</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<th>
+			Task:
+		</th>
+		<td>
+			<input class='field' type='text' id='task' placeholder='task' value='<%=task%>'>
+		</td>
+	</tr>
+	<tr>
+		<th>
+			Priority:
+		</th>
+		<td>
+			<input class='field' type='range' id='priority' placeholder='task' value='<%=priority%>' min=1 max=100>
+		</td>
+	</tr>
+	<Tr>
+		<th>Assigned To</th>
+		<td>
+			<%=APP.HTML.Select("assigned_to", APP.models.users,"name","_id",assigned_to,"field", true)%>
+		</td>
+	</tr>
 
-		<tr>
-				<th>Description:
-				</th>
-				<td>
-						<textarea class='field' id='description'>
-								<%=description%>
-						</textarea>
-				</td>
-		</tr>
-		<tr>
-				<th>
-						Due Date:
-				</th>
-				<td>
-						<input class='field' type='date' id='due_date' placeholder='task' value='<%=due_date%>' min=0 max=100>
-				</td>
-		</tr>
+	<tr>
+		<th>Description:
+		</th>
+		<td>
+			<textarea class='field' id='description'>
+				<%=description%>
+			</textarea>
+		</td>
+	</tr>
+	<tr>
+		<th>
+			Due Date:
+		</th>
+		<td>
+			<input class='field' type='date' id='due_date' placeholder='task' value='<%=due_date%>' min=0 max=100>
+		</td>
+	</tr>
 </table>
