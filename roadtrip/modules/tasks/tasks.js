@@ -105,6 +105,10 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 			rank *= 1.5 + 10;
 		return rank
 	},
+	/**
+	 * Some handy pre-defined filters, for use when using these collections.
+	 * @type {Object}
+	 */
 	filters: {
 		Open: function(model) {
 			return function(m) {
@@ -181,6 +185,7 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		"change @ui.progress_label": "UpdateProgressLabel"
 
 	},
+
 	/**
 	 * Show the task edit forms
 	 * @return {[type]} [description]
@@ -188,6 +193,7 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	Edit: function() {
 		APP.Route("#tasks/edit/" + this.model.id);
 	},
+
 	/**
 	 * Create a new model and launch the task editor
 	 * @return {[type]} [description]
@@ -202,6 +208,7 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		});
 		APP.root.showChildView('main', page);
 	},
+
 	/**
 	 * Someone drug the progress handle, so update stuff
 	 * @return {[type]}   [description]
@@ -213,6 +220,11 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 			this.model.set({
 				assigned_to: U._id
 			})
+		if (label == 'Review') {
+			this.model.set({
+				assigned_to: this.model.get('_').created_by
+			})
+		}
 		this.model.set({
 			'progress': this.ui.progress.val(),
 			'progress_label': label
@@ -226,6 +238,12 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 				complete_date: Date.now()
 			})
 	},
+
+	/**
+	 * When someone changes the progress_label, do a few actions, such as automatically set progress,
+	 * before calling the UpdateProgress function, which does more automated actions.
+	 * @return null
+	 */
 	UpdateProgressLabel: function() {
 		switch (this.ui.progress_label.val()) {
 			case "In Progress":
