@@ -1,38 +1,43 @@
 <div id='menu'>
-		<div class='cmd link ' id='cancel'>
-				<%=APP.Icon('cancel')%> cancel
-		</div>
-		<div class='cmd link' id='save'>
-				<%=APP.Icon('save')%> save
-		</div>
-		<div class='cmd link danger' id='delete'>
-				<%=APP.Icon('user-times')%> delete
-		</div>
-		<span id='title'><%=name%></span>
+				<div class='cmd link ' id='cancel'>
+								<%=APP.Icon('cancel')%> cancel
+				</div>
+				<div class='cmd link' id='save'>
+								<%=APP.Icon('save')%> save
+				</div>
+				<div class='cmd link danger' id='delete'>
+								<%=APP.Icon('user-times')%> delete
+				</div>
+				<span id='title'><%=name%></span>
 </div>
 
 <table class='table table-left table-full'>
-	<tr>
-			<th>Expense ID</th>
-			<td>
-					<input type='text' id='expense_id' class='field dirty' value='<%=expense_id%>'>
-			</td>
-	</tr>
-		<tr>
-				<th>Start Date</th>
-				<td>
-						<input type='date' id='start_date' class='field' value='<%=start_date%>'>
-				</td>
-		</tr>
+				<tr>
+								<th>Expense ID</th>
+								<td>
+												<input type='text' id='expense_id' class='field dirty' value='<%=expense_id%>'>
+								</td>
+				</tr>
+				<tr>
+								<th>Start Date</th>
+								<td>
+												<input type='date' id='start_date' class='field' value='<%=start_date%>'>
+								</td>
+				</tr>
 
-		<tr>
-				<th>Duration (days)</th>
-				<td>
-						<input type='number' id='duration' class='field' value='<%=duration%>'>
-				</td>
-		</tr>
+				<tr>
+								<th>Duration (days)</th>
+								<td>
+												<input type='number' id='duration' class='field' value='<%=duration%>'>
+								</td>
+				</tr>
 </table>
 
-<table id='expenses'>
+<table id='expenses' class='table table-full table-top'>
+				<thead>
+								<th>
+												Category
+								</th>
+				</thead>
 
 </table>

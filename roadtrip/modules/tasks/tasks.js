@@ -1,25 +1,26 @@
 DEF.modules.tasks = {};
-DEF.modules.tasks.Router = Roadtrip.Router.extend({
+DEF.modules.tasks.Router = Roadtrip.Router.extend( {
 	collections: [
 		"users", "tasks", "projects", "orders"
 	],
 	initialize: function() {
 		APP.models.tasks = new DEF.modules.tasks.Collection();
 
-		APP.Icon_Lookup["todo"] = "list-ul";
-		APP.Icon_Lookup["bug"] = "bug";
-		APP.Icon_Lookup["feature"] = "lightbulb-o";
-		APP.Icon_Lookup["product"] = "car";
-		APP.Icon_Lookup["support"] = "wechat";
+		APP.Icon_Lookup[ "todo" ] = "list-ul";
+		APP.Icon_Lookup[ "bug" ] = "bug";
+		APP.Icon_Lookup[ "feature" ] = "star";
+		APP.Icon_Lookup[ "idea" ] = "lightbulb-o";
+		APP.Icon_Lookup[ "product" ] = "car";
+		APP.Icon_Lookup[ "support" ] = "wechat";
 
 	},
 	module: "tasks",
 	routes: {
 		"tasks/:cmd/:arg": "LoadModule",
 	},
-});
+} );
 
-DEF.modules.tasks.Model = Roadtrip.Model.extend({
+DEF.modules.tasks.Model = Roadtrip.Model.extend( {
 	idAttribute: '_id',
 	nameAttribute: 'task', // the human-readable field in the record
 	module: "tasks",
@@ -57,13 +58,13 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 	 */
 	GetPath: function() {
 		var path = "";
-		var parent = APP.GetModel(this.get('parent_module'), this.get('parent_id'));
-		if (parent.GetPath)
+		var parent = APP.GetModel( this.get( 'parent_module' ), this.get( 'parent_id' ) );
+		if ( parent.GetPath )
 			path = parent.GetPath();
 		else {
-			path = "<a href='" + parent.GetLink() + "'>" + parent.get(parent.nameAttribute) + "</a>";
+			path = "<a href='" + parent.GetLink() + "'>" + parent.get( parent.nameAttribute ) + "</a>";
 		}
-		path += " / <a href='" + this.GetLink() + "'>" + this.get(this.nameAttribute) + "</a>";
+		path += " / <a href='" + this.GetLink() + "'>" + this.get( this.nameAttribute ) + "</a>";
 		return path;
 	},
 
@@ -72,61 +73,61 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 	 * @param  {[type]} val 0..100
 	 * @return {[type]}     human readable text
 	 */
-	GetProgressLabel: function(val) {
-		if (!val)
-			val = this.get('progress')
+	GetProgressLabel: function( val ) {
+		if ( !val )
+			val = this.get( 'progress' )
 		var label = "New";
-		if (val < 0)
+		if ( val < 0 )
 			label = "Rejected";
-		if (val > 0)
+		if ( val > 0 )
 			label = "Accepted";
-		if (val > 5)
+		if ( val > 5 )
 			label = "In Progress"
-		if (val > 80)
+		if ( val > 80 )
 			label = "Review";
-		if (val == 100)
+		if ( val == 100 )
 			label = "Complete";
 		return label;
 	},
-});
+} );
 
-DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
+DEF.modules.tasks.Collection = Roadtrip.Collection.extend( {
 	model: DEF.modules.tasks.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/tasks',
-	comparator: function(m) {
+	comparator: function( m ) {
 		rank = 0;
-		if (m.get('progress') == 100 || m.get('progress') < 0)
-			rank = 10000 - m.get('priority') - m.get('_').views / 10 - m.get('subtasks');
+		if ( m.get( 'progress' ) == 100 || m.get( 'progress' ) < 0 )
+			rank = 10000 - m.get( 'priority' ) - m.get( '_' ).views / 10 - m.get( 'subtasks' );
 		else
-			rank = 0.0 - (m.get('progress')) - m.get('priority') - m.get('_').views / 10 - m.get('subtasks');
-		if (m.get('kind') == 'bug')
-			rank *=1.5+10;
+			rank = 0.0 - ( m.get( 'progress' ) ) - m.get( 'priority' ) - m.get( '_' ).views / 10 - m.get( 'subtasks' );
+		if ( m.get( 'kind' ) == 'bug' )
+			rank *= 1.5 + 10;
 		return rank
 	},
 	filters: {
-		Open: function(model) {
-			return function(m) {
-				return m.get('parent_id') == model.id && m.get('progress') != 100 && m.get('progress') >= 0
+		Open: function( model ) {
+			return function( m ) {
+				return m.get( 'parent_id' ) == model.id && m.get( 'progress' ) != 100 && m.get( 'progress' ) >= 0
 			}
 		},
-		Closed: function(model) {
-			return function(m) {
-				return m.get('parent_id') == model.id && (m.get('progress') == 100 || m.get('progress') < 0)
+		Closed: function( model ) {
+			return function( m ) {
+				return m.get( 'parent_id' ) == model.id && ( m.get( 'progress' ) == 100 || m.get( 'progress' ) < 0 )
 			}
 		},
-		Assigned: function(model) {
-			return function(m) {
-				return m.get('assigned_to') == model.id && m.get('progress') != 100 && m.get('progress') >= 0
+		Assigned: function( model ) {
+			return function( m ) {
+				return m.get( 'assigned_to' ) == model.id && m.get( 'progress' ) != 100 && m.get( 'progress' ) >= 0
 			}
 		}
 	}
-});
+} );
 
 /**
  * A single line, showing a task on the Project page
  */
-DEF.modules.tasks.TaskLine = Backbone.Marionette.ItemView.extend({
-	template: require("./templates/taskline.html"),
+DEF.modules.tasks.TaskLine = Backbone.Marionette.ItemView.extend( {
+	template: require( "./templates/taskline.html" ),
 	className: "click hover",
 	tagName: "tr",
 	events: {
@@ -136,10 +137,10 @@ DEF.modules.tasks.TaskLine = Backbone.Marionette.ItemView.extend({
 		"change": "render"
 	},
 	ViewTask: function() {
-		APP.Route("#tasks/view/" + this.model.get('_id'));
+		APP.Route( "#tasks/view/" + this.model.get( '_id' ) );
 	}
-});
-DEF.modules.tasks.TaskList = Backbone.Marionette.CollectionView.extend({
+} );
+DEF.modules.tasks.TaskList = Backbone.Marionette.CollectionView.extend( {
 	tagName: "table",
 	className: "table table-top table-full task-table",
 	childView: DEF.modules.tasks.TaskLine,
@@ -149,17 +150,17 @@ DEF.modules.tasks.TaskList = Backbone.Marionette.CollectionView.extend({
 		}
 	},
 	onShow: function() {
-		if (!this.children.length)
+		if ( !this.children.length )
 			this.$el.parent().parent().hide()
 	}
-})
+} )
 
-DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
-	template: require("./templates/task_view.html"),
+DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend( {
+	template: require( "./templates/task_view.html" ),
 	templateHelpers: function() {
-		var parent = APP.models[this.model.get('parent_module')].get(this.model.get('parent_id'));
+		var parent = APP.models[ this.model.get( 'parent_module' ) ].get( this.model.get( 'parent_id' ) );
 		return {
-			parent_title: APP.Icon(parent.module) + " " + parent.get(parent.nameAttribute),
+			parent_title: APP.Icon( parent.module ) + " " + parent.get( parent.nameAttribute ),
 			parent_link: parent.GetLink(),
 			path: this.model.GetPath()
 		}
@@ -183,47 +184,47 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	 * @return {[type]} [description]
 	 */
 	Edit: function() {
-		APP.Route("#tasks/edit/" + this.model.id);
+		APP.Route( "#tasks/edit/" + this.model.id );
 	},
 	/**
 	 * Create a new model and launch the task editor
 	 * @return {[type]} [description]
 	 */
 	AddSubtask: function() {
-		var page = new DEF.modules.tasks.views.edit({
+		var page = new DEF.modules.tasks.views.edit( {
 			model: false,
 			parent: {
 				module: "tasks",
 				id: this.model.id
 			}
-		});
-		APP.root.showChildView('main', page);
+		} );
+		APP.root.showChildView( 'main', page );
 	},
 	/**
 	 * Someone drug the progress handle, so update stuff
 	 * @return {[type]}   [description]
 	 */
 	UpdateProgress: function() {
-		var label = this.model.GetProgressLabel(this.ui.progress.val());
-		this.ui.progress_label.html(label);
-		if (label == 'Accepted' && !this.model.get('assigned_to'))
-			this.model.set({
+		var label = this.model.GetProgressLabel( this.ui.progress.val() );
+		this.ui.progress_label.html( label );
+		if ( label == 'Accepted' && !this.model.get( 'assigned_to' ) )
+			this.model.set( {
 				assigned_to: U._id
-			})
-		this.model.set({
+			} )
+		this.model.set( {
 			'progress': this.ui.progress.val(),
 			'progress_label': label
-		});
-		if (!this.model.get('start_date'))
-			this.model.set({
+		} );
+		if ( !this.model.get( 'start_date' ) )
+			this.model.set( {
 				start_date: Date.now()
-			})
-		if (this.ui.progress.val() == 100 || this.ui.progress.val() < 0)
-			this.model.set({
+			} )
+		if ( this.ui.progress.val() == 100 || this.ui.progress.val() < 0 )
+			this.model.set( {
 				complete_date: Date.now()
-			})
+			} )
 	},
-})
+} )
 
 
 /**
@@ -233,14 +234,14 @@ DEF.modules.tasks.views = {
 	/**
 	 * Edit a contact
 	 */
-	edit: Roadtrip.Edit.extend({
+	edit: Roadtrip.Edit.extend( {
 		module: "tasks",
-		template: require("./templates/task_edit.html"),
+		template: require( "./templates/task_edit.html" ),
 		templateHelpers: function() {
 			var rs = {
 				task_id: this.GenerateTaskID()
 			};
-			if (this.options.parent) {
+			if ( this.options.parent ) {
 				rs.parent_id = this.options.parent.id;
 				rs.parent_module = this.options.parent.module;
 			}
@@ -251,38 +252,38 @@ DEF.modules.tasks.views = {
 		 * @return {string} [1.2.3.5]
 		 */
 		GenerateTaskID: function() {
-			if (this.model.id) // this model has been saved
-				return this.model.get('task_id'); // so do not generate a task_id
+			if ( this.model.id ) // this model has been saved
+				return this.model.get( 'task_id' ); // so do not generate a task_id
 
 			var prefix = false,
 				instance = 0;
 
-			var parent = APP.models[this.options.parent.module].get(this.options.parent.id);
-			if (parent)
-				prefix = parent.get('task_id');
-			var models = APP.models.tasks.where({
+			var parent = APP.models[ this.options.parent.module ].get( this.options.parent.id );
+			if ( parent )
+				prefix = parent.get( 'task_id' );
+			var models = APP.models.tasks.where( {
 				parent_module: this.options.parent.module,
 				parent_id: this.options.parent.id
-			})
+			} )
 
-			for (var m in models) {
-				var model = models[m];
-				var task_id = model.get('task_id');
-				console.log(task_id);
-				instance = Math.max(instance, task_id.split('.').pop())
+			for ( var m in models ) {
+				var model = models[ m ];
+				var task_id = model.get( 'task_id' );
+				console.log( task_id );
+				instance = Math.max( instance, task_id.split( '.' ).pop() )
 			}
 			instance++;
 
-			if (prefix)
+			if ( prefix )
 				return prefix + "." + instance;
 			else
 				return instance
 		}
-	}),
+	} ),
 
-	view: Backbone.Marionette.LayoutView.extend({
+	view: Backbone.Marionette.LayoutView.extend( {
 		id: "TASKS",
-		template: require("./templates/task_layout.html"),
+		template: require( "./templates/task_layout.html" ),
 		regions: {
 			task: "#task",
 			open: "#open_subtasks",
@@ -290,54 +291,54 @@ DEF.modules.tasks.views = {
 			comments: "#comment_container"
 		},
 		onBeforeShow: function() {
-			var subs = APP.models.tasks.where({
-				parent_id: this.model.get('_id')
-			});
-			if (subs.length > 0) {
+			var subs = APP.models.tasks.where( {
+				parent_id: this.model.get( '_id' )
+			} );
+			if ( subs.length > 0 ) {
 				var sum = 0,
 					count = 0;
-				for (var s = 0; s < subs.length; s++) {
-					var sub = subs[s];
-					sum += (sub.get('progress') * sub.get('priority') / 100.0);
-					count += (sub.get('priority') / 100.0)
+				for ( var s = 0; s < subs.length; s++ ) {
+					var sub = subs[ s ];
+					sum += ( sub.get( 'progress' ) * sub.get( 'priority' ) / 100.0 );
+					count += ( sub.get( 'priority' ) / 100.0 )
 				}
-				this.model.set({
+				this.model.set( {
 					subtasks: subs.length,
 					progress: sum / count,
-					progress_label: this.model.GetProgressLabel(sum / count)
-				})
-			} else if (this.model.get('subtasks')) {
-				this.model.set({
+					progress_label: this.model.GetProgressLabel( sum / count )
+				} )
+			} else if ( this.model.get( 'subtasks' ) ) {
+				this.model.set( {
 					subtasks: 0
-				})
+				} )
 			}
 		},
 		onShow: function() {
-			APP.SetTitle(this.model.get(this.model.nameAttribute));
-			this.model.IncStat("views")
+			APP.SetTitle( this.model.get( this.model.nameAttribute ) );
+			this.model.IncStat( "views" )
 
 			var model_id = this.model.id;
-			this.showChildView('task', new DEF.modules.tasks.TaskDetails({
+			this.showChildView( 'task', new DEF.modules.tasks.TaskDetails( {
 				model: this.model,
-			}))
+			} ) )
 
-			this.showChildView('open', new DEF.modules.tasks.TaskList({
-				template: require("./templates/taskline.html"),
+			this.showChildView( 'open', new DEF.modules.tasks.TaskList( {
+				template: require( "./templates/taskline.html" ),
 				collection: APP.models.tasks,
-				filter: APP.models.tasks.filters.Open(this.model)
-			}))
+				filter: APP.models.tasks.filters.Open( this.model )
+			} ) )
 
-			this.showChildView('closed', new DEF.modules.tasks.TaskList({
-				template: require("./templates/taskline_closed.html"),
+			this.showChildView( 'closed', new DEF.modules.tasks.TaskList( {
+				template: require( "./templates/taskline_closed.html" ),
 				collection: APP.models.tasks,
-				filter: APP.models.tasks.filters.Closed(this.model)
-			}))
-			var comments = new DEF.modules.comments.Collection(this.model.get('comments'));
-			this.showChildView('comments', new DEF.modules.comments.Comments({
+				filter: APP.models.tasks.filters.Closed( this.model )
+			} ) )
+			var comments = new DEF.modules.comments.Collection( this.model.get( 'comments' ) );
+			this.showChildView( 'comments', new DEF.modules.comments.Comments( {
 				model: this.model,
 				collection: comments
-			}))
+			} ) )
 
 		}
-	}),
+	} ),
 }
