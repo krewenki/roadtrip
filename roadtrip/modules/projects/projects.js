@@ -212,11 +212,14 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 				sum += (sub.get('progress') * sub.get('priority') / 100.0);
 				count += (sub.get('priority') / 100.0)
 			}
-			this.model.set({
-				tasks: subs.length,
-				progress: sum / count,
-			})
-			console.log("Progress automatically set to ", sum / count)
+			var progress = sum / count;
+			if (progress != this.model.get('progress')) {
+				console.log("Progress automatically set to ", progress, this.model.get('progress'))
+				this.model.set({
+					tasks: subs.length,
+					progress: progress,
+				})
+			}
 		}
 	},
 	onShow: function() {
