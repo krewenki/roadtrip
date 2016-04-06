@@ -3,7 +3,8 @@ DEF.StaticLayout = Backbone.Marionette.ItemView.extend({
 	onBeforeRender: function() {
 		var templates = {
 			"home": require('../pages/home.md'),
-			"login": require('../templates/login.html')
+			"login": require('../templates/login.html'),
+			"signup": require('../templates/signup.html')
 		};
 		this.template = function() {
 			return templates[this.options.page];
