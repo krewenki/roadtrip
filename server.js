@@ -57,6 +57,7 @@ var hw = new Highway({
 	io: io,
 	auth: [
 		{
+			defaultUser: '56fea5cc54d49c036c802e53',
 			strategy: 'local',
 			sessionLength: 60*60*24*365,
 			forceRootAuth: false,
