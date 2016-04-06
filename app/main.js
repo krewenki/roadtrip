@@ -220,7 +220,12 @@ APP.Format = {
 	 * @return {string}     $5.50
 	 */
 	money: function(val) {
-		var sign = val < 0 ? "negative" : "positive";
+		val = Number(val);
+		sign = "zero";
+		if (val < 0)
+			sign = "negative"
+		if (val > 0)
+			sign = "positive";
 		return '<span class="money ' + sign + '">$' + val.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + "</span>";
 	},
 	date: function(time) {

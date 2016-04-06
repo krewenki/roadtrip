@@ -242,8 +242,12 @@ Roadtrip = {
 			} else
 				APP.Route("#" + this.module);
 		},
+		/**
+		 * Apply dirt to a field, so it knows it has to save.
+		 * @param  {e} e the field
+		 * @return {null}   [description]
+		 */
 		MakeDirty: function(e) {
-
 			if (e.currentTarget.value == this.model.get(e.currentTarget.id))
 				$(e.currentTarget).removeClass("dirty");
 			else

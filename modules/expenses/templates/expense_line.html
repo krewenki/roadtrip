@@ -1,6 +1,6 @@
 <td class='nowrap category'>
-	<span id='category_icon'><%=APP.Icon(category)%></span>
-	<select id='category'>
+	<span class='' id='category_icon'><%=APP.Icon(category)%></span>
+	<select class='categories expense_field' id='category' data-line=<%=line%>>
 		<option value="miscellaneous" <%=category=="miscellaneous" ? "selected": ""%>>Miscellaneous</option>
 		<optgroup label='Personal'>
 			<option value="food" <%=category=="food" ? "selected": ""%>>Food</option>
@@ -15,11 +15,11 @@
 		</optgroup>
 		<optgroup label='Transportation'>
 			<option value="car" <%=category=="car" ? "selected": ""%>>Car Rental</option>
-			<option value="boat" <%=category=="train" ? "selected": ""%>>Boat/Ferry</option>
+			<option value="boat" <%=category=="boat" ? "selected": ""%>>Boat/Ferry</option>
 			<option value="cab" <%=category=="cab" ? "selected": ""%>>Taxi Cab</option>
 			<option value="subway" <%=category=="subway" ? "selected": ""%>>Subway</option>
 			<option value="gas" <%=category=="fuel" ? "selected": ""%>>Gas</option>
-			<option value="toll" <%=category=="train" ? "selected": ""%>>Tolls</option>
+			<option value="toll" <%=category=="toll" ? "selected": ""%>>Tolls</option>
 		</optgroup>
 		<optgroup label='Lodging'>
 			<option value="hotel" <%=category=="hotel" ? "selected": ""%>>Hotel</option>
@@ -31,17 +31,20 @@
 		</optgroup>
 	</select>
 </td>
-<% for (var d = 0; d< expenses.length; d++) { %>
+<% for (var d = 0; d< days.length; d++) { %>
 	<td>
-		<input class='money sum_this' type='number' value="<%=expenses[d]?expenses[d]:" "%>">
+		<input value="<%=days[d]?days[d]:''%>" class='expense_field sum_me' data-day="<%=d%>" data-line=<%=line%> type='number' >
 	</td>
 	<% } %>
-		<td align='right' id='total'>
+		<td align='right' id='total_field'>
 			<%=APP.Format.money(total)%>
 		</td>
-		<td align='right' id='paid_by_employer'>
+		<td align='right' id='employer_field'>
 			<%=APP.Format.money(paid_by_employer)%>
 		</td>
-		<td align='right' id='paid_by_employee'>
-			<%=APP.Format.money(paid_by_employee)%>
+		<td align='right' id=''>
+			<input value="<%=paid_by_employee%>" id='paid_by_employee' class='expense_field resum' data-line="<%=line%>" type='number'>
 		</td>
+
+		<input value="<%=total%>" id='total' class='dirty expense_field ' data-line="<%=line%>" value="<%=total%>" type='hidden'>
+		<input value="<%=paid_by_employer%>" id='paid_by_employer' class='dirty expense_field ' data-line="<%=line%>" value="<%=paid_by_employer%>" type='hidden'>
