@@ -187,7 +187,7 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 		icon: "tasks",
 		msg: "There are no tasks",
 		submsg: "<span id='new' class='btn'>" + APP.Icon("new") + " new task</span>",
-		colspan: 5
+		colspan: 10
 	},
 	ui: {
 		new: "#new",

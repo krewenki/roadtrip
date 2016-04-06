@@ -12,63 +12,63 @@ DEF.modules.users.Router = Roadtrip.Router.extend({
 });
 DEF.modules.users.Model = Roadtrip.Model.extend({
 	nameAttribute: 'name', // the human-readable field in the record
-	module:        "users",
-	defaults:      {
-		name:         "Joe",
-		email:        "crap@fart.com",
-		boss:         false,
-		perms:        {
-			tasks:       {
-				create:     false,
-				read:       true,
-				update:     false,
-				delete:     false,
-				comment:    true
+	module: "users",
+	defaults: {
+		name: "Joe",
+		email: "crap@fart.com",
+		boss: false,
+		perms: {
+			tasks: {
+				create: false,
+				read: true,
+				update: false,
+				delete: false,
+				comment: true
 			},
-			orders:      {
-				create:     false,
-				read:       true,
-				update:     false,
-				delete:     false,
-				comment:    true
+			orders: {
+				create: false,
+				read: true,
+				update: false,
+				delete: false,
+				comment: true
 			},
-			contacts:    {
-				create:     false,
-				read:       true,
-				update:     false,
-				delete:     false,
-				comment:    true
+			contacts: {
+				create: false,
+				read: true,
+				update: false,
+				delete: false,
+				comment: true
 			},
-			projects:    {
-				create:     false,
-				read:       true,
-				update:     false,
-				delete:     false,
-				comment:    true
+			projects: {
+				create: false,
+				read: true,
+				update: false,
+				delete: false,
+				comment: true
 			},
-			calendar:    {
-				create:     false,
-				read:       true,
-				update:     false,
-				delete:     false,
-				comment:    true
+			calendar: {
+				create: false,
+				read: true,
+				update: false,
+				delete: false,
+				comment: true
 			},
-			users:       {
-				create:     false,
-				read:       true,
-				update:     false,
-				delete:     false,
-				comment:    true
+			users: {
+				create: false,
+				read: true,
+				update: false,
+				delete: false,
+				comment: true
 			},
-			expenses:       {
-				create:     false,
-				read:       false,
-				update:     false,
-				delete:     false,
-				comment:    false
+			expenses: {
+				create: false,
+				read: false,
+				update: false,
+				delete: false,
+				comment: false
 			},
 		},
-		Can:          function(module, perm) {
+		Can: function(module, perm) {
 			var perms = this.get('perms');
 			return perms[module][perm] || false;
 		}
@@ -82,20 +82,14 @@ DEF.modules.users.Collection = Backbone.Highway.Collection.extend({
 		this.listenTo(this, "sync", this.UpdateUserTaskCount)
 		this.listenTo(APP.models.tasks, "change:assigned_to change:progress_label", this.UpdateUserTaskCount)
 	},
-	// get : function(id) {
-	// 	var out = Backbone.Highway.Collection.prototype.get.call(this, id);
-	// 	if (!out) {
-	// 		debugger
-	// 		out = Backbone.Highway.Collection.prototype.get.call(this, APP.anon);
-	// 	}
-	// 		return out;
-	// },
 	UpdateUserTaskCount: function() {
-		var length = APP.models.tasks.filter(APP.models.tasks.filters.Assigned(APP.models.users.get(U._id))).length;
-		if (length) {
-			$("#HEADER #taskcount").html("" + APP.Icon("tasks") + "" + length + "");
-		} else {
-			$("#HEADER #taskcount").html("");
+		if (U) {
+			var length = APP.models.tasks.filter(APP.models.tasks.filters.Assigned(APP.models.users.get(U._id))).length;
+			if (length) {
+				$("#HEADER #taskcount").html("" + APP.Icon("tasks") + "" + length + "");
+			} else {
+				$("#HEADER #taskcount").html("");
+			}
 		}
 	}
 });
