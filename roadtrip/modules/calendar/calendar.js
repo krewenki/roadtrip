@@ -21,9 +21,10 @@ DEF.modules.calendar.Model = Roadtrip.Model.extend({
 	defaults: {
 		title: 'New Event',
 		startLocal: new Date().toISOString().slice(0, 10) + 'T09:00',
-		endLocal: new Date().toISOString().slice(0,10) + 'T10:00',
-		start: Date.now(),
-		end: Date.now(),
+		endLocal: new Date().toISOString().slice(0,10) + 'T11:00',
+		start: new Date().getTime(),
+		end: new Date().getTime(),
+		location: '',
 		allDay: false,
 		attendees: [],
 		notes: ''
@@ -63,7 +64,9 @@ DEF.modules.calendar.views = {
 		className: 'calendar_event',
 		attributes: function(){
 			return {
-				"data-id" : this.model.id
+				"data-id" : this.model.id,
+				"data-start" : this.model.get('start'),
+				"data-end" : this.model.get('end')
 			}
 		},
 		events: {
