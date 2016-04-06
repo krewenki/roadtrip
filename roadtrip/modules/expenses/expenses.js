@@ -49,7 +49,7 @@ DEF.modules.expenses.Model = Roadtrip.Model.extend({
 		paid_by_employer: 0,
 		paid_by_employee: 0,
 		duration: 5, // in days
-		expenses: {}
+		expenses: []
 	}
 });
 DEF.modules.expenses.Collection = Backbone.Highway.Collection.extend({
@@ -72,31 +72,48 @@ DEF.modules.expenses.ExpenseLine = Backbone.Marionette.ItemView.extend({
 	tagName: "tr",
 	module: "expenses",
 	template: require("./templates/expense_line.html"),
-	template_helpers: function() {
+	templateHelpers: function() {
 		return {
-			model: this.model
+			line: this.model.collection.indexOf(this.model),
 		}
 	},
 	ui: {
-		"sum": ".sum_this",
+		"sum": ".sum_me",
+		"resum": ".resum",
+		"total_field": "#total_field",
+		"employer_field": "#employer_field",
 		"total": "#total",
 		"category": "#category",
-		"category_icon": "#category_icon"
+		"category_icon": "#category_icon",
+		"field": ".expense_field",
+		"employer": "#paid_by_employer",
+		"employee": "#paid_by_employee"
 	},
 	events: {
 		"keyup @ui.sum": "Sum",
+		"keyup @ui.resum": "Sum",
 		"click @ui.sum": "Sum",
-		"change @ui.category": "ChangeCat"
+		"click @ui.resum": "Sum",
+		"change @ui.category": "ChangeCategory",
+		"change @ui.field": "MakeDirty",
+		"keyup @ui.field": "MakeDirty"
 	},
 	Sum: function() {
 		total = 0
 		this.ui.sum.each(function(i, el) {
 			total += Number(el.value)
 		})
-		this.ui.total.html(APP.Format.money(total));
+		this.ui.total.val(total);
+		this.ui.total_field.html(APP.Format.money(total));
+		this.ui.employer.val(total - this.ui.employee.val())
+		this.ui.employer_field.html(APP.Format.money(this.ui.employer.val()))
+		this.trigger("sum"); // tell the parent
 	},
-	ChangeCat: function() {
+	ChangeCategory: function() {
 		this.ui.category_icon.html(APP.Icon(this.ui.category.val()))
+	},
+	MakeDirty: function(e) {
+		$(e.currentTarget).addClass("dirty");
 	}
 
 })
@@ -120,28 +137,34 @@ DEF.modules.expenses.views = {
 			"click @ui.cancel": "Cancel",
 			"click @ui.delete": "Delete"
 		},
+		childEvents: {
+			"sum": "Sum",
+		},
 		onBeforeRender: function() {
 			if (!this.model) { // create a new model, if needed
 				this.model = new DEF.modules[this.module].Model({})
 			}
 
-			this.collection = new DEF.modules.expenses.ExpenseCollection();
-			cats = ["plane", "hotel", "food", "food", "misc"]
-			for (var i = 0; i < cats.length; i++) {
-				var rec = {
-					day: i,
-					category: cats[i],
-					total: 0,
-					paid_by_employee: 0,
-					paid_by_employer: 0,
-					expenses: Array.apply(null, Array(this.model.get('duration') | 0)).map(Number.prototype.valueOf, 0)
-				};
-				console.log(rec);
-				this.collection.push(new DEF.modules.expenses.Expense(rec))
+			var expenses = this.model.get('expenses');
+			if (expenses.length == 0) {
+				cats = ["plane", "hotel", "food", "food", "misc"]
+				for (var i = 0; i < cats.length; i++) {
+					var rec = {
+						category: cats[i],
+						total: 0,
+						paid_by_employee: 0,
+						paid_by_employer: 0,
+						days: Array.apply(null, Array(this.model.get('duration') | 0)).map(Number.prototype.valueOf, 0)
+					};
+					expenses.push(rec)
+				}
 			}
+			this.collection = new DEF.modules.expenses.ExpenseCollection(expenses);
 
 		},
-
+		onShow: function() {
+			this.Sum();
+		},
 		templateHelpers: function() {
 			var rs = {
 				expense_id: this.GenerateTaskID()
@@ -174,6 +197,27 @@ DEF.modules.expenses.views = {
 				var val = $el.value;
 				save[$el.id] = val;
 			})
+
+			var expenses = model.get('expenses');
+			for (let el of $(".expense_field")) {
+				var day = $(el).data('day'),
+					line = $(el).data('line');
+				if (!expenses[line])
+					expenses[line] = {
+						category: $(".categories[data-line=" + line + "]").val(),
+						days: {},
+						paid_by_employee: 0
+					}
+				if ($(el).hasClass("sum_me")) {
+					if (!expenses[line].days[day])
+						expenses[line].days[day] = {}
+					expenses[line].days[day] = Number($(el).val())
+				} else {
+					expenses[line][el.id] = el.value
+				}
+			}
+			// note, the "expenses" object is a reference to the raw data, so no .save is necessary
+
 			if (!this.model.id) {
 				save["_"] = {
 					created_by: U._id,
@@ -185,10 +229,43 @@ DEF.modules.expenses.views = {
 					}.bind(this)
 				});
 			} else {
+				console.log("save", save);
 				this.model.set(save);
 				this.model.SetStats("edit")
-				APP.Route("#expenses/view/" + this.model.get('_id'))
+					//		APP.Route("#expenses/view/" + this.model.get('_id'))
 			}
+		},
+		Sum: function() {
+			console.log("s");
+			var sum = {
+				days: []
+			}
+			for (let el of $(".expense_field")) {
+				switch (el.id) {
+					case "total":
+					case "paid_by_employee":
+					case "paid_by_employer":
+						if (!sum[el.id])
+							sum[el.id] = 0;
+						sum[el.id] += Number($(el).val())
+						break;
+					default:
+						if ($(el).hasClass("sum_me")) {
+							var day = $(el).data('day');
+							if (!sum.days[day])
+								sum.days[day] = 0;
+							sum.days[day] += Number($(el).val())
+						}
+
+				}
+			}
+			$("#total_total").html(APP.Format.money(sum.total))
+			$("#total_employer").html(APP.Format.money(sum.paid_by_employer))
+			$("#total_employee").html(APP.Format.money(sum.paid_by_employee))
+			for (var d = 0; d < sum.days.length; d++) {
+				$("#total_" + (d + 1)).html(APP.Format.money(sum.days[d]))
+			}
+			console.log(sum);
 		},
 		Cancel: function(e) {
 			this.Return();

@@ -184,6 +184,14 @@ body {
         &.negative {
             color: red;
         }
+
+        &.zero {
+            color: $text_light_color;
+        }
+
+        &.positive {
+            color: $text_color;
+        }
     }
 
     #empty {
@@ -268,21 +276,12 @@ body {
         }
     }
 
-    .table-left {
-        input:not([class=btn]):not([type=checkbox]) {
-            border-top-right-radius   : 10px;
-            border-bottom-right-radius: 10px;
-            border                    : 1px solid #aaa;
-            padding                   : 5px;
-        }
-
+    .table {
         .dirty {
             // the field has been edited
             background-color: rgba(0, 255, 255, 0.1);
         }
-    }
 
-    .table {
         meter {
             width    : 100%;
             min-width: 100px;
@@ -291,6 +290,29 @@ body {
         i.icon {
             min-width : 20px;
             text-align: center;
+        }
+
+        input:not([class=btn]):not([type=checkbox]) {
+            border: 1px solid #aaa;
+        }
+    }
+
+    .table-left {
+        input:not([class=btn]):not([type=checkbox]) {
+            border-top-right-radius   : 10px;
+            border-bottom-right-radius: 10px;
+            padding                   : 5px;
+        }
+    }
+
+    .table-top {
+        input:not([class=btn]):not([type=checkbox]) {
+            border-radius: 4px;
+            padding      : 2px;
+        }
+
+        input[type="number"] {
+            text-align: right;
         }
     }
 }

@@ -64,17 +64,17 @@
 					<%=APP.Icon('new')%> Add Line</button>
 			</td>
 			<% for (var d = 1; d<= duration; d++) { %>
-				<th>
+				<th id='total_<%=d%>'>
 					<%=APP.Format.money(0)%>
 				</th>
 				<% } %>
-					<th align="right">
+					<th align="right" id='total_total'>
 						<%=APP.Format.money(total_expense)%>
 					</th>
-					<th align="right">
+					<th align="right" id='total_employer'>
 						<%=APP.Format.money(paid_by_employer)%>
 					</th>
-					<th align="right">
+					<th align="right" id='total_employee'>
 						<%=APP.Format.money(paid_by_employee)%>
 					</th>
 		</tr>

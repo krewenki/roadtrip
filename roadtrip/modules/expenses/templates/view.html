@@ -16,6 +16,16 @@
 		</td>
 	</tr>
 	<tr>
+		<th>Employee</th>
+		<td>
+			<%=APP.GetLink("users", _.created_by)%>
+		</td>
+		<th>Supervisor</th>
+		<td>
+			<%=APP.GetLink("users", APP.models.users.get(_.created_by).get('boss'))%>
+		</td>
+	</tr>
+	<tr>
 		<th>Job</th>
 		<td>
 			<%=APP.GetLink("orders",job)%>
