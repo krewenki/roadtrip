@@ -17,10 +17,6 @@ require("./search.js");
 require("./router.js");
 require("./static.js");
 
-//$.getJSON('/auth',function(r){
-//console.log(r);
-//})
-
 var MainApp = Backbone.Marionette.Application.extend({
 	anon: "56fea5cc54d49c036c802e53", // the anonymous user id
 
