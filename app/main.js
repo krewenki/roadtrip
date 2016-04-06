@@ -41,10 +41,10 @@ var MainApp = Backbone.Marionette.Application.extend({
 		}
 		window.onhashchange = function() {
 			if (window.innerDocClick) {
-				$("html, body").animate({
-					scrollTop: 0
-				}, 100);
-				//window.scrollTo(0, 0)
+				// $("html, body").animate({
+				// 	scrollTop: 0
+				// }, 100);
+				window.scrollTo(0, 0)
 			}
 		}
 	},

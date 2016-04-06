@@ -2,10 +2,9 @@
 	<div class='cmd link' id='edit'>
 		<%=APP.Icon('edit')%> edit
 	</div>
-	<div class='cmd link danger' id='delete'>
-		<%=APP.Icon('delete')%> delete
-	</div>
-	<span id='title'></span>
+	<span id='title'>
+		<%=APP.GetLink("orders",job)%> <%=purpose%>
+	</span>
 </div>
 
 <table class='table table-left table-full'>
@@ -61,4 +60,26 @@
 				<th class='paid_by_employer'>Employer</th>
 				<th class='paid_by_employee'>Employee</th>
 	</thead>
+	<tbody></tbody>
+	<tfoot>
+		<tr>
+			<td>
+			</td>
+			<% for (var d = 1; d<= duration; d++) { %>
+				<td id='total_<%=d%>'>
+
+				</td>
+				<% } %>
+					<th align="right" id='total_total'>
+						<%=APP.Format.money(total)%>
+					</th>
+					<th align="right" id='total_employer'>
+						<%=APP.Format.money(paid_by_employer)%>
+					</th>
+					<th align="right" id='total_employee'>
+						<%=APP.Format.money(paid_by_employee)%>
+					</th>
+		</tr>
+	</tfoot>
+
 </table>
