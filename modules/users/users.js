@@ -16,6 +16,7 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 	defaults: {
 		name: "Joe",
 		email: "crap@fart.com",
+		phone: "",
 		boss: false,
 		perms: {
 			tasks: {
