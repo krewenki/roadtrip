@@ -52,8 +52,8 @@ DEF.modules.calendar.views = {
 			"change" : "setDates"
 		},
 		setDates: function(){
-			var start = new Date(this.model.get('startLocal')).getTime();
-			var end = new Date(this.model.get('endLocal')).getTime();
+			var start = new Date(this.model.get('startLocal').replace('T',' ')).getTime();
+			var end = new Date(this.model.get('endLocal').replace('T',' ')).getTime();
 			this.model.set({ start: start, end: end});
 		}
 	}),
@@ -148,8 +148,11 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend({
 
 				collection = new Backbone.Collection(APP.models.calendar.filter(function(c){
 					var start = c.get('start');
+					var startDate = new Date(start).toISOString().slice(0,10)
 					var end = c.get('end');
-					return start <= iso && iso <= end+(60*60*24*1000);
+					var endDate = new Date(end).toISOString().slice(0,10);
+					var isoDate = new Date(iso).toISOString().slice(0,10);
+					return (start <= iso && iso <= end) || (startDate == isoDate) || endDate == isoDate;
 				}))
 				this.showChildView(days[i], new DEF.modules.calendar.views.Day({
 					date: date,
