@@ -6,9 +6,21 @@ DEF.modules.calendar.Router = Roadtrip.Router.extend({
 	},
 	routes: {
 		"calendar": "ShowRoot",
+		"calendar/date/:arg": "LoadDate",
 		"calendar/:cmd": "LoadModule",
-		"calendar/:cmd/:arg": "LoadModule",
+		"calendar/:cmd/:arg": "LoadModule"
+
 	},
+	LoadDate: function(d){
+		var module = this.module;
+		iso = new Date(d +' 00:00').getTime()
+
+		collection = APP.models.calendar.getEventsForDate(d);
+		APP.Page = new DEF.modules.calendar.views['date']({
+			collection: collection
+		});
+		APP.root.showChildView("main", APP.Page);
+	}
 })
 
 /**
@@ -37,6 +49,19 @@ DEF.modules.calendar.Model = Roadtrip.Model.extend({
 DEF.modules.calendar.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.calendar.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/calendar',
+	getEventsForDate: function(date){
+		var iso = new Date(date).getTime();
+		var collection = new Backbone.Collection(this.filter(function(c){
+			var start = c.get('start');
+			var startDate = new Date(start).toISOString().slice(0,10)
+			var end = c.get('end');
+			var endDate = new Date(end).toISOString().slice(0,10);
+			var isoDate = new Date(iso).toISOString().slice(0,10);
+			return (start <= iso && iso <= end) || (startDate == isoDate) || endDate == isoDate;
+		}))
+	return collection;
+	}
+
 });
 /**
  * A list of commands, automatically tied to the $cmd in  #module/$cmd/$id.  See DoView
@@ -144,16 +169,7 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend({
 			var date, collection;
 			for (var i in days) {
 				date = new Date(this.sunday + (86400000 * i));
-				iso = new Date(date.toISOString().slice(0,10)+' 00:00').getTime()
-
-				collection = new Backbone.Collection(APP.models.calendar.filter(function(c){
-					var start = c.get('start');
-					var startDate = new Date(start).toISOString().slice(0,10)
-					var end = c.get('end');
-					var endDate = new Date(end).toISOString().slice(0,10);
-					var isoDate = new Date(iso).toISOString().slice(0,10);
-					return (start <= iso && iso <= end) || (startDate == isoDate) || endDate == isoDate;
-				}))
+				collection = APP.models.calendar.getEventsForDate(date.toISOString().slice(0,10))
 				this.showChildView(days[i], new DEF.modules.calendar.views.Day({
 					date: date,
 					collection: collection
@@ -162,6 +178,10 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend({
 		}
 	})
 
+DEF.modules.calendar.views.date = Backbone.Marionette.CompositeView.extend({
+	template: require("./templates/date.html"),
+	childView: DEF.modules.calendar.views.event
+})
 
 /**
  * The MainView.  HAS to be called MainView.  This is where this module begins
