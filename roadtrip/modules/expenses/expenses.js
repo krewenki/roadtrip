@@ -20,6 +20,10 @@ DEF.modules.expenses.Router = Roadtrip.Router.extend({
 		APP.Icon_Lookup["tools"] = "wrench";
 		APP.Icon_Lookup["fuel"] = "battery-full";
 		APP.Icon_Lookup["misc"] = "ellipsis-h";
+		APP.Icon_Lookup["boat"] = "ship";
+		APP.Icon_Lookup["misc"] = "ellipsis-h";
+		APP.Icon_Lookup["subway"] = "subway";
+		APP.Icon_Lookup["toll"] = "dollar";
 
 	},
 	routes: {
@@ -41,6 +45,9 @@ DEF.modules.expenses.Model = Roadtrip.Model.extend({
 		job: false, // aka Order Line item?
 		approved_by: false,
 		start_date: false,
+		total_expense: 0,
+		paid_by_employer: 0,
+		paid_by_employee: 0,
 		duration: 5, // in days
 		expenses: {}
 	}
@@ -69,7 +76,29 @@ DEF.modules.expenses.ExpenseLine = Backbone.Marionette.ItemView.extend({
 		return {
 			model: this.model
 		}
+	},
+	ui: {
+		"sum": ".sum_this",
+		"total": "#total",
+		"category": "#category",
+		"category_icon": "#category_icon"
+	},
+	events: {
+		"keyup @ui.sum": "Sum",
+		"click @ui.sum": "Sum",
+		"change @ui.category": "ChangeCat"
+	},
+	Sum: function() {
+		total = 0
+		this.ui.sum.each(function(i, el) {
+			total += Number(el.value)
+		})
+		this.ui.total.html(APP.Format.money(total));
+	},
+	ChangeCat: function() {
+		this.ui.category_icon.html(APP.Icon(this.ui.category.val()))
 	}
+
 })
 
 DEF.modules.expenses.views = {
@@ -97,19 +126,19 @@ DEF.modules.expenses.views = {
 			}
 
 			this.collection = new DEF.modules.expenses.ExpenseCollection();
-			for (var i = 0; i < 3; i++) {
+			cats = ["plane", "hotel", "food", "food", "misc"]
+			for (var i = 0; i < cats.length; i++) {
 				var rec = {
 					day: i,
-					category: "misc",
+					category: cats[i],
 					total: 0,
 					paid_by_employee: 0,
 					paid_by_employer: 0,
-					expenses: Array.apply(null, Array(this.model.get('duration'))).map(Number.prototype.valueOf, 0)
+					expenses: Array.apply(null, Array(this.model.get('duration') | 0)).map(Number.prototype.valueOf, 0)
 				};
 				console.log(rec);
 				this.collection.push(new DEF.modules.expenses.Expense(rec))
 			}
-			console.log(this.collection);
 
 		},
 

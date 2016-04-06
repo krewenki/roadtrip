@@ -42,15 +42,41 @@
 
 <table id='expenses' class='table table-full table-top'>
 	<thead>
-		<th>
-			Category
-		</th>
-		<% for (var d = 1; d<= duration; d++) { %>
+		<tr>
 			<th>
-				<%=APP.Format.date(new Date(start_date).getTime()+1000*3600*24*d)%>
+				Category
 			</th>
-			<% } %>
-				<th class='total'>Total</th>
-				<th class='paid_by_employer'>Employer</th>
-				<th class='paid_by_employee'>Employee</th>
+			<% for (var d = 1; d<= duration; d++) { %>
+				<th>
+					<%=APP.Format.date(new Date(start_date).getTime()+1000*3600*24*d)%>
+				</th>
+				<% } %>
+					<th align='right' class='total'>Total</th>
+					<th align='right' class='paid_by_employer'>Employer</th>
+					<th align='right' class='paid_by_employee'>Employee</th>
+		</tr>
 	</thead>
+	<tbody></tbody>
+	<tfoot>
+		<tr>
+			<td>
+				<button class='btn btn-small'>
+					<%=APP.Icon('new')%> Add Line</button>
+			</td>
+			<% for (var d = 1; d<= duration; d++) { %>
+				<th>
+					<%=APP.Format.money(0)%>
+				</th>
+				<% } %>
+					<th align="right">
+						<%=APP.Format.money(total_expense)%>
+					</th>
+					<th align="right">
+						<%=APP.Format.money(paid_by_employer)%>
+					</th>
+					<th align="right">
+						<%=APP.Format.money(paid_by_employee)%>
+					</th>
+		</tr>
+	</tfoot>
+</table>

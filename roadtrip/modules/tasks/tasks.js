@@ -10,7 +10,7 @@ DEF.modules.tasks.Router = Roadtrip.Router.extend({
 		APP.Icon_Lookup["bug"] = "bug";
 		APP.Icon_Lookup["feature"] = "star";
 		APP.Icon_Lookup["idea"] = "lightbulb-o";
-		APP.Icon_Lookup["product"] = "car";
+		APP.Icon_Lookup["product"] = "cubes";
 		APP.Icon_Lookup["support"] = "wechat";
 
 	},

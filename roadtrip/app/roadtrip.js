@@ -156,7 +156,7 @@ Roadtrip = {
 		 * @return {null}      [description]
 		 */
 		IncStat: function(stat) {
-			var stats = this.get('_');
+			var stats = this.get('_') || {};
 			stats[stat] = (stats[stat] + 1) || 1
 			this.set({
 				_: stats
