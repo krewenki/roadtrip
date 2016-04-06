@@ -45,7 +45,7 @@ DEF.modules.expenses.Model = Roadtrip.Model.extend({
 		job: false, // aka Order Line item?
 		approved_by: false,
 		start_date: false,
-		total_expense: 0,
+		total: 0,
 		paid_by_employer: 0,
 		paid_by_employee: 0,
 		duration: 5, // in days
@@ -68,6 +68,16 @@ DEF.modules.expenses.ExpenseCollection = Backbone.Collection.extend({
 	model: DEF.modules.expenses.Expense,
 })
 
+DEF.modules.expenses.ExpenseLineReadOnly = Backbone.Marionette.ItemView.extend({
+	tagName: "tr",
+	module: "expenses",
+	template: require("./templates/expense_line_ro.html"),
+	templateHelpers: function() {
+		return {
+			line: this.model.collection.indexOf(this.model),
+		}
+	},
+})
 DEF.modules.expenses.ExpenseLine = Backbone.Marionette.ItemView.extend({
 	tagName: "tr",
 	module: "expenses",
@@ -217,6 +227,9 @@ DEF.modules.expenses.views = {
 				}
 			}
 			// note, the "expenses" object is a reference to the raw data, so no .save is necessary
+			save.total = $("#total_total").html().match(/(\d.)+/)[0];
+			save.paid_by_employer = $("#total_employer").html().match(/(\d.)+/)[0];
+			save.paid_by_employee = $("#total_employee").html().match(/(\d.)+/)[0];
 
 			if (!this.model.id) {
 				save["_"] = {
@@ -232,7 +245,7 @@ DEF.modules.expenses.views = {
 				console.log("save", save);
 				this.model.set(save);
 				this.model.SetStats("edit")
-					//		APP.Route("#expenses/view/" + this.model.get('_id'))
+				APP.Route("#expenses/view/" + this.model.get('_id'))
 			}
 		},
 		Sum: function() {
@@ -254,7 +267,7 @@ DEF.modules.expenses.views = {
 							var day = $(el).data('day');
 							if (!sum.days[day])
 								sum.days[day] = 0;
-							sum.days[day] += Number($(el).val())
+							sum.days[day] += Number($(el).val());
 						}
 
 				}
@@ -268,27 +281,39 @@ DEF.modules.expenses.views = {
 			console.log(sum);
 		},
 		Cancel: function(e) {
-			this.Return();
+			APP.Route("#" + this.module + "/" + "view" + "/" + this.model.id);
 		},
 		Delete: function(e) {
 			APP.models[this.module].remove(this.model);
-			this.Return(true);
+			APP.Route("#" + this.module);
 		}
 	}),
-	/**
-	 * View a plain, read-only single record
-	 */
-	view: Roadtrip.View.extend({
+	view: Backbone.Marionette.CompositeView.extend({
 		module: "expenses",
 		template: require("./templates/view.html"),
+		id: 'EXPENSES',
+		childView: DEF.modules.expenses.ExpenseLineReadOnly,
+		childViewContainer: "#expenses",
+		filter: function(m) {
+			return m.get('total') != 0;
+		},
+		ui: {
+			"edit": "#edit"
+		},
+		events: {
+			"click @ui.edit": "Edit"
+		},
+		onBeforeRender: function() {
+			this.collection = new DEF.modules.expenses.ExpenseCollection(this.model.get('expenses'));
+		},
+		onShow: function() {
+			//DEF.modules.expenses.views.edit.prototype.Sum(); // don't ask!
+		},
+		Edit: function() {
+			APP.Route("#" + this.module + "/" + "edit" + "/" + this.model.id);
+		}
 	})
 }
-DEF.modules.expenses.ExpenseList = Roadtrip.RecordList.extend({
-	childView: DEF.modules.expenses.RecordLine,
-	childViewContainer: "#expenses",
-
-})
-
 DEF.modules.expenses.RecordLine = Roadtrip.RecordLine.extend({
 	tagName: "tr",
 	module: "expenses",
