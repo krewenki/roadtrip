@@ -8,7 +8,7 @@
 		</div>
 
 		<div id='usermenu' class='cell nowrap'>
-				<% if(!U){ %>
+				<% if(!U || U.name == "Anonymous"){ %>
 						<button id='login' class='btn'>Login</button>
 						<% } else { %>
 								<a href="#users/view/<%=U._id%>">
