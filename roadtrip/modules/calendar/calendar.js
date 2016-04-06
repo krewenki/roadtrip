@@ -150,7 +150,7 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend({
 				collection = new Backbone.Collection(APP.models.calendar.filter(function(c){
 					var start = c.get('start');
 					var end = c.get('end');
-					return start <= iso && iso <= end;
+					return start <= iso && end <= iso;
 				}))
 				this.showChildView(days[i], new DEF.modules.calendar.views.Day({
 					date: date,
