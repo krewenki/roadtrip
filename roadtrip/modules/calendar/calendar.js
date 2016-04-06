@@ -50,9 +50,6 @@ DEF.modules.calendar.views = {
 		modelEvents: {
 			"change" : "setDates"
 		},
-		onBeforeShow: function(){
-			this.setDates();
-		},
 		setDates: function(){
 			var start = new Date(this.model.get('startLocal')).getTime();
 			var end = new Date(this.model.get('endLocal')).getTime();
@@ -135,9 +132,8 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend({
 		tagName: 'tr',
 		el: '#CALENDAR table tbody',
 		initialize: function(options) {
-			var startDate = options.startDate || new Date();
-			var sunday = startDate.getDay() == 0 ? startDate : startDate - (startDate.getDay() * (60 * 60 * 24 * 1000));
-			this.sunday = sunday;
+			var startDate = new Date();
+			this.sunday = startDate.getDay() == 0 ? startDate : startDate - (startDate.getDay() * (60 * 60 * 24 * 1000));
 			this.render()
 		},
 		onRender: function() {
@@ -145,12 +141,12 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend({
 			var date, collection;
 			for (var i in days) {
 				date = new Date(this.sunday + (86400000 * i));
-				iso = new Date(date.toISOString().slice(0,10)+'T00:00').getTime()
+				iso = new Date(date.toISOString().slice(0,10)+' 00:00').getTime()
 
 				collection = new Backbone.Collection(APP.models.calendar.filter(function(c){
 					var start = c.get('start');
 					var end = c.get('end');
-					return start <= iso && end <= iso;
+					return start <= iso && iso <= end+(60*60*24*1000);
 				}))
 				this.showChildView(days[i], new DEF.modules.calendar.views.Day({
 					date: date,
