@@ -180,7 +180,7 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend({
 
 DEF.modules.calendar.views.date = Backbone.Marionette.CompositeView.extend({
 	template: require("./templates/date.html"),
-	childView: DEF.modules.calendar.views.event
+	childView: DEF.modules.calendar.views.Event
 })
 
 /**
