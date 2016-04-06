@@ -1,6 +1,5 @@
 if(document.cookie == ''){
-	// fall back to a $.getJSON
-	window.U = false;
+	window.location.href = '/logout';
 } else {
 	var c = document.cookie.split(';');
 	var co = c.map(function(s){ return s.split('=')});
