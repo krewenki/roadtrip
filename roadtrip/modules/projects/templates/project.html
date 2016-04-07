@@ -1,63 +1,74 @@
 <div id='menu'>
-		<span id='title'><%=project%></span>
+	<span id='title'><%=project%></span>
 
+	<% if (U.Can("tasks", "create")) { %>
 		<div class='cmd link' id='new'>
-				<%=APP.Icon('new')%> new task
+			<%=APP.Icon('new')%> new task
 		</div>
-		<div class='cmd link' id='edit'>
-				<%=APP.Icon('edit')%> edit project
-		</div>
-		<div class='cmd link' id='wiki'>
-				<%=APP.Icon('wiki')%> wiki
-		</div>
-		<hr>
-		<table id='project_header' class='table table-full '>
-				<tr>
-						<td rowspan=2 class='icon'>
+		<% } %>
+			<% if (U.Can("projects","update") || _.created_by==U.id) {%>
+				<div class='cmd link' id='edit'>
+					<%=APP.Icon('edit')%> edit project
+				</div>
+				<% }%>
+					<div class='cmd link' id='wiki'>
+						<%=APP.Icon('wiki')%> wiki
+					</div>
+					<hr>
+
+					<table id='project_header' class='table table-full '>
+						<tr>
+							<td rowspan=3 class='icon'>
 								<%=APP.Icon(icon)%>
-						</td>
-						<td>
+							</td>
+							<td>
 								<span class='project'><%=project%></span>
 								<span class='goal'>
 								<%=goal%>
 							</span>
-						</td>
-						<td>
+							</td>
+							<td>
 								<b>Views:</b>
 								<%=_.views%>
-						</td>
-				</tr>
-				<tr>
-						<td>
+							</td>
+						</tr>
+
+						<tr>
+							<td>
 								<meter id='progress' value='<%=progress%>' min=0 max=100>
-										<%=progress%>
+									<%=progress%>
 								</meter>
-						</td>
-						<td>
+							</td>
+							<td>
 								<b>Edits:</b>
 								<%=_.edits%>
-						</td>
-				</tr>
-		</table>
+							</td>
+						</tr>
+						<tr>
+							<th>Created By</th>
+							<td>
+								<%=APP.GetLink("users",_.created_by)%>
+									</th>
+					</table>
 </div>
 
 <div id='description'>
-		<%=APP.Format.markdown(description)%>
+	<%=APP.Format.markdown(description)%>
 </div>
 
 
 <table id='tasks' class='table table-full table-top task-table'>
-		<thead>
-				<tr>
-						<th>ID</th>
-						<th>Task</th>
-						<th>Progress</th>
-						<th align='center' class='minwidth800'>Subtasks</th>
-						<th align='center' class='minwidth800'>Views</th>
-						<th align='center' class='minwidth800'>Edits</th>
-						<th class='minwidth1000'>Created By</th>
-						<th class='minwidth1000'>Assigned To</th>
-						<th align='right' class='minwidth1000'>Pri</th>
-				</tr>
-		</thead>
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Task</th>
+			<th>Progress</th>
+			<th align='center' class='minwidth800'>Subtasks</th>
+			<th align='center' class='minwidth800'>Views</th>
+			<th align='center' class='minwidth800'>Edits</th>
+			<th class='minwidth1000'>Created By</th>
+			<th class='minwidth1000'>Assigned To</th>
+			<th align='right' class='minwidth1000'>Pri</th>
+		</tr>
+	</thead>
 </table>

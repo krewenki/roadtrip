@@ -1,8 +1,10 @@
 <div id='menu'>
-	<div class='cmd link' id='edit'>
-		<%=APP.Icon('edit')%> edit
-	</div>
-	<span id='title'>
+	<% if (U.Can('expenses','update') || _.created_by==U.id) { %>
+		<div class='cmd link' id='edit'>
+			<%=APP.Icon('edit')%> edit
+		</div>
+		<% } %>
+			<span id='title'>
 		<%=APP.GetLink("orders",job)%> <%=purpose%>
 	</span>
 </div>

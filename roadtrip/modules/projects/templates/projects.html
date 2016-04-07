@@ -1,8 +1,10 @@
 <div id='menu'>
-	<div class='cmd link' id='add'>
-		<%=APP.Icon('new')%> Add
-	</div>
-	<span id='title'>Projects</span>
+	<% if (U.Can('projects','create')) { %>
+		<div class='cmd link' id='add'>
+			<%=APP.Icon('new')%> Add
+		</div>
+		<% } %>
+			<span id='title'>Projects</span>
 
 </div>
 
