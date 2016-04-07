@@ -34,6 +34,12 @@ Roadtrip = {
 			}
 			return false;
 		},
+		/**
+		 * A generic method to show the module/cmd/arg style URLs
+		 * @param  {string} cmd the command name as defined in DEF.modules.$module.views
+		 * @param  {string} arg An argument, usually an ID
+		 * @return null
+		 */
 		LoadModule: function(cmd, arg) {
 			var module = this.module;
 			var model = APP.models[module].get(arg);
