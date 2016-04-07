@@ -1,25 +1,27 @@
 <div id='menu'>
+	<% if (U.Can("users","create")) { %>
 		<div class='cmd link' id='add'>
-				<%=APP.Icon('user-plus')%> Add
+			<%=APP.Icon('user-plus')%> Add
 		</div>
-		<span id='title'>Users</span>
+		<% }%>
+			<span id='title'>Users</span>
 </div>
 
 <table class='table table-full table-top' id='user_list'>
-		<thead>
-				<tr>
-						<th>Name</th>
-						<th class='minwidth1000'>E-Mail</th>
-						<%
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th class='minwidth1000'>E-Mail</th>
+			<%
 					var modules = Object.keys(APP.models);
 					for( var m in modules) {
 						var module = modules[m];
 						%>
-								<th>
-										<%=module%>
-								</th>
+				<th>
+					<%=module%>
+				</th>
 
-								<% } %>
-				</tr>
-		</thead>
+				<% } %>
+		</tr>
+	</thead>
 </table>

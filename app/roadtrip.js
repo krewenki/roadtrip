@@ -183,11 +183,9 @@ Roadtrip = {
 		},
 		ui: {
 			edit: "#edit",
-			delete: "#delete"
 		},
 		events: {
 			"click @ui.edit": "Edit",
-			"click @ui.delete": "Delete"
 		},
 		modelEvents: {
 			"change": "render" // This shouldn't be necessary, should it?
@@ -195,13 +193,6 @@ Roadtrip = {
 		Edit: function() {
 			APP.Route("#" + this.module + "/" + "edit" + "/" + this.model.id);
 		},
-		Delete: function() {
-			if (confirm("Are you sure you want to delete " + this.model.get(this.model.nameAttribute))) {
-				console.log("kill it");
-				APP.models[this.module].remove(this.model);
-				APP.Route("#" + this.module);
-			}
-		}
 	}),
 	/**
 	 * Useful for supporting edit forms.  Has all the save/dirty logic built in.
@@ -296,8 +287,10 @@ Roadtrip = {
 			this.Return();
 		},
 		Delete: function(e) {
-			APP.models[this.module].remove(this.model);
-			this.Return(true);
+			if (prompt("Are you sure you wish to delete this thing?")) {
+				APP.models[this.module].remove(this.model);
+				this.Return(true);
+			}
 		}
 	}),
 	RecordLine: Backbone.Marionette.ItemView.extend({
