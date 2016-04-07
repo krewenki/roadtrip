@@ -90,7 +90,7 @@ DEF.modules.users.Collection = Backbone.Highway.Collection.extend({
 	},
 	UpdateUserTaskCount: function() {
 		if (U) {
-			var length = APP.models.tasks.filter(APP.models.tasks.filters.Assigned(APP.models.users.get(U._id))).length;
+			var length = APP.models.tasks.filter(APP.models.tasks.filters.Assigned(APP.models.users.get(U.id))).length;
 			if (length) {
 				$("#HEADER #taskcount").html("" + APP.Icon("tasks") + "" + length + "");
 			} else {

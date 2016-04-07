@@ -10,7 +10,7 @@ require('backbone.highway');
 require('../style/style.scss');
 require("font-awesome-webpack");
 
-require("./auth.js");
+
 require("./roadtrip.js");
 require("./layout.js");
 require("./search.js");
@@ -182,6 +182,7 @@ require("../modules/orders/orders.js");
 require("../modules/projects/projects.js");
 require("../modules/calendar/calendar.js");
 require("../modules/expenses/expenses.js");
+require("./auth.js");
 
 
 APP.Format = {
