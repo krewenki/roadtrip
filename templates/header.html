@@ -1,25 +1,25 @@
 <div id='topline'>
-		<div class='cell click' id='title'>
-				<%=APP.Icon('road')%> Roadtrip
-		</div>
-		<div class='cell' id='subtitle'>a Telegauge project</div>
-		<div class='cell' id='searchbox'>
-				<input type='search' id='search' placeholder='Search...'>
-		</div>
+	<div class='cell click' id='title'>
+		<%=APP.Icon('road')%> Roadtrip
+	</div>
+	<div class='cell' id='subtitle'>a Telegauge project</div>
+	<div class='cell' id='searchbox'>
+		<input type='search' id='search' placeholder='Search...'>
+	</div>
 
-		<div id='usermenu' class='cell nowrap'>
-				<% if(!U || U.name == "Anonymous"){ %>
-						<button id='login' class='btn'>Login</button>
-						<% } else { %>
-								<a href="#users/view/<%=U._id%>">
-										<%=U.name%>
-												<span id='taskcount'></span>
-								</a>
-								<span id='settings' class='click'>
+	<div id='usermenu' class='cell nowrap'>
+		<% if(U.get("is_anonymous")){ %>
+			<button id='login' class='btn'>Login</button>
+			<% } else { %>
+				<a href="#users/view/<%=U.id%>">
+					<%=U.get('name')%>
+						<span id='taskcount'></span>
+				</a>
+				<span id='settings' class='click'>
 												<%=APP.Icon('gear')%>
 										</span>
-								<% } %>
-		</div>
+				<% } %>
+	</div>
 </div>
 <div id='SEARCH' style=''></div>
 <!--
@@ -27,25 +27,25 @@ I use data-id here, because when i did stuff like 'id=contacts', then clicking o
 -->
 
 <div class='bg1' id='mainmenu'>
-		<div class='menuitem link' data-mode='contacts'>
-				<%=APP.Icon('contacts')%> <span class='label'>Contacts</span>
-		</div>
-		<div class='menuitem link' data-mode='orders'>
-				<%=APP.Icon('orders')%> <span class='label'>Orders</span>
-		</div>
-		<div class='menuitem link' data-mode='calendar'>
-				<%=APP.Icon('calendar')%> <span class='label'>Calendar</span>
-		</div>
-		<div class='menuitem link' data-mode='projects'>
-				<%=APP.Icon('projects')%> <span class='label'>Projects</span>
-		</div>
-		<div class='menuitem link' data-mode='expenses'>
-				<%=APP.Icon('expenses')%> <span class='label'>Expenses</span>
-		</div>
-		<div class='menuitem' id='timeclock'>
-				<%=APP.Icon('timeclock')%> <span class='label'>Time Clock</span>
-		</div>
-		<div class='menuitem link' data-mode='users'>
-				<%=APP.Icon('users')%> <span class='label'>Users</span>
-		</div>
+	<div class='menuitem link' data-mode='contacts'>
+		<%=APP.Icon('contacts')%> <span class='label'>Contacts</span>
+	</div>
+	<div class='menuitem link' data-mode='orders'>
+		<%=APP.Icon('orders')%> <span class='label'>Orders</span>
+	</div>
+	<div class='menuitem link' data-mode='calendar'>
+		<%=APP.Icon('calendar')%> <span class='label'>Calendar</span>
+	</div>
+	<div class='menuitem link' data-mode='projects'>
+		<%=APP.Icon('projects')%> <span class='label'>Projects</span>
+	</div>
+	<div class='menuitem link' data-mode='expenses'>
+		<%=APP.Icon('expenses')%> <span class='label'>Expenses</span>
+	</div>
+	<div class='menuitem' id='timeclock'>
+		<%=APP.Icon('timeclock')%> <span class='label'>Time Clock</span>
+	</div>
+	<div class='menuitem link' data-mode='users'>
+		<%=APP.Icon('users')%> <span class='label'>Users</span>
+	</div>
 </div>

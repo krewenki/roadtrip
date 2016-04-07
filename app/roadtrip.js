@@ -29,7 +29,7 @@ Roadtrip = {
 				this.collections = [this.module];
 			for (var c = 0; c < this.collections.length; c++) {
 				var collection = this.collections[c];
-				if (_.isUndefined(APP.models[collection]) || APP.models[collection].length == 0)
+				if (_.isUndefined(APP.models[collection]) || APP.models[collection].length < 2)
 					return collection;
 			}
 			return false;
@@ -136,7 +136,7 @@ Roadtrip = {
 				switch (stats) {
 					case "create": // this will not run, as there is no model yet
 						stats = {
-							created_by: U._id,
+							created_by: U.id,
 							created_on: Date.now()
 						}
 						console.log("create", stats);
@@ -144,7 +144,7 @@ Roadtrip = {
 					case "edit":
 						stats = {
 							edited_on: Date.now(),
-							edited_by: U._id,
+							edited_by: U.id,
 							edits: model.edits + 1
 						}
 						break;
@@ -273,7 +273,7 @@ Roadtrip = {
 			})
 			if (!this.model.id) {
 				save["_"] = {
-					created_by: U._id,
+					created_by: U.id,
 					created_on: Date.now()
 				}
 				return APP.models[this.module].create(save, {

@@ -218,7 +218,7 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		this.ui.progress_label.val(label);
 		if (label == 'Accepted' && !this.model.get('assigned_to'))
 			this.model.set({
-				assigned_to: U._id
+				assigned_to: U.id
 			})
 		if (label == 'Review') {
 			this.model.set({

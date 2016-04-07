@@ -93,7 +93,7 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 	// 	console.log(APP.models.tasks);
 	// 	APP.listenTo(APP.models.tasks, 'sync', function() {
 	// 		var length = APP.models.tasks.where({
-	// 			assigned_to: U._id
+	// 			assigned_to: U.id
 	// 		}).length;
 	// 		if (length) {
 	// 			$("#HEADER #taskcount").html("" + APP.Icon("tasks") + "" + length + "");

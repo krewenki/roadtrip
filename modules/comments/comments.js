@@ -46,14 +46,16 @@ DEF.modules.comments.Comments = Backbone.Marionette.CompositeView.extend({
 		var comments = this.model.get('comments');
 		var comment = {
 			datetime: Date.now(),
-			user_id: U._id,
+			user_id: U.id,
 			comment: this.ui.comment.val()
 		}
 		comments.push(comment);
 		this.model.set({
 			comments: comments
 		})
-		this.model.SetStats({"comments":comments.length});
+		this.model.SetStats({
+			"comments": comments.length
+		});
 		// TODO: this adds to the model (parent) and this pseudocollection.  That's weird to have to do
 		this.model.trigger('change', this.model) // manually trigger a change, because Highway
 		this.collection.push(new DEF.modules.comments.Model(comment)); // manually add to the collection
