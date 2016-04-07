@@ -70,7 +70,7 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 			},
 			expenses: {
 				create: false,
-				read: false,
+				read: true,
 				update: false,
 				delete: false,
 				comment: false
@@ -156,6 +156,7 @@ DEF.modules.users.RecordLine = Roadtrip.RecordLine.extend({
 			perms: perms
 		});
 		this.model.trigger('change', this.model);
+		APP.trigger("auth_user");
 		return false; // stop propagation
 	}
 });

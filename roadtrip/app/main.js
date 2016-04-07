@@ -97,6 +97,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 	 * @param {string} module Name of the module_id
 	 * @param {string} id     ID of the model in question
 	 * @param {text} event  The event
+	 * @param {object} extras  Any additional info?
 	 */
 	LogEvent(module, id, event, extras = false) {
 		APP.models.events.create({
