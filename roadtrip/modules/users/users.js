@@ -2,7 +2,7 @@ DEF.modules.users = {}
 DEF.modules.users.Router = Roadtrip.Router.extend({
 	module: "users",
 	initialize: function() {
-		APP.models.users = new DEF.modules.users.Collection();
+		// Normally the collection initializes here, but Users is handled in auth.js
 	},
 	routes: {
 		"users": "ShowRoot",
@@ -74,7 +74,7 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 		var perms = this.get('perms');
 		return perms[module][perm] || false;
 	},
-	gravatar: function(){
+	gravatar: function() {
 		var gravatar = require('gravatar');
 		return gravatar.url(this.get('email'));
 	}
@@ -85,6 +85,7 @@ DEF.modules.users.Collection = Backbone.Highway.Collection.extend({
 	model: DEF.modules.users.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/users',
 	initialize: function() {
+		console.log("users");
 		this.listenTo(this, "sync", this.UpdateUserTaskCount)
 		this.listenTo(APP.models.tasks, "change:assigned_to change:progress_label", this.UpdateUserTaskCount)
 	},
