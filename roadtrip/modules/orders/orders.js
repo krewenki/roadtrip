@@ -19,7 +19,7 @@ DEF.modules.orders.Router = Roadtrip.Router.extend({
  * The main model.  SHould be called "Model"
  */
 DEF.modules.orders.Model = Roadtrip.Model.extend({
-	idAttribute: '_id',
+	idAttribute: 'order',
 	nameAttribute: 'order', // the human-readable field in the record
 	module: "orders",
 	defaults: {
