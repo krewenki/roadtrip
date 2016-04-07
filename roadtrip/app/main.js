@@ -66,7 +66,10 @@ var MainApp = Backbone.Marionette.Application.extend({
 	 */
 	GetLink: function(module, id, cmd = 'view') {
 		var model = APP.models[module].get(id);
-		return `<a href='#${module}/${cmd}/${id}'>` + APP.Icon(module) + " " + model.get(model.nameAttribute) + "</a>";
+		if (model)
+			return `<a href='#${module}/${cmd}/${id}'>` + APP.Icon(module) + " " + model.get(model.nameAttribute) + "</a>";
+		else
+			return "--";
 	},
 	/**
 	 * returns the specified models

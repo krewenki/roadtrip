@@ -28,10 +28,11 @@
 			<option value="delivery" <%=category=="delivery" ? "selected": ""%>>Delivery</option>
 			<option value="equipment" <%=category=="equipment" ? "selected": ""%>>Equipment</option>
 			<option value="tools" <%=category=="tools" ? "selected": ""%>>Tools</option>
+			<option value="service" <%=category=="service" ? "selected": ""%>>Service</option>
 		</optgroup>
 	</select>
 </td>
-<% for (var d = 0; d< days.length; d++) { %>
+<% for (var d = 0; d< duration; d++) { %>
 	<td>
 		<input value="<%=days[d]?days[d]:''%>" class='expense_field sum_me' data-day="<%=d%>" data-line=<%=line%> type='number' >
 	</td>

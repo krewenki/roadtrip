@@ -47,7 +47,7 @@
 				Category
 			</th>
 			<% for (var d = 1; d<= duration; d++) { %>
-				<th>
+				<th class='header_dates'>
 					<%=APP.Format.date(new Date(start_date).getTime()+1000*3600*24*d)%>
 				</th>
 				<% } %>

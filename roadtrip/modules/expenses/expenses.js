@@ -24,6 +24,9 @@ DEF.modules.expenses.Router = Roadtrip.Router.extend({
 		APP.Icon_Lookup["misc"] = "ellipsis-h";
 		APP.Icon_Lookup["subway"] = "subway";
 		APP.Icon_Lookup["toll"] = "dollar";
+		APP.Icon_Lookup["equipment"] = "binoculars";
+		APP.Icon_Lookup["service"] = "sitemap";
+
 
 	},
 	routes: {
@@ -75,6 +78,7 @@ DEF.modules.expenses.ExpenseLineReadOnly = Backbone.Marionette.ItemView.extend({
 	templateHelpers: function() {
 		return {
 			line: this.model.collection.indexOf(this.model),
+			duration: this.options.duration,
 		}
 	},
 })
@@ -83,9 +87,9 @@ DEF.modules.expenses.ExpenseLine = Backbone.Marionette.ItemView.extend({
 	module: "expenses",
 	template: require("./templates/expense_line.html"),
 	templateHelpers: function() {
-		console.log(this.model.get('duration'))
 		return {
 			line: this.model.collection.indexOf(this.model),
+			duration: this.options.duration,
 		}
 	},
 	ui: {
@@ -98,7 +102,7 @@ DEF.modules.expenses.ExpenseLine = Backbone.Marionette.ItemView.extend({
 		"category_icon": "#category_icon",
 		"field": ".expense_field",
 		"employer": "#paid_by_employer",
-		"employee": "#paid_by_employee"
+		"employee": "#paid_by_employee",
 	},
 	events: {
 		"keyup @ui.sum": "Sum",
@@ -107,7 +111,7 @@ DEF.modules.expenses.ExpenseLine = Backbone.Marionette.ItemView.extend({
 		"click @ui.resum": "Sum",
 		"change @ui.category": "ChangeCategory",
 		"change @ui.field": "MakeDirty",
-		"keyup @ui.field": "MakeDirty"
+		"keyup @ui.field": "MakeDirty",
 	},
 	Sum: function() {
 		total = 0
@@ -125,7 +129,7 @@ DEF.modules.expenses.ExpenseLine = Backbone.Marionette.ItemView.extend({
 	},
 	MakeDirty: function(e) {
 		$(e.currentTarget).addClass("dirty");
-	}
+	},
 
 })
 
@@ -136,19 +140,28 @@ DEF.modules.expenses.views = {
 		id: 'EXPENSES',
 		childView: DEF.modules.expenses.ExpenseLine,
 		childViewContainer: "#expenses",
+		childViewOptions: function() {
+			return {
+				duration: this.model.get('duration')
+			}
+		},
 		ui: {
 			"add": "#add",
 			"field": ".field",
 			"save": "#save",
 			"cancel": "#cancel",
-			"delete": "#delete"
+			"delete": "#delete",
+			"start_date": "#start_date",
+			"duration": "#duration"
 		},
 		events: {
 			"click @ui.add": "AddLine",
 			"change @ui.field": "MakeDirty",
 			"click @ui.save": "Save",
 			"click @ui.cancel": "Cancel",
-			"click @ui.delete": "Delete"
+			"click @ui.delete": "Delete",
+			"change @ui.start_date": "UpdateDates",
+			"change @ui.duration": "UpdateDays"
 		},
 		childEvents: {
 			"sum": "Sum",
@@ -291,9 +304,29 @@ DEF.modules.expenses.views = {
 			APP.Route("#" + this.module + "/" + "view" + "/" + this.model.id);
 		},
 		Delete: function(e) {
-			APP.models[this.module].remove(this.model);
-			APP.Route("#" + this.module);
+			if (prompt("Are you sure?")) {
+				APP.models[this.module].remove(this.model);
+				APP.Route("#" + this.module);
+			}
+		},
+		UpdateDates: function() {
+			this.model.set({
+				start_date: this.ui.start_date.val()
+			});
+
+			var start = this.ui.start_date.val() + " 12:00:00" // account for timezone offset, i guess.  it's stupid.
+			$(".header_dates").each(function(d, el) {
+				$(el).html(APP.Format.date(new Date(start).getTime() + 1000 * 3600 * 24 * d))
+			})
+		},
+		UpdateDays: function() {
+			this.model.set({
+				duration: this.ui.duration.val()
+			});
+			this.render(); // might be slightlybetter to just re-render the colleciton
+
 		}
+
 	}),
 	view: Backbone.Marionette.CompositeView.extend({
 		module: "expenses",
@@ -301,6 +334,11 @@ DEF.modules.expenses.views = {
 		id: 'EXPENSES',
 		childView: DEF.modules.expenses.ExpenseLineReadOnly,
 		childViewContainer: "#expenses",
+		childViewOptions: function() {
+			return {
+				duration: this.model.get('duration')
+			}
+		},
 		filter: function(m) {
 			return m.get('total') != 0;
 		},
@@ -325,7 +363,6 @@ DEF.modules.expenses.views = {
 		DrawPie: function() {
 			var series = [{
 				name: 'Expenses',
-				colorByPoint: true,
 				data: []
 			}]
 			var totals = {}
