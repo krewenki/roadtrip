@@ -51,5 +51,7 @@
   },
   "author": "team telegauge",
   "license": "ISC",
-  "dependencies": {}
+  "dependencies": {
+    "gravatar": "^1.5.2"
+  }
 }

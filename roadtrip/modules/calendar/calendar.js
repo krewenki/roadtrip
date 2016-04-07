@@ -102,6 +102,25 @@ DEF.modules.calendar.views = {
 		}
 	}),
 
+	detailed_event: Roadtrip.View.extend({
+		module: "calendar",
+		template: require("./templates/detailed_event.html"),
+		className: 'detailed_event',
+		attributes: function(){
+			return {
+				"data-id" : this.model.id,
+				"data-start" : this.model.get('start'),
+				"data-end" : this.model.get('end')
+			}
+		},
+		events: {
+			"click" : "handleClick"
+		},
+		handleClick: function(){
+			APP.Route("#calendar/view/"+this.model.id, "calendar");
+		}
+	}),
+
 	/**
 	 * View a plain, read-only single record
 	 */
@@ -180,7 +199,7 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend({
 
 DEF.modules.calendar.views.date = Backbone.Marionette.CompositeView.extend({
 	template: require("./templates/date.html"),
-	childView: DEF.modules.calendar.views.Event
+	childView: DEF.modules.calendar.views.detailed_event
 })
 
 /**

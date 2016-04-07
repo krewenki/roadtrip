@@ -68,12 +68,17 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 				delete: false,
 				comment: false
 			},
-		},
-		Can: function(module, perm) {
-			var perms = this.get('perms');
-			return perms[module][perm] || false;
 		}
+	},
+	Can: function(module, perm) {
+		var perms = this.get('perms');
+		return perms[module][perm] || false;
+	},
+	gravatar: function(){
+		var gravatar = require('gravatar');
+		return gravatar.url(this.get('email'));
 	}
+
 });
 
 DEF.modules.users.Collection = Backbone.Highway.Collection.extend({
