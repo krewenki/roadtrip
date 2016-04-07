@@ -23,7 +23,7 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 		phone: "",
 		boss: false,
 		prefs: {
-			header: "small"
+			header: "large"
 		},
 		perms: {
 			tasks: {

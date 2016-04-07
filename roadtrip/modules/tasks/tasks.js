@@ -181,9 +181,9 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		"click @ui.edit": "Edit",
 		"click @ui.subtask": "AddSubtask",
 		"input @ui.progress": "UpdateProgress",
-		//"input @ui.progress": "UpdateProgressLabel",
-		"change @ui.progress_label": "UpdateProgressLabel"
-
+		"mouseup @ui.progress": "LogProgress",
+		"change @ui.progress_label": "UpdateProgressLabel",
+		"change @ui.progress_label": "LogProgress"
 	},
 
 	/**
@@ -259,6 +259,12 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 				this.UpdateProgress();
 				break;
 		}
+	},
+	LogProgress: function() {
+		APP.LogEvent("tasks", this.model.id, "Task progress.", {
+			"progress": this.model.get('progress'),
+			"progress_label": this.model.get('progress_label')
+		})
 	}
 })
 
