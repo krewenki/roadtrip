@@ -18,6 +18,7 @@
     "font-awesome": "^4.5.0",
     "font-awesome-webpack": "0.0.4",
     "fs": "0.0.2",
+    "highcharts": "^4.2.3",
     "highway": "git+https://github.com/krewenki/highway.git",
     "html": "0.0.10",
     "html-loader": "^0.4.3",
