@@ -6,7 +6,7 @@
 	<div class='cmd link' id='save'>
 		<%=APP.Icon('save')%> save
 	</div>
-	<% if (U.Can("tasks","delete")) { %>
+	<% if (U.Can("tasks","delete") || _.created_by==U.id) { %>
 		<div class='cmd link danger' id='delete'>
 			<%=APP.Icon('user-times')%> delete
 		</div>
