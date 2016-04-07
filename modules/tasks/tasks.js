@@ -22,7 +22,7 @@ DEF.modules.tasks.Router = Roadtrip.Router.extend({
 });
 
 DEF.modules.tasks.Model = Roadtrip.Model.extend({
-	idAttribute: '_id',
+	//idAttribute: 'task_id', // #1.15  This works excellently, but it breals everythjing else, so disabled for now.
 	nameAttribute: 'task', // the human-readable field in the record
 	module: "tasks",
 	defaults: {
@@ -142,7 +142,7 @@ DEF.modules.tasks.TaskLine = Backbone.Marionette.ItemView.extend({
 		"change": "render"
 	},
 	ViewTask: function() {
-		APP.Route("#tasks/view/" + this.model.get('_id'));
+		APP.Route("#tasks/view/" + this.model.id);
 	}
 });
 DEF.modules.tasks.TaskList = Backbone.Marionette.CollectionView.extend({
@@ -180,7 +180,8 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	events: {
 		"click @ui.edit": "Edit",
 		"click @ui.subtask": "AddSubtask",
-		"input @ui.progress": "UpdateProgress",
+		//"input @ui.progress": "UpdateProgress",
+		"change @ui.progress": "UpdateProgress",
 		"mouseup @ui.progress": "LogProgress",
 		"change @ui.progress_label": "UpdateProgressLabel",
 		"change @ui.progress_label": "LogProgress"
@@ -333,7 +334,7 @@ DEF.modules.tasks.views = {
 		},
 		onBeforeShow: function() {
 			var subs = APP.models.tasks.where({
-				parent_id: this.model.get('_id')
+				parent_id: this.model.id
 			});
 			if (subs.length > 0) {
 				var sum = 0,

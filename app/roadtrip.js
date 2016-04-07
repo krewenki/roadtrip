@@ -342,7 +342,7 @@ Roadtrip = {
 			"click": "Click"
 		},
 		Click: function() {
-			APP.Route("#" + (this.module) + "/view/" + this.model.get('_id'), this.model.get(this.model.nameAttribute));
+			APP.Route("#" + (this.module) + "/view/" + this.model.id, this.model.get(this.model.nameAttribute));
 		}
 	}),
 
