@@ -14,13 +14,17 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 	nameAttribute: 'name', // the human-readable field in the record
 	module: "users",
 	initialize: function() {
-		this.set("image_url", this.gravatar()); // cache the gravatar
+		var gravatar = require('gravatar');
+		this.set("image_url", gravatar.url(this.get('email'))); // cache the gravatar
 	},
 	defaults: {
 		name: "Joe",
 		email: "crap@fart.com",
 		phone: "",
 		boss: false,
+		prefs: {
+			header: "small"
+		},
 		perms: {
 			tasks: {
 				create: false,
@@ -38,7 +42,7 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 			},
 			contacts: {
 				create: false,
-				read: true,
+				read: false,
 				update: false,
 				delete: false,
 				comment: true
@@ -75,13 +79,10 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 	},
 	Can: function(module, perm) {
 		var perms = this.get('perms');
-		return perms[module][perm] || false;
+		if (perms[module])
+			return perms[module][perm] || false;
+		return false
 	},
-	gravatar: function() {
-		var gravatar = require('gravatar');
-		return gravatar.url(this.get('email'));
-	}
-
 });
 
 DEF.modules.users.Collection = Backbone.Highway.Collection.extend({
@@ -123,6 +124,7 @@ DEF.modules.users.views = {
 			tasklist: "#task_list"
 		},
 		onShow: function() {
+			APP.SetTitle(this.model.get('name'), "users");
 			this.showChildView('tasklist', new DEF.modules.tasks.TaskList({
 				template: require("./templates/taskline.html"),
 				collection: APP.models.tasks,
@@ -148,6 +150,7 @@ DEF.modules.users.RecordLine = Roadtrip.RecordLine.extend({
 		console.log($el);
 		var parts = $el.id.split('.');
 		var perms = _.extend(this.model.defaults.perms, this.model.get('perms'))
+		console.log(this.model.get('name'), parts[0], parts[1], perms)
 		perms[parts[0]][parts[1]] = $el.checked;
 		this.model.set({
 			perms: perms
@@ -166,6 +169,9 @@ DEF.modules.users.MainView = Roadtrip.RecordList.extend({
 	},
 	events: {
 		"click @ui.add": "Add"
+	},
+	onShow: function() {
+		APP.SetTitle("Users", "users");
 	},
 	Add: function() {
 		var page = new DEF.modules.users.views.edit({

@@ -27,25 +27,39 @@ I use data-id here, because when i did stuff like 'id=contacts', then clicking o
 -->
 
 <div class='bg1' id='mainmenu'>
-	<div class='menuitem link' data-mode='contacts'>
-		<%=APP.Icon('contacts')%> <span class='label'>Contacts</span>
-	</div>
-	<div class='menuitem link' data-mode='orders'>
-		<%=APP.Icon('orders')%> <span class='label'>Orders</span>
-	</div>
-	<div class='menuitem link' data-mode='calendar'>
-		<%=APP.Icon('calendar')%> <span class='label'>Calendar</span>
-	</div>
-	<div class='menuitem link' data-mode='projects'>
-		<%=APP.Icon('projects')%> <span class='label'>Projects</span>
-	</div>
-	<div class='menuitem link' data-mode='expenses'>
-		<%=APP.Icon('expenses')%> <span class='label'>Expenses</span>
-	</div>
-	<div class='menuitem' id='timeclock'>
-		<%=APP.Icon('timeclock')%> <span class='label'>Time Clock</span>
-	</div>
-	<div class='menuitem link' data-mode='users'>
-		<%=APP.Icon('users')%> <span class='label'>Users</span>
-	</div>
+	<% if (U.Can("contacts","read")) { %>
+		<div class='menuitem link' data-mode='contacts'>
+			<%=APP.Icon('contacts')%> <span class='label'>Contacts</span>
+		</div>
+		<% } %>
+			<% if (U.Can("orders","read")) { %>
+				<div class='menuitem link' data-mode='orders'>
+					<%=APP.Icon('orders')%> <span class='label'>Orders</span>
+				</div>
+				<% } %>
+					<% if (U.Can("calendar","read")) { %>
+						<div class='menuitem link' data-mode='calendar'>
+							<%=APP.Icon('calendar')%> <span class='label'>Calendar</span>
+						</div>
+						<% } %>
+							<% if (U.Can("projects","read")) { %>
+								<div class='menuitem link' data-mode='projects'>
+									<%=APP.Icon('projects')%> <span class='label'>Projects</span>
+								</div>
+								<% } %>
+									<% if (U.Can("expenses","read")) { %>
+										<div class='menuitem link' data-mode='expenses'>
+											<%=APP.Icon('expenses')%> <span class='label'>Expenses</span>
+										</div>
+										<% } %>
+											<% if (U.Can("timeclock","read")) { %>
+												<div class='menuitem' id='timeclock'>
+													<%=APP.Icon('timeclock')%> <span class='label'>Time Clock</span>
+												</div>
+												<% } %>
+													<% if (U.Can("users","read")) { %>
+														<div class='menuitem link' data-mode='users'>
+															<%=APP.Icon('users')%> <span class='label'>Users</span>
+														</div>
+														<%}%>
 </div>
