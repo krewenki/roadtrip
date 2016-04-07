@@ -92,6 +92,22 @@ var MainApp = Backbone.Marionette.Application.extend({
 			})
 			//console.log(route, title);
 	},
+	/**
+	 * Create an event in the event log
+	 * @param {string} module Name of the module_id
+	 * @param {string} id     ID of the model in question
+	 * @param {text} event  The event
+	 */
+	LogEvent(module, id, event, extras = false) {
+		APP.models.events.create({
+			module: module,
+			module_id: id,
+			event: event,
+			datetime: Date.now(),
+			user_id: U.id,
+			extras: extras
+		})
+	},
 	Icon_Lookup: {
 		calendar: "calendar",
 		contacts: "group",
@@ -185,6 +201,7 @@ require("../modules/orders/orders.js");
 require("../modules/projects/projects.js");
 require("../modules/calendar/calendar.js");
 require("../modules/expenses/expenses.js");
+require("../modules/events/events.js");
 require("./auth.js");
 
 
