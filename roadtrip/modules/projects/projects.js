@@ -55,6 +55,12 @@ DEF.modules.projects.Router = Roadtrip.Router.extend({
 		"projects/view/:arg": "RedirectView",
 	},
 	ShowProject: function(project) {
+		/**
+		 * You might thing we should use "project" as attributeID.  However
+		 * project names are editable, which would mean it'd instantly loose all of it's
+		 * tasks and history if the name changes.  So, we skirt around that issue with
+		 * custom routing.
+		 */
 		model = APP.models.projects.findWhere({
 			project: project
 		});
