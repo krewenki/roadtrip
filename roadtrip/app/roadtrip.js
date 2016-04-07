@@ -254,7 +254,8 @@ Roadtrip = {
 		},
 		Save: function(e) {
 			var model = this.model,
-				save = {};
+				save = {},
+				orig = {};
 			$(".field.dirty").each(function(i, $el) {
 				var val = $el.value;
 				switch ($el.type) {
@@ -262,7 +263,11 @@ Roadtrip = {
 						val = $el.checked;
 						break;
 				}
-				save[$el.id] = val;
+				orig[$el.id] = model.get($el.id);
+				if (val == orig[$el.id])
+					delete orig[$el.id]
+				else
+					save[$el.id] = val;
 			})
 			if (!this.model.id) {
 				save["_"] = {
@@ -273,6 +278,7 @@ Roadtrip = {
 					success: function(model) {
 						this.model.id = model._id; // _id because it's just a mongo object
 						this.Return(false);
+						APP.LogEvent(this.module, this.model.id, "Recorded created");
 					}.bind(this)
 				});
 				//this.model.SetStats("create");
@@ -280,6 +286,10 @@ Roadtrip = {
 				console.log("save", save);
 				this.model.set(save);
 				this.model.SetStats("edit")
+				APP.LogEvent(this.module, this.model.id, "Edited " + Object.keys(save).join(", "), {
+					old: orig,
+					new: save
+				});
 			}
 			return this.Return(false);
 		},
