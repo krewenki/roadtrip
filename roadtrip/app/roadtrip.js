@@ -86,7 +86,44 @@ Roadtrip = {
 				edits: 0
 			}
 		},
+		set: function(key, val, options) {
+			var orig = {},
+				save = {},
+				data = {},
+				changed = false
+			if (this.id) {
+				if (_.isObject(key)) {
+					data = key
+				} else {
+					data[key] = val
+				}
+				Object.keys(data).forEach(function(field) {
+					if (field == '_')
+						return;
+					if (_.isArray(data[field]) || _.isObject(data[field])) {
+						var o = JSON.stringify(data[field]),
+							n = JSON.stringify(this.get(field))
+						if (o != n) {
+							orig[field] = o
+							save[field] = n
+							changed = true;
+						}
+					} else if (data[field] != this.get(field)) {
+						orig[field] = this.get(field);
+						save[field] = data[field]
+						changed = true;
+					}
+				}.bind(this))
+				if (changed)
+					APP.LogEvent(this.module, this.id, "Edited " + Object.keys(save).join(", "), {
+						old: orig,
+						new: save
+					});
 
+			}
+
+			return Backbone.Model.prototype.set.call(this, key, val, options)
+		},
 		icon: function() {
 			return APP.Icon(this.module, this.module);
 		},
@@ -263,11 +300,7 @@ Roadtrip = {
 						val = $el.checked;
 						break;
 				}
-				orig[$el.id] = model.get($el.id);
-				if (val == orig[$el.id])
-					delete orig[$el.id]
-				else
-					save[$el.id] = val;
+				save[$el.id] = val;
 			})
 			if (!this.model.id) {
 				save["_"] = {
@@ -286,10 +319,6 @@ Roadtrip = {
 				console.log("save", save);
 				this.model.set(save);
 				this.model.SetStats("edit")
-				APP.LogEvent(this.module, this.model.id, "Edited " + Object.keys(save).join(", "), {
-					old: orig,
-					new: save
-				});
 			}
 			return this.Return(false);
 		},

@@ -2,7 +2,7 @@ DEF.modules.events = {}
 DEF.modules.events.Router = Roadtrip.Router.extend({
 	module: "events",
 	collections: [
-		"users", "events"
+		"users", "events", "expenses", "orders", "contacts", "projects", "tasks"
 	],
 	initialize: function() {
 		APP.models.events = new DEF.modules.events.Collection();
