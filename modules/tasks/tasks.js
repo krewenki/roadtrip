@@ -261,7 +261,7 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		}
 	},
 	LogProgress: function() {
-		APP.LogEvent("tasks", this.model.id, "Task progress.", {
+		APP.LogEvent("tasks", this.model.id, "Task progress: " + this.model.get('progress') + "%", {
 			"progress": this.model.get('progress'),
 			"progress_label": this.model.get('progress_label')
 		})
