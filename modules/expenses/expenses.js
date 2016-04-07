@@ -179,6 +179,7 @@ DEF.modules.expenses.views = {
 		},
 		onShow: function() {
 			this.Sum();
+			APP.SetTitle("Expenses " + this.model.get('expense_id'), "expenses");
 		},
 		templateHelpers: function() {
 			var rs = {
@@ -314,7 +315,8 @@ DEF.modules.expenses.views = {
 
 		},
 		onShow: function() {
-			//DEF.modules.expenses.views.edit.prototype.Sum(); // don't ask!
+			APP.SetTitle("Expenses " + this.model.get('expense_id'), "expenses");
+
 			this.DrawPie();
 		},
 		Edit: function() {
@@ -372,6 +374,10 @@ DEF.modules.expenses.MainView = Roadtrip.RecordList.extend({
 	},
 	events: {
 		"click @ui.add": "Add"
+	},
+	onShow: function() {
+		APP.SetTitle("Expenses", "expenses");
+
 	},
 	Add: function() {
 		var page = new DEF.modules.expenses.views.edit({
