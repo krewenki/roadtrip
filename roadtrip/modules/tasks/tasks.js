@@ -59,7 +59,7 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 	 */
 	GetPath: function() {
 		var path = "";
-		var parent = APP.GetModel(this.get('parent_module'), this.get('_id '));
+		var parent = APP.GetModel(this.get('parent_module'), this.get('parent_id'));
 		if (parent.GetPath)
 			path = parent.GetPath();
 		else {
