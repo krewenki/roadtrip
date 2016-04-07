@@ -5,10 +5,12 @@
 	<div class='cmd link' id='save'>
 		<%=APP.Icon('save')%> save
 	</div>
-	<div class='cmd link danger' id='delete'>
-		<%=APP.Icon('user-times')%> delete
-	</div>
-	<span id='title'><%=name%></span>
+	<% if (U.Can("users","delete") || _.created_by==U.id){%>
+		<div class='cmd link danger' id='delete'>
+			<%=APP.Icon('user-times')%> delete
+		</div>
+		<% } %>
+			<span id='title'><%=name%></span>
 </div>
 
 <table class='table table-left table-full'>
@@ -38,29 +40,3 @@
 	</tr>
 
 </table>
-<!--
-
-<h2>Permissions</h2>
-<table class='table table-left table-full'>
-		<%
-		var modules = Object.keys(APP.models);
-		for( var m in modules) {
-			var module = modules[m];
-			var perm = perms[module];
-			%>
-				<tr>
-						<th>
-								<%=module%>
-										<%=APP.Icon(module)%>
-						</th>
-						<td>
-								<input id='<%=module%>.create' class='perms' type='checkbox' <%=(perm.create? "checked": "")%> >Create
-								<input id='<%=module%>.read' class='perms' type='checkbox' <%=perm.read? "checked": ""%> >Read
-								<input id='<%=module%>.update' class='perms' type='checkbox' <%=perm.update? "checked": ""%> >Update
-								<input id='<%=module%>.delete' class='perms' type='checkbox' <%=perm.delete? "checked": ""%> >Delete
-						</td>
-				</tr>
-				<%
-		}
-%>
-</table> -->
