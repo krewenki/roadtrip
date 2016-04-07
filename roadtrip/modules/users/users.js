@@ -13,6 +13,9 @@ DEF.modules.users.Router = Roadtrip.Router.extend({
 DEF.modules.users.Model = Roadtrip.Model.extend({
 	nameAttribute: 'name', // the human-readable field in the record
 	module: "users",
+	initialize: function() {
+		this.set("image_url", this.gravatar()); // cache the gravatar
+	},
 	defaults: {
 		name: "Joe",
 		email: "crap@fart.com",

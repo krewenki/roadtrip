@@ -13,7 +13,8 @@
 </div>
 
 
-<input type="hidden" class="field dirty" name="user" id="user" value="<%=U._id%>">
+<input type="hidden" class="field dirty" name="user" id="user" value="<%=U.id%>">
+
 <table class='table table-full table-left'>
 	<tr>
 		<th>Title</th>
@@ -42,27 +43,31 @@
 	<tr>
 		<th>Location</th>
 		<td>
-			<textarea class="field" id="location" name="location"><%= location %></textarea>
+			<textarea class="field" id="location" name="location">
+				<%= location %>
+			</textarea>
 		</td>
 	</tr>
 	<tr>
 		<th>Notes</th>
 		<td>
-			<textarea class='field' name='notes' id='notes'><%=notes%></textarea>
+			<textarea class='field' name='notes' id='notes'>
+				<%=notes%>
+			</textarea>
 		</td>
 	</tr>
 
 
 
-<tr>
-	<td colspan=2>
-		<button id='save' class='btn default'>
-			<%=APP.Icon("save")%> Save</button>
-		<button id='cancel' class='btn '>
-			<%=APP.Icon("cancel")%> Cancel</button>
-		<button id='delete' class='btn danger '>
-			<%=APP.Icon("delete")%> Delete</button>
-	</td>
+	<tr>
+		<td colspan=2>
+			<button id='save' class='btn default'>
+				<%=APP.Icon("save")%> Save</button>
+			<button id='cancel' class='btn '>
+				<%=APP.Icon("cancel")%> Cancel</button>
+			<button id='delete' class='btn danger '>
+				<%=APP.Icon("delete")%> Delete</button>
+		</td>
 
-</tr>
+	</tr>
 </table>

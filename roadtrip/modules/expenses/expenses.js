@@ -233,7 +233,7 @@ DEF.modules.expenses.views = {
 
 			if (!this.model.id) {
 				save["_"] = {
-					created_by: U._id,
+					created_by: U.id,
 					created_on: Date.now()
 				}
 				return APP.models[this.module].create(save, {
