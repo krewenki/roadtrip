@@ -83,6 +83,7 @@ DEF.modules.expenses.ExpenseLine = Backbone.Marionette.ItemView.extend({
 	module: "expenses",
 	template: require("./templates/expense_line.html"),
 	templateHelpers: function() {
+		console.log(this.model.get('duration'))
 		return {
 			line: this.model.collection.indexOf(this.model),
 		}
@@ -136,12 +137,14 @@ DEF.modules.expenses.views = {
 		childView: DEF.modules.expenses.ExpenseLine,
 		childViewContainer: "#expenses",
 		ui: {
+			"add": "#add",
 			"field": ".field",
 			"save": "#save",
 			"cancel": "#cancel",
 			"delete": "#delete"
 		},
 		events: {
+			"click @ui.add": "AddLine",
 			"change @ui.field": "MakeDirty",
 			"click @ui.save": "Save",
 			"click @ui.cancel": "Cancel",
@@ -159,29 +162,31 @@ DEF.modules.expenses.views = {
 			if (expenses.length == 0) {
 				cats = ["plane", "hotel", "food", "food", "misc"]
 				for (var i = 0; i < cats.length; i++) {
-					var rec = {
-						category: cats[i],
-						total: 0,
-						paid_by_employee: 0,
-						paid_by_employer: 0,
-						days: Array.apply(null, Array(this.model.get('duration') | 0)).map(Number.prototype.valueOf, 0)
-					};
+					var rec = this.GetEmptyRecord(cats[i]);
 					expenses.push(rec)
 				}
 			}
 			this.collection = new DEF.modules.expenses.ExpenseCollection(expenses);
-
+		},
+		GetEmptyRecord: function(cat = "misc") {
+			return {
+				category: cat,
+				total: 0,
+				paid_by_employee: 0,
+				paid_by_employer: 0,
+				days: Array.apply(null, Array(this.model.get('duration') | 0)).map(Number.prototype.valueOf, 0) // generate an array of 0's
+			};
 		},
 		onShow: function() {
 			this.Sum();
 		},
 		templateHelpers: function() {
 			var rs = {
-				expense_id: this.GenerateTaskID()
+				expense_id: this.GenerateExpenseID()
 			}
 			return rs;
 		},
-		GenerateTaskID: function() {
+		GenerateExpenseID: function() {
 			if (this.model.id) // this model has been saved
 				return this.model.get('expense_id'); // so do not generate a task_id
 			var instance = 0;
@@ -249,7 +254,6 @@ DEF.modules.expenses.views = {
 			}
 		},
 		Sum: function() {
-			console.log("s");
 			var sum = {
 				days: []
 			}
@@ -278,7 +282,9 @@ DEF.modules.expenses.views = {
 			for (var d = 0; d < sum.days.length; d++) {
 				$("#total_" + (d + 1)).html(APP.Format.money(sum.days[d]))
 			}
-			console.log(sum);
+		},
+		AddLine: function() {
+			this.collection.push(this.GetEmptyRecord())
 		},
 		Cancel: function(e) {
 			APP.Route("#" + this.module + "/" + "view" + "/" + this.model.id);
