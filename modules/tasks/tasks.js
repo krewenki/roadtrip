@@ -377,7 +377,8 @@ DEF.modules.tasks.views = {
 			var comments = new DEF.modules.comments.Collection(this.model.get('comments'));
 			this.showChildView('comments', new DEF.modules.comments.Comments({
 				model: this.model,
-				collection: comments
+				collection: comments,
+				module: "tasks"
 			}))
 
 		}

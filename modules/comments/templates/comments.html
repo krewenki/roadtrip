@@ -1,20 +1,21 @@
 <h2>Comments</h2>
 <div id='comment_list' class=''></div>
-<% if (U) { %>
-		<div id='new_comment'>
-				<table class='table table-full table-left'>
-						<tr>
-								<td>
-										<textarea id='comment' class='' placeholder='Say something'></textarea>
-								</td>
-						</tr>
-						<tr>
-								<td>
-										<button class='btn' id='save'>
-												<%=APP.Icon("save")%> Save Comment
-										</button>
-								</td>
-						</tr>
-				</table>
-		</div>
-		<% } %>
+<% if (U.Can(module,"comment")) { %>
+	<div id='new_comment'>
+
+		<table class='table table-full table-left'>
+			<tr>
+				<td>
+					<textarea id='comment' class='' placeholder='Say something'></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<button class='btn' id='save'>
+						<%=APP.Icon("save")%> Save Comment
+					</button>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<% } %>
