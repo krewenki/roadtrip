@@ -75,6 +75,9 @@ DEF.FooterLayout = Backbone.Marionette.ItemView.extend({
 // ------------------
 DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 	template: require('../templates/header.html'),
+	initialize: function() {
+		this.listenTo(APP, "auth_user", this.render);
+	},
 	ui: {
 		button: ".menuitem",
 		title: "#title",
