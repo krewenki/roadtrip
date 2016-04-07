@@ -26,6 +26,11 @@ DEF.modules.comments.Comment = Backbone.Marionette.ItemView.extend({
 DEF.modules.comments.Comments = Backbone.Marionette.CompositeView.extend({
 	id: "COMMENTS",
 	template: require("./templates/comments.html"),
+	templateHelpers: function() {
+		return {
+			module: this.options.module
+		}
+	},
 	childView: DEF.modules.comments.Comment,
 	childViewContainer: "#comment_list",
 	emptyView: DEF.EmptyView,
