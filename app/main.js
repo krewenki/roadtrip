@@ -216,6 +216,17 @@ APP.Format = {
 		return val.toFixed(0).replace(/(\d)(?=(\d{3})+$)/g, '$1,');
 	},
 	/**
+	 * Returns a number with commas and dollarsigns and all that shit removed.
+	 * Deccimals remain, though
+	 * @param  {string} val "$5,500.00"
+	 * @return {number}     5500
+	 */
+	pure: function(val) {
+		if (_.isString(val))
+			val = val.match(/[\.\d]+/g).join([]);
+		return Number(val)
+	},
+	/**
 	 * Returns the value formatted as money
 	 * @param  {float} val The money value
 	 * @return {string}     $5.50

@@ -220,7 +220,7 @@ DEF.modules.expenses.views = {
 				if (!expenses[line])
 					expenses[line] = {
 						category: $(".categories[data-line=" + line + "]").val(),
-						days: {},
+						days: [],
 						paid_by_employee: 0
 					}
 				if ($(el).hasClass("sum_me")) {
@@ -232,9 +232,9 @@ DEF.modules.expenses.views = {
 				}
 			}
 			// note, the "expenses" object is a reference to the raw data, so no .save is necessary
-			save.total = $("#total_total").html().match(/(\d.)+/)[0];
-			save.paid_by_employer = $("#total_employer").html().match(/(\d.)+/)[0];
-			save.paid_by_employee = $("#total_employee").html().match(/(\d.)+/)[0];
+			save.total = APP.Format.pure($("#total_total").html());
+			save.paid_by_employer = APP.Format.pure($("#total_employer").html());
+			save.paid_by_employee = APP.Format.pure($("#total_employee").html());
 
 			if (!this.model.id) {
 				save["_"] = {
@@ -311,12 +311,46 @@ DEF.modules.expenses.views = {
 		},
 		onBeforeRender: function() {
 			this.collection = new DEF.modules.expenses.ExpenseCollection(this.model.get('expenses'));
+
 		},
 		onShow: function() {
 			//DEF.modules.expenses.views.edit.prototype.Sum(); // don't ask!
+			this.DrawPie();
 		},
 		Edit: function() {
 			APP.Route("#" + this.module + "/" + "edit" + "/" + this.model.id);
+		},
+		DrawPie: function() {
+			var series = [{
+				name: 'Expenses',
+				colorByPoint: true,
+				data: []
+			}]
+			var totals = {}
+			for (let line of this.model.get('expenses')) {
+				if (totals[line.category])
+					totals[line.category] += Number(line.total)
+				else
+					totals[line.category] = Number(line.total)
+			}
+			Object.keys(totals).forEach(function(cat) {
+				if (totals[cat])
+					series[0].data.push({
+						name: cat,
+						y: totals[cat]
+					})
+
+			})
+			var Highcharts = require('highcharts');
+			var chart = Highcharts.chart('chart', {
+				chart: {
+					type: "pie"
+				},
+				title: {
+					text: ""
+				},
+				series: series
+			})
 		}
 	})
 }
