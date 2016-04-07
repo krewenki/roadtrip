@@ -326,7 +326,7 @@ Roadtrip = {
 			this.Return();
 		},
 		Delete: function(e) {
-			if (prompt("Are you sure you wish to delete this thing?")) {
+			if (confirm("Are you sure you wish to delete this thing?")) {
 				APP.models[this.module].remove(this.model);
 				this.Return(true);
 			}
