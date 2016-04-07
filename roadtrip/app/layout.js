@@ -89,6 +89,9 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 		"keyup @ui.search": "Search",
 		"click @ui.login": "Login"
 	},
+	onBeforeShow: function() {
+		$("#HEADER").addClass(U.get('prefs').header);
+	},
 	// onShow: _.defer(function() {
 	// 	console.log(APP.models.tasks);
 	// 	APP.listenTo(APP.models.tasks, 'sync', function() {

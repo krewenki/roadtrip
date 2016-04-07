@@ -226,6 +226,8 @@ Roadtrip = {
 		},
 		onShow: function() {
 			$("textarea").val(($("textarea").val() || '').trim()); // beautify inserts spaces between <textarea> in the item_edit form
+			APP.SetTitle(this.model.get(this.model.nameAttribute), this.module);
+
 		},
 		/**
 		 * Where to go, by default, after some action.  This is kind of a dumb
