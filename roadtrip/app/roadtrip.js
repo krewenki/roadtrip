@@ -282,8 +282,9 @@ Roadtrip = {
 					else {
 						APP.Route("#" + this.module + "/view/" + this.model.id)
 					}
-				} else
+				} else {
 					APP.Route("#" + this.module + "/view/" + this.model.id)
+				}
 			} else
 				APP.Route("#" + this.module);
 		},
@@ -317,8 +318,8 @@ Roadtrip = {
 					created_on: Date.now()
 				}
 				return APP.models[this.module].create(save, {
-					success: function(model) {
-						this.model.id = model._id; // _id because it's just a mongo object
+					success: function(attr) {
+						this.model.id = attr[this.model.idAttribute]; // _id because it's just a mongo object
 						this.Return(false);
 						APP.LogEvent(this.module, this.model.id, "Recorded created");
 					}.bind(this)
