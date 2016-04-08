@@ -192,6 +192,28 @@ require("../modules/expenses/expenses.js");
 require("../modules/events/events.js");
 require("./auth.js");
 
+/**
+ * A collection of convenience functions
+ * @type {Object}
+ */
+APP.Tools = {
+	/**
+	 * Given a collection (or an array from a collection.filter), return the counts of "key"
+	 * @param  {collection or array} collection The collection
+	 * @param  {string} key        The field to counts
+	 * @return {Object}            {bug:20,feature:40}
+	 */
+	CountFields: function(collection, key) {
+		var counts = {};
+		if (!_.isArray(collection)) // unfiltered, i guess
+			collection = collection.models;
+		for (let model of collection) {
+			var field = model.get(key)
+			counts[field] = counts[field] ? counts[field] + 1 : 1
+		}
+		return counts;
+	}
+}
 
 APP.Format = {
 	/**

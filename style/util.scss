@@ -192,6 +192,7 @@ fieldset {
 
 .table {
     padding: 20px;
+    margin : 0;
 
     input:not([type=radio]):not([type=checkbox]) {
         width: 95%;
@@ -282,6 +283,37 @@ fieldset {
         border-bottom: 2px solid #aaa;
         border-right : none;
         text-align   : left;
+    }
+}
+
+.table {
+    th {
+        &.right {
+            text-align: right;
+        }
+
+        &.center {
+            text-align: center;
+        }
+
+        &.important {
+            background-color: rgba(0,0,0,0.03);
+        }
+    }
+
+    td {
+        &.right {
+            text-align: right;
+        }
+
+        &.center {
+            text-align: center;
+        }
+
+        &.important {
+            background-color: rgba(0,0,0,0.03);
+            color           : black;
+        }
     }
 }
 

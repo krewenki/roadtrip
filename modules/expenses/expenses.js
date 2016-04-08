@@ -45,6 +45,7 @@ DEF.modules.expenses.Model = Roadtrip.Model.extend({
 		expense_id: 1,
 		purpose: "",
 		state: "New", // submitted, approved, completed
+		kind: "fieldservice",
 		job: false, // aka Order Line item?
 		approved_by: false,
 		start_date: false,

@@ -16,8 +16,15 @@
 <table class='table table-left table-full'>
 	<tr>
 		<th>Expense ID</th>
-		<td colspan=3>
+		<td>
 			<%=expense_id%>
+		</td>
+		<th>Kind</th>
+		<td>
+			<select id='kind'>
+				<option <%=kind=='fieldservice' ? "selected": ""%> value="fieldservice">Field Service</option>
+				<option <%=kind=='other' ? "selected": ""%> value="other">Other</option>
+			</select>
 		</td>
 	</tr>
 	<tr>

@@ -1,19 +1,19 @@
-<td class='nowrap category'>
+<td class='important nowrap category'>
 	<span class='' id='category_icon'><%=APP.Icon(category)%></span>
 	<%=category%>
 
 </td>
 <% for (var d = 0; d< duration; d++) { %>
-	<td class=''>
+	<td class='right'>
 		<%=days[d]?APP.Format.money(days[d]):""%>
 	</td>
 	<% } %>
-		<td align='right' id='total_field'>
+		<td class='important right' id='total_field'>
 			<%=APP.Format.money(total)%>
 		</td>
-		<td align='right' id='employer_field'>
+		<td class='important right' id='employer_field'>
 			<%=APP.Format.money(paid_by_employer)%>
 		</td>
-		<td align='right' id=''>
+		<td class='important right' id=''>
 			<%=APP.Format.money(paid_by_employee)%>
 		</td>

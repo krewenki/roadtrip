@@ -12,8 +12,12 @@
 <table class='table table-left table-full'>
 	<tr>
 		<th>Expense ID</th>
-		<td colspan=3>
+		<td>
 			<%=expense_id%>
+		</td>
+		<th>Kind</th>
+		<td>
+			<%=kind%>
 		</td>
 		<td id='chart' rowspan=5>
 			...
@@ -53,7 +57,7 @@
 
 <table id='expenses' class='table table-full table-top'>
 	<thead>
-		<th>
+		<th class='important'>
 			Category
 		</th>
 		<% for (var d = 1; d<= duration; d++) { %>
@@ -61,9 +65,9 @@
 				<%=APP.Format.date(new Date(start_date).getTime()+1000*3600*24*d)%>
 			</th>
 			<% } %>
-				<th class='total'>Total</th>
-				<th class='paid_by_employer'>Employer</th>
-				<th class='paid_by_employee'>Employee</th>
+				<th class='important right total'>Total</th>
+				<th class='important right paid_by_employer'>Employer</th>
+				<th class='important right paid_by_employee'>Employee</th>
 	</thead>
 	<tbody></tbody>
 	<tfoot>
@@ -75,13 +79,13 @@
 
 				</td>
 				<% } %>
-					<th align="right" id='total_total'>
+					<th class="important right" id='total_total'>
 						<%=APP.Format.money(total)%>
 					</th>
-					<th align="right" id='total_employer'>
+					<th class="important right" id='total_employer'>
 						<%=APP.Format.money(paid_by_employer)%>
 					</th>
-					<th align="right" id='total_employee'>
+					<th class="important right" id='total_employee'>
 						<%=APP.Format.money(paid_by_employee)%>
 					</th>
 		</tr>
