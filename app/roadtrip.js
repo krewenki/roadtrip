@@ -148,7 +148,7 @@ Roadtrip = {
 		GetLink: function(cmd) {
 			if (!cmd)
 				cmd = "view";
-			return "#" + this.module + "/" + cmd + "/" + this.get('_id');
+			return "#" + this.module + "/" + cmd + "/" + this.id;
 		},
 		GetTitle: function() {
 			return this.model.get(this.nameAttribute);

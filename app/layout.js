@@ -95,19 +95,8 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 	onBeforeShow: function() {
 		$("#HEADER").addClass(U.get('prefs').header);
 	},
-	// onShow: _.defer(function() {
-	// 	console.log(APP.models.tasks);
-	// 	APP.listenTo(APP.models.tasks, 'sync', function() {
-	// 		var length = APP.models.tasks.where({
-	// 			assigned_to: U.id
-	// 		}).length;
-	// 		if (length) {
-	// 			$("#HEADER #taskcount").html("" + APP.Icon("tasks") + "" + length + "");
-	// 		}
-	// 	})
-	// }),
 	Search: function() {
-		if (this.ui.search.val().length > 3) {
+		if (this.ui.search.val().length > 2) {
 			var search = new DEF.Search({
 				search: this.ui.search.val()
 			})

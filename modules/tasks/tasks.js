@@ -22,7 +22,7 @@ DEF.modules.tasks.Router = Roadtrip.Router.extend({
 });
 
 DEF.modules.tasks.Model = Roadtrip.Model.extend({
-	//idAttribute: 'task_id', // #1.15  This works excellently, but it breals everythjing else, so disabled for now.
+	idAttribute: 'task_id', // #1.15  This works excellently, but it breals everythjing else, so disabled for now.
 	nameAttribute: 'task', // the human-readable field in the record
 	module: "tasks",
 	defaults: {
@@ -32,7 +32,7 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		kind: "todo",
 		task: "",
 		description: "",
-		task_id: "0.0.0",
+		task_id: false,
 		subtasks: 0,
 		assigned_to: false,
 
@@ -296,7 +296,7 @@ DEF.modules.tasks.views = {
 		 */
 		GenerateTaskID: function() {
 			if (this.model.id) // this model has been saved
-				return this.model.get('task_id'); // so do not generate a task_id
+				return this.model.id; // so do not generate a task_id
 
 			var prefix = false,
 				instance = 0;
