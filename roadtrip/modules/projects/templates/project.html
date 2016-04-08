@@ -14,43 +14,55 @@
 					<div class='cmd link' id='wiki'>
 						<%=APP.Icon('wiki')%> wiki
 					</div>
-					<hr>
+</div>
 
-					<table id='project_header' class='table table-full '>
-						<tr>
-							<td rowspan=3 class='icon'>
-								<%=APP.Icon(icon)%>
-							</td>
-							<td>
-								<span class='project'><%=project%></span>
-								<span class='goal'>
+<table id='project_header' class='table table-full table-left '>
+	<tr>
+		<td rowspan=2 class='icon'>
+			<%=APP.Icon(icon)%>
+		</td>
+		<th>Project</th>
+		<td colspan=5>
+			<span class='project'><%=project%></span>
+			<span class='goal'>
 								<%=goal%>
 							</span>
-							</td>
-							<td>
-								<b>Views:</b>
-								<%=_.views%>
-							</td>
-						</tr>
 
-						<tr>
-							<td>
-								<meter id='progress' value='<%=progress%>' min=0 max=100>
-									<%=progress%>
-								</meter>
-							</td>
-							<td>
-								<b>Edits:</b>
-								<%=_.edits%>
-							</td>
-						</tr>
-						<tr>
-							<th>Created By</th>
-							<td>
-								<%=APP.GetLink("users",_.created_by)%>
-									</th>
-					</table>
-</div>
+		</td>
+		<td rowspan=3 id='chart'>
+
+		</td>
+
+	</tr>
+
+	<tr>
+		<th>Created By</th>
+		<td>
+			<%=APP.GetLink("users",_.created_by)%>
+		</td>
+		<th>
+			Views
+		</th>
+		<td>
+			<%=_.views%>
+		</td>
+		<th>
+			Edits
+		</th>
+		<td>
+			<%=_.edits%>
+		</td>
+
+	</tr>
+	<tr>
+
+		<td colspan=7>
+			<meter id='progress' value='<%=progress%>' min=0 max=100>
+				<%=progress%>
+			</meter>
+		</td>
+	</tr>
+</table>
 
 <div id='description'>
 	<%=APP.Format.markdown(description)%>

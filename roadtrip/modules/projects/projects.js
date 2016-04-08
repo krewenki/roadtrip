@@ -117,20 +117,12 @@ DEF.modules.projects.views = {
 		template: require("./templates/view.html"),
 		ui: {
 			edit: "#edit",
-			delete: "#delete",
 		},
 		events: {
 			"click @ui.edit": "Edit",
-			"click @ui.delete": "Delete",
 		},
 		Edit: function() {
 			APP.Route("#projects/" + "edit" + "/" + this.model.id, false);
-		},
-		Delete: function() {
-			if (confirm("Are you sure you want to delete " + this.model.get(this.model.nameAttribute))) {
-				APP.models.projects.remove(this.model);
-				APP.Route("#projects", "projects");
-			}
 		},
 	})
 }
@@ -232,6 +224,34 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 		this.model.IncStat("views")
 		APP.SetTitle(this.model.get('project'));
 
+		this.DrawPie();
+	},
+	DrawPie: function() {
+		var series = [{
+			name: 'Expenses',
+			data: []
+		}]
+		var totals = APP.Tools.CountFields(APP.models.tasks.filter({
+			"parent_id": this.model.id
+		}), "kind")
+		Object.keys(totals).forEach(function(cat) {
+			if (totals[cat])
+				series[0].data.push({
+					name: cat + "s",
+					y: totals[cat]
+				})
+
+		})
+		var Highcharts = require('highcharts');
+		var chart = Highcharts.chart('chart', {
+			chart: {
+				type: "pie"
+			},
+			title: {
+				text: ""
+			},
+			series: series
+		})
 	},
 	CreateTask: function() {
 		var page = new DEF.modules.tasks.views.edit({
