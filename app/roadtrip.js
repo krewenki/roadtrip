@@ -205,6 +205,15 @@ Roadtrip = {
 				_: stats
 			})
 			this.trigger('change', this) // manually trigger a change, because Highway
+		},
+		/**
+		 * Generate a unique ID.  Don't even use this if you don't need a unique ID.  Else override it
+		 * @return {string} A Unique ID
+		 */
+		GetID: function() {
+			if (this.model.id)
+				return this.model.id; // the ID has  already been generated
+			return this.get('_id');
 		}
 	}),
 	MainView: Backbone.Marionette.LayoutView.extend({

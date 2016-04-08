@@ -21,7 +21,7 @@ DEF.modules.expenses.Router = Roadtrip.Router.extend({
 		APP.Icon_Lookup["fuel"] = "battery-full";
 		APP.Icon_Lookup["misc"] = "ellipsis-h";
 		APP.Icon_Lookup["boat"] = "ship";
-		APP.Icon_Lookup["misc"] = "ellipsis-h";
+		APP.Icon_Lookup["mileage"] = "road";
 		APP.Icon_Lookup["subway"] = "subway";
 		APP.Icon_Lookup["toll"] = "dollar";
 		APP.Icon_Lookup["equipment"] = "binoculars";
@@ -37,23 +37,30 @@ DEF.modules.expenses.Router = Roadtrip.Router.extend({
 });
 DEF.modules.expenses.Model = Roadtrip.Model.extend({
 	nameAttribute: 'expense_id', // the human-readable field in the record
+	idAttribute: 'expense_id',
 	module: "expenses",
 	search_string: function() {
 		return false
 	},
 	defaults: {
-		expense_id: 1,
+		expense_id: false,
 		purpose: "",
 		state: "New", // submitted, approved, completed
 		kind: "fieldservice",
-		job: false, // aka Order Line item?
+		order: false, // aka Order Line item?
 		approved_by: false,
 		start_date: false,
 		total: 0,
 		paid_by_employer: 0,
 		paid_by_employee: 0,
 		duration: 5, // in days
+		mileage_rate: 0.575,
 		expenses: []
+	},
+	GetID: function() {
+		if (this.id)
+			return this.id; // the ID has  already been generated
+		return APP.Tools.Aggregate(APP.models.expenses, "expense_id", "max") + 1;
 	}
 });
 DEF.modules.expenses.Collection = Backbone.Highway.Collection.extend({
@@ -76,7 +83,6 @@ DEF.modules.expenses.ExpenseCollection = Backbone.Collection.extend({
 DEF.modules.expenses.views = {}
 require("./expenses_edit.js");
 require("./expenses_view.js");
-
 
 DEF.modules.expenses.RecordLine = Roadtrip.RecordLine.extend({
 	tagName: "tr",

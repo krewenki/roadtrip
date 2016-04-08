@@ -32,7 +32,10 @@ DEF.modules.expenses.ExpenseLine = Backbone.Marionette.ItemView.extend({
 	Sum: function() {
 		total = 0
 		this.ui.sum.each(function(i, el) {
-			total += Number(el.value)
+			if ($(".categories[data-line=" + $(el).data('line') + "]").val() == "mileage")
+				total += el.value * $("#mileage_rate").val()
+			else
+				total += Number(el.value)
 		})
 		this.ui.total.val(total);
 		this.ui.total_field.html(APP.Format.money(total));
@@ -89,7 +92,7 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 
 		var expenses = this.model.get('expenses');
 		if (expenses.length == 0) {
-			cats = ["plane", "hotel", "food", "food", "misc"]
+			cats = ["mileage", "plane", "hotel", "food", "food", "misc"]
 			for (var i = 0; i < cats.length; i++) {
 				var rec = this.GetEmptyRecord(cats[i]);
 				expenses.push(rec)
@@ -112,7 +115,7 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 	},
 	templateHelpers: function() {
 		var rs = {
-			expense_id: this.GenerateExpenseID()
+			expense_id: this.model.GetID()
 		}
 		return rs;
 	},
@@ -172,8 +175,8 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 				created_on: Date.now()
 			}
 			return APP.models[this.module].create(save, {
-				success: function(model) {
-					APP.Route("#expenses/view/" + model._id)
+				success: function(attr) {
+					APP.Route("#expenses/view/" + attr.expense_id)
 				}.bind(this)
 			});
 		} else {
@@ -184,7 +187,7 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 				// 	old: orig,
 				// 	new: save
 				// });
-			APP.Route("#expenses/view/" + this.model.get('_id'))
+			APP.Route("#expenses/view/" + this.model.id)
 		}
 	},
 	Sum: function() {
@@ -198,6 +201,10 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 				case "paid_by_employer":
 					if (!sum[el.id])
 						sum[el.id] = 0;
+					// console.log($(".categories[data-line=" + $(el).data('line') + "]").val())
+					// if ($(".categories[data-line=" + $(el).data('line') + "]").val() == "mileage") {
+					// 	sum[el.id] += $(el).val() * $("#mileage_rate").val()
+					// } else
 					sum[el.id] += Number($(el).val())
 					break;
 				default:
@@ -205,11 +212,16 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 						var day = $(el).data('day');
 						if (!sum.days[day])
 							sum.days[day] = 0;
-						sum.days[day] += Number($(el).val());
+						if ($(".categories[data-line=" + $(el).data('line') + "]").val() == "mileage") {
+							//console.log($(el).val() * $("#mileage_rate").val(), $(el).val(), $("#mileage_rate").val())
+							sum.days[day] += $(el).val() * $("#mileage_rate").val()
+						} else
+							sum.days[day] += Number($(el).val());
 					}
 
 			}
 		}
+		console.log(sum);
 		$("#total_total").html(APP.Format.money(sum.total))
 		$("#total_employer").html(APP.Format.money(sum.paid_by_employer))
 		$("#total_employee").html(APP.Format.money(sum.paid_by_employee))
@@ -224,7 +236,7 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 		APP.Route("#" + this.module + "/" + "view" + "/" + this.model.id);
 	},
 	Delete: function(e) {
-		if (prompt("Are you sure?")) {
+		if (confirm("Are you sure?")) {
 			APP.models[this.module].remove(this.model);
 			APP.Route("#" + this.module);
 		}

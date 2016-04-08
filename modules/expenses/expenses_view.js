@@ -6,6 +6,7 @@ DEF.modules.expenses.ExpenseLineReadOnly = Backbone.Marionette.ItemView.extend({
 		return {
 			line: this.model.collection.indexOf(this.model),
 			duration: this.options.duration,
+			mileage_rate: this.options.mileage_rate
 		}
 	},
 })
@@ -18,7 +19,8 @@ DEF.modules.expenses.views.view = Backbone.Marionette.CompositeView.extend({
 	childViewContainer: "#expenses",
 	childViewOptions: function() {
 		return {
-			duration: this.model.get('duration')
+			duration: this.model.get('duration'),
+			mileage_rate: this.model.get('mileage_rate')
 		}
 	},
 	filter: function(m) {

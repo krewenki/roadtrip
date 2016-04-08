@@ -18,6 +18,7 @@
 		<th>Expense ID</th>
 		<td>
 			<%=expense_id%>
+				<input class='field dirty' type='hidden' id='expense_id' value='<%=expense_id%>'>
 		</td>
 		<th>Kind</th>
 		<td>
@@ -28,13 +29,13 @@
 		</td>
 	</tr>
 	<tr>
-		<th>Job</th>
+		<th>Order</th>
 		<td>
-			<%=APP.HTML.Select("job", APP.models.orders,"order","_id",job,"field", true)%>
+			<%=APP.HTML.Select("order", APP.models.orders,"order","order",order,"field", true)%>
 		</td>
-		<th>Purpose</th>
+		<th>Mileage Rate</th>
 		<td>
-			<input type='text' id='purpose' class='field' value='<%=purpose%>' placeholder="Purpose of trip">
+			<input type='number' id='mileage_rate' class='field' value='<%=mileage_rate%>'>
 		</td>
 	</tr>
 	<tr>
@@ -45,6 +46,12 @@
 		<th>Duration (days)</th>
 		<td>
 			<input type='number' id='duration' class='field' value='<%=duration%>'>
+		</td>
+	</tr>
+	<tr>
+		<th>Purpose</th>
+		<td colspan=3>
+			<input type='text' id='purpose' class='field' value='<%=purpose%>' placeholder="Purpose of trip">
 		</td>
 	</tr>
 </table>
@@ -65,7 +72,8 @@
 					<th align='right' class='paid_by_employee'>Employee</th>
 		</tr>
 	</thead>
-	<tbody></tbody>
+	<tbody>
+	</tbody>
 	<tfoot>
 		<tr>
 			<td>

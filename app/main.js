@@ -192,6 +192,15 @@ require("../modules/expenses/expenses.js");
 require("../modules/events/events.js");
 require("./auth.js");
 
+
+/*
+████████  ██████   ██████  ██      ███████
+   ██    ██    ██ ██    ██ ██      ██
+   ██    ██    ██ ██    ██ ██      ███████
+   ██    ██    ██ ██    ██ ██           ██
+   ██     ██████   ██████  ███████ ███████
+*/
+
 /**
  * A collection of convenience functions
  * @type {Object}
@@ -212,8 +221,26 @@ APP.Tools = {
 			counts[field] = counts[field] ? counts[field] + 1 : 1
 		}
 		return counts;
+	},
+	/**
+	 * Perform some simple operations
+	 * @param  {collection} collection A collection (not an array yet)
+	 * @param  {string} key        Column
+	 * @param  {string} func       size(count), min, max.  anything _ provides
+	 * @return {number}            The result
+	 */
+	Aggregate: function(collection, key, func = "size") {
+		return Number(_[func](APP.models.expenses.pluck(key)))
 	}
 }
+
+/*
+███████  ██████  ██████  ███    ███  █████  ████████ ████████ ███████ ██████  ███████
+██      ██    ██ ██   ██ ████  ████ ██   ██    ██       ██    ██      ██   ██ ██
+█████   ██    ██ ██████  ██ ████ ██ ███████    ██       ██    █████   ██████  ███████
+██      ██    ██ ██   ██ ██  ██  ██ ██   ██    ██       ██    ██      ██   ██      ██
+██       ██████  ██   ██ ██      ██ ██   ██    ██       ██    ███████ ██   ██ ███████
+*/
 
 APP.Format = {
 	/**
@@ -269,6 +296,11 @@ APP.Format = {
 		if (val > 0)
 			sign = "positive";
 		return '<span class="money ' + sign + '">$' + val.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + "</span>";
+	},
+	sysdate: function(time = Date.now()) {
+		var date = new Date(time);
+		var datef = date.getFullYear() + "-" + ("00" + (date.getMonth() + 1)).slice(-2) + "-" + ("00" + date.getDate()).slice(-2);
+		return datef;
 	},
 	date: function(time) {
 		if (!time)
