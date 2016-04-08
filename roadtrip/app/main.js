@@ -172,6 +172,26 @@ var MainApp = Backbone.Marionette.Application.extend({
 			return html;
 
 		}
+	},
+	_UpdateTaskID: function() {
+		for (let model of APP.models.tasks.filter({
+				"parent_module": "tasks"
+			})) {
+			if (model.get('parent_id').length > 10) {
+				var parent = APP.models.tasks.findWhere({
+					"_id": model.get('parent_id')
+				})
+				if (parent) {
+					model.set({
+						parent_id: parent.id
+					})
+				} else {
+					APP.models.tasks.remove(model);
+					console.log("bad", model)
+				}
+			}
+
+		}
 	}
 });
 

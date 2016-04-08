@@ -1,30 +1,34 @@
 <td class='task_id'>
-		<%=task_id%>
+	<%=task_id%>
 </td>
 <td class='task'>
-		<%=APP.Icon(kind, kind)%>
-				<%=task%>
+	<%=APP.Icon(kind, kind)%>
+		<%=task%>
 </td>
 <td>
-		<meter min=0 max=100 value='<%=progress%>'>
-				<%=progress%>
-		</meter>
+	<!-- <div class="meter">
+		<span style="width: <%=progress%>%"></span>
+	</div> -->
+
+	<meter min=0 max=100 value='<%=progress%>'>
+		<%=progress%>
+	</meter>
 </td>
 <td align=center class='nowrap minwidth800'>
-		<%=subtasks%>
+	<%=subtasks%>
 </td>
 <td align=center class='nowrap minwidth800'>
-		<%=_.views%>
+	<%=_.views%>
 </td>
 <td align=center class='nowrap minwidth800'>
-		<%=_.edits%>
+	<%=_.edits%>
 </td>
 <td class='nowrap minwidth1000'>
-		<%=_.created_by? (APP.models.users.get(_.created_by)?APP.models.users.get(_.created_by).Link():"??" ):"--"%>
+	<%=_.created_by? (APP.models.users.get(_.created_by)?APP.models.users.get(_.created_by).Link():"??" ):"--"%>
 </td>
 <td class='nowrap minwidth1000'>
-		<%=assigned_to? (APP.models.users.get(assigned_to)?APP.models.users.get(assigned_to).Link():"??") :"--"%>
+	<%=assigned_to? (APP.models.users.get(assigned_to)?APP.models.users.get(assigned_to).Link():"??") :"--"%>
 </td>
 <td align='right' class='nowrap minwidth1000'>
-		<%=priority%>
+	<%=priority%>
 </td>
