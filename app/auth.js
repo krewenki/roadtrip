@@ -24,5 +24,8 @@ if (document.cookie == '') {
 
 		window.U = APP.models.users.get(user._id); // assign 0 to the U.
 		APP.trigger("auth_user")
+		window.U.set({
+			last_login: Date.now()
+		})
 	}, this)
 }

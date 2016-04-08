@@ -274,7 +274,7 @@ APP.Format = {
 		if (!time)
 			return "--";
 		var date = new Date(time);
-		var datef = date.getFullYear() + "-" + ("00" + (date.getMonth() + 1)).slice(-2) + "-" + ("00" + date.getDate()).slice(-2);
+		var datef = ("00" + (date.getMonth() + 1)).slice(-2) + "/" + ("00" + date.getDate()).slice(-2) + "/" + date.getFullYear();
 		return "<a href='#calendar/date/" + datef + "'>" + datef + "</a>";
 	},
 	time: function(time) {

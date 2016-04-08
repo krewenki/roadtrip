@@ -366,6 +366,11 @@ body {
             }
         }
     }
+    @media print {
+        #menu {
+            display: none;
+        }
+    }
 
     .table {
         .dirty {
@@ -404,6 +409,21 @@ body {
 
         input[type="number"] {
             text-align: right;
+        }
+    }
+}
+@media print {
+    #HEADER {
+        display: none;
+    }
+
+    #FOOTER {
+        display: none;
+    }
+
+    #MAIN {
+        a {
+            color: black;
         }
     }
 }

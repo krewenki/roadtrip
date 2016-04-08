@@ -302,6 +302,10 @@ fieldset {
     }
 
     td {
+        &.nowrap {
+            white-space: nowrap;
+        }
+
         &.right {
             text-align: right;
         }
