@@ -1,11 +1,20 @@
 <td class='important nowrap category'>
 	<span class='' id='category_icon'><%=APP.Icon(category)%></span>
 	<%=category%>
+		<% if (category=='mileage')
+		print("@"+mileage_rate)
+		%>
 
 </td>
 <% for (var d = 0; d< duration; d++) { %>
 	<td class='right'>
-		<%=days[d]?APP.Format.money(days[d]):""%>
+		<% if (days[d]) {
+			if (category=='mileage')
+				print(days[d]+"mi")
+			else
+				print(APP.Format.money(days[d]))
+		}
+		%>
 	</td>
 	<% } %>
 		<td class='important right' id='total_field'>
