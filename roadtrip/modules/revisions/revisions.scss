@@ -1,16 +1,31 @@
 .file-diff {
-
   pre {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
+  }
 
-    .delete {
-      background-color: '#F00';
-    }
-    .insert {
-      background-color: '#0F0';
-    }
 
+    display: block;
+    overflow-x: auto;
+    padding: 0.5em;
+    color: #333;
+    background: #f8f8f8;
+
+
+  .context {
+    color: #000080;
+    font-weight: normal;
+  }
+
+  .info {
+    color: #999;
+    font-weight: bold;
+  }
+  .delete {
+    background: #fdd;
+  }
+  .insert {
+    background: #dfd;
   }
 
 }
