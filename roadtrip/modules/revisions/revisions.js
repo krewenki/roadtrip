@@ -34,7 +34,10 @@ DEF.modules.revisions.Model = Roadtrip.Model.extend({
 
 DEF.modules.revisions.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.revisions.Model,
-	url: 'dev.telegauge.com:3000/roadtrip/revisions'
+	url: 'dev.telegauge.com:3000/roadtrip/revisions',
+  comparator: function(r){
+    return -r.get('revision');
+  }
 });
 
 
@@ -42,7 +45,12 @@ DEF.modules.revisions.Collection = Roadtrip.Collection.extend({
  *  General views, defined for use with the router's automatic "$cmd" mechanism.
  */
 DEF.modules.revisions.views = {
-  RevisionLine: Roadtrip.View.extend({
+  view: Roadtrip.View.extend({
+    module: 'revisions',
+    template: require('./templates/view.html')
+  }),
+  RevisionLine: Roadtrip.RecordLine.extend({
+    module: 'revisions',
     template: require('./templates/revisionline.html'),
     tagName: 'tr'
   })
