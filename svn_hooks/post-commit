@@ -1,0 +1,21 @@
+#!/usr/bin/node
+
+//repository = process.argv[2];
+//revision = process.argv[3];
+
+var execFile = require('child_process').execFile;
+var child = execFile('/usr/bin/svnlook', ['log', '/opt/repo'], (error, stdout, stderr) => {
+  if (error) {
+    throw error;
+  }
+  console.log(stdout);
+});
+
+
+//exec("/usr/bin/svnlook author -r $argv[2] $argv[1]", $who);
+
+//$log = implode("\n", $log);
+//$who = implode("\n", $who);
+
+
+?>
