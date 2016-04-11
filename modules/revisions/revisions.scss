@@ -1,0 +1,16 @@
+.file-diff {
+
+  pre {
+    margin: 0px;
+    padding: 0px;
+
+    .delete {
+      background-color: '#F00';
+    }
+    .insert {
+      background-color: '#0F0';
+    }
+
+  }
+
+}

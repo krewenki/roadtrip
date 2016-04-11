@@ -47,7 +47,73 @@ DEF.modules.revisions.Collection = Roadtrip.Collection.extend({
 DEF.modules.revisions.views = {
   view: Roadtrip.View.extend({
     module: 'revisions',
-    template: require('./templates/view.html')
+    template: require('./templates/view.html'),
+    templateHelpers: {
+        markupDiff: function(diff){
+          var out = '';
+          var files = this.splitByFile(diff);
+          for ( var file in files ) {
+      		out += "<h2>" + file + "</h2>" +
+      		"<div class='file-diff'><div>" +
+      			this.generateDiff( files[ file ] ) +
+      		"</div></div>";
+      	}
+          return out;
+        },
+        splitByFile: function(diff){
+
+          var filename;
+          var isEmpty = true;
+          var files = {};
+          console.log(diff)
+        	diff.split( "\n" ).forEach(function( line, i ) {
+
+        		// Unmerged paths, and possibly other non-diffable files
+        		// https://github.com/scottgonzalez/pretty-diff/issues/11
+        		if ( !line || line.charAt( 0 ) === "*" ) {
+        			return;
+        		}
+
+        		if ( ['Modif', 'Added', 'Remove'].indexOf(line.substring( 0, 5 )) > -1) {
+        			isEmpty = false;
+              filename = line.replace('Modified: ','').replace('Added:','').trim()
+        			files[ filename ] = [];
+        		}
+
+        		files[ filename ].push( line );
+        	});
+
+	         return isEmpty ? null : files;
+
+        },
+    generateDiff: function(diff){
+      diff.shift();
+      diff.shift();
+      	var diffClasses = {
+      		"d": "file",
+      		"i": "file",
+      		"@": "info",
+      		"-": "delete",
+      		"+": "insert",
+      		" ": "context"
+      	};
+
+      	function escape( str ) {
+      		return str
+      			.replace( /&/g, "&amp;" )
+      			.replace( /</g, "&lt;" )
+      			.replace( />/g, "&gt;" )
+      			.replace( /\t/g, "    " );
+      	}
+
+
+      		return diff.map(function( line ) {
+      			var type = line.charAt( 0 );
+      			return "<pre class='" + diffClasses[ type ] + "'>" + escape( line ) + "</pre>";
+      		}).join( "\n" );
+
+      }
+    }
   }),
   RevisionLine: Roadtrip.RecordLine.extend({
     module: 'revisions',
