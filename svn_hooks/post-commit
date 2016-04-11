@@ -1,5 +1,7 @@
 #!/usr/bin/node
 
+var request = require('request');
+
 //repository = process.argv[2];
 //revision = process.argv[3];
 
@@ -8,7 +10,22 @@ var child = execFile('/usr/bin/svnlook', ['log', '/opt/repo'], (error, stdout, s
   if (error) {
     throw error;
   }
-  console.log(stdout);
+	const log = stdout;
+	var child = execFile('/usr/bin/svnlook', ['author', '/opt/repo'], (error, stdout, stderr) => {
+		if(error){
+			throw error;
+		}
+		const author = stdout;
+		const child = execFile('/usr/bin/svnlook', ['diff', '/opt/repo'], (error, stdout, stderr) => {
+			const diff = stdout;
+			const child = execFile('/usr/bin/svnlook', ['date', '/opt/repo'], (error, stdout, stderr) => {
+				const datetime = stdout;
+				// Now I need to post it all to roadtrip
+				request.post('http://dev.telegauge.com:3000/roadtrip/revisions', {json:{log:log, author:author, diff: diff}})
+			});
+		});
+
+	});
 });
 
 
@@ -18,4 +35,4 @@ var child = execFile('/usr/bin/svnlook', ['log', '/opt/repo'], (error, stdout, s
 //$who = implode("\n", $who);
 
 
-?>
+
