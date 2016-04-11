@@ -209,6 +209,7 @@ require("../modules/orders/orders.js");
 require("../modules/projects/projects.js");
 require("../modules/calendar/calendar.js");
 require("../modules/expenses/expenses.js");
+require("../modules/revisions/revisions.js");
 require("../modules/events/events.js");
 require("./auth.js");
 
