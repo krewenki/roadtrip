@@ -12,6 +12,7 @@ DEF.modules.revisions.Router = Roadtrip.Router.extend({
 });
 
 DEF.modules.revisions.Model = Roadtrip.Model.extend({
+  idAttribute: 'revision',
 	nameAttribute: 'revision', // the human-readable field in the record
 	module: "revisions",
 	defaults: {
