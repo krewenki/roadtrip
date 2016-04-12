@@ -86,12 +86,22 @@ DEF.modules.calendar.views = {
 	Event: Roadtrip.View.extend({
 		module: "calendar",
 		template: require("./templates/event.html"),
-		className: 'calendar_event',
+		initialize: function(o){
+			console.log(arguments);
+		},
 		attributes: function(){
+			var classes = ['calendar_event'];
+			var start = new Date(this.model.get('start')).toISOString().slice(0,10);
+			var end = new Date(this.model.get('end')).toISOString().slice(0,10);
+			if(start == this.options.date)
+				classes.push('start');
+			if(end == this.options.date)
+				classes.push('end');
 			return {
 				"data-id" : this.model.id,
 				"data-start" : this.model.get('start'),
-				"data-end" : this.model.get('end')
+				"data-end" : this.model.get('end'),
+				"class" : classes.join(' ')
 			}
 		},
 		events: {
@@ -162,6 +172,12 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend({
 					return self.options.date.getDate()
 				}
 			};
+		},
+		childViewOptions: function(){
+			var self = this;
+			return {
+				date: self.options.date.toISOString().slice(0,10)
+			}
 		}
 	}),
 
