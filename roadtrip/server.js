@@ -63,14 +63,20 @@ var hw = new Highway({
 			forceRootAuth: false,
 			routes : {
 				login : '/#login'
-			},
-			homeCallback: function(req,res){
-				if(!req.session || !req.session.passport.user){
-					res.redirect('/login.html')
-				} else {
-					res.sendFile(path.resolve('public/index_template.html'));
-				}
+				passwordReset: '/password-reset'
 			}
 		}
-	]
+	],
+	email: {
+			transporter: 'smtps://telegauge%40gmail.com:pass@smtp.gmail.com', // I guess we could use telegauge for now
+			messages: {
+				passwordReset: {
+					subject: 'Reset your roadtrip password'
+					template: './templates/email/password_reset.html', // pass a path, parse it when we need it
+					options: {
+						resetUrl: '/password-reset'
+					}
+				}
+			}
+	}
 })
