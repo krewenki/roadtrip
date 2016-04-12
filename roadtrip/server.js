@@ -62,7 +62,7 @@ var hw = new Highway({
 			sessionLength: 60*60*24*365,
 			forceRootAuth: false,
 			routes : {
-				login : '/#login'
+				login : '/#login',
 				passwordReset: '/password-reset'
 			}
 		}
@@ -71,7 +71,7 @@ var hw = new Highway({
 			transporter: 'smtps://telegauge%40gmail.com:pass@smtp.gmail.com', // I guess we could use telegauge for now
 			messages: {
 				passwordReset: {
-					subject: 'Reset your roadtrip password'
+					subject: 'Reset your roadtrip password',
 					template: './templates/email/password_reset.html', // pass a path, parse it when we need it
 					options: {
 						resetUrl: '/password-reset'
