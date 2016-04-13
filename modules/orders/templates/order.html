@@ -25,16 +25,29 @@
 	</tr>
 
 	<tr>
+		<th>Line Items</th>
+		<td>
+			<%=lineitems%>
+		</td>
+	</tr>
+	<tr>
+		<th>Total</th>
+		<td>
+			<%=APP.Format.money(total)%>
+		</td>
+	</tr>
+
+	<tr>
 		<th>Views</th>
 		<td>
-			<%=views%>
+			<%=_.views%>
 		</td>
 	</tr>
 
 	<tr>
 		<th>Edits</th>
 		<td>
-			<%=edits%>
+			<%=_.edits%>
 		</td>
 	</tr>
 </table>
