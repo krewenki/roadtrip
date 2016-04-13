@@ -7,6 +7,9 @@ DEF.modules.orders.Router = Roadtrip.Router.extend({
 		APP.models.orders = new DEF.modules.orders.Collection();
 		APP.models.orders_lineitems = new DEF.modules.orders.Collection_LineItems();
 	},
+	collections: [
+		"orders", "orders_lineitems"
+	],
 
 	module: "orders",
 	routes: {
@@ -42,10 +45,10 @@ DEF.modules.orders.Model = Roadtrip.Model.extend({
 		order_date: 0,
 		customer_request_date: 0,
 		release_date: 0,
-		lineitems: [],
+		lineitems: 0,
+		total: 0,
 
-		views: 0,
-		edits: 0
+
 	},
 	GetLink: function(cmd) {
 		return "#orders/" + cmd + "/" + this.get('_id');
@@ -87,11 +90,9 @@ DEF.modules.orders.views.view = Backbone.Marionette.LayoutView.extend({
 	},
 	ui: {
 		edit: "#edit",
-		delete: "#delete"
 	},
 	events: {
 		"click @ui.edit": "Edit",
-		"click @ui.delete": "Delete"
 	},
 	onShow: function() {
 		this.model.IncStat("views");
@@ -101,24 +102,40 @@ DEF.modules.orders.views.view = Backbone.Marionette.LayoutView.extend({
 		}));
 
 		var order = this.model.id;
-		console.log(order);
 		this.showChildView('lineitems', new DEF.modules.orders.LineItemView({
 			collection: APP.models.orders_lineitems,
 			filter: function(m) {
 				return m.get('order') == order;
 			}
 		}));
+
+		this.RefreshStats();
 	},
 	Edit: function() {
 		APP.Route("#orders/" + "edit" + "/" + this.model.id);
 	},
-	Delete: function() {
-		if (confirm("Are you sure you want to delete " + this.model.get(this.model.nameAttribute))) {
-			console.log("kill it");
-			APP.models.orders.remove(this.model);
-			APP.Route("#orders", "orders");
+	/**
+	 * Calculate totals and item count.  Delete this in the future, when its all been counted.
+	 * @return {[type]} [description]
+	 */
+	RefreshStats: function() {
+		var order = this.model.id;
+		var items = APP.models.orders_lineitems.filter({
+			order: order
+		});
+		console.log(items);
+		var total = 0,
+			count = 0;
+		for (let m of items) {
+			total += m.get('price');
+			count++;
 		}
-	}
+
+		this.model.set({
+			total: total,
+			lineitems: count
+		});
+	},
 });
 
 
@@ -133,22 +150,6 @@ DEF.modules.orders.OrderView = Backbone.Marionette.ItemView.extend({
 DEF.modules.orders.RecordLine = Roadtrip.RecordLine.extend({
 	module: "orders",
 	template: require("./templates/order_line.html"),
-	templateHelpers: function() {
-		var rs = {
-			total: ' ',
-			lineitems: 0
-		};
-		var lineitems = this.model.get('lineitems');
-		var sum = 0;
-		for (var l = 0; l < lineitems.length; l++)
-			sum += lineitems[l].price;
-		if (sum)
-			rs.total = APP.Format.money(sum);
-
-		rs.lineitems = lineitems.length;
-
-		return rs;
-	}
 });
 
 
