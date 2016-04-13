@@ -21,14 +21,10 @@
 								<%=APP.Icon(kind, kind)%>
 							</td>
 							<th>Task</th>
-							<td>
-
+							<td colspan=3>
 								<%=task%>
 							</td>
-							<th>Created</th>
-							<td class='nowrap'>
-								<%=APP.Format.date(_.created_on)%>
-							</td>
+
 						</tr>
 						<tr>
 							<th>Priority</th>
@@ -37,9 +33,9 @@
 									<%=priority%>
 								</meter>
 							</td>
-							<th>Started</th>
+							<th>Due</th>
 							<td class='nowrap'>
-								<%=APP.Format.date(start_date)%>
+								<%=APP.Format.date(due_date)%>
 							</td>
 						</tr>
 						<tr>
@@ -49,22 +45,37 @@
 							<td>
 								<%=APP.GetLink("users",_.created_by)%>
 							</td>
-							<th>Due</th>
+
+							<th>Created</th>
 							<td class='nowrap'>
-								<%=APP.Format.date(due_date)%>
+								<%=APP.Format.date(_.created_on)%>
 							</td>
+
 						</tr>
 						<tr>
 							<th>
 								Assigned To
 							</th>
 							<td>
-								<%=(assigned_to?APP.models.users.get(assigned_to).Link('name'):"--")%>
+								<%=APP.GetLink("users",assigned_to)%>
 							</td>
-							<th>Completed</th>
+							<th>Started</th>
 							<td class='nowrap'>
-								<%=APP.Format.date(complete_date)%>
+								<%=APP.Format.date(start_date)%>
 							</td>
+						</tr>
+
+						<tr>
+							<th>
+								Completed By
+							</th>
+							<td>
+								<%=APP.GetLink("users",completed_by)%>
+									</th>
+									<th>Completed</th>
+									<td class='nowrap'>
+										<%=APP.Format.date(complete_date)%>
+									</td>
 						</tr>
 					</table>
 

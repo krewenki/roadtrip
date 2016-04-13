@@ -34,7 +34,9 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		description: "",
 		task_id: false,
 		subtasks: 0,
+
 		assigned_to: false,
+		completed_by: false,
 
 		start_date: "",
 		due_date: "",
@@ -236,7 +238,8 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 			});
 		if (this.ui.progress.val() == 100 || this.ui.progress.val() < 0)
 			this.model.set({
-				complete_date: Date.now()
+				complete_date: Date.now(),
+				completed_by: U.id
 			});
 	},
 

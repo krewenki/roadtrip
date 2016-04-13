@@ -39,10 +39,11 @@ DEF.modules.events.RecordLine = Roadtrip.RecordLine.extend({
 
 DEF.modules.events.MainView = Roadtrip.RecordList.extend({
 	id: 'EVENTS',
+	perpage: 100,
 	template: require("./templates/main.html"),
 	childView: DEF.modules.events.RecordLine,
 	childViewContainer: "#record_list",
 	onShow: function() {
 		APP.SetTitle("Events", "events");
 	}
-})
+});

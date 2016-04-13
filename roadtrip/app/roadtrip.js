@@ -11,21 +11,21 @@ window.Roadtrip = {
 			var module = this.module;
 			var missing = this.missing_collections();
 			if (missing === false) {
-				return Backbone.Router.prototype.execute.call(this, callback, args, name)
+				return Backbone.Router.prototype.execute.call(this, callback, args, name);
 			} else {
-				console.log("waiting for collection", missing)
+				console.log("waiting for collection", missing);
 				APP.root.showChildView("main", new DEF.EmptyView({
 					icon: missing,
 					msg: "Loading " + missing.toUpperCase() + "&hellip;"
 				}));
-				this.listenToOnce(APP.models[missing], 'sync', this.execute.bind(this, callback, args, name))
+				this.listenToOnce(APP.models[missing], 'sync', this.execute.bind(this, callback, args, name));
 			}
 		},
 		/**
 		 * returns the name of a missing collection, or FALSE if they are all loaded
 		 */
 		missing_collections: function() {
-			if (this.collections.length == 0)
+			if (this.collections.length === 0)
 				this.collections = [this.module];
 			for (var c = 0; c < this.collections.length; c++) {
 				var collection = this.collections[c];
@@ -65,9 +65,8 @@ window.Roadtrip = {
 		perpage: 100,
 		page: 1,
 		comparator: function(m) {
-			//var sort = ('00000' + (m.get('views') + m.get('edits'))).substr(-5) + m.get('name');
-			var sort = (m.get('_.views') + m.get('_.edits'));
-			return -sort
+			var sort = m.get('_').views + m.get('_').edits;
+			return -sort;
 		},
 		initialize: function() {
 			this.listenToOnce(this, "sync", this.Synced, this);
@@ -90,30 +89,30 @@ window.Roadtrip = {
 			var orig = {},
 				save = {},
 				data = {},
-				changed = false
+				changed = false;
 			if (this.id) {
 				if (_.isObject(key)) {
-					data = key
+					data = key;
 				} else {
-					data[key] = val
+					data[key] = val;
 				}
 				Object.keys(data).forEach(function(field) {
 					if (field == '_')
 						return;
 					if (_.isArray(data[field]) || _.isObject(data[field])) {
 						var o = JSON.stringify(data[field]),
-							n = JSON.stringify(this.get(field))
+							n = JSON.stringify(this.get(field));
 						if (o != n) {
-							orig[field] = o
-							save[field] = n
+							orig[field] = o;
+							save[field] = n;
 							changed = true;
 						}
 					} else if (data[field] != this.get(field)) {
 						orig[field] = this.get(field);
-						save[field] = data[field]
+						save[field] = data[field];
 						changed = true;
 					}
-				}.bind(this))
+				}.bind(this));
 				if (changed)
 					APP.LogEvent(this.module, this.id, "Edited " + Object.keys(save).join(", "), {
 						old: orig,
@@ -122,13 +121,13 @@ window.Roadtrip = {
 
 			}
 
-			return Backbone.Model.prototype.set.call(this, key, val, options)
+			return Backbone.Model.prototype.set.call(this, key, val, options);
 		},
 		icon: function() {
 			return APP.Icon(this.module, this.module);
 		},
 		search_string: function() {
-			var string = this.get(this.nameAttribute)
+			var string = this.get(this.nameAttribute);
 			return string;
 		},
 		/**
@@ -167,15 +166,15 @@ window.Roadtrip = {
 				created_by: 0,
 				edited_on: 0,
 				edited_by: 0
-			}
-			var model = _.extend(defaults, this.get('_'))
+			};
+			var model = _.extend(defaults, this.get('_'));
 			if (!_.isObject(stats)) {
 				switch (stats) {
 					case "create": // this will not run, as there is no model yet
 						stats = {
 							created_by: U.id,
 							created_on: Date.now()
-						}
+						};
 						console.log("create", stats);
 						break;
 					case "edit":
@@ -183,7 +182,7 @@ window.Roadtrip = {
 							edited_on: Date.now(),
 							edited_by: U.id,
 							edits: model.edits + 1
-						}
+						};
 						break;
 					default:
 						console.warn("unhandled stat", stats);
@@ -191,7 +190,7 @@ window.Roadtrip = {
 			}
 			this.set({
 				_: _.extend(model, stats)
-			})
+			});
 		},
 		/**
 		 * Increment the stat by 1
@@ -200,11 +199,11 @@ window.Roadtrip = {
 		 */
 		IncStat: function(stat) {
 			var stats = this.get('_') || {};
-			stats[stat] = (stats[stat] + 1) || 1
+			stats[stat] = (stats[stat] + 1) || 1;
 			this.set({
 				_: stats
 			})
-			this.trigger('change', this) // manually trigger a change, because Highway
+			this.trigger('change', this); // manually trigger a change, because Highway
 		},
 		/**
 		 * Generate a unique ID.  Don't even use this if you don't need a unique ID.  Else override it
@@ -224,8 +223,8 @@ window.Roadtrip = {
 	 */
 	View: Backbone.Marionette.LayoutView.extend({
 		onShow: function() {
-			this.model.IncStat("views")
-			APP.SetTitle(this.model.get(this.model.nameAttribute), this.module)
+			this.model.IncStat("views");
+			APP.SetTitle(this.model.get(this.model.nameAttribute), this.module);
 		},
 		ui: {
 			edit: "#edit",
@@ -258,7 +257,7 @@ window.Roadtrip = {
 		},
 		onBeforeRender: function() {
 			if (!this.model) {
-				this.model = new DEF.modules[this.module].Model({})
+				this.model = new DEF.modules[this.module].Model({});
 			}
 		},
 		onShow: function() {
@@ -278,12 +277,12 @@ window.Roadtrip = {
 					var module = this.model.get('parent_module'),
 						id = this.model.get('parent_id');
 					if (module)
-						APP.Route(APP.GetModel(module, id).GetLink())
+						APP.Route(APP.GetModel(module, id).GetLink());
 					else {
-						APP.Route("#" + this.module + "/view/" + this.model.id)
+						APP.Route("#" + this.module + "/view/" + this.model.id);
 					}
 				} else {
-					APP.Route("#" + this.module + "/view/" + this.model.id)
+					APP.Route("#" + this.module + "/view/" + this.model.id);
 				}
 			} else
 				APP.Route("#" + this.module);
@@ -311,12 +310,12 @@ window.Roadtrip = {
 						break;
 				}
 				save[$el.id] = val;
-			})
+			});
 			if (!this.model.id) {
-				save["_"] = {
+				save._ = {
 					created_by: U.id,
 					created_on: Date.now()
-				}
+				};
 				return APP.models[this.module].create(save, {
 					success: function(attr) {
 						this.model.id = attr[this.model.idAttribute]; // _id because it's just a mongo object
@@ -328,7 +327,7 @@ window.Roadtrip = {
 			} else {
 				console.log("save", save);
 				this.model.set(save);
-				this.model.SetStats("edit")
+				this.model.SetStats("edit");
 			}
 			return this.Return(false);
 		},
@@ -386,11 +385,11 @@ window.Roadtrip = {
 
 		addChild: function(child, ChildView, index) {
 			var from = (this.page - 1) * this.perpage;
-			var to = from + this.perpage
+			var to = from + this.perpage;
 			if (index >= from && index < to)
 				Backbone.Marionette.CollectionView.prototype.addChild.apply(this, arguments);
 		},
 
 	})
 
-}
+};

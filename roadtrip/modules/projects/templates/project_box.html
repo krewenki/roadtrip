@@ -1,20 +1,21 @@
 <div class='box'>
-		<div id='icon'>
-				<%=APP.Icon(icon)%>
-		</div>
-		<div id='title'>
-				<%=project%>
-		</div>
-		<div id='goal'>
-				<%=goal%>
-		</div>
-		<table class='table  table-left'>
-				<tr>
-						<td colspan=2>
-								<meter id='progress' value='<%=progress%>' min=0 max=100>
-										<%=progress%>
-								</meter>
-						</td>
-				</tr>
-		</table>
+	<div id='icon'>
+		<%=APP.Icon(icon)%>
+	</div>
+	<div id='title'>
+		<%=project%>
+	</div>
+	<div id='goal'>
+		<%=goal%>
+	</div>
+
+	<table class='table  table-left'>
+		<tr>
+			<td colspan=2>
+				<meter id='progress' value='<%=progress%>' min=0 max=100>
+					<%=progress%>
+				</meter>
+			</td>
+		</tr>
+	</table>
 </div>

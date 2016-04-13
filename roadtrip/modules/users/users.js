@@ -146,7 +146,7 @@ DEF.modules.users.RecordLine = Roadtrip.RecordLine.extend({
 		"click": "Click"
 	},
 	SetPerm: function(e) {
-		$el = e.currentTarget;
+		var $el = e.currentTarget;
 		console.log($el);
 		var parts = $el.id.split('.');
 		var perms = _.extend(this.model.defaults.perms, this.model.get('perms'))
