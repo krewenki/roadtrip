@@ -34,5 +34,8 @@ DEF.modules.orders.LineItemView = Roadtrip.RecordList.extend({
 DEF.modules.orders.views.editline = Roadtrip.View.extend({
 	tagName: "table",
 	className: "table table-full table-left",
-	template: require("./templates/lineitem_edit.html")
+	template: require("./templates/lineitem_edit.html"),
+	onShow: function() {
+		APP.SetTitle("Line Item " + this.model.id, "orders");
+	}
 });

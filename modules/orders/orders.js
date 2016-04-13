@@ -109,6 +109,8 @@ DEF.modules.orders.views.view = Backbone.Marionette.LayoutView.extend({
 			}
 		}));
 
+		APP.SetTitle("Order " + this.model.id, "orders");
+
 		this.RefreshStats();
 	},
 	Edit: function() {
