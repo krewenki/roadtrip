@@ -127,7 +127,7 @@ window.Roadtrip = {
 			return APP.Icon(this.module, this.module);
 		},
 		search_string: function() {
-			var string = this.get(this.nameAttribute);
+			var string = this.get(this.nameAttribute) + "";
 			return string;
 		},
 		/**
