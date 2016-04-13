@@ -31,7 +31,8 @@
 	<tr>
 		<th>Order</th>
 		<td>
-			<%=APP.HTML.Select("order", APP.models.orders,"order","order",order,"field", true)%>
+			<!-- <%=APP.HTML.Select("order", APP.models.orders,"order","order",order,"field", true)%> -->
+			<%=APP.HTML.Autocomplete("order", APP.models.orders,"order","order",order,"field", true)%>
 		</td>
 		<th>Mileage Rate</th>
 		<td>

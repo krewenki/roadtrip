@@ -122,6 +122,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 		wiki: "wikipedia-w",
 		comments: "comments",
 		events: "sticky-note-o",
+		users: "user",
 
 		edit: "pencil",
 		view: "search",
@@ -147,33 +148,6 @@ var MainApp = Backbone.Marionette.Application.extend({
 		}
 		return "<i " + (title ? "title='" + title + "'" : "title='" + icon + "'") + " class='icon fa fa-" + icon + "'></i>";
 	},
-	HTML: {
-		/**
-		 * Generate a HTML <select> element
-		 * @param  {string} id          HTML ID
-		 * @param  {collection} collection  A backbone collection
-		 * @param  {string} display     Which field to display in the select
-		 * @param  {string} key         The id of the value field
-		 * @param  {string} value       The currently selected value
-		 * @param  {string} className   HTML className
-		 * @param  {bool} leave_empty Leave a blank line at the top
-		 * @return {string}             "<select...>"
-		 */
-		Select: function(id, collection, display, key, value, className, leave_empty) {
-			key = key || "_id";
-			var html = "<select id='" + id + "' class='" + (className || "") + "'>";
-			if (leave_empty) {
-				html += "<option></option>";
-			}
-			collection.each(function(model) {
-				html += "<option " + (value == model.get(key) ? "selected" : "") + " value='" + model.get(key) + "'>" + model.get(display) + "</option>";
-			})
-
-			html += "</select>";
-			return html;
-
-		}
-	},
 	_UpdateTaskID: function() {
 		for (let model of APP.models.tasks.filter({
 				"parent_module": "tasks"
@@ -181,14 +155,14 @@ var MainApp = Backbone.Marionette.Application.extend({
 			if (model.get('parent_id').length > 10) {
 				var parent = APP.models.tasks.findWhere({
 					"_id": model.get('parent_id')
-				})
+				});
 				if (parent) {
 					model.set({
 						parent_id: parent.id
-					})
+					});
 				} else {
 					APP.models.tasks.remove(model);
-					console.log("bad", model)
+					console.log("bad", model);
 				}
 			}
 
@@ -198,9 +172,9 @@ var MainApp = Backbone.Marionette.Application.extend({
 
 
 window.APP = new MainApp();
-APP.models = {} // hold the collections
+APP.models = {}; // hold the collections
 
-DEF.modules = {} // hold the models definitions
+DEF.modules = {}; // hold the models definitions
 require("../modules/users/users.js");
 require("../modules/comments/comments.js");
 require("../modules/tasks/tasks.js");
@@ -213,6 +187,51 @@ require("../modules/expenses/expenses.js");
 require("../modules/revisions/revisions.js");
 require("../modules/events/events.js");
 require("./auth.js");
+
+
+/*
+██   ██ ████████ ███    ███ ██
+██   ██    ██    ████  ████ ██
+███████    ██    ██ ████ ██ ██
+██   ██    ██    ██  ██  ██ ██
+██   ██    ██    ██      ██ ███████
+*/
+APP.HTML = {
+	/**
+	 * Generate a HTML <select> element
+	 * @param  {string} id          HTML ID
+	 * @param  {collection} collection  A backbone collection
+	 * @param  {string} display     Which field to display in the select
+	 * @param  {string} key         The id of the value field
+	 * @param  {string} value       The currently selected value
+	 * @param  {string} className   HTML className
+	 * @param  {bool} leave_empty Leave a blank line at the top
+	 * @return {string}             "<select...>"
+	 */
+	Select: function(id, collection, display, key, value, className, leave_empty) {
+		key = key || "_id";
+		var html = "<select id='" + id + "' class='" + (className || "") + "'>";
+		if (leave_empty) {
+			html += "<option></option>";
+		}
+		collection.each(function(model) {
+			html += "<option " + (value == model.get(key) ? "selected" : "") + " value='" + model.get(key) + "'>" + model.get(display) + "</option>";
+		});
+
+		html += "</select>";
+		return html;
+
+	},
+	Autocomplete: function(id, collection, display, key, value, className, leave_empty) {
+		var html = "<input value='" + value + "'list='" + id + "_list' type='text' id='" + id + "' class='" + (className || "") + "'>";
+		html += "<datalist id='" + id + "_list'>";
+		collection.each(function(model) {
+			html += "<option value='" + model.get(key) + "'>" + "</option>";
+		});
+		html += "</datalist>";
+		return html;
+	}
+};
 
 
 /*
@@ -239,8 +258,8 @@ APP.Tools = {
 		if (!_.isArray(collection)) // unfiltered, i guess
 			collection = collection.models;
 		for (let model of collection) {
-			var field = model.get(key)
-			counts[field] = counts[field] ? counts[field] + 1 : 1
+			var field = model.get(key);
+			counts[field] = counts[field] ? counts[field] + 1 : 1;
 		}
 		return counts;
 	},
@@ -252,9 +271,9 @@ APP.Tools = {
 	 * @return {number}            The result
 	 */
 	Aggregate: function(collection, key, func = "size") {
-		return Number(_[func](APP.models.expenses.pluck(key)))
+		return Number(_[func](APP.models.expenses.pluck(key)));
 	}
-}
+};
 
 /*
 ███████  ██████  ██████  ███    ███  █████  ████████ ████████ ███████ ██████  ███████
@@ -303,7 +322,7 @@ APP.Format = {
 	pure: function(val) {
 		if (_.isString(val))
 			val = val.match(/[\.\d]+/g).join([]);
-		return Number(val)
+		return Number(val);
 	},
 	/**
 	 * Returns the value formatted as money
@@ -314,7 +333,7 @@ APP.Format = {
 		val = Number(val);
 		var sign = "zero";
 		if (val < 0)
-			sign = "negative"
+			sign = "negative";
 		if (val > 0)
 			sign = "positive";
 		return '<span class="money ' + sign + '">$' + val.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + "</span>";
@@ -349,7 +368,7 @@ APP.Format = {
 	 * @return {html}          HTML formatted text
 	 */
 	markdown: require('marked')
-}
+};
 
 
 APP.on('before:start', function() {

@@ -30,27 +30,26 @@ DEF.modules.expenses.ExpenseLine = Backbone.Marionette.ItemView.extend({
 		"keyup @ui.field": "MakeDirty",
 	},
 	Sum: function() {
-		total = 0
+		total = 0;
 		this.ui.sum.each(function(i, el) {
 			if ($(".categories[data-line=" + $(el).data('line') + "]").val() == "mileage")
-				total += el.value * $("#mileage_rate").val()
+				total += el.value * $("#mileage_rate").val();
 			else
-				total += Number(el.value)
-		})
+				total += Number(el.value);
+		});
 		this.ui.total.val(total);
 		this.ui.total_field.html(APP.Format.money(total));
-		this.ui.employer.val(total - this.ui.employee.val())
-		this.ui.employer_field.html(APP.Format.money(this.ui.employer.val()))
+		this.ui.employer.val(total - this.ui.employee.val());
+		this.ui.employer_field.html(APP.Format.money(this.ui.employer.val()));
 		this.trigger("sum"); // tell the parent
 	},
 	ChangeCategory: function() {
-		this.ui.category_icon.html(APP.Icon(this.ui.category.val()))
+		this.ui.category_icon.html(APP.Icon(this.ui.category.val()));
 	},
 	MakeDirty: function(e) {
 		$(e.currentTarget).addClass("dirty");
 	},
-
-})
+});
 
 
 DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
@@ -62,7 +61,7 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 	childViewOptions: function() {
 		return {
 			duration: this.model.get('duration')
-		}
+		};
 	},
 	ui: {
 		"add": "#add",
@@ -71,7 +70,8 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 		"cancel": "#cancel",
 		"delete": "#delete",
 		"start_date": "#start_date",
-		"duration": "#duration"
+		"duration": "#duration",
+		"autocomplete": "#order"
 	},
 	events: {
 		"click @ui.add": "AddLine",
@@ -85,17 +85,18 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 	childEvents: {
 		"sum": "Sum",
 	},
+
 	onBeforeRender: function() {
 		if (!this.model) { // create a new model, if needed
-			this.model = new DEF.modules[this.module].Model({})
+			this.model = new DEF.modules[this.module].Model({});
 		}
 
 		var expenses = this.model.get('expenses');
-		if (expenses.length == 0) {
-			cats = ["mileage", "plane", "hotel", "food", "food", "misc"]
+		if (expenses.length === 0) {
+			cats = ["mileage", "plane", "hotel", "food", "food", "misc"];
 			for (var i = 0; i < cats.length; i++) {
 				var rec = this.GetEmptyRecord(cats[i]);
-				expenses.push(rec)
+				expenses.push(rec);
 			}
 		}
 		this.collection = new DEF.modules.expenses.ExpenseCollection(expenses);
@@ -116,21 +117,21 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 	templateHelpers: function() {
 		var rs = {
 			expense_id: this.model.GetID()
-		}
+		};
 		return rs;
 	},
 	GenerateExpenseID: function() {
 		if (this.model.id) // this model has been saved
 			return this.model.get('expense_id'); // so do not generate a task_id
 		var instance = 0;
-		var models = APP.models.expenses.where()
+		var models = APP.models.expenses.where();
 		for (var m in models) {
 			var model = models[m];
 			var expense_id = model.get('expense_id');
-			instance = Math.max(instance, expense_id)
+			instance = Math.max(instance, expense_id);
 		}
 		instance++;
-		return instance
+		return instance;
 	},
 	MakeDirty: function(e) {
 		if (e.currentTarget.value == this.model.get(e.currentTarget.id))
@@ -144,7 +145,7 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 		$(".field.dirty").each(function(i, $el) {
 			var val = $el.value;
 			save[$el.id] = val;
-		})
+		});
 
 		var expenses = model.get('expenses');
 		for (let el of $(".expense_field")) {
@@ -155,13 +156,13 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 					category: $(".categories[data-line=" + line + "]").val(),
 					days: [],
 					paid_by_employee: 0
-				}
+				};
 			if ($(el).hasClass("sum_me")) {
 				if (!expenses[line].days[day])
-					expenses[line].days[day] = {}
-				expenses[line].days[day] = Number($(el).val())
+					expenses[line].days[day] = {};
+				expenses[line].days[day] = Number($(el).val());
 			} else {
-				expenses[line][el.id] = el.value
+				expenses[line][el.id] = el.value;
 			}
 		}
 		// note, the "expenses" object is a reference to the raw data, so no .save is necessary
@@ -170,30 +171,30 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 		save.paid_by_employee = APP.Format.pure($("#total_employee").html());
 
 		if (!this.model.id) {
-			save["_"] = {
+			save._ = {
 				created_by: U.id,
 				created_on: Date.now()
-			}
+			};
 			return APP.models[this.module].create(save, {
 				success: function(attr) {
-					APP.Route("#expenses/view/" + attr.expense_id)
+					APP.Route("#expenses/view/" + attr.expense_id);
 				}.bind(this)
 			});
 		} else {
 			console.log("save", save);
 			this.model.set(save);
-			this.model.SetStats("edit")
-				// APP.LogEvent(this.module, this.model.id, "Edited " + Object.keys(save).join(", "), {
-				// 	old: orig,
-				// 	new: save
-				// });
-			APP.Route("#expenses/view/" + this.model.id)
+			this.model.SetStats("edit");
+			// APP.LogEvent(this.module, this.model.id, "Edited " + Object.keys(save).join(", "), {
+			// 	old: orig,
+			// 	new: save
+			// });
+			APP.Route("#expenses/view/" + this.model.id);
 		}
 	},
 	Sum: function() {
 		var sum = {
 			days: []
-		}
+		};
 		for (let el of $(".expense_field")) {
 			switch (el.id) {
 				case "total":
@@ -205,7 +206,7 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 					// if ($(".categories[data-line=" + $(el).data('line') + "]").val() == "mileage") {
 					// 	sum[el.id] += $(el).val() * $("#mileage_rate").val()
 					// } else
-					sum[el.id] += Number($(el).val())
+					sum[el.id] += Number($(el).val());
 					break;
 				default:
 					if ($(el).hasClass("sum_me")) {
@@ -214,7 +215,7 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 							sum.days[day] = 0;
 						if ($(".categories[data-line=" + $(el).data('line') + "]").val() == "mileage") {
 							//console.log($(el).val() * $("#mileage_rate").val(), $(el).val(), $("#mileage_rate").val())
-							sum.days[day] += $(el).val() * $("#mileage_rate").val()
+							sum.days[day] += $(el).val() * $("#mileage_rate").val();
 						} else
 							sum.days[day] += Number($(el).val());
 					}
@@ -222,15 +223,15 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 			}
 		}
 		console.log(sum);
-		$("#total_total").html(APP.Format.money(sum.total))
-		$("#total_employer").html(APP.Format.money(sum.paid_by_employer))
-		$("#total_employee").html(APP.Format.money(sum.paid_by_employee))
+		$("#total_total").html(APP.Format.money(sum.total));
+		$("#total_employer").html(APP.Format.money(sum.paid_by_employer));
+		$("#total_employee").html(APP.Format.money(sum.paid_by_employee));
 		for (var d = 0; d < sum.days.length; d++) {
-			$("#total_" + (d + 1)).html(APP.Format.money(sum.days[d]))
+			$("#total_" + (d + 1)).html(APP.Format.money(sum.days[d]));
 		}
 	},
 	AddLine: function() {
-		this.collection.push(this.GetEmptyRecord())
+		this.collection.push(this.GetEmptyRecord());
 	},
 	Cancel: function(e) {
 		APP.Route("#" + this.module + "/" + "view" + "/" + this.model.id);
@@ -246,10 +247,10 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 			start_date: this.ui.start_date.val()
 		});
 
-		var start = this.ui.start_date.val() + " 12:00:00" // account for timezone offset, i guess.  it's stupid.
+		var start = this.ui.start_date.val() + " 12:00:00"; // account for timezone offset, i guess.  it's stupid.
 		$(".header_dates").each(function(d, el) {
-			$(el).html(APP.Format.date(new Date(start).getTime() + 1000 * 3600 * 24 * d))
-		})
+			$(el).html(APP.Format.date(new Date(start).getTime() + 1000 * 3600 * 24 * d));
+		});
 	},
 	UpdateDays: function() {
 		this.model.set({
@@ -259,4 +260,4 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 
 	}
 
-})
+});

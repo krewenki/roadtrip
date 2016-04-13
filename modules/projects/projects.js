@@ -20,7 +20,6 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 		_wiki: {
 			title: "wiki",
 			content: "Here I am!",
-
 		}
 	},
 	GetLink: function(cmd) {
@@ -92,10 +91,10 @@ DEF.modules.projects.Router = Roadtrip.Router.extend({
 			model: new DEF.modules.wiki.Model(APP.models.projects.findWhere({
 				project: project
 			}).get('_wiki'))
-		})
+		});
 		APP.root.showChildView('main', wikis);
 	}
-})
+});
 
 
 /**
@@ -125,7 +124,7 @@ DEF.modules.projects.views = {
 			APP.Route("#projects/" + "edit" + "/" + this.model.id, false);
 		},
 	})
-}
+};
 
 /**
  * A single line of projects on the main project view
@@ -149,7 +148,7 @@ DEF.modules.projects.MainView = Roadtrip.RecordList.extend({
 	templateHelpers: function(x, y, z) {
 		return {
 			search: this.search,
-		}
+		};
 	},
 	childView: DEF.modules.projects.RecordLine,
 	childViewContainer: "#record_list",
@@ -208,20 +207,20 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 			for (var s = 0; s < subs.length; s++) {
 				var sub = subs[s];
 				sum += (sub.get('progress') * sub.get('priority') / 100.0);
-				count += (sub.get('priority') / 100.0)
+				count += (sub.get('priority') / 100.0);
 			}
 			var progress = sum / count;
 			if (progress != this.model.get('progress')) {
-				console.log("Progress automatically set to ", progress, this.model.get('progress'))
+				console.log("Progress automatically set to ", progress, this.model.get('progress'));
 				this.model.set({
 					tasks: subs.length,
 					progress: progress,
-				})
+				});
 			}
 		}
 	},
 	onShow: function() {
-		this.model.IncStat("views")
+		this.model.IncStat("views");
 		APP.SetTitle(this.model.get('project'));
 
 		this.DrawPie();
@@ -230,18 +229,18 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 		var series = [{
 			name: 'Expenses',
 			data: []
-		}]
+		}];
 		var totals = APP.Tools.CountFields(APP.models.tasks.filter({
 			"parent_id": this.model.id
-		}), "kind")
+		}), "kind");
 		Object.keys(totals).forEach(function(cat) {
 			if (totals[cat])
 				series[0].data.push({
 					name: cat + "s",
 					y: totals[cat]
-				})
+				});
 
-		})
+		});
 		var Highcharts = require('highcharts');
 		var chart = Highcharts.chart('chart', {
 			chart: {
@@ -251,7 +250,7 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 				text: ""
 			},
 			series: series
-		})
+		});
 	},
 	CreateTask: function() {
 		var page = new DEF.modules.tasks.views.edit({
@@ -271,4 +270,4 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 		APP.Route("#projects/" + this.model.get('project') + "/" + "wiki" + "/crap");
 	}
 
-})
+});
