@@ -195,7 +195,7 @@ fieldset {
     margin : 0;
 
     input:not([type=radio]):not([type=checkbox]) {
-        width: 95%;
+        width: 100%;
     }
 
     textarea {
@@ -251,7 +251,6 @@ fieldset {
 
     td {
         padding-right: 5px;
-        border-right : 1px solid #eee;
         color        : $text_light_color;
     }
 
