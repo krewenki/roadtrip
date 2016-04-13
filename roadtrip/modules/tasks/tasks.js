@@ -96,7 +96,7 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.tasks.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/tasks',
 	comparator: function(m) {
-		rank = 0;
+		var rank = 0;
 		if (m.get('progress') == 100 || m.get('progress') < 0)
 			rank = 10000 - m.get('priority') - m.get('_').views / 10 - m.get('subtasks');
 		else

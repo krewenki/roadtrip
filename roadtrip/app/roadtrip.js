@@ -2,7 +2,7 @@
  * Project-wide prototypes for convenience.
  *
  */
-Roadtrip = {
+window.Roadtrip = {
 	Router: Backbone.Marionette.AppRouter.extend({
 		module: "module", // override, of course.
 		collections: [], // list collections required for this module

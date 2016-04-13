@@ -61,7 +61,7 @@ DEF.modules.projects.Router = Roadtrip.Router.extend({
 		 * tasks and history if the name changes.  So, we skirt around that issue with
 		 * custom routing.
 		 */
-		model = APP.models.projects.findWhere({
+		var model = APP.models.projects.findWhere({
 			project: project
 		});
 
@@ -69,9 +69,9 @@ DEF.modules.projects.Router = Roadtrip.Router.extend({
 			model: model,
 			collection: APP.models.tasks,
 			filter: function(m) {
-				return m.get('parent_id') == this.model.id
+				return m.get('parent_id') == this.model.id;
 			}
-		})
+		});
 		APP.root.showChildView("main", view);
 		APP.SetMode("projects");
 	},
