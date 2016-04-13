@@ -108,24 +108,6 @@
 							</td>
 						</tr>
 					</table>
-
-					<table id='revisions-table' class='shadow_box_dark table table-full table-left'>
-					<%
-					var revisions = APP.models.revisions.filter(function(r){
-						return r.get('log').indexOf('#'+task_id) > -1
-					})
-					for(var i in revisions){
-						%>
-						<tr>
-								<th><%= revisions[i].get('revision') %></th>
-								<td><%= revisions[i].get('author') %></td>
-								<td><%= revisions[i].get('log') %></td>
-						</tr>
-						<%
-					}
-					%>
-					</table>
-
 </div>
 
 
@@ -133,3 +115,5 @@
 <div class='description'>
 	<%=APP.Format.markdown(description)%>
 </div>
+
+<div id='revisions_container'></div>
