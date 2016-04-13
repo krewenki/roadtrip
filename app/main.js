@@ -1,9 +1,9 @@
 require('backbone.marionette');
 
-$ = require('jquery');
-_ = require('underscore');
-APP = {}; // DEFINE THE MAIN APP OBJECT
-DEF = {}; // HOLD THE DEFINITIONS. ALL THE MODULES, ETC...
+window.$ = require('jquery');
+window._ = require('underscore');
+window.APP = {}; // DEFINE THE MAIN APP OBJECT
+window.DEF = {}; // HOLD THE DEFINITIONS. ALL THE MODULES, ETC...
 
 require('backbone.highway');
 
@@ -197,7 +197,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 });
 
 
-APP = new MainApp();
+window.APP = new MainApp();
 APP.models = {} // hold the collections
 
 DEF.modules = {} // hold the models definitions
@@ -312,7 +312,7 @@ APP.Format = {
 	 */
 	money: function(val) {
 		val = Number(val);
-		sign = "zero";
+		var sign = "zero";
 		if (val < 0)
 			sign = "negative"
 		if (val > 0)
