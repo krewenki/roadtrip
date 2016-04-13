@@ -109,7 +109,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 			datetime: Date.now(),
 			user_id: U.id,
 			extras: extras
-		})
+		});
 	},
 	Icon_Lookup: {
 		calendar: "calendar",
@@ -167,6 +167,15 @@ var MainApp = Backbone.Marionette.Application.extend({
 			}
 
 		}
+	},
+	_UpdateTasks: function() {
+		APP.models.tasks.each(function(m) {
+			if (m.get('parent_id').length > 10) {
+				m.set({
+					parent_id: m.get('parent_id').slice(2)
+				})
+			}
+		})
 	}
 });
 
@@ -271,7 +280,7 @@ APP.Tools = {
 	 * @return {number}            The result
 	 */
 	Aggregate: function(collection, key, func = "size") {
-		return Number(_[func](APP.models.expenses.pluck(key)));
+		return Number(_[func](collection.pluck(key)));
 	}
 };
 

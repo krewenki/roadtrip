@@ -5,6 +5,7 @@ DEF.modules.projects = {};
  */
 DEF.modules.projects.Model = Roadtrip.Model.extend({
 	nameAttribute: 'project', // the human-readable field in the record
+	//idAttribute: 'project', // can't do this, because then the project name cannot ever change
 	module: "projects",
 	defaults: {
 		project: "Project 1",
@@ -13,6 +14,7 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 		description: "",
 		tasks: 0,
 		members: 0,
+		project_id: 0,
 
 		progress: 0,
 
@@ -27,6 +29,9 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 			return "#projects/" + this.get('project');
 		return "#projects/" + cmd + "/" + this.get('_id');
 	},
+	GetID: function() { // this is required when creating tasks
+		return APP.Tools.Aggregate(APP.models.projects, "project_id", "max") + 1;
+	}
 });
 
 /**
