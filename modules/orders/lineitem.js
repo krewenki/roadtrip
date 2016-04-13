@@ -1,3 +1,14 @@
+DEF.modules.orders.LineItemModel = Roadtrip.Model.extend({
+	idAttribute: 'SOLI',
+	nameAttribute: 'SOLI', // the human-readable field in the record
+	module: "orders",
+	defaults: {
+		SOLI: "00000-00",
+		order: 0,
+		warehouse: "JAX"
+	}
+});
+
 DEF.modules.orders.LineItemLine = Roadtrip.RecordLine.extend({
 	tagName: "tr",
 	template: require("./templates/lineitem_view.html"),
@@ -5,9 +16,9 @@ DEF.modules.orders.LineItemLine = Roadtrip.RecordLine.extend({
 		"click": "View"
 	},
 	View: function(e) {
-		APP.Route("#orders/editline/" + this.model.get('_id'))
+		APP.Route("#orders/editline/" + this.model.id);
 	}
-})
+});
 DEF.modules.orders.LineItemView = Roadtrip.RecordList.extend({
 	template: require("./templates/lineitems.html"),
 	className: "#LINEITEMS",
@@ -18,10 +29,10 @@ DEF.modules.orders.LineItemView = Roadtrip.RecordList.extend({
 		msg: "No line items found",
 		colspan: 3
 	},
-})
+});
 
 DEF.modules.orders.views.editline = Roadtrip.View.extend({
-	initialize: function() {
-		console.log('x');
-	}
+	tagName: "table",
+	className: "table table-full table-left",
+	template: require("./templates/lineitem_edit.html")
 });

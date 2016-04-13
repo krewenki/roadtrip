@@ -65,8 +65,11 @@ window.Roadtrip = {
 		perpage: 100,
 		page: 1,
 		comparator: function(m) {
-			var sort = m.get('_').views + m.get('_').edits;
-			return -sort;
+			var attr = m.get('_');
+			if (attr) {
+				var sort = attr.views + attr.edits;
+				return -sort;
+			}
 		},
 		initialize: function() {
 			this.listenToOnce(this, "sync", this.Synced, this);
