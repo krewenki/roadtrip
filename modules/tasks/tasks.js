@@ -1,7 +1,7 @@
 DEF.modules.tasks = {};
 DEF.modules.tasks.Router = Roadtrip.Router.extend({
 	collections: [
-		"users", "tasks", "projects", "orders"
+		"users", "tasks", "projects", "orders", "revisions"
 	],
 	initialize: function() {
 		APP.models.tasks = new DEF.modules.tasks.Collection();
@@ -333,7 +333,8 @@ DEF.modules.tasks.views = {
 			task: "#task_view",
 			open: "#open_subtasks",
 			closed: "#closed_subtasks",
-			comments: "#comment_container"
+			comments: "#comment_container",
+			revisions: "#revisions_container"
 		},
 		onBeforeShow: function() {
 			var subs = APP.models.tasks.where({
@@ -378,11 +379,20 @@ DEF.modules.tasks.views = {
 				collection: APP.models.tasks,
 				filter: APP.models.tasks.filters.Closed(this.model)
 			}));
+
 			var comments = new DEF.modules.comments.Collection(this.model.get('comments'));
 			this.showChildView('comments', new DEF.modules.comments.Comments({
 				model: this.model,
 				collection: comments,
 				module: "tasks"
+			}));
+
+			var task_id = this.model.get('task_id');
+			this.showChildView('revisions', new DEF.modules.revisions.MainView({
+				collection: APP.models.revisions,
+				filter: function(r) {
+					return r.get('log').indexOf('#' + task_id) > -1;
+				},
 			}));
 
 		}
