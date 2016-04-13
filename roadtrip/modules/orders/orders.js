@@ -5,15 +5,30 @@ require("./lineitem.js");
 DEF.modules.orders.Router = Roadtrip.Router.extend({
 	initialize: function() {
 		APP.models.orders = new DEF.modules.orders.Collection();
+		APP.models.orders_lineitems = new DEF.modules.orders.Collection_LineItems();
 	},
 
 	module: "orders",
 	routes: {
 		"orders": "ShowRoot",
+		"orders/editline/:soli": "EditLine",
 		"orders/:cmd": "LoadModule",
 		"orders/:cmd/:arg": "LoadModule",
 	},
-})
+	EditLine: function(soli) {
+		var module = this.module;
+		var model = APP.models.orders_lineitems.get(soli);
+		if (!model) {
+			console.error("Model not found", module, arg);
+		}
+
+		APP.Page = new DEF.modules[module].views.editline({
+			model: model,
+		});
+		APP.root.showChildView("main", APP.Page);
+	},
+});
+
 
 /**
  * The main model.  SHould be called "Model"
@@ -48,6 +63,11 @@ DEF.modules.orders.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.orders.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/orders',
 });
+DEF.modules.orders.Collection_LineItems = Roadtrip.Collection.extend({
+	model: DEF.modules.orders.LineItemModel,
+	url: 'dev.telegauge.com:3000/roadtrip/orders_lineitems',
+	comparator: "SOLI"
+});
 
 /**
  * A list of commands, automatically tied to the $cmd in  #module/$cmd/$id.  See DoView
@@ -74,14 +94,20 @@ DEF.modules.orders.views.view = Backbone.Marionette.LayoutView.extend({
 		"click @ui.delete": "Delete"
 	},
 	onShow: function() {
-		this.model.IncStat("views")
+		this.model.IncStat("views");
 		APP.SetTitle(this.model.get('order'));
 		this.showChildView('order', new DEF.modules.orders.OrderView({
 			model: this.model,
-		}))
+		}));
+
+		var order = this.model.id;
+		console.log(order);
 		this.showChildView('lineitems', new DEF.modules.orders.LineItemView({
-			collection: new Backbone.Collection(this.model.get('lineitems'))
-		}))
+			collection: APP.models.orders_lineitems,
+			filter: function(m) {
+				return m.get('order') == order;
+			}
+		}));
 	},
 	Edit: function() {
 		APP.Route("#orders/" + "edit" + "/" + this.model.id);
@@ -98,7 +124,7 @@ DEF.modules.orders.views.view = Backbone.Marionette.LayoutView.extend({
 
 DEF.modules.orders.OrderView = Backbone.Marionette.ItemView.extend({
 	template: require("./templates/order.html"),
-})
+});
 
 
 /**
@@ -111,7 +137,7 @@ DEF.modules.orders.RecordLine = Roadtrip.RecordLine.extend({
 		var rs = {
 			total: ' ',
 			lineitems: 0
-		}
+		};
 		var lineitems = this.model.get('lineitems');
 		var sum = 0;
 		for (var l = 0; l < lineitems.length; l++)
@@ -138,7 +164,7 @@ DEF.modules.orders.MainView = Roadtrip.RecordList.extend({
 	templateHelpers: function() {
 		return {
 			search: this.search,
-		}
+		};
 	},
 	ui: {
 		search: "#search",
