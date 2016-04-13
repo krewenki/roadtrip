@@ -6,12 +6,12 @@ DEF.modules.tasks.Router = Roadtrip.Router.extend({
 	initialize: function() {
 		APP.models.tasks = new DEF.modules.tasks.Collection();
 
-		APP.Icon_Lookup["todo"] = "list-ul";
-		APP.Icon_Lookup["bug"] = "bug";
-		APP.Icon_Lookup["feature"] = "star";
-		APP.Icon_Lookup["idea"] = "lightbulb-o";
-		APP.Icon_Lookup["product"] = "cubes";
-		APP.Icon_Lookup["support"] = "wechat";
+		APP.Icon_Lookup.todo = "list-ul";
+		APP.Icon_Lookup.bug = "bug";
+		APP.Icon_Lookup.feature = "star";
+		APP.Icon_Lookup.idea = "lightbulb-o";
+		APP.Icon_Lookup.product = "cubes";
+		APP.Icon_Lookup.support = "wechat";
 
 	},
 	module: "tasks",
@@ -76,14 +76,14 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 	 */
 	GetProgressLabel: function(val) {
 		if (!val)
-			val = this.get('progress')
+			val = this.get('progress');
 		var label = "New";
 		if (val < 0)
 			label = "Rejected";
 		if (val > 0)
 			label = "Accepted";
 		if (val > 5)
-			label = "In Progress"
+			label = "In Progress";
 		if (val >= 80)
 			label = "Review";
 		if (val == 100)
@@ -103,7 +103,7 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 			rank = 0.0 - (m.get('progress')) - m.get('priority') - m.get('_').views / 10 - m.get('subtasks');
 		if (m.get('kind') == 'bug')
 			rank *= 1.5 + 10;
-		return rank
+		return rank;
 	},
 	/**
 	 * Some handy pre-defined filters, for use when using these collections.
@@ -112,18 +112,18 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 	filters: {
 		Open: function(model) {
 			return function(m) {
-				return m.get('parent_id') == model.id && m.get('progress') != 100 && m.get('progress') >= 0
-			}
+				return m.get('parent_id') == model.id && m.get('progress') != 100 && m.get('progress') >= 0;
+			};
 		},
 		Closed: function(model) {
 			return function(m) {
-				return m.get('parent_id') == model.id && (m.get('progress') == 100 || m.get('progress') < 0)
-			}
+				return m.get('parent_id') == model.id && (m.get('progress') == 100 || m.get('progress') < 0);
+			};
 		},
 		Assigned: function(model) {
 			return function(m) {
-				return m.get('assigned_to') == model.id && m.get('progress') != 100 && m.get('progress') >= 0
-			}
+				return m.get('assigned_to') == model.id && m.get('progress') != 100 && m.get('progress') >= 0;
+			};
 		}
 	}
 });
@@ -152,13 +152,13 @@ DEF.modules.tasks.TaskList = Backbone.Marionette.CollectionView.extend({
 	childViewOptions: function() {
 		return {
 			template: this.options.template
-		}
+		};
 	},
 	onShow: function() {
 		if (!this.children.length)
-			this.$el.parent().parent().hide()
+			this.$el.parent().parent().hide();
 	}
-})
+});
 
 DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	template: require("./templates/task_view.html"),
@@ -168,7 +168,7 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 			parent_title: APP.Icon(parent.module) + " " + parent.get(parent.nameAttribute),
 			parent_link: parent.GetLink(),
 			path: this.model.GetPath()
-		}
+		};
 	},
 	ui: {
 		edit: "#edit",
@@ -184,7 +184,7 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		"change @ui.progress": "UpdateProgress",
 		"mouseup @ui.progress": "LogProgress",
 		"change @ui.progress_label": "UpdateProgressLabel",
-		"change @ui.progress_label": "LogProgress"
+		"change @ui.progress_label": "LogProgres"
 	},
 
 	/**
@@ -220,11 +220,11 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		if (label == 'Accepted' && !this.model.get('assigned_to'))
 			this.model.set({
 				assigned_to: U.id
-			})
+			});
 		if (label == 'Review') {
 			this.model.set({
 				assigned_to: this.model.get('_').created_by
-			})
+			});
 		}
 		this.model.set({
 			'progress': this.ui.progress.val(),
@@ -233,11 +233,11 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		if (!this.model.get('start_date'))
 			this.model.set({
 				start_date: Date.now()
-			})
+			});
 		if (this.ui.progress.val() == 100 || this.ui.progress.val() < 0)
 			this.model.set({
 				complete_date: Date.now()
-			})
+			});
 	},
 
 	/**
@@ -248,15 +248,15 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	UpdateProgressLabel: function() {
 		switch (this.ui.progress_label.val()) {
 			case "In Progress":
-				this.ui.progress.val(Math.max(5, this.ui.progress.val()))
+				this.ui.progress.val(Math.max(5, this.ui.progress.val()));
 				this.UpdateProgress();
 				break;
 			case "Review":
-				this.ui.progress.val(Math.max(80, this.ui.progress.val()))
+				this.ui.progress.val(Math.max(80, this.ui.progress.val()));
 				this.UpdateProgress();
 				break;
 			case "Complete":
-				this.ui.progress.val(Math.max(100, this.ui.progress.val()))
+				this.ui.progress.val(Math.max(100, this.ui.progress.val()));
 				this.UpdateProgress();
 				break;
 		}
@@ -265,9 +265,9 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		APP.LogEvent("tasks", this.model.id, "Task progress: " + this.model.get('progress') + "%", {
 			"progress": this.model.get('progress'),
 			"progress_label": this.model.get('progress_label')
-		})
+		});
 	}
-})
+});
 
 
 /**
@@ -307,19 +307,19 @@ DEF.modules.tasks.views = {
 			var models = APP.models.tasks.where({
 				parent_module: this.options.parent.module,
 				parent_id: this.options.parent.id
-			})
+			});
 
 			for (var m in models) {
 				var model = models[m];
 				var task_id = model.get('task_id');
-				instance = Math.max(instance, task_id.split('.').pop())
+				instance = Math.max(instance, task_id.split('.').pop());
 			}
 			instance++;
 
 			if (prefix)
 				return prefix + "." + instance;
 			else
-				return instance
+				return instance;
 		}
 	}),
 
@@ -342,49 +342,49 @@ DEF.modules.tasks.views = {
 				for (var s = 0; s < subs.length; s++) {
 					var sub = subs[s];
 					sum += (sub.get('progress') * sub.get('priority') / 100.0);
-					count += (sub.get('priority') / 100.0)
+					count += (sub.get('priority') / 100.0);
 				}
 				this.model.set({
 					subtasks: subs.length,
 					progress: sum / count,
 					progress_label: this.model.GetProgressLabel(sum / count)
-				})
+				});
 			} else if (this.model.get('subtasks')) {
 				this.model.set({
 					subtasks: 0
-				})
+				});
 			}
 		},
 		onShow: function() {
 			APP.SetTitle(this.model.get(this.model.nameAttribute));
-			this.model.IncStat("views")
+			this.model.IncStat("views");
 
 			var model_id = this.model.id;
 			this.showChildView('task', new DEF.modules.tasks.TaskDetails({
 				model: this.model,
-			}))
+			}));
 
 			this.showChildView('open', new DEF.modules.tasks.TaskList({
 				template: require("./templates/taskline.html"),
 				collection: APP.models.tasks,
 				filter: APP.models.tasks.filters.Open(this.model)
-			}))
+			}));
 
 			this.showChildView('closed', new DEF.modules.tasks.TaskList({
 				template: require("./templates/taskline_closed.html"),
 				collection: APP.models.tasks,
 				filter: APP.models.tasks.filters.Closed(this.model)
-			}))
+			}));
 			var comments = new DEF.modules.comments.Collection(this.model.get('comments'));
 			this.showChildView('comments', new DEF.modules.comments.Comments({
 				model: this.model,
 				collection: comments,
 				module: "tasks"
-			}))
+			}));
 
 		}
 	}),
-}
+};
 
 
 DEF.modules.tasks.MainView = Roadtrip.RecordList.extend({
@@ -395,7 +395,7 @@ DEF.modules.tasks.MainView = Roadtrip.RecordList.extend({
 	templateHelpers: function(x, y, z) {
 		return {
 			search: this.search,
-		}
+		};
 	},
 	ui: {
 		search: "#search",
@@ -420,4 +420,4 @@ DEF.modules.tasks.MainView = Roadtrip.RecordList.extend({
 		this.search = this.ui.search.val();
 		this.render();
 	},
-})
+});

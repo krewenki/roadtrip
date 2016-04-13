@@ -36,63 +36,52 @@ var config = {
 		publicPath: '/build/'
 	},
 	module: {
-		loaders: [
-			{
-				test: /\.js$/,
-				loader: 'babel',
-				exclude: [nodeModulesPath]
-			},
-			{
-				test: /\.(otf|eot|png|ico|svg|ttf|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-				loader: 'url?limit=8192'
-			},
-			{
-				test: /\.css$/,
-				loader: 'style!css'
-				},
-			{
-				test: /\.html$/,
-				loader: "underscore-template-loader"
-				},
-			{
-				test: /\.less$/,
-				loader: "style!css!less"
-			},
-			{
-				test: /\.scss$/,
-				loader: 'style!css!sass'
-    		},
-			{
-				test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-				loader: "file"
-			},
-			{
-				test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-				loader: "url?limit=10000&mimetype=image/svg+xml"
-			},
-			{
-				test: /\.md$/,
-				loader: "html!markdown"
-			},
-			{
-				test: /\.node$/,
-				loader: "node-loader"
-            }
-		]
+		loaders: [{
+			test: /\.js$/,
+			loader: 'babel',
+			exclude: [nodeModulesPath],
+			query: {
+				presets: ['es2015']
+			}
+		}, {
+			test: /\.(otf|eot|png|ico|svg|ttf|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+			loader: 'url?limit=8192'
+		}, {
+			test: /\.css$/,
+			loader: 'style!css'
+		}, {
+			test: /\.html$/,
+			loader: "underscore-template-loader"
+		}, {
+			test: /\.less$/,
+			loader: "style!css!less"
+		}, {
+			test: /\.scss$/,
+			loader: 'style!css!sass'
+		}, {
+			test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+			loader: "file"
+		}, {
+			test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+			loader: "url?limit=10000&mimetype=image/svg+xml"
+		}, {
+			test: /\.md$/,
+			loader: "html!markdown"
+		}, {
+			test: /\.node$/,
+			loader: "node-loader"
+		}]
 	},
 
 	// We have to manually add the Hot Replacement plugin when running
 	// from Node
-	plugins: [
-		new Webpack.HotModuleReplacementPlugin(),
-		new WebpackNotifierPlugin()
-	]
+	plugins: []
 };
 
 
 if (process.env.NODE_ENV == 'production') {
 	//    config.output.path = __dirname + '/dist';
-	config.entry = [mainPath]
+	config.entry = [mainPath];
 	config.plugins.push(new Webpack.optimize.UglifyJsPlugin({
 		sourceMap: false,
 		mangle: {
@@ -104,9 +93,10 @@ if (process.env.NODE_ENV == 'production') {
 			},
 			except: ['$', 'module', 'require', 'exports', '__webpack_require__']
 		}
-
 	}));
 } else {
+	config.plugins.push(new Webpack.HotModuleReplacementPlugin());
+	config.plugins.push(new WebpackNotifierPlugin());
 	// Makes sure errors in console map to the correct file
 	// and line number
 	config.devtool = 'source-map';

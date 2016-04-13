@@ -21,6 +21,7 @@ DEF.modules.comments.Comment = Backbone.Marionette.ItemView.extend({
 		}
 	}
 
+
 })
 
 DEF.modules.comments.Comments = Backbone.Marionette.CompositeView.extend({

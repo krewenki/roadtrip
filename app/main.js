@@ -34,19 +34,19 @@ var MainApp = Backbone.Marionette.Application.extend({
 		document.onmouseover = function() {
 			//User's mouse is inside the page. (This is working)
 			window.innerDocClick = true;
-		}
+		};
 		document.onmouseleave = function() {
 			//User's mouse has left the page. (this is working)
 			window.innerDocClick = false;
-		}
+		};
 		window.onhashchange = function() {
 			if (window.innerDocClick) {
 				// $("html, body").animate({
 				// 	scrollTop: 0
 				// }, 100);
-				window.scrollTo(0, 0)
+				window.scrollTo(0, 0);
 			}
-		}
+		};
 	},
 	SetTitle: function(title, module) {
 		document.title = title + " - roadtrip";
@@ -54,7 +54,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 			this.SetMode(module);
 	},
 	SetMode: function(mode) {
-		$("#HEADER #mainmenu .menuitem").removeClass('active')
+		$("#HEADER #mainmenu .menuitem").removeClass('active');
 		$("#HEADER #mainmenu .menuitem[data-mode=" + mode + "]").addClass('active');
 	},
 	/**
@@ -64,7 +64,9 @@ var MainApp = Backbone.Marionette.Application.extend({
 	 * @param  {string} cmd    "view", by default
 	 * @return {string}        <a href...
 	 */
-	GetLink: function(module, id, cmd = 'view') {
+	GetLink: function(module, id, cmd) {
+		if (!cmd)
+			cmd = "view";
 		var model = APP.models[module].get(id);
 		if (model)
 			return `<a href='#${module}/${cmd}/${id}'>` + APP.Icon(module) + " " + model.get(model.nameAttribute) + "</a>";
@@ -88,9 +90,9 @@ var MainApp = Backbone.Marionette.Application.extend({
 		//			location.hash = route;
 		//		}
 		APP.controller.router.navigate(route, {
-				trigger: trigger
-			})
-			//console.log(route, title);
+			trigger: trigger
+		});
+		//console.log(route, title);
 	},
 	/**
 	 * Create an event in the event log
@@ -139,7 +141,6 @@ var MainApp = Backbone.Marionette.Application.extend({
 		switch (icon) {
 			case 'loading':
 				return "<span class='loading'><i class='fa fa-refresh fa-spin'></i></span>";
-				break;
 			default:
 				if (this.Icon_Lookup[icon])
 					icon = this.Icon_Lookup[icon];
