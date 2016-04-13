@@ -18,6 +18,7 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 		this.set("image_url", gravatar.url(this.get('email'))); // cache the gravatar
 	},
 	defaults: {
+		initials: "abc",
 		name: "Joe",
 		email: "crap@fart.com",
 		phone: "",
