@@ -68,14 +68,11 @@ var hw = new Highway({
 		}
 	],
 	email: {
-			transporter: 'smtps://telegauge%40gmail.com:pass@smtp.gmail.com', // I guess we could use telegauge for now
+			transporter: 'smtps://krewenki%40gmail.com:rvbaveokrgpdfdda@smtp.gmail.com', // I guess we could use telegauge for now
 			messages: {
 				passwordReset: {
 					subject: 'Reset your roadtrip password',
-					template: './templates/email/password_reset.html', // pass a path, parse it when we need it
-					options: {
-						resetUrl: '/password-reset'
-					}
+					template: __dirname+'/templates/email/password_reset.html', // pass a path, parse it when we need it
 				}
 			}
 	}
