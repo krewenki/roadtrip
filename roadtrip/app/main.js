@@ -123,6 +123,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 		comments: "comments",
 		events: "sticky-note-o",
 		users: "user",
+		revisions: "code-fork",
 
 		edit: "pencil",
 		view: "search",
