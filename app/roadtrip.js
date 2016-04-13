@@ -210,8 +210,8 @@ window.Roadtrip = {
 		 * @return {string} A Unique ID
 		 */
 		GetID: function() {
-			if (this.model.id)
-				return this.model.id; // the ID has  already been generated
+			if (this.id)
+				return this.id; // the ID has  already been generated
 			return this.get('_id');
 		}
 	}),
