@@ -104,7 +104,10 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 		else
 			rank = 0.0 - (m.get('progress')) - m.get('priority') - m.get('_').views / 10 - m.get('subtasks');
 		if (m.get('kind') == 'bug')
-			rank *= 1.5 + 10;
+			rank *= 1.5 + 10; // give a boost to bugs
+		if (m.get('assigned_to') == U.get('_id')) {
+			rank *= 1.2; // give a boost if the task is assigned to you
+		}
 		return rank;
 	},
 	/**
@@ -217,7 +220,7 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	 * @return {[type]}   [description]
 	 */
 	UpdateProgress: function(label) {
-		var label = this.model.GetProgressLabel(this.ui.progress.val());
+		label = this.model.GetProgressLabel(this.ui.progress.val());
 		this.ui.progress_label.val(label);
 		if (label == 'Accepted' && !this.model.get('assigned_to'))
 			this.model.set({

@@ -137,9 +137,10 @@ var MainApp = Backbone.Marionette.Application.extend({
 	 * @param  {string} title Tooltip title
 	 * @return {string}       <i...>
 	 */
-	Icon: function(icon, title) {
+	Icon: function(icon, title = icon) {
 		if (icon.substring(0, 4) == "http")
 			return "<img class='icon' src='" + icon + "'>";
+
 		switch (icon) {
 			case 'loading':
 				return "<span class='loading'><i class='fa fa-refresh fa-spin'></i></span>";
@@ -147,7 +148,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 				if (this.Icon_Lookup[icon])
 					icon = this.Icon_Lookup[icon];
 		}
-		return "<i " + (title ? "title='" + title + "'" : "title='" + icon + "'") + " class='icon fa fa-" + icon + "'></i>";
+		return "<i title='" + title + "' class='icon fa fa-" + icon + "'></i>";
 	},
 	_UpdateTaskID: function() {
 		for (let model of APP.models.tasks.filter({
@@ -382,7 +383,7 @@ APP.Format = {
 	 */
 	markdown: require('marked'),
 	htmlentities: function(str) {
-    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+		return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 	}
 };
 

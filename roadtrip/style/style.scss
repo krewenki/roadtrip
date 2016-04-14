@@ -38,6 +38,13 @@ body {
     #collection_list {
         float     : right;
         text-align: right;
+
+        .collection_count {
+            float        : right;
+            xwidth       : 60px;
+            white-space  : nowrap;
+            padding-right: 15px;
+        }
     }
 }
 

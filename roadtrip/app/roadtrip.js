@@ -72,9 +72,19 @@ window.Roadtrip = {
 			}
 		},
 		initialize: function() {
-			this.listenToOnce(this, "sync", this.Synced, this);
+			console.log(this.url);
+			this.listenTo(this, "sync", this.UpdateFooterCount, this);
+			this.listenTo(this, "add", this.UpdateFooterCount, this);
+			this.listenTo(this, "remove", this.UpdateFooterCount, this);
+		},
+		UpdateFooterCount: function() {
+			var module = this.at(0).module;
+			//console.log(module, this.length)
+
+			$("#FOOTER #" + module + "_count").html(this.length);
 		},
 		Synced: function(x, y, z) {
+			console.log(this.module);
 			APP.trigger("collection:sync");
 		}
 	}),
@@ -116,11 +126,13 @@ window.Roadtrip = {
 						changed = true;
 					}
 				}.bind(this));
-				if (changed)
+				if (changed) {
 					APP.LogEvent(this.module, this.id, "Edited " + Object.keys(save).join(", "), {
 						old: orig,
 						new: save
 					});
+					console.info("Edited", orig, save);
+				}
 
 			}
 
