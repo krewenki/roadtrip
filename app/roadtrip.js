@@ -78,12 +78,11 @@ window.Roadtrip = {
 		},
 		UpdateFooterCount: function() {
 			var module = this.at(0).module;
-			$("#FOOTER #" + module + "_count").html(this.length);
+			$("#FOOTER #" + module + "_count").html(this.length).addClass("new");
+			setTimeout(function() {
+				$("#FOOTER #" + module + "_count").removeClass("new");
+			}, 200);
 		},
-		Synced: function(x, y, z) {
-			console.log(this.module);
-			APP.trigger("collection:sync");
-		}
 	}),
 	Model: Backbone.Model.extend({
 		idAttribute: '_id',

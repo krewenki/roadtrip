@@ -41,9 +41,12 @@ body {
 
         .collection_count {
             float        : right;
-            xwidth       : 60px;
             white-space  : nowrap;
             padding-right: 15px;
+
+            .new {
+                color: white;
+            }
         }
     }
 }
