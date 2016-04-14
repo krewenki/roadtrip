@@ -107,7 +107,8 @@ window.Roadtrip = {
 				edits: 0
 			}
 		},
-		set: function(key, val, options) {
+		// disabled per #1.38
+		Xset: function(key, val, options) {
 			var orig = {},
 				save = {},
 				data = {},
