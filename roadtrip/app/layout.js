@@ -53,7 +53,7 @@ DEF.FooterLayout = Backbone.Marionette.ItemView.extend({
 		collections: "#collection_list"
 	},
 	initialize: function() {
-		this.listenTo(APP, "collection:sync", this.render)
+		this.listenTo(APP, "collection:sync", this.render);
 	},
 	onRender: function() {
 		var html = [],
