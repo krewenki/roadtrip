@@ -2,7 +2,7 @@
 	<%= revision %>
 </td>
 <td>
-	<%= APP.models.repositories(repository).LookupUser(author) %>
+	<%= APP.models.repositories.get(repository).LookupUser(author) %>
 </td>
 <td>
 	<%= log %>
