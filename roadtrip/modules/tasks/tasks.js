@@ -214,6 +214,9 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		});
 		APP.root.showChildView('main', page);
 	},
+	onBeforeShow: function() {
+		this.model.UpdateTaskProgress();
+	},
 
 	/**
 	 * Someone drug the progress handle, so update stuff

@@ -203,26 +203,7 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 		"click @ui.wiki": "Wiki"
 	},
 	onBeforeShow: function() {
-		var subs = APP.models.tasks.where({
-			parent_id: this.model.get('_id')
-		});
-		if (subs.length > 0) {
-			var sum = 0,
-				count = 0;
-			for (var s = 0; s < subs.length; s++) {
-				var sub = subs[s];
-				sum += (sub.get('progress') * sub.get('priority') / 100.0);
-				count += (sub.get('priority') / 100.0);
-			}
-			var progress = sum / count;
-			if (progress != this.model.get('progress')) {
-				console.log("Progress automatically set to ", progress, this.model.get('progress'));
-				this.model.set({
-					tasks: subs.length,
-					progress: progress,
-				});
-			}
-		}
+		this.model.UpdateProgress();
 	},
 	onShow: function() {
 		this.model.IncStat("views");
