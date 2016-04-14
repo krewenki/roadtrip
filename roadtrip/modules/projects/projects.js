@@ -203,7 +203,7 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 		"click @ui.wiki": "Wiki"
 	},
 	onBeforeShow: function() {
-		this.model.UpdateProgress();
+		this.model.UpdateTaskProgress();
 	},
 	onShow: function() {
 		this.model.IncStat("views");
