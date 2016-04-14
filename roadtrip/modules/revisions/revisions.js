@@ -18,6 +18,7 @@ DEF.modules.revisions.Model = Roadtrip.Model.extend({
 	defaults: {
 
 		revision: 0,
+		repository: '56fe9a014b88de4618e306c7',
 		author: '',
 		log: '',
 		diff: '',
