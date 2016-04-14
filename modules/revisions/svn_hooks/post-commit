@@ -13,12 +13,12 @@ var child = execFile('/usr/bin/svnlook', ['log', repo, '--revision', revision], 
   if (error) {
     throw error;
   }
-	const log = stdout;
+	const log = stdout.trim();
 	var child = execFile('/usr/bin/svnlook', ['author', repo, '--revision', revision], (error, stdout, stderr) => {
 		if(error){
 			throw error;
 		}
-		const author = stdout;
+		const author = stdout.trim();
 		const child = execFile('/usr/bin/svnlook', ['diff', repo, '--revision', revision], (error, stdout, stderr) => {
 			const diff = stdout;
 			const child = execFile('/usr/bin/svnlook', ['date', repo, '--revision', revision], (error, stdout, stderr) => {
