@@ -36,6 +36,7 @@ proxy.on('error', function (e) {
 	console.log('Could not connect to proxy, please try again...');
 });
 
+app.set('host', isProduction ? process.env.HOST : 'localhost');
 app.listen(port, function () {
 	console.log('Server running on port ' + port);
 });
