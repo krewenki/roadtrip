@@ -391,7 +391,7 @@ DEF.modules.tasks.views = {
 			this.showChildView('revisions', new DEF.modules.revisions.MainView({
 				collection: APP.models.revisions,
 				filter: function(r) {
-					return r.get('log').indexOf('#' + task_id) > -1;
+					return r.get('task_id') == task_id;
 				},
 			}));
 

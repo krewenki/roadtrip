@@ -66,7 +66,6 @@ DEF.modules.revisions.views = {
 				var filename;
 				var isEmpty = true;
 				var files = {};
-				console.log(diff)
 				diff.split("\n").forEach(function(line, i) {
 
 					// Unmerged paths, and possibly other non-diffable files
