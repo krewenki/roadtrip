@@ -53,23 +53,24 @@ DEF.FooterLayout = Backbone.Marionette.ItemView.extend({
 		collections: "#collection_list"
 	},
 	initialize: function() {
-		this.listenTo(APP, "collection:sync", this.render);
+		//this.listenTo(APP, "collection:sync", this.render);
 	},
 	onRender: function() {
-		var html = [],
-			total = 0;
-		var collections = Object.keys(APP.models);
-		for (var c = 0; c < collections.length; c++) {
-			var module = collections[c];
-			var count = APP.models[module].length;
-			if (count)
-				html.push(module + ": " + APP.Format.number(count));
-			total += count;
-
-		}
-		this.ui.collections.html("Total Records: " + APP.Format.number(total) + " &vellip; " + html.join(' &bull; '));
+		// debugger
+		// var html = [],
+		// 	total = 0;
+		// var collections = Object.keys(APP.models);
+		// for (var c = 0; c < collections.length; c++) {
+		// 	var module = collections[c];
+		// 	var count = APP.models[module].length;
+		// 	if (count)
+		// 		html.push(module + ": " + APP.Format.number(count));
+		// 	total += count;
+		//
+		// }
+		// this.ui.collections.html("Total Records: " + APP.Format.number(total) + " &vellip; " + html.join(' &bull; '));
 	}
-})
+});
 
 // Layout Header View
 // ------------------

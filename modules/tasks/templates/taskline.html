@@ -5,7 +5,7 @@
 	<%=APP.Icon(kind, kind)%>
 		<%=task%>
 </td>
-<td>
+<td title='progress (<%=progress%>%)'>
 	<!-- <div class="meter">
 		<span style="width: <%=progress%>%"></span>
 	</div> -->
@@ -14,21 +14,21 @@
 		<%=progress%>
 	</progress>
 </td>
-<td align=center class='nowrap minwidth800'>
+<td title='priority' align='right' class='nowrap minwidth800'>
+	<%=priority%>
+</td>
+<td title='subtasks' align=center class='nowrap minwidth800'>
 	<%=subtasks%>
 </td>
-<td align=center class='nowrap minwidth800'>
+<td title='created by' class='nowrap minwidth1000'>
+	<%=APP.GetLink("users", _.created_by)%>
+</td>
+<td title='assigned to' class='nowrap minwidth1000'>
+	<%=APP.GetLink("users", assigned_to)%>
+</td>
+<td align=center title='views' class='nowrap minwidth1000'>
 	<%=_.views%>
 </td>
-<td align=center class='nowrap minwidth800'>
+<td align=center title='edits' class='nowrap minwidth1000'>
 	<%=_.edits%>
-</td>
-<td class='nowrap minwidth1000'>
-	<%=_.created_by? (APP.models.users.get(_.created_by)?APP.models.users.get(_.created_by).Link():"??" ):"--"%>
-</td>
-<td class='nowrap minwidth1000'>
-	<%=assigned_to? (APP.models.users.get(assigned_to)?APP.models.users.get(assigned_to).Link():"??") :"--"%>
-</td>
-<td align='right' class='nowrap minwidth1000'>
-	<%=priority%>
 </td>
