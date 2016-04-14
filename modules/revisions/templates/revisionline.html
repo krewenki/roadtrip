@@ -1,9 +1,15 @@
-<td>
+<td class='important'>
 	<%= revision %>
 </td>
-<td>
-	<%= APP.models.repositories.get(repository).LookupUser(author) %>
+<td class='nowrap'>
+	<!--APP.models.repositories.get(repository).LookupUser(author) -->
+
+	<!-- TODO: See #1.15.2  - the column in our database, by definitions, should hold a user_id, not a repo id of a user -->
+	<%=APP.GetLink("users",  APP.models.repositories.get(repository).LookupUser(author))%>
 </td>
 <td>
 	<%= APP.Format.htmlentities(log) %>
+</td>
+<td class='nowrap'>
+	<%= APP.Format.datetime(datetime)%>
 </td>
