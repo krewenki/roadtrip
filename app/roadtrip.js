@@ -226,7 +226,7 @@ window.Roadtrip = {
 			stats[stat] = (stats[stat] + 1) || 1;
 			this.set({
 				_: stats
-			})
+			});
 			this.trigger('change', this); // manually trigger a change, because Highway
 		},
 		/**
@@ -237,7 +237,42 @@ window.Roadtrip = {
 			if (this.id)
 				return this.id; // the ID has  already been generated
 			return this.get('_id');
-		}
+		},
+
+		/**
+		 * Theoretically, all modules cna support sub-tasks, so this is now at the module level.
+		 * What it does is it looks for all the subtasks that have this model as a parent, and
+		 * averages their progress, to determine this model's progress.  IF this model has subtasks,
+		 * that is.
+		 * @return null
+		 */
+		UpdateTaskProgress: function() {
+			var subs = APP.models.tasks.where({
+				parent_id: this.id
+			});
+			if (subs.length > 0) {
+				var sum = 0,
+					count = 0;
+				for (var s = 0; s < subs.length; s++) {
+					var sub = subs[s];
+					if (sub.get('progress_label') != 'Rejected') {
+						sum += (sub.get('progress') * sub.get('priority') / 100.0);
+						count += (sub.get('priority') / 100.0);
+					}
+				}
+				var progress = sum / count;
+				progress = Number(progress.toFixed(2));
+				if (progress != this.get('progress')) {
+					console.log("Progress automatically set to ", progress, this.get('progress'));
+					this.set({
+						tasks: subs.length,
+						progress: progress,
+					});
+				}
+			}
+
+		},
+
 	}),
 	MainView: Backbone.Marionette.LayoutView.extend({
 
