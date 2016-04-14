@@ -214,9 +214,6 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		});
 		APP.root.showChildView('main', page);
 	},
-	onBeforeShow: function() {
-		this.model.UpdateTaskProgress();
-	},
 
 	/**
 	 * Someone drug the progress handle, so update stuff
@@ -343,27 +340,7 @@ DEF.modules.tasks.views = {
 			revisions: "#revisions_container"
 		},
 		onBeforeShow: function() {
-			var subs = APP.models.tasks.where({
-				parent_id: this.model.id
-			});
-			if (subs.length > 0) {
-				var sum = 0,
-					count = 0;
-				for (var s = 0; s < subs.length; s++) {
-					var sub = subs[s];
-					sum += (sub.get('progress') * sub.get('priority') / 100.0);
-					count += (sub.get('priority') / 100.0);
-				}
-				this.model.set({
-					subtasks: subs.length,
-					progress: sum / count,
-					progress_label: this.model.GetProgressLabel(sum / count)
-				});
-			} else if (this.model.get('subtasks')) {
-				this.model.set({
-					subtasks: 0
-				});
-			}
+			this.model.UpdateTaskProgress();
 		},
 		onShow: function() {
 			APP.SetTitle(this.model.get(this.model.nameAttribute));
@@ -397,7 +374,14 @@ DEF.modules.tasks.views = {
 			this.showChildView('revisions', new DEF.modules.revisions.MainView({
 				collection: APP.models.revisions,
 				filter: function(r) {
-					return r.get('log').indexOf('#' + task_id) > -1;
+					if (r.get('task_id') == task_id) { // the fast way
+						return true;
+					} else { // the old way didn't have task_id in the revision records, oddly
+						var match = r.get('log').match(/#[\d.]+/); // so go do a regexpr
+						if (match) // and see if anything at all matches
+							return match.indexOf('#' + task_id) > -1;
+					}
+					return false;
 				},
 			}));
 
