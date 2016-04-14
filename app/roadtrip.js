@@ -72,15 +72,12 @@ window.Roadtrip = {
 			}
 		},
 		initialize: function() {
-			console.log(this.url);
 			this.listenTo(this, "sync", this.UpdateFooterCount, this);
 			this.listenTo(this, "add", this.UpdateFooterCount, this);
 			this.listenTo(this, "remove", this.UpdateFooterCount, this);
 		},
 		UpdateFooterCount: function() {
 			var module = this.at(0).module;
-			//console.log(module, this.length)
-
 			$("#FOOTER #" + module + "_count").html(this.length);
 		},
 		Synced: function(x, y, z) {
