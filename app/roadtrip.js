@@ -7,9 +7,19 @@ window.Roadtrip = {
 		module: "module", // override, of course.
 		collections: [], // list collections required for this module
 		routes: {},
+		/**
+		 * This is a clever function that looks at a list of collections that must be present.
+		 * If all collections in the list have been sync'd, the Route continues, otherwise, it
+		 * flashes an empty view, while waiting for a collection to sync.  It uses the
+		 * "GetMissingCollections" function, which it calls until it returns false.
+		 * @param  {Function} callback [description]
+		 * @param  {[type]}   args     [description]
+		 * @param  {[type]}   name     [description]
+		 * @return {[type]}            [description]
+		 */
 		execute: function(callback, args, name) {
 			var module = this.module;
-			var missing = this.missing_collections();
+			var missing = this.GetMissingCollections();
 			if (missing === false) {
 				return Backbone.Router.prototype.execute.call(this, callback, args, name);
 			} else {
@@ -24,7 +34,7 @@ window.Roadtrip = {
 		/**
 		 * returns the name of a missing collection, or FALSE if they are all loaded
 		 */
-		missing_collections: function() {
+		GetMissingCollections: function() {
 			if (this.collections.length === 0)
 				this.collections = [this.module];
 			for (var c = 0; c < this.collections.length; c++) {
@@ -78,10 +88,13 @@ window.Roadtrip = {
 		},
 		UpdateFooterCount: function() {
 			var module = this.at(0).module;
-			$("#FOOTER #" + module + "_count").html(this.length).addClass("new");
-			setTimeout(function() {
-				$("#FOOTER #" + module + "_count").removeClass("new");
-			}, 200);
+			var $el = $("#FOOTER #" + module + "_count");
+			if ($el.html() != this.length) { // check for sync in case this is just a "update from server event"
+				$el.html(this.length).addClass("new"); // add a flash
+				setTimeout(function() { // clear the flash
+					$el.removeClass("new");
+				}, 200);
+			}
 		},
 	}),
 	Model: Backbone.Model.extend({
