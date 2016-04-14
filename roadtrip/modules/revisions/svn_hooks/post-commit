@@ -26,8 +26,13 @@ var child = execFile('/usr/bin/svnlook', ['log', repo, '--revision '+rev], (erro
 			const diff = stdout;
 			const child = execFile('/usr/bin/svnlook', ['date', repo, '--revision '+rev], (error, stdout, stderr) => {
 				const datetime = new Date(stdout.slice(0, 19)).getTime();
+        var tasks = log.match(/(#[0-9.]*)/ig)
+        var task_id = '';
+        if(tasks.length > 0){
+          task_id = tasks[0].replace('#','');
+        }
 				// Now I need to post it all to roadtrip
-				request.post('http://dev.telegauge.com:3000/roadtrip/revisions', {json:{revision: process.argv[3], log:log, author:author, diff: diff, datetime: datetime, repository: '56fe9a014b88de4618e306c7' }})
+				request.post('http://dev.telegauge.com:3000/roadtrip/revisions', {json:{revision: process.argv[3], log:log, author:author, diff: diff, datetime: datetime, repository: '56fe9a014b88de4618e306c7', task_id: task_id }})
 
 				// Tell slack after we tell roadtrip
 				url = "https://telegauge.slack.com/services/hooks/subversion?token="+slack_token;
