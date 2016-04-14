@@ -114,4 +114,4 @@ DEF.modules.expenses.MainView = Roadtrip.RecordList.extend({
 		APP.root.showChildView('main', page);
 	}
 
-})
+});
