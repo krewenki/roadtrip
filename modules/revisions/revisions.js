@@ -22,6 +22,7 @@ DEF.modules.revisions.Model = Roadtrip.Model.extend({
 		author: '',
 		log: '',
 		diff: '',
+		datetime: Date.now(),
 		comments: [],
 
 		_: {

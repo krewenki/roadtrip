@@ -380,7 +380,10 @@ APP.Format = {
 	 * @param  {text} 'marked' Markdown formatted text
 	 * @return {html}          HTML formatted text
 	 */
-	markdown: require('marked')
+	markdown: require('marked'),
+	htmlentities: function(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+	}
 };
 
 
