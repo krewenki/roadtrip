@@ -341,6 +341,8 @@ APP.Format = {
 	 * @return {string}     $5.50
 	 */
 	money: function(val) {
+		if (U.get("is_anonymous"))
+			return "<span class='notallowed'>" + APP.Icon("eye-slash", "You do not have permission to view money") + "</span>";
 		val = Number(val);
 		var sign = "zero";
 		if (val < 0)
