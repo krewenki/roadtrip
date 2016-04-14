@@ -1,0 +1,38 @@
+<table class='table table-full table-left'>
+	<tr>
+		<th>Date/Time</th>
+		<td>
+			<%=APP.Format.datetime(datetime)%>
+		</td>
+	</tr>
+
+	<tr>
+		<th>User</th>
+		<td>
+			<%=APP.GetLink("users", user_id)%>
+		</td>
+	</tr>
+
+	<tr>
+		<th>Model</th>
+		<td>
+			<%=APP.GetLink(module, module_id)%>
+		</td>
+	</tr>
+
+
+	<tr>
+		<th>Extras</th>
+		<td>
+			<%=JSON.stringify(extras)%>
+		</td>
+	</tr>
+	<tr>
+		<th colspan=2 class='header_wide'>Event</th>
+	</tr>
+	<tr>
+		<td>
+			<%=event%>
+		</td>
+	</tr>
+</table>

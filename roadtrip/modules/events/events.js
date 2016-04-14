@@ -21,10 +21,10 @@ DEF.modules.events.Model = Roadtrip.Model.extend({
 		event: false,
 		user_id: false,
 		module: false,
-		moddule_id: false
+		module_id: false
 	}
 });
-DEF.modules.events.Collection = Backbone.Highway.Collection.extend({
+DEF.modules.events.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.events.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/events',
 	comparator: function(m) {
@@ -47,3 +47,10 @@ DEF.modules.events.MainView = Roadtrip.RecordList.extend({
 		APP.SetTitle("Events", "events");
 	}
 });
+
+DEF.modules.events.views = {
+	view: Roadtrip.View.extend({
+		module: "events",
+		template: require("./templates/view.html"),
+	})
+};

@@ -86,13 +86,13 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 	},
 });
 
-DEF.modules.users.Collection = Backbone.Highway.Collection.extend({
+DEF.modules.users.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.users.Model,
 	url: 'dev.telegauge.com:3000/roadtrip/users',
 	initialize: function() {
 		console.log("users");
-		this.listenTo(this, "sync", this.UpdateUserTaskCount)
-		this.listenTo(APP.models.tasks, "change:assigned_to change:progress_label", this.UpdateUserTaskCount)
+		this.listenTo(this, "sync", this.UpdateUserTaskCount);
+		this.listenTo(APP.models.tasks, "change:assigned_to change:progress_label", this.UpdateUserTaskCount);
 	},
 	UpdateUserTaskCount: function() {
 		if (U) {
@@ -130,10 +130,10 @@ DEF.modules.users.views = {
 				template: require("./templates/taskline.html"),
 				collection: APP.models.tasks,
 				filter: APP.models.tasks.filters.Assigned(this.model)
-			}))
+			}));
 		}
 	})
-}
+};
 
 DEF.modules.users.RecordLine = Roadtrip.RecordLine.extend({
 	tagName: "tr",
