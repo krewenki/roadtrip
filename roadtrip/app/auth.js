@@ -6,10 +6,10 @@ if (document.cookie == '') {
 		return s.split('=')
 	});
 	var cookie = {
-		user: false
+		user: APP.anon
 	};
 	for (var i in co) {
-		cookie[co[i][0].trim()] = decodeURIComponent(co[i][1]);
+		cookie[co[i][0].trim()] = co[i][1];
 	}
 
 	// We need to conveniently store the user.
@@ -20,12 +20,12 @@ if (document.cookie == '') {
 		is_anonymous: true
 	})
 	APP.models.users.once('sync', function() {
-		var user = JSON.parse(cookie.user);
+		var user = cookie.user;
 
-		window.U = APP.models.users.get(user._id); // assign 0 to the U.
+		window.U = APP.models.users.get(user); // assign 0 to the U.
 		APP.trigger("auth_user")
 		window.U.set({
 			last_login: Date.now()
-		})
+		}, {trigger: false})
 	}, this)
 }
