@@ -136,7 +136,7 @@ window.Roadtrip = {
 						changed = true;
 					}
 				}.bind(this));
-				if (changed) {
+				if (changed && !this._remoteChanging) {
 					APP.LogEvent(this.module, this.id, "Edited " + Object.keys(save).join(", "), {
 						old: orig,
 						new: save
