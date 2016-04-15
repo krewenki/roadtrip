@@ -113,7 +113,7 @@ window.Roadtrip = {
 				save = {},
 				data = {},
 				changed = false;
-			if (this.id) {
+			if (this.id && !this._remoteChanging) {
 				if (_.isObject(key)) {
 					data = key;
 				} else {
@@ -136,7 +136,7 @@ window.Roadtrip = {
 						changed = true;
 					}
 				}.bind(this));
-				if (changed && !this._remoteChanging) {
+				if (changed) {
 					APP.LogEvent(this.module, this.id, "Edited " + Object.keys(save).join(", "), {
 						old: orig,
 						new: save
