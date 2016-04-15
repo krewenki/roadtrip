@@ -64,6 +64,10 @@ body {
 
     &.small {
         min-height: 20px;
+        position  : fixed;
+        top       : 0;
+        left      : 0;
+        right     : 0;
 
         #topline {
             #title {
@@ -283,6 +287,10 @@ body {
     padding         : 20px;
     background-color: white;
     overflow-y      : hidden;
+
+    &.smallmenu {
+        padding-top: 175px;
+    }
 
     h1 {
         font-size: 20px;

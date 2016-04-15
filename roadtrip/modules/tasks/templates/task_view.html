@@ -93,16 +93,22 @@
 
 									</datalist>
 									<% } else { %>
+										<input id='progress' value='<%=progress%>' type='hidden'>
 										<progress value='<%=progress%>' min=0 max=100>
 											<% } %>
 							</td>
 							<td width="150px" id=''>
-								<select id='state'>
-									<%
+								<% if (subtasks>0 ) { %>
+									<input type='hidden' id='state' value='<%=state%>'>
+									<%=state%>
+										<% } else {%>
+											<select id='state'>
+												<%
 									for (var label in states)
 										print("<option " + (state==label ? "selected": "")+" value='"+label+"'>"+label+"</option>");
 										%>
-								</select>
+											</select>
+											<% } %>
 							</td>
 						</tr>
 					</table>
