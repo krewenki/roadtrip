@@ -49,7 +49,8 @@ DEF.modules.projects.Router = Roadtrip.Router.extend({
 	],
 	initialize: function() {
 		APP.models.projects = new DEF.modules.projects.Collection();
-		APP.models.tasks = new DEF.modules.tasks.Collection();
+		if(!APP.models.tasks)
+			APP.models.tasks = new DEF.modules.tasks.Collection();
 	},
 	routes: {
 		"projects": "ShowRoot",
