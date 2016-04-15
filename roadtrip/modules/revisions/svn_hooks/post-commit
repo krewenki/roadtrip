@@ -29,11 +29,11 @@ var child = execFile('/usr/bin/svnlook', ['log', repo, '--revision', revision], 
           task_id = tasks[0].replace('#','');
         }
 				// Now I need to post it all to roadtrip
-				request.post('http://dev.telegauge.com:3000/roadtrip/revisions', {json:{revision: process.argv[3], log:log, author:author, diff: diff, datetime: datetime, repository: '56fe9a014b88de4618e306c7', task_id: task_id }})
+				request.post('http://dev.telegauge.com:3456/roadtrip/revisions', {json:{revision: process.argv[3], log:log, author:author, diff: diff, datetime: datetime, repository: '56fe9a014b88de4618e306c7', task_id: task_id }})
 
 				// Tell slack after we tell roadtrip
 				url = "https://telegauge.slack.com/services/hooks/subversion?token="+slack_token;
-				request.post(url, {form: { payload: JSON.stringify( {log: log.trim(), author: author.trim(), revision: process.argv[3], url: 'http://dev.telegauge.com:3000/#revisions/view/'+process.argv[3] }) } });
+				request.post(url, {form: { payload: JSON.stringify( {log: log.trim(), author: author.trim(), revision: process.argv[3], url: 'http://dev.telegauge.com:3456/#revisions/view/'+process.argv[3] }) } });
 
 			});
 		});

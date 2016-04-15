@@ -65,7 +65,7 @@ DEF.modules.expenses.Model = Roadtrip.Model.extend({
 });
 DEF.modules.expenses.Collection = Backbone.Highway.Collection.extend({
 	model: DEF.modules.expenses.Model,
-	url: 'dev.telegauge.com:3000/roadtrip/expenses',
+	url: 'dev.telegauge.com:3456/roadtrip/expenses',
 });
 
 
