@@ -397,7 +397,29 @@ APP.Format = {
 	}
 };
 
+APP.util = {
+	DeleteField: function(collection, field) {
 
+	},
+	RenameField: function(collection, old_name, new_name) {
+		collection.each(function(m) {
+			var set = {};
+			set[new_name] = m.get(old_name);
+			console.log(m.id, set);
+			m.set(set);
+		});
+		APP.util.DeleteField(collection, field);
+	}
+};
+
+
+/*
+███    ███  █████  ██ ███    ██
+████  ████ ██   ██ ██ ████   ██
+██ ████ ██ ███████ ██ ██ ██  ██
+██  ██  ██ ██   ██ ██ ██  ██ ██
+██      ██ ██   ██ ██ ██   ████
+*/
 APP.on('before:start', function() {
 	APP.SetUpScrollToTop();
 	APP.setRootLayout();
