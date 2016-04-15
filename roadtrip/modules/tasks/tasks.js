@@ -45,7 +45,7 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		comments: [],
 
 		progress: 0, // scale 0..100
-		progress_label: "New", // this is autoatically calculated based on progress slider
+		state: "New", // this is autoatically calculated based on progress slider
 		priority: 1, // scale 1..100
 
 		_: {
@@ -54,6 +54,14 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 			created_by: APP.anon
 		}
 
+	},
+	States: {
+		"Rejected": -1,
+		"New": 0,
+		"Accepted": 1,
+		"In Progresss": 5,
+		"Review": 80,
+		"Complete": 100
 	},
 	/**
 	 * Returns the (html) path for this task, by recursively following it's parents
@@ -77,19 +85,11 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 	 * @return {[type]}     human readable text
 	 */
 	GetProgressLabel: function(val) {
-		if (!val)
-			val = this.get('progress');
-		var label = "New";
-		if (val < 0)
-			label = "Rejected";
-		if (val > 0)
-			label = "Accepted";
-		if (val > 5)
-			label = "In Progress";
-		if (val >= 80)
-			label = "Review";
-		if (val == 100)
-			label = "Complete";
+		var label = "who fuckin knows?";
+		for (var state in this.States) {
+			if (val >= this.States[state])
+				label = state;
+		}
 		return label;
 	},
 });
@@ -172,7 +172,8 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		return {
 			parent_title: APP.Icon(parent.module) + " " + parent.get(parent.nameAttribute),
 			parent_link: parent.GetLink(),
-			path: this.model.GetPath()
+			path: this.model.GetPath(),
+			states: this.model.States
 		};
 	},
 	ui: {
@@ -180,7 +181,7 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		subtask: "#subtask",
 		subtasks: "#subtasks",
 		progress: "#progress",
-		progress_label: "#progress_label"
+		state: "#state"
 	},
 	events: {
 		"click @ui.edit": "Edit",
@@ -188,8 +189,7 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		//"input @ui.progress": "UpdateProgress",
 		"change @ui.progress": "UpdateProgress",
 		"mouseup @ui.progress": "LogProgress",
-		"change @ui.progress_label": "UpdateProgressLabel",
-		"change @ui.progress_label": "LogProgres"
+		"change @ui.state": "UpdateProgressLabel",
 	},
 
 	/**
@@ -219,9 +219,9 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	 * Someone drug the progress handle, so update stuff
 	 * @return {[type]}   [description]
 	 */
-	UpdateProgress: function(label) {
-		label = this.model.GetProgressLabel(this.ui.progress.val());
-		this.ui.progress_label.val(label);
+	UpdateProgress: function() {
+		var label = this.model.GetProgressLabel(this.ui.progress.val());
+		this.ui.state.val(label);
 		if (label == 'Accepted' && !this.model.get('assigned_to'))
 			this.model.set({
 				assigned_to: U.id
@@ -233,44 +233,34 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		}
 		this.model.set({
 			'progress': this.ui.progress.val(),
-			'progress_label': label
+			'state': label
 		});
 		if (!this.model.get('start_date'))
 			this.model.set({
 				start_date: Date.now()
 			});
-		if (this.ui.progress.val() == 100 || this.ui.progress.val() < 0)
+		if (this.ui.progress.val() == 100 || this.ui.progress.val() < 0) {
+			APP.LogEvent("tasks", this.model.id, "Task completed.");
 			this.model.set({
 				complete_date: Date.now(),
 				completed_by: U.id
 			});
+		}
 	},
 
 	/**
-	 * When someone changes the progress_label, do a few actions, such as automatically set progress,
+	 * When someone changes the state, do a few actions, such as automatically set progress,
 	 * before calling the UpdateProgress function, which does more automated actions.
 	 * @return null
 	 */
 	UpdateProgressLabel: function() {
-		switch (this.ui.progress_label.val()) {
-			case "In Progress":
-				this.ui.progress.val(Math.max(5, this.ui.progress.val()));
-				this.UpdateProgress();
-				break;
-			case "Review":
-				this.ui.progress.val(Math.max(80, this.ui.progress.val()));
-				this.UpdateProgress();
-				break;
-			case "Complete":
-				this.ui.progress.val(Math.max(100, this.ui.progress.val()));
-				this.UpdateProgress();
-				break;
-		}
+		this.ui.progress.val(Math.max(this.model.States[this.ui.state.val()], this.ui.progress.val()));
+		this.UpdateProgress();
 	},
 	LogProgress: function() {
 		APP.LogEvent("tasks", this.model.id, "Task progress: " + this.model.get('progress') + "%", {
 			"progress": this.model.get('progress'),
-			"progress_label": this.model.get('progress_label')
+			"state": this.model.get('state')
 		});
 	}
 });

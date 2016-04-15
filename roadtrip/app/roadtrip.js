@@ -225,6 +225,7 @@ window.Roadtrip = {
 		IncStat: function(stat) {
 			var stats = this.get('_') || {};
 			stats[stat] = (stats[stat] + 1) || 1;
+			stats["last_" + stat] = Date.now();
 			this.set({
 				_: stats
 			});
@@ -256,7 +257,7 @@ window.Roadtrip = {
 					count = 0;
 				for (var s = 0; s < subs.length; s++) {
 					var sub = subs[s];
-					if (sub.get('progress_label') != 'Rejected') {
+					if (sub.get('state') != 'Rejected') {
 						sum += (sub.get('progress') * sub.get('priority') / 100.0);
 						count += (sub.get('priority') / 100.0);
 					}
@@ -401,7 +402,7 @@ window.Roadtrip = {
 		},
 		Delete: function(e) {
 			if (confirm("Are you sure you wish to delete this thing?")) {
-				APP.models[this.module].remove(this.model);
+				APP.models[this.model.module].remove(this.model);
 				this.Return(true);
 			}
 		},

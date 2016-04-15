@@ -83,27 +83,25 @@
 						<tr>
 							<th>Progress</th>
 							<td>
-								<% if (subtasks==0 && progress_label!="Complete") { %>
+								<% if (subtasks==0 && state!="Complete") { %>
 									<input value='<%=progress%>' <%=subtasks>0?"disabled":""%> id='progress' list='progress_levels' type=range min=0 max=100 >
 									<datalist id="progress_levels">
-										<option>-1</option>
-										<option>0</option>
-										<option>5</option>
-										<option>80</option>
-										<option>100</option>
+										<%
+										for (var label in states)
+											print("<option>"+states[label]+"</option>");
+											%>
+
 									</datalist>
 									<% } else { %>
 										<progress value='<%=progress%>' min=0 max=100>
 											<% } %>
 							</td>
 							<td width="150px" id=''>
-								<select id='progress_label'>
-									<option <%=(progress_label=='New' ? "selected": "")%> value='New'>New</option>
-									<option <%=(progress_label=='Accepted' ? "selected": "")%> value='Accepted'>Accepted</option>
-									<option <%=(progress_label=='In Progress' ? "selected": "")%> value='In Progress'>In Progress</option>
-									<option <%=(progress_label=='Review' ? "selected": "")%> value='Review'>Review</option>
-									<option <%=(progress_label=='Complete' ? "selected": "")%> value='Complete'>Complete</option>
-									<option <%=(progress_label=='Rejected' ? "selected": "")%> value='Rejected'>Rejected</option>
+								<select id='state'>
+									<%
+									for (var label in states)
+										print("<option " + (state==label ? "selected": "")+" value='"+label+"'>"+label+"</option>");
+										%>
 								</select>
 							</td>
 						</tr>
