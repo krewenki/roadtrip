@@ -96,7 +96,7 @@ DEF.modules.users.Collection = Roadtrip.Collection.extend({
 	initialize: function() {
 		console.log("users");
 		this.listenTo(this, "sync", this.UpdateUserTaskCount);
-		this.listenTo(APP.models.tasks, "change:assigned_to change:progress_label", this.UpdateUserTaskCount);
+		this.listenTo(APP.models.tasks, "change:assigned_to change:state", this.UpdateUserTaskCount);
 	},
 	UpdateUserTaskCount: function() {
 		if (U) {

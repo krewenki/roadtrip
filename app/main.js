@@ -408,7 +408,7 @@ APP.util = {
 			console.log(m.id, set);
 			m.set(set);
 		});
-		APP.util.DeleteField(collection, field);
+		APP.util.DeleteField(collection, old_name);
 	}
 };
 

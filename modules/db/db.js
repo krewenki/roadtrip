@@ -12,7 +12,11 @@ DEF.modules.db.Router = Roadtrip.Router.extend({
 	},
 	ViewTable: function(table) {
 		APP.root.showChildView("main", new DEF.modules.db.Table({
-			collection: APP.models[table]
+			collection: APP.models[table],
+			comparator: function() {
+				console.log(_)
+				return _.last_views
+			}
 		}));
 	},
 	EditRecord: function(table, id) {
