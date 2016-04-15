@@ -9,14 +9,18 @@ var Highway = require('highway');
 var proxy = httpProxy.createProxyServer({
 	changeOrigin: true
 });
-var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-
 
 var isProduction = process.env.NODE_ENV === 'production';
 var port = isProduction ? process.env.PORT : 3000;
 var publicPath = path.resolve(__dirname, 'public');
+
+
+var app = express();
+var http = require('http').Server(app);
+
+
+
+
 
 app.use(express.static(publicPath));
 
@@ -37,9 +41,11 @@ proxy.on('error', function (e) {
 });
 
 app.set('host', isProduction ? process.env.HOST : 'localhost');
-app.listen(port, function () {
+var server = app.listen(port, function () {
 	console.log('Server running on port ' + port);
 });
+var io = require('socket.io').listen(server);
+io.set('origins', 'http://localhost:3000');
 
 app.get('/user/:id', function (req, res, next) {
 	if (req.params.id === 'me') {
