@@ -1,4 +1,4 @@
-DEF.modules.users = {}
+DEF.modules.users = {};
 DEF.modules.users.Router = Roadtrip.Router.extend({
 	module: "users",
 	initialize: function() {
@@ -20,6 +20,7 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 	defaults: {
 		initials: "abc",
 		name: "Joe",
+		fullname: "Joe Smith",
 		email: "crap@fart.com",
 		phone: "",
 		boss: false,
