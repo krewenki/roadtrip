@@ -6,6 +6,9 @@
 	<div class='cmd link' id='save'>
 		<%=APP.Icon('save')%> save
 	</div>
+	<div class='cmd link' id='editrecord'>
+		<%=APP.Icon('db')%> json
+	</div>
 	<% if (U.Can("projects","delete") || _.created_by==U.id) {%>
 		<div class='cmd link danger' id='delete'>
 			<%=APP.Icon('user-times')%> delete

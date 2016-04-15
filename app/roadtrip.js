@@ -307,13 +307,15 @@ window.Roadtrip = {
 			"field": ".field",
 			"save": "#save",
 			"cancel": "#cancel",
-			"delete": "#delete"
+			"delete": "#delete",
+			"record": "#editrecord"
 		},
 		events: {
 			"change @ui.field": "MakeDirty",
 			"click @ui.save": "Save",
 			"click @ui.cancel": "Cancel",
-			"click @ui.delete": "Delete"
+			"click @ui.delete": "Delete",
+			"click @ui.record": "EditRecord"
 		},
 		onBeforeRender: function() {
 			if (!this.model) {
@@ -402,6 +404,9 @@ window.Roadtrip = {
 				APP.models[this.module].remove(this.model);
 				this.Return(true);
 			}
+		},
+		EditRecord: function(e) {
+			APP.Route("#db/" + this.model.module + "/" + this.model.id);
 		}
 	}),
 	RecordLine: Backbone.Marionette.ItemView.extend({
