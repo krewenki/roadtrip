@@ -282,6 +282,7 @@ body {
 #MAIN {
     padding         : 20px;
     background-color: white;
+    overflow-y      : hidden;
 
     h1 {
         font-size: 20px;
@@ -415,7 +416,7 @@ body {
     }
 
     .table-left {
-        input:not([class=btn]):not([type=checkbox]) {
+        input:not([class=btn]):not([type=checkbox]):not([type=range]) {
             border-top-right-radius   : 10px;
             border-bottom-right-radius: 10px;
             padding                   : 5px;
@@ -448,11 +449,4 @@ body {
         }
     }
 }
-@import '../modules/orders/style.scss';
-@import '../modules/calendar/calendar.scss';
-@import '../modules/projects/project.scss';
-@import '../modules/tasks/task.scss';
-@import '../modules/comments/comment.scss';
-@import '../modules/users/user.scss';
-@import '../modules/expenses/expenses.scss';
-@import '../modules/revisions/revisions.scss';
+@import 'modules.scss';

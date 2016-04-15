@@ -124,6 +124,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 		events: "sticky-note-o",
 		users: "user",
 		revisions: "code-fork",
+		db: "database",
 
 		edit: "pencil",
 		view: "search",
@@ -184,8 +185,16 @@ var MainApp = Backbone.Marionette.Application.extend({
 
 window.APP = new MainApp();
 APP.models = {}; // hold the collections
-
 DEF.modules = {}; // hold the models definitions
+
+/*
+██████  ███████  ██████  ██    ██ ██ ██████  ███████
+██   ██ ██      ██    ██ ██    ██ ██ ██   ██ ██
+██████  █████   ██    ██ ██    ██ ██ ██████  █████
+██   ██ ██      ██ ▄▄ ██ ██    ██ ██ ██   ██ ██
+██   ██ ███████  ██████   ██████  ██ ██   ██ ███████
+                    ▀▀
+*/
 require("../modules/users/users.js");
 require("../modules/comments/comments.js");
 require("../modules/tasks/tasks.js");
@@ -198,6 +207,7 @@ require("../modules/expenses/expenses.js");
 require("../modules/repositories/repository.js");
 require("../modules/revisions/revisions.js");
 require("../modules/events/events.js");
+require("../modules/db/db.js");
 require("./auth.js");
 
 

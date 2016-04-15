@@ -1,6 +1,9 @@
 DEF.modules.users = {};
 DEF.modules.users.Router = Roadtrip.Router.extend({
 	module: "users",
+	collections: [
+		"users", "tasks"
+	],
 	initialize: function() {
 		// Normally the collection initializes here, but Users is handled in auth.js
 	},

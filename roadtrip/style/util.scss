@@ -38,6 +38,15 @@
     background-color: rgba(0, 0, 0, 0.05);
 }
 
+.flex {
+    display: flex;
+
+    .cell {
+        flex-basis: auto;
+        flex-grow : 1;
+    }
+}
+
 .btn {
     display            : inline-block;
     margin             : 10px;

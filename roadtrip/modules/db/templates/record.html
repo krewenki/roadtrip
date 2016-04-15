@@ -1,0 +1,17 @@
+<div id='menu'>
+	<span id='title'>Edit <%=_id%></span>
+	<%=name%>
+		<div class='cmd link ' id='cancel'>
+			<%=APP.Icon('cancel')%> cancel
+		</div>
+		<div class='cmd link' id='save'>
+			<%=APP.Icon('save')%> save
+		</div>
+		<div class='cmd link danger' id='delete'>
+			<%=APP.Icon('user-times')%> delete
+		</div>
+</div>
+
+<textarea id='json'>
+	<%=json%>
+</textarea>
