@@ -84,7 +84,7 @@
 							<th>Progress</th>
 							<td>
 								<% if (subtasks==0 && progress_label!="Complete") { %>
-									<input value='<%=progress%>' <%=subtasks>0?"disabled":""%> id='progress' list='progress_levels' type=range min=-1 max=100 >
+									<input value='<%=progress%>' <%=subtasks>0?"disabled":""%> id='progress' list='progress_levels' type=range min=0 max=100 >
 									<datalist id="progress_levels">
 										<option>-1</option>
 										<option>0</option>

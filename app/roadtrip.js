@@ -381,7 +381,10 @@ window.Roadtrip = {
 						this.model.id = attr[this.model.idAttribute]; // _id because it's just a mongo object
 						this.Return(false);
 						APP.LogEvent(this.module, this.model.id, "Recorded created");
-					}.bind(this)
+					}.bind(this),
+					error: function(x, y, z) {
+						console.log(x, y, z);
+					}
 				});
 				//this.model.SetStats("create");
 			} else {
@@ -410,7 +413,7 @@ window.Roadtrip = {
 		events: {
 			"click": "Click"
 		},
-		Click: function() {
+		Click: function(e) {
 			APP.Route("#" + (this.module) + "/view/" + this.model.id, this.model.get(this.model.nameAttribute));
 		}
 	}),
