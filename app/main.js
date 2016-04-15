@@ -47,6 +47,15 @@ var MainApp = Backbone.Marionette.Application.extend({
 				window.scrollTo(0, 0);
 			}
 		};
+		window.onscroll = function() {
+			if (document.body.scrollTop > 110 || document.documentElement.scrollTop > 110) {
+				$("#HEADER").removeClass("large").addClass("small");
+				$("#MAIN").addClass("smallmenu");
+			} else {
+				$("#HEADER").removeClass("small").addClass("large");
+				$("#MAIN").removeClass("smallmenu");
+			}
+		};
 	},
 	SetTitle: function(title, module) {
 		document.title = title + " - roadtrip";

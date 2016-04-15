@@ -63,6 +63,14 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		"Review": 80,
 		"Complete": 100
 	},
+	initialize: function() {
+		if (this.get('subtasks') > 0)
+			this.States = {
+				"New": 0,
+				"In Progress": 1,
+				"Complete": 100
+			}
+	},
 	/**
 	 * Returns the (html) path for this task, by recursively following it's parents
 	 * @return {string} The path
@@ -85,11 +93,14 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 	 * @return {[type]}     human readable text
 	 */
 	GetProgressLabel: function(val) {
-		var label = "who fuckin knows?";
+		var label = false;
 		for (var state in this.States) {
+			console.log(val, this.States[state])
 			if (val >= this.States[state])
 				label = state;
 		}
+		if (!label)
+			debugger
 		return label;
 	},
 });
@@ -254,8 +265,13 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	 * @return null
 	 */
 	UpdateProgressLabel: function() {
-		this.ui.progress.val(Math.max(this.model.States[this.ui.state.val()], this.ui.progress.val()));
+		if (this.model.get('state') == 'Complete') {
+			var states = Object.keys(this.model.States);
+			this.ui.progress.val(this.model.States[states[states.indexOf(this.ui.state.val()) + 1]] - 1); // WHAT!
+		} else
+			this.ui.progress.val(Math.max(this.model.States[this.ui.state.val()], this.ui.progress.val()));
 		this.UpdateProgress();
+		this.render();
 	},
 	LogProgress: function() {
 		APP.LogEvent("tasks", this.model.id, "Task progress: " + this.model.get('progress') + "%", {
