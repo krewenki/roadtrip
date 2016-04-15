@@ -4,8 +4,7 @@ DEF.modules.tasks.Router = Roadtrip.Router.extend({
 		"users", "tasks", "projects", "orders", "revisions"
 	],
 	initialize: function() {
-		if(!APP.models.tasks)
-			APP.models.tasks = new DEF.modules.tasks.Collection();
+		APP.models.tasks = new DEF.modules.tasks.Collection();
 
 		APP.Icon_Lookup.todo = "list-ul";
 		APP.Icon_Lookup.bug = "bug";
