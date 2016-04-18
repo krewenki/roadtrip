@@ -308,6 +308,7 @@ DEF.modules.tasks.views = {
 		},
 		onShow: function() {
 			$("input#task").focus();
+			$("textarea").val(($("textarea").val() || '').trim()); // beautify inserts spaces between <textarea> in the template
 		},
 		/**
 		 * Generate the task ID, by incrementing the max task_id, including parents, if available.
