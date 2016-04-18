@@ -71,8 +71,13 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 				"New": 0,
 				"In Progress": 1,
 				"Complete": 100
-			}
+			};
 	},
+	search_string: function() {
+		var string = this.id + " " + this.get(this.nameAttribute);
+		return string;
+	},
+
 	/**
 	 * Returns the (html) path for this task, by recursively following it's parents
 	 * @return {string} The path
@@ -97,12 +102,9 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 	GetProgressLabel: function(val) {
 		var label = false;
 		for (var state in this.States) {
-			console.log(val, this.States[state])
 			if (val >= this.States[state])
 				label = state;
 		}
-		if (!label)
-			debugger
 		return label;
 	},
 });
