@@ -26,7 +26,8 @@ window.Roadtrip = {
 				console.log("waiting for collection", missing);
 				APP.root.showChildView("main", new DEF.EmptyView({
 					icon: missing,
-					msg: "Loading " + missing.toUpperCase() + "&hellip;"
+					msg: "Loading " + missing.toUpperCase() + "&hellip;",
+					submsg: "<progress value=" + this.collections.indexOf(missing) + " min=0 max=" + (this.collections.length - 1) + ">"
 				}));
 				var collection = (missing.indexOf('_') > 0) ? missing.split('_')[0] : missing; // "orders_lineitems"
 				DEF.modules[collection].Initialize();

@@ -21,7 +21,7 @@ var config = {
 		}
 	},
 
-	onComplete: function() {
+	XonComplete: function() {
 		this.http.get('/', function(req, res) {
 			var _ = require('underscore');
 			var fs = require('fs');
