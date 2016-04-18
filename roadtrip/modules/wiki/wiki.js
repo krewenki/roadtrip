@@ -1,4 +1,5 @@
 DEF.modules.wiki = {};
+DEF.modules.wiki.Initialize = function() {};
 DEF.modules.wiki.Router = Roadtrip.Router.extend({
 	initialize: function() {},
 	module: "wiki",
