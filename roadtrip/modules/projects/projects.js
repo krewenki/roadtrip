@@ -45,7 +45,7 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
  */
 DEF.modules.projects.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.projects.Model,
-	url: 'dev.telegauge.com:3456/roadtrip/projects',
+	url: 'roadtrip.telegauge.com/roadtrip/projects',
 });
 
 DEF.modules.projects.Router = Roadtrip.Router.extend({

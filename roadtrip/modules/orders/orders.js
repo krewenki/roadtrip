@@ -60,11 +60,11 @@ DEF.modules.orders.Model = Roadtrip.Model.extend({
  */
 DEF.modules.orders.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.orders.Model,
-	url: 'dev.telegauge.com:3456/roadtrip/orders',
+	url: 'roadtrip.telegauge.com/roadtrip/orders',
 });
 DEF.modules.orders.Collection_LineItems = Roadtrip.Collection.extend({
 	model: DEF.modules.orders.LineItemModel,
-	url: 'dev.telegauge.com:3456/roadtrip/orders_lineitems',
+	url: 'roadtrip.telegauge.com/roadtrip/orders_lineitems',
 	comparator: "SOLI"
 });
 
