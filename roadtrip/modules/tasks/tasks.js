@@ -5,7 +5,7 @@ DEF.modules.tasks.Initialize = function() {
 };
 DEF.modules.tasks.Router = Roadtrip.Router.extend({
 	collections: [
-		"users", "tasks", "projects", "orders", "revisions"
+		"users", "tasks", "projects", "revisions", "repositories"
 	],
 	initialize: function() {
 		APP.Icon_Lookup.todo = "list-ul";

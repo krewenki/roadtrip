@@ -41,7 +41,7 @@ window.Roadtrip = {
 				this.collections = [this.module];
 			for (var c = 0; c < this.collections.length; c++) {
 				var collection = this.collections[c];
-				if (_.isUndefined(APP.models[collection]) || APP.models[collection].length < 2)
+				if (_.isUndefined(APP.models[collection]) || APP.models[collection].length === 0)
 					return collection;
 			}
 			return false;
