@@ -49,7 +49,7 @@ DEF.modules.calendar.Model = Roadtrip.Model.extend({
  */
 DEF.modules.calendar.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.calendar.Model,
-	url: 'dev.telegauge.com:3456/roadtrip/calendar',
+	url: 'roadtrip.telegauge.com/roadtrip/calendar',
 	getEventsForDate: function(date) {
 		var iso = new Date(date).getTime();
 		var collection = new Backbone.Collection(this.filter(function(c) {

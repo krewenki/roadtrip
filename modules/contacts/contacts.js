@@ -59,7 +59,7 @@ DEF.modules.contacts.Model = Roadtrip.Model.extend({
  */
 DEF.modules.contacts.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.contacts.Model,
-	url: 'dev.telegauge.com:3456/roadtrip/contacts',
+	url: 'roadtrip.telegauge.com/roadtrip/contacts',
 });
 
 /**
