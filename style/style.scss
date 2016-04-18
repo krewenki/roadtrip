@@ -133,14 +133,19 @@ body {
             top     : 0;
             height  : 33px;
 
+            &.bg1 {
+                background: none;
+            }
+
             .menuitem {
-                float       : left;
-                width       : 30px;
-                text-align  : center;
-                margin-right: 2px;
-                margin-left : 2px;
-                font-size   : 24px;
-                padding     : 6px;
+                float           : left;
+                width           : 30px;
+                text-align      : center;
+                margin-right    : 2px;
+                margin-left     : 2px;
+                font-size       : 24px;
+                padding         : 6px;
+                background-color: none;
 
                 &.active {
                     background-color: $link_color_alt;
@@ -156,6 +161,11 @@ body {
     }
 
     &.large {
+        position: absolute;
+        left    : 0;
+        top     : 0;
+        right   : 0;
+
         #topline {
             display       : flex;
             align-items   : baseline;
@@ -264,17 +274,19 @@ body {
                     overflow-x: hidden;
 
                     .search_result {
-                        white-space  : nowrap;
-                        border       : 1px solid #999;
-                        border-radius: 5px;
-                        padding      : 5px;
-                        margin       : 5px;
-                        max-width    : 250px;
-                        overflow     : hidden;
-                        text-overflow: ellipsis;
+                        background-color: rgba(255,255,255,0.95);
+                        color           : $text-color;
+                        white-space     : nowrap;
+                        border          : 3px solid $link_color_alt;
+                        border-radius   : 5px;
+                        padding         : 5px;
+                        margin          : 5px;
+                        max-width       : 250px;
+                        overflow        : hidden;
+                        text-overflow   : ellipsis;
 
                         &:hover {
-                            background-color: #333;
+                            background-color: rgba(255,255,255,0.8);
                         }
                     }
                 }
@@ -287,11 +299,10 @@ body {
     padding         : 20px;
     background-color: white;
     overflow-y      : hidden;
-
-    &.smallmenu {
-        padding-top: 175px; // the main menu suddenly vanished, so we have to fill the space
-    }
-
+    padding-top     : 175px; // the main menu suddenly vanished, so we have to fill the space
+    // &.smallmenu {
+    //     padding-top: 175px; // the main menu suddenly vanished, so we have to fill the space
+    // }
     h1 {
         font-size: 20px;
     }

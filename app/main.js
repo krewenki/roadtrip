@@ -44,16 +44,17 @@ var MainApp = Backbone.Marionette.Application.extend({
 				// $("html, body").animate({
 				// 	scrollTop: 0
 				// }, 100);
-				window.scrollTo(0, 0);
+				//	window.scrollTo(0, 0);
 			}
 		};
 		window.onscroll = function() {
+			var $header = $("#HEADER");
 			if (document.body.scrollTop > 110 || document.documentElement.scrollTop > 110) {
-				$("#HEADER").removeClass("large").addClass("small");
-				$("#MAIN").addClass("smallmenu");
+				if ($header.hasClass("large"))
+					$header.removeClass("large").addClass("small");
 			} else {
-				$("#HEADER").removeClass("small").addClass("large");
-				$("#MAIN").removeClass("smallmenu");
+				if ($header.hasClass("small"))
+					$header.removeClass("small").addClass("large");
 			}
 		};
 	},
