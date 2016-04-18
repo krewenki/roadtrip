@@ -53,13 +53,6 @@ DEF.modules.orders.Model = Roadtrip.Model.extend({
 
 
 	},
-	GetLink: function(cmd) {
-		return "#orders/" + cmd + "/" + this.get('_id');
-	},
-	search_string: function() {
-		var string = this.get('order') + "";
-		return string.toUpperCase();
-	}
 });
 
 /**

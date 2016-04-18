@@ -6,7 +6,12 @@ DEF.modules.orders.LineItemModel = Roadtrip.Model.extend({
 		SOLI: "00000-00",
 		order: 0,
 		warehouse: "JAX"
-	}
+	},
+	GetLink: function(cmd) {
+		if (!cmd)
+			cmd = "view";
+		return "#orders/editline/" + this.id;
+	},
 });
 
 DEF.modules.orders.LineItemLine = Roadtrip.RecordLine.extend({
