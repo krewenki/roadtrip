@@ -24,7 +24,7 @@ var config = {
 	onComplete: function(self, _, ObjectId) {
 		self.settings.http.get('/', function(req, res) {
 			var fs = require('fs');
-      if(req.session.passport.user){
+      if(req.session.passport && req.session.passport.user){
         res.send(_.template(fs.readFileSync('./templates/application.html', {
   				encoding: 'utf8'
   			}))(req.session.passport));
