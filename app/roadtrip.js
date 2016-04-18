@@ -28,6 +28,8 @@ window.Roadtrip = {
 					icon: missing,
 					msg: "Loading " + missing.toUpperCase() + "&hellip;"
 				}));
+				var collection = (missing.indexOf('_') > 0) ? missing.split('_')[0] : missing; // "orders_lineitems"
+				DEF.modules[collection].Initialize();
 				this.listenToOnce(APP.models[missing], 'sync', this.execute.bind(this, callback, args, name));
 			}
 		},
@@ -90,7 +92,7 @@ window.Roadtrip = {
 			var module = this.at(0).module;
 			var $el = $("#FOOTER #" + module + "_count");
 			if ($el.html() != this.length) { // check for sync in case this is just a "update from server event"
-				$el.html(this.length).addClass("new"); // add a flash
+				$el.html(APP.Icon(module) + " " + this.length).addClass("new"); // add a flash
 				setTimeout(function() { // clear the flash
 					$el.removeClass("new");
 				}, 200);

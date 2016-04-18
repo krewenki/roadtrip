@@ -289,7 +289,7 @@ body {
     overflow-y      : hidden;
 
     &.smallmenu {
-        padding-top: 175px;
+        padding-top: 175px; // the main menu suddenly vanished, so we have to fill the space
     }
 
     h1 {

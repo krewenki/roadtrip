@@ -1,11 +1,13 @@
 DEF.modules.tasks = {};
+DEF.modules.tasks.Initialize = function() {
+	if (!APP.models.tasks)
+		APP.models.tasks = new DEF.modules.tasks.Collection();
+};
 DEF.modules.tasks.Router = Roadtrip.Router.extend({
 	collections: [
 		"users", "tasks", "projects", "orders", "revisions"
 	],
 	initialize: function() {
-		APP.models.tasks = new DEF.modules.tasks.Collection();
-
 		APP.Icon_Lookup.todo = "list-ul";
 		APP.Icon_Lookup.bug = "bug";
 		APP.Icon_Lookup.feature = "star";
@@ -301,6 +303,9 @@ DEF.modules.tasks.views = {
 				rs.parent_module = this.options.parent.module;
 			}
 			return rs;
+		},
+		onShow: function() {
+			$("input#task").focus();
 		},
 		/**
 		 * Generate the task ID, by incrementing the max task_id, including parents, if available.

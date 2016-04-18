@@ -45,8 +45,8 @@ DEF.modules.comments.Comments = Backbone.Marionette.CompositeView.extend({
 	events: {
 		"click @ui.save": "Save"
 	},
-	modelEvents: {
-		"change": "render"
+	initialize: function() {
+		this.listenTo(this.options.model, "add change", this.render); /// harumph.  not working
 	},
 	Save: function() {
 		var comments = this.model.get('comments');

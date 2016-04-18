@@ -1,9 +1,10 @@
 DEF.modules.revisions = {};
-DEF.modules.revisions.Router = Roadtrip.Router.extend({
-
-	initialize: function() {
+DEF.modules.revisions.Initialize = function() {
+	if (!APP.models.revisions)
 		APP.models.revisions = new DEF.modules.revisions.Collection();
-	},
+
+};
+DEF.modules.revisions.Router = Roadtrip.Router.extend({
 	module: "revisions",
 	routes: {
 		"revisions/:cmd/:arg": "LoadModule",

@@ -1,11 +1,15 @@
-DEF.modules.events = {}
+DEF.modules.events = {};
+DEF.modules.events.Initialize = function() {
+	if (!APP.models.events)
+		APP.models.events = new DEF.modules.events.Collection();
+};
 DEF.modules.events.Router = Roadtrip.Router.extend({
 	module: "events",
 	collections: [
 		"users", "events", "expenses", "orders", "contacts", "projects", "tasks"
 	],
 	initialize: function() {
-		APP.models.events = new DEF.modules.events.Collection();
+		DEF.modules.events.Initialize(); // required for almost everything.
 	},
 	routes: {
 		"events": "ShowRoot",

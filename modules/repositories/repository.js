@@ -1,8 +1,10 @@
-DEF.modules.repositories = {}
-DEF.modules.repositories.Router = Roadtrip.Router.extend({
-	initialize: function() {
+DEF.modules.repositories = {};
+DEF.modules.repositories.Initialize = function() {
+	if (!APP.models.repositories)
 		APP.models.repositories = new DEF.modules.repositories.Collection();
-	},
+};
+DEF.modules.repositories.Router = Roadtrip.Router.extend({
+	initialize: function() {},
 });
 DEF.modules.repositories.Model = Roadtrip.Model.extend({
 	defaults: {
@@ -14,12 +16,12 @@ DEF.modules.repositories.Model = Roadtrip.Model.extend({
 		var out = user;
 		var users = this.get('users');
 		if (users && users[user]) {
-			out = users[user] //APP.models.users.get(users[user]).get('name');
+			out = users[user]; //APP.models.users.get(users[user]).get('name');
 		}
 		return out;
 	}
-})
+});
 DEF.modules.repositories.Collection = Backbone.Highway.Collection.extend({
 	model: DEF.modules.repositories.Model,
 	url: 'dev.telegauge.com:3456/roadtrip/repositories',
-})
+});
