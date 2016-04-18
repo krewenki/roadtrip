@@ -5,17 +5,17 @@ DEF.Search_Result = Backbone.Marionette.ItemView.extend({
 		return {
 			term: this.model.search_string(),
 			icon: this.model.icon()
-		}
+		};
 	},
 	events: {
 		"click": "Go"
 	},
 	Go: function() {
-		$("#search").val("")
+		$("#search").val("");
 		$("#SEARCH").hide();
-		APP.Route(this.model.GetLink("view"))
+		APP.Route(this.model.GetLink("view"));
 	}
-})
+});
 
 DEF.Search = Backbone.Marionette.CompositeView.extend({
 	template: require("../templates/search_results.html"),
@@ -32,11 +32,11 @@ DEF.Search = Backbone.Marionette.CompositeView.extend({
 				var string = model.search_string();
 				if (string && string.toUpperCase().indexOf(search) != -1)
 					matches.push(model);
-			})
+			});
 		}
 		this.collection = new Backbone.Collection(matches);
 		this.collection.comparator = function(m) {
 			return -m.get('_.views');
-		}
+		};
 	},
-})
+});

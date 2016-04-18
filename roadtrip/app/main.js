@@ -212,6 +212,7 @@ require("../modules/wiki/wiki.js");
 require("../modules/contacts/contacts.js");
 require("../modules/orders/orders.js");
 require("../modules/projects/projects.js");
+require("../modules/timeclock/timeclock.js");
 require("../modules/calendar/calendar.js");
 require("../modules/expenses/expenses.js");
 require("../modules/repositories/repository.js");
