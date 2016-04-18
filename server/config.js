@@ -1,5 +1,5 @@
 var config = {
-	uri: 'dev.telegauge.com',
+	uri: 'roadtrip.telegauge.com',
 	database: 'roadtrip',
 	auth: [{
 		defaultUser: '56fea5cc54d49c036c802e53',
@@ -21,13 +21,20 @@ var config = {
 		}
 	},
 
-	XonComplete: function() {
-		this.http.get('/', function(req, res) {
-			var _ = require('underscore');
+	onComplete: function(self, _, ObjectId) {
+		self.settings.http.get('/', function(req, res) {
 			var fs = require('fs');
-			res.send(_.template(fs.readFileSync('templates/application.html', {
-				encoding: 'utf8'
-			}))(req.session.passport));
+      if(req.session.passport.user){
+        res.send(_.template(fs.readFileSync('./templates/application.html', {
+  				encoding: 'utf8'
+  			}))(req.session.passport));
+      } else {
+        self.db.collection('users').find({ '_id' : ObjectId('56fea5cc54d49c036c802e53')}, function(err, doc){
+          res.send(_.template(fs.readFileSync('./templates/application.html', {
+            encoding: 'utf8'
+          }))({ "user" : doc[0] }));
+        });
+      }
 		});
 	}
 };
