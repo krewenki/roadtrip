@@ -2,6 +2,8 @@ DEF.modules.projects = {};
 DEF.modules.projects.Initialize = function() {
 	if (!APP.models.projects)
 		APP.models.projects = new DEF.modules.projects.Collection();
+	// console.log(DEF.modules.projects.Router.collections);
+	// debugger
 };
 
 /**

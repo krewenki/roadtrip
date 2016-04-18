@@ -1,58 +1,74 @@
 #TASKS {
-		.description {
-				padding    : 10px;
-				line-height: 20px;
-				color      : $text_light_color;
-				text-align : justify;
-				code {
-						background-color: #eee;
-						font-size       : 18px;
-						padding-left    : 5px;
-						padding-right   : 5px;
-				}
-		}
-		#menu {
-				.path {
-						a {
-								color: $text_light_color;
-								&:hover {
-										color: $link_color_alt;
-								}
-						}
-				}
-		}
+    .description {
+        padding    : 10px;
+        line-height: 20px;
+        color      : $text_light_color;
+        text-align : justify;
+
+        code {
+            background-color: #eee;
+            font-size       : 18px;
+            padding-left    : 5px;
+            padding-right   : 5px;
+        }
+    }
+
+    #menu {
+        .path {
+            a {
+                color: $text_light_color;
+
+                &:hover {
+                    color: $link_color_alt;
+                }
+            }
+        }
+    }
 }
+
 #task-details {
-		#task_icon {
-				font-size  : 100px;
-				border     : none;
-				text-align : center;
-				color      : $text_light_color;
-				text-shadow: 1px 2px 25px rgba(0,0,0,0.4);
-		}
+    #task_icon {
+        font-size  : 100px;
+        border     : none;
+        text-align : center;
+        color      : $text_light_color;
+        text-shadow: 1px 2px 25px rgba(0,0,0,0.4);
+    }
+    @media screen and (max-width: 800px) {
+        #task_icon {
+            display: none;
+        }
+    }
 }
+
 #progress-table {
-		border-radius: 10px;
-		padding      : 10px;
-		margin-bottom: 10px;
-		#state {
-				color: #eee !important;
-		}
+    border-radius: 10px;
+    padding      : 10px;
+    margin-bottom: 10px;
+
+    #state {
+        color: #eee !important;
+    }
 }
+
 .task-table {
-		max-width: 100%;
-		.task_id {
-				font-weight     : bold;
-				color           : $text-color;
-				width           : 50px;
-				background-color: #eee;
-				text-align      : center;
-		}
-		.task {
-				min-width: 300px;
-		}
-		.description {}
-		i.icon {
-				width: 16px;
-		}
+    max-width: 100%;
+
+    .task_id {
+        font-weight     : bold;
+        color           : $text-color;
+        width           : 50px;
+        background-color: #eee;
+        text-align      : center;
+    }
+
+    .task {
+        min-width: 300px;
+    }
+
+    .description {}
+
+    i.icon {
+        width: 16px;
+    }
 }
