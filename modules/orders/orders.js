@@ -90,15 +90,15 @@ DEF.modules.orders.views.view = Backbone.Marionette.LayoutView.extend({
 	events: {
 		"click @ui.edit": "Edit",
 	},
-	onShow: function() {
+	onRender: function() {
 		this.model.IncStat("views");
 		APP.SetTitle(this.model.get('order'));
-		this.showChildView('order', new DEF.modules.orders.OrderView({
-			model: this.model,
+		this.order.show(new DEF.modules.orders.OrderView({
+			model: this.model
 		}));
 
 		var order = this.model.id;
-		this.showChildView('lineitems', new DEF.modules.orders.LineItemView({
+		this.lineitems.show(new DEF.modules.orders.LineItemView({
 			collection: APP.models.orders_lineitems,
 			filter: function(m) {
 				return m.get('order') == order;

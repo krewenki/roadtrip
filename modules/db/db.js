@@ -96,7 +96,7 @@ DEF.modules.db.TableLine = Roadtrip.RecordLine.extend({
 		return {
 			fields: fields.sort(),
 			model: this.model
-		}
+		};
 	},
 	Click: function(e) {
 		APP.Route("#db/" + this.model.module + "/" + this.model.id);

@@ -8,7 +8,7 @@ DEF.modules.timeclock.Initialize = function() {
 DEF.modules.timeclock.Router = Roadtrip.Router.extend({
 	initialize: function() {},
 	collections: [
-		"timeclock", "users", "timeclock"
+		"timeclock", "users", "orders"
 	],
 	module: "timeclock",
 	routes: {
@@ -22,7 +22,7 @@ DEF.modules.timeclock.Model = Roadtrip.Model.extend({
 	nameAttribute: 'order', // the human-readable field in the record
 	module: "timeclock",
 	defaults: {
-
+		order: ""
 	},
 	search_string: function() {
 		return false;
@@ -38,21 +38,36 @@ DEF.modules.timeclock.Collection = Roadtrip.Collection.extend({
 });
 
 
-DEF.modules.timeclock.RecordLine = Roadtrip.RecordLine.extend({
-	module: "timeclock",
-	template: require("./templates/timeclock_line.html"),
+
+DEF.modules.timeclock.LineView = Backbone.Marionette.ItemView.extend({
+	tagName: "tr",
+	template: require("./templates/time_line.html")
+});
+DEF.modules.timeclock.WeekView = Backbone.Marionette.CompositeView.extend({
+	template: require("./templates/week.html"),
+	childView: DEF.modules.timeclock.LineView,
+	childViewContainer: "#week"
+});
+DEF.modules.timeclock.MainView = Backbone.Marionette.LayoutView.extend({
+	id: 'TIMECLOCK',
+	template: require("./templates/timeclock.html"),
+	regions: {
+		week: "#week",
+		summary: "#summary"
+	},
+	onRender: function() {
+		this.week.show(new DEF.modules.timeclock.WeekView({
+			collection: APP.models.timeclock,
+			filter: function() {
+				return true;
+			}
+		}));
+		this.summary.show(new DEF.modules.timeclock.Summary({}));
+	}
 });
 
-DEF.modules.timeclock.MainView = Roadtrip.RecordList.extend({
-	id: 'TIMECLOCK',
-	search: "",
-	template: require("./templates/timeclock.html"),
-	childView: DEF.modules.timeclock.RecordLine,
-	childViewContainer: "#record_list",
-	filter: function(model, index, collection) {
-		return true;
-	},
-	onShow: function() {
-		APP.SetTitle("Timeclock", "timeclock");
-	},
+DEF.modules.timeclock.Summary = Backbone.Marionette.ItemView.extend({
+	tagName: 'table',
+	className: 'table table-full table-left',
+	template: require("./templates/summary.html")
 });
