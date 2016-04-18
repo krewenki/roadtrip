@@ -1,4 +1,5 @@
 DEF.modules.comments = {};
+DEF.modules.comments.Initialize = function() {};
 DEF.modules.comments.Router = Roadtrip.Router.extend({
 
 });

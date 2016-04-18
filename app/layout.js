@@ -92,12 +92,18 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 		"mouseenter @ui.button": "InitCollection",
 		"click @ui.title": "GoHome",
 		"keyup @ui.search": "Search",
+		"focus @ui.search": "LoadAll",
 		"click @ui.login": "Login"
 	},
 	onBeforeShow: function() {
 		$("#HEADER").addClass(U.get('prefs').header);
 	},
-	Search: function() {
+	Search: function(e) {
+		if (e.keyCode == 13) {
+			$(".search_result:first").trigger("click");
+			return;
+		}
+
 		if (this.ui.search.val().length > 2) {
 			var search = new DEF.Search({
 				search: this.ui.search.val()
@@ -107,6 +113,10 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 		} else {
 			this.ui.results.hide();
 		}
+	},
+	LoadAll: function() {
+		for (var mod in DEF.modules)
+			DEF.modules[mod].Initialize();
 	},
 	GoHome: function() {
 		APP.Route('#');

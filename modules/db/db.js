@@ -1,4 +1,5 @@
 DEF.modules.db = {};
+DEF.modules.db.Initialize = function() {};
 DEF.modules.db.Router = Roadtrip.Router.extend({
 	module: "db",
 	collections: ["tasks", "users", "contacts", "orders", "expenses", "revisions", "projects"],
@@ -14,8 +15,7 @@ DEF.modules.db.Router = Roadtrip.Router.extend({
 		APP.root.showChildView("main", new DEF.modules.db.Table({
 			collection: APP.models[table],
 			comparator: function() {
-				console.log(_)
-				return _.last_views
+				return _.last_views;
 			}
 		}));
 	},
