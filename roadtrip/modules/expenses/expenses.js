@@ -1,11 +1,14 @@
 DEF.modules.expenses = {}
+DEF.modules.expenses.Initialize = function() {
+	if (!APP.models.expenses)
+		APP.models.expenses = new DEF.modules.expenses.Collection();
+};
 DEF.modules.expenses.Router = Roadtrip.Router.extend({
 	module: "expenses",
 	collections: [
 		"users", "expenses", "orders"
 	],
 	initialize: function() {
-		APP.models.expenses = new DEF.modules.expenses.Collection();
 
 		APP.Icon_Lookup["car"] = "car";
 		APP.Icon_Lookup["cab"] = "cab";
@@ -40,7 +43,7 @@ DEF.modules.expenses.Model = Roadtrip.Model.extend({
 	idAttribute: 'expense_id',
 	module: "expenses",
 	search_string: function() {
-		return false
+		return false;
 	},
 	defaults: {
 		expense_id: false,
@@ -74,13 +77,13 @@ DEF.modules.expenses.Expense = Roadtrip.Model.extend({
 		day: 0,
 		kind: "meals"
 	}
-})
+});
 DEF.modules.expenses.ExpenseCollection = Backbone.Collection.extend({
 	model: DEF.modules.expenses.Expense,
-})
+});
 
 
-DEF.modules.expenses.views = {}
+DEF.modules.expenses.views = {};
 require("./expenses_edit.js");
 require("./expenses_view.js");
 

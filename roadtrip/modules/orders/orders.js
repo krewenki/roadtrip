@@ -1,12 +1,15 @@
 DEF.modules.orders = {
 	views: {}
 }
+DEF.modules.orders.Initialize = function() {
+	if (!APP.models.orders)
+		APP.models.orders = new DEF.modules.orders.Collection();
+	if (!APP.models.orders_lineitems)
+		APP.models.orders_lineitems = new DEF.modules.orders.Collection_LineItems();
+};
 require("./lineitem.js");
 DEF.modules.orders.Router = Roadtrip.Router.extend({
-	initialize: function() {
-		APP.models.orders = new DEF.modules.orders.Collection();
-		APP.models.orders_lineitems = new DEF.modules.orders.Collection_LineItems();
-	},
+	initialize: function() {},
 	collections: [
 		"orders", "orders_lineitems"
 	],

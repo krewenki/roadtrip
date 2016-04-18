@@ -1,9 +1,10 @@
-DEF.modules.calendar = {}
+DEF.modules.calendar = {};
+DEF.modules.calendar.Initialize = function() {
+	if (!APP.models.calendar)
+		APP.models.calendar = new DEF.modules.calendar.Collection();
+};
 DEF.modules.calendar.Router = Roadtrip.Router.extend({
 	module: "calendar",
-	initialize: function() {
-		APP.models.calendar = new DEF.modules.calendar.Collection()
-	},
 	routes: {
 		"calendar": "ShowRoot",
 		"calendar/date/:arg": "LoadDate",
@@ -11,9 +12,9 @@ DEF.modules.calendar.Router = Roadtrip.Router.extend({
 		"calendar/:cmd/:arg": "LoadModule"
 
 	},
-	LoadDate: function(d){
+	LoadDate: function(d) {
 		var module = this.module;
-		iso = new Date(d +' 00:00').getTime()
+		iso = new Date(d + ' 00:00').getTime()
 
 		collection = APP.models.calendar.getEventsForDate(d);
 		APP.Page = new DEF.modules.calendar.views['date']({
@@ -33,7 +34,7 @@ DEF.modules.calendar.Model = Roadtrip.Model.extend({
 	defaults: {
 		title: 'New Event',
 		startLocal: new Date().toISOString().slice(0, 10) + 'T09:00',
-		endLocal: new Date().toISOString().slice(0,10) + 'T11:00',
+		endLocal: new Date().toISOString().slice(0, 10) + 'T11:00',
 		start: new Date().getTime(),
 		end: new Date().getTime(),
 		location: '',
@@ -49,17 +50,17 @@ DEF.modules.calendar.Model = Roadtrip.Model.extend({
 DEF.modules.calendar.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.calendar.Model,
 	url: 'dev.telegauge.com:3456/roadtrip/calendar',
-	getEventsForDate: function(date){
+	getEventsForDate: function(date) {
 		var iso = new Date(date).getTime();
-		var collection = new Backbone.Collection(this.filter(function(c){
+		var collection = new Backbone.Collection(this.filter(function(c) {
 			var start = c.get('start');
-			var startDate = new Date(start).toISOString().slice(0,10)
+			var startDate = new Date(start).toISOString().slice(0, 10)
 			var end = c.get('end');
-			var endDate = new Date(end).toISOString().slice(0,10);
-			var isoDate = new Date(iso).toISOString().slice(0,10);
+			var endDate = new Date(end).toISOString().slice(0, 10);
+			var isoDate = new Date(iso).toISOString().slice(0, 10);
 			return (start <= iso && iso <= end) || (startDate == isoDate) || endDate == isoDate;
 		}))
-	return collection;
+		return collection;
 	}
 
 });
@@ -74,41 +75,44 @@ DEF.modules.calendar.views = {
 		module: "calendar",
 		template: require("./templates/edit.html"),
 		modelEvents: {
-			"change" : "setDates"
+			"change": "setDates"
 		},
-		setDates: function(){
-			var start = new Date(this.model.get('startLocal').replace('T',' ')).getTime();
-			var end = new Date(this.model.get('endLocal').replace('T',' ')).getTime();
-			this.model.set({ start: start, end: end});
+		setDates: function() {
+			var start = new Date(this.model.get('startLocal').replace('T', ' ')).getTime();
+			var end = new Date(this.model.get('endLocal').replace('T', ' ')).getTime();
+			this.model.set({
+				start: start,
+				end: end
+			});
 		}
 	}),
 
 	Event: Roadtrip.View.extend({
 		module: "calendar",
 		template: require("./templates/event.html"),
-		initialize: function(o){
+		initialize: function(o) {
 			console.log(arguments);
 		},
-		attributes: function(){
+		attributes: function() {
 			var classes = ['calendar_event'];
-			var start = new Date(this.model.get('start')).toISOString().slice(0,10);
-			var end = new Date(this.model.get('end')).toISOString().slice(0,10);
-			if(start == this.options.date)
+			var start = new Date(this.model.get('start')).toISOString().slice(0, 10);
+			var end = new Date(this.model.get('end')).toISOString().slice(0, 10);
+			if (start == this.options.date)
 				classes.push('start');
-			if(end == this.options.date)
+			if (end == this.options.date)
 				classes.push('end');
 			return {
-				"data-id" : this.model.id,
-				"data-start" : this.model.get('start'),
-				"data-end" : this.model.get('end'),
-				"class" : classes.join(' ')
+				"data-id": this.model.id,
+				"data-start": this.model.get('start'),
+				"data-end": this.model.get('end'),
+				"class": classes.join(' ')
 			}
 		},
 		events: {
-			"click" : "handleClick"
+			"click": "handleClick"
 		},
-		handleClick: function(){
-			APP.Route("#calendar/view/"+this.model.id, "calendar");
+		handleClick: function() {
+			APP.Route("#calendar/view/" + this.model.id, "calendar");
 		}
 	}),
 
@@ -116,18 +120,18 @@ DEF.modules.calendar.views = {
 		module: "calendar",
 		template: require("./templates/detailed_event.html"),
 		className: 'detailed_event',
-		attributes: function(){
+		attributes: function() {
 			return {
-				"data-id" : this.model.id,
-				"data-start" : this.model.get('start'),
-				"data-end" : this.model.get('end')
+				"data-id": this.model.id,
+				"data-start": this.model.get('start'),
+				"data-end": this.model.get('end')
 			}
 		},
 		events: {
-			"click" : "handleClick"
+			"click": "handleClick"
 		},
-		handleClick: function(){
-			APP.Route("#calendar/view/"+this.model.id, "calendar");
+		handleClick: function() {
+			APP.Route("#calendar/view/" + this.model.id, "calendar");
 		}
 	}),
 
@@ -173,10 +177,10 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend({
 				}
 			};
 		},
-		childViewOptions: function(){
+		childViewOptions: function() {
 			var self = this;
 			return {
-				date: self.options.date.toISOString().slice(0,10)
+				date: self.options.date.toISOString().slice(0, 10)
 			}
 		}
 	}),
@@ -204,7 +208,7 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend({
 			var date, collection;
 			for (var i in days) {
 				date = new Date(this.sunday + (86400000 * i));
-				collection = APP.models.calendar.getEventsForDate(date.toISOString().slice(0,10))
+				collection = APP.models.calendar.getEventsForDate(date.toISOString().slice(0, 10))
 				this.showChildView(days[i], new DEF.modules.calendar.views.Day({
 					date: date,
 					collection: collection

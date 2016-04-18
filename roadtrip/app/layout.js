@@ -89,6 +89,7 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 	},
 	events: {
 		"click @ui.button": "Go",
+		"mouseenter @ui.button": "InitCollection",
 		"click @ui.title": "GoHome",
 		"keyup @ui.search": "Search",
 		"click @ui.login": "Login"
@@ -100,15 +101,19 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 		if (this.ui.search.val().length > 2) {
 			var search = new DEF.Search({
 				search: this.ui.search.val()
-			})
+			});
 			this.ui.results.show();
-			APP.root.showChildView('search', search)
+			APP.root.showChildView('search', search);
 		} else {
 			this.ui.results.hide();
 		}
 	},
 	GoHome: function() {
 		APP.Route('#');
+	},
+	InitCollection: function(e) {
+		var target = $(e.currentTarget).data('mode');
+		DEF.modules[target].Initialize();
 	},
 	Go: function(e) {
 		var target = $(e.currentTarget).data('mode');

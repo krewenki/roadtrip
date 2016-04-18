@@ -3,7 +3,7 @@ if (document.cookie == '') {
 } else {
 	var c = document.cookie.split(';');
 	var co = c.map(function(s) {
-		return s.split('=')
+		return s.split('=');
 	});
 	var cookie = {
 		user: APP.anon
@@ -13,19 +13,20 @@ if (document.cookie == '') {
 	}
 
 	// We need to conveniently store the user.
-	if (!APP.models.users)
-		APP.models.users = new DEF.modules.users.Collection(); // init the collection (since it's needed first)
+	DEF.modules.users.Initialize();
 
 	window.U = new DEF.modules.users.Model({
 		is_anonymous: true
-	})
+	});
 	APP.models.users.once('sync', function() {
 		var user = cookie.user;
 
 		window.U = APP.models.users.get(user); // assign 0 to the U.
-		APP.trigger("auth_user")
+		APP.trigger("auth_user");
 		window.U.set({
 			last_login: Date.now()
-		}, {trigger: false})
-	}, this)
+		}, {
+			trigger: false
+		});
+	}, this);
 }

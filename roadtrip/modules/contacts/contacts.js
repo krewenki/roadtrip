@@ -1,8 +1,11 @@
-DEF.modules.contacts = {}
+DEF.modules.contacts = {};
+DEF.modules.contacts.Initialize = function() {
+	if (!APP.models.contacts)
+		APP.models.contacts = new DEF.modules.contacts.Collection();
+};
 DEF.modules.contacts.Router = Roadtrip.Router.extend({
 	module: "contacts",
 	initialize: function() {
-		APP.models.contacts = new DEF.modules.contacts.Collection();
 		APP.Icon_Lookup["Vendor"] = "building";
 		APP.Icon_Lookup["Customer"] = "money";
 		APP.Icon_Lookup["Miscellaneous"] = "question";
@@ -23,7 +26,7 @@ DEF.modules.contacts.Router = Roadtrip.Router.extend({
 	//	Home: function () {
 	//		this.ShowRoot("contacts");
 	//	}
-})
+});
 
 /**
  * The main model.  SHould be called "Model"

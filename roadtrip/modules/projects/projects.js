@@ -1,4 +1,8 @@
 DEF.modules.projects = {};
+DEF.modules.projects.Initialize = function() {
+	if (!APP.models.projects)
+		APP.models.projects = new DEF.modules.projects.Collection();
+};
 
 /**
  * The main model.  SHould be called "Model"
@@ -47,9 +51,7 @@ DEF.modules.projects.Router = Roadtrip.Router.extend({
 	collections: [
 		"users", "tasks", "projects"
 	],
-	initialize: function() {
-		APP.models.projects = new DEF.modules.projects.Collection();
-	},
+	initialize: function() {},
 	routes: {
 		"projects": "ShowRoot",
 		"projects/:project": "ShowProject",

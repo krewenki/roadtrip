@@ -1,4 +1,8 @@
 DEF.modules.users = {};
+DEF.modules.users.Initialize = function() {
+	if (!APP.models.users)
+		APP.models.users = new DEF.modules.users.Collection(); // init the collection (since it's needed first)
+};
 DEF.modules.users.Router = Roadtrip.Router.extend({
 	module: "users",
 	collections: [
@@ -86,7 +90,7 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 		var perms = this.get('perms');
 		if (perms[module])
 			return perms[module][perm] || false;
-		return false
+		return false;
 	},
 });
 
@@ -95,7 +99,7 @@ DEF.modules.users.Collection = Roadtrip.Collection.extend({
 	url: 'dev.telegauge.com:3456/roadtrip/users',
 	initialize: function() {
 		console.log("users");
-		this.listenTo(this, "sync", this.UpdateUserTaskCount);
+		this.listenTo(APP.models.tasks, "sync", this.UpdateUserTaskCount);
 		this.listenTo(APP.models.tasks, "change:assigned_to change:state", this.UpdateUserTaskCount);
 	},
 	UpdateUserTaskCount: function() {
