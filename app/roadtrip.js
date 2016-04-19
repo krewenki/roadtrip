@@ -338,16 +338,12 @@ window.Roadtrip = {
 	Edit: Backbone.Marionette.ItemView.extend({
 		ui: {
 			"field": ".field",
-			"save": "#save",
-			"cancel": "#cancel",
 			"delete": "#delete",
 			"record": "#editrecord",
 			"done": "#done"
 		},
 		events: {
 			"change @ui.field": "SaveField",
-			"click @ui.save": "Save",
-			"click @ui.cancel": "Cancel",
 			"click @ui.delete": "Delete",
 			"click @ui.record": "EditRecord",
 			"click @ui.done": "Done"
@@ -384,15 +380,20 @@ window.Roadtrip = {
 			} else
 				APP.Route("#" + this.module);
 		},
+
+		/**
+		 * Given an event, identify the field, the value, and store it in the model.  If the model
+		 * doesn't exist, create it.
+		 * @param  {event} e The event
+		 * @return {null}   null
+		 */
 		SaveField: function(e) {
 			var save = {};
 			this.MakeDirty(e);
 			var $el = $(e.currentTarget);
-			var model = this.model,
-				field = e.currentTarget.id,
+			var field = e.currentTarget.id,
 				value = e.currentTarget.value,
 				type = e.currentTarget.type;
-			console.log(field, value, type);
 			switch (type) {
 				case "checkbox":
 					save[field] = $el.checked;
@@ -401,6 +402,7 @@ window.Roadtrip = {
 				default:
 					save[field] = value;
 			}
+			console.log("savefield", save);
 			this.model.set(save);
 			this.model.SetStats("edit");
 		},
@@ -415,46 +417,48 @@ window.Roadtrip = {
 			else
 				$(e.currentTarget).addClass("dirty");
 		},
-		XSave: function(e) {
-			var model = this.model,
-				save = {},
-				orig = {};
-			$(".field.dirty").each(function(i, $el) {
-				var val = $el.value;
-				switch ($el.type) {
-					case "checkbox":
-						val = $el.checked;
-						break;
-				}
-				save[$el.id] = val;
-			});
-			if (!this.model.id) {
-				save._ = {
-					created_by: U.id,
-					created_on: Date.now()
-				};
-				return APP.models[this.module].create(save, {
-					success: function(attr) {
-						this.model.id = attr[this.model.idAttribute]; // _id because it's just a mongo object
-						this.Return(false);
-						APP.LogEvent(this.module, this.model.id, "Recorded created");
-					}.bind(this),
-					error: function(x, y, z) {
-						console.log(x, y, z);
-					}
-				});
-				//this.model.SetStats("create");
-			} else {
-				console.log("save", save);
-				this.model.set(save);
-				this.model.SetStats("edit");
-			}
-			return this.Return(false);
+		Save: function(e) {
+			console.error("This is retired.  See #1.29");
+			// var model = this.model,
+			// 	save = {},
+			// 	orig = {};
+			// $(".field.dirty").each(function(i, $el) {
+			// 	var val = $el.value;
+			// 	switch ($el.type) {
+			// 		case "checkbox":
+			// 			val = $el.checked;
+			// 			break;
+			// 	}
+			// 	save[$el.id] = val;
+			// });
+			// if (!this.model.id) {
+			// 	save._ = {
+			// 		created_by: U.id,
+			// 		created_on: Date.now()
+			// 	};
+			// 	return APP.models[this.module].create(save, {
+			// 		success: function(attr) {
+			// 			this.model.id = attr[this.model.idAttribute]; // _id because it's just a mongo object
+			// 			this.Return(false);
+			// 			APP.LogEvent(this.module, this.model.id, "Recorded created");
+			// 		}.bind(this),
+			// 		error: function(x, y, z) {
+			// 			console.log(x, y, z);
+			// 		}
+			// 	});
+			// 	//this.model.SetStats("create");
+			// } else {
+			// 	console.log("save", save);
+			// 	this.model.set(save);
+			// 	this.model.SetStats("edit");
+			// }
+			// return this.Return(false);
 		},
 		Cancel: function(e) {
 			this.Return();
 		},
 		Done: function(e) {
+			console.log(e);
 			this.Return();
 		},
 		Delete: function(e) {

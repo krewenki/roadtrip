@@ -98,19 +98,10 @@ DEF.modules.users.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.users.Model,
 	url: 'roadtrip.telegauge.com/roadtrip/users',
 	initialize: function() {
+		//console.log(APP.models.tasks);
 		this.listenTo(APP.models.tasks, "sync", this.UpdateUserTaskCount);
 		this.listenTo(APP.models.tasks, "change:assigned_to change:state", this.UpdateUserTaskCount);
 	},
-	UpdateUserTaskCount: function() {
-		if (U) {
-			var length = APP.models.tasks.filter(APP.models.tasks.filters.Assigned(U)).length;
-			if (length) {
-				$("#HEADER #taskcount").html("" + APP.Icon("tasks") + "" + length + "");
-			} else {
-				$("#HEADER #taskcount").html("");
-			}
-		}
-	}
 });
 
 DEF.modules.users.views = {
@@ -139,6 +130,20 @@ DEF.modules.users.views = {
 				filter: APP.models.tasks.filters.Assigned(this.model)
 			}));
 		}
+	}),
+
+	home: Backbone.Marionette.LayoutView.extend({
+		template: require("./templates/home.html"),
+		regions: {
+			tasks: "#tasklist"
+		},
+		onRender: function() {
+			this.tasks.show(new DEF.modules.tasks.TaskList({
+				template: require("./templates/taskline.html"),
+				collection: APP.models.tasks,
+				filter: APP.models.tasks.filters.Assigned(this.model)
+			}));
+		}
 	})
 };
 
@@ -157,17 +162,17 @@ DEF.modules.users.RecordLine = Roadtrip.RecordLine.extend({
 		var $el = e.currentTarget;
 		console.log($el);
 		var parts = $el.id.split('.');
-		var perms = _.extend(this.model.defaults.perms, this.model.get('perms'))
-		console.log(this.model.get('name'), parts[0], parts[1], perms)
+		var perms = _.extend(this.model.defaults.perms, this.model.get('perms'));
+		console.log(this.model.get('name'), parts[0], parts[1], perms);
 		if (!perms[parts[0]])
-			perms[parts[0]] = {}
+			perms[parts[0]] = {};
 		perms[parts[0]][parts[1]] = $el.checked;
 		this.model.set({
 			perms: perms
 		});
 		this.model.trigger('change', this.model);
 		APP.trigger("auth_user"); // redraw the header to see if the modules need to be show/hide.
-		APP.LogEvent("users", this.model.id, `Permission ${parts[0]}:${parts[1]} set to ` + ($el.checked ? "on" : "off"))
+		APP.LogEvent("users", this.model.id, `Permission ${parts[0]}:${parts[1]} set to ` + ($el.checked ? "on" : "off"));
 		return false; // stop propagation
 	}
 });
@@ -192,4 +197,4 @@ DEF.modules.users.MainView = Roadtrip.RecordList.extend({
 		APP.root.showChildView('main', page);
 	}
 
-})
+});

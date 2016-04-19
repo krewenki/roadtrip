@@ -11,13 +11,10 @@
 		<% if(U.get("is_anonymous")){ %>
 			<button id='login' class='btn'>Login</button>
 			<% } else { %>
-				<a href="#users/view/<%=U.id%>">
+				<a href="#users/home/<%=U.id%>">
 					<%=U.get('name')%>
 						<span id='taskcount'></span>
 				</a>
-				<span id='settings' class='click'>
-												<%=APP.Icon('gear')%>
-										</span>
 				<% } %>
 	</div>
 </div>

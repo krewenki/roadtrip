@@ -114,7 +114,7 @@ DEF.modules.projects.views = {
 	 */
 	edit: Roadtrip.Edit.extend({
 		module: "projects",
-		template: require("./templates/edit.html"),
+		template: require("./templates/edit.html")
 	}),
 	/**
 	 * View a plain, read-only single record

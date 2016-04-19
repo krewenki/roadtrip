@@ -9,7 +9,7 @@
 
 <table id='details' class='table table-left table-full'>
 	<tr>
-		<td rowspan=6><img src='<%=image_url%>'></td>
+		<td rowspan=7><img src='<%=image_url%>'></td>
 	</tr>
 	<tr>
 		<th>Initials</th>
@@ -43,6 +43,12 @@
 			<a href="tel:<%=phone%>">
 				<%=phone%>
 			</a>
+		</td>
+	</tr>
+	<tr>
+		<th>Boss</th>
+		<td>
+			<%=APP.GetLink("users", boss)%>
 		</td>
 	</tr>
 </table>
