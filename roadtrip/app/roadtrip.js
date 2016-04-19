@@ -136,11 +136,19 @@ window.Roadtrip = {
 				edits: 0
 			}
 		},
-		// destroy: function() {
-		// 	//			console.log("DESTEROY");
-		// 	debugger
-		// },
-		// disabled per #1.38
+		/**
+		 * If any model referrences this parent, kill the fucker
+		 */
+		destroy: function(args) {
+			var kids = APP.models.tasks.filter({
+				"parent_id": this.id
+			});
+			for (var k in kids) {
+				kids[k].destroy();
+			}
+			Backbone.Highway.Model.prototype.destroy.apply(this, args);
+		},
+
 		set: function(key, val, options) {
 			var orig = {},
 				save = {},
