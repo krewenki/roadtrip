@@ -25,7 +25,8 @@ window.Roadtrip = {
 			} else {
 				console.log("waiting for collection", missing);
 				for (let module of missing) // loop the missing list
-					DEF.modules[module].Initialize(); // initialize them all (previous initialized ones will be ignored)
+					if (DEF.modules[module])
+						DEF.modules[module].Initialize(); // initialize them all (previous initialized ones will be ignored)
 				APP.root.showChildView("main", new DEF.EmptyView({ // Show the progress bar
 					icon: missing[0],
 					msg: "Loading " + missing[0].toUpperCase() + "&hellip;",
@@ -181,7 +182,7 @@ window.Roadtrip = {
 		},
 
 		GetTitle: function() {
-			return this.model.get(this.nameAttribute);
+			return this.get(this.nameAttribute);
 		},
 		/**
 		 * Just like the .get function, but if the value is falsey, it asks the parent (and it's parent)
@@ -302,6 +303,7 @@ window.Roadtrip = {
 	MainView: Backbone.Marionette.LayoutView.extend({
 
 	}),
+
 	/**
 	 * Useful for viewing a single model
 	 */
@@ -323,6 +325,13 @@ window.Roadtrip = {
 			APP.Route("#" + this.module + "/" + "edit" + "/" + this.model.id);
 		},
 	}),
+	/*
+███████ ██████  ██ ████████
+██      ██   ██ ██    ██
+█████   ██   ██ ██    ██
+██      ██   ██ ██    ██
+███████ ██████  ██    ██
+*/
 	/**
 	 * Useful for supporting edit forms.  Has all the save/dirty logic built in.
 	 */
@@ -332,14 +341,16 @@ window.Roadtrip = {
 			"save": "#save",
 			"cancel": "#cancel",
 			"delete": "#delete",
-			"record": "#editrecord"
+			"record": "#editrecord",
+			"done": "#done"
 		},
 		events: {
-			"change @ui.field": "MakeDirty",
+			"change @ui.field": "SaveField",
 			"click @ui.save": "Save",
 			"click @ui.cancel": "Cancel",
 			"click @ui.delete": "Delete",
-			"click @ui.record": "EditRecord"
+			"click @ui.record": "EditRecord",
+			"click @ui.done": "Done"
 		},
 		onBeforeRender: function() {
 			if (!this.model) {
@@ -373,6 +384,26 @@ window.Roadtrip = {
 			} else
 				APP.Route("#" + this.module);
 		},
+		SaveField: function(e) {
+			var save = {};
+			this.MakeDirty(e);
+			var $el = $(e.currentTarget);
+			var model = this.model,
+				field = e.currentTarget.id,
+				value = e.currentTarget.value,
+				type = e.currentTarget.type;
+			console.log(field, value, type);
+			switch (type) {
+				case "checkbox":
+					save[field] = $el.checked;
+					console.log(field, $el.checked);
+					break;
+				default:
+					save[field] = value;
+			}
+			this.model.set(save);
+			this.model.SetStats("edit");
+		},
 		/**
 		 * Apply dirt to a field, so it knows it has to save.
 		 * @param  {e} e the field
@@ -384,7 +415,7 @@ window.Roadtrip = {
 			else
 				$(e.currentTarget).addClass("dirty");
 		},
-		Save: function(e) {
+		XSave: function(e) {
 			var model = this.model,
 				save = {},
 				orig = {};
@@ -421,6 +452,9 @@ window.Roadtrip = {
 			return this.Return(false);
 		},
 		Cancel: function(e) {
+			this.Return();
+		},
+		Done: function(e) {
 			this.Return();
 		},
 		Delete: function(e) {

@@ -22,6 +22,10 @@
                     color: $link_color_alt;
                 }
             }
+
+            a:last-child {
+                color: white;
+            }
         }
     }
 }

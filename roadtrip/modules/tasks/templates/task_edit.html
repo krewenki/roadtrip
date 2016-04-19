@@ -1,10 +1,13 @@
 <div id='menu'>
 	<span id='title'></span>
-	<div class='cmd link ' id='cancel'>
+	<!-- <div class='cmd link ' id='cancel'>
 		<%=APP.Icon('cancel')%> cancel
 	</div>
 	<div class='cmd link' id='save'>
 		<%=APP.Icon('save')%> save
+	</div> -->
+	<div class='cmd link' id='done'>
+		<%=APP.Icon('done')%> done
 	</div>
 	<div class='cmd link' id='editrecord'>
 		<%=APP.Icon('db')%> json
@@ -18,30 +21,27 @@
 
 <table class='table table-full table-left'>
 	<tr>
-		<th>Parent</th>
-		<td>
-			<%=parent_module%>:
-				<%=parent_id%>
-					<input class='field dirty' type='hidden' id='parent_module' value='<%=parent_module%>'>
-					<input class='field dirty' type='hidden' id='parent_id' value='<%=parent_id%>'>
-
-		</td>
-	</tr>
-	<tr>
 		<th>
 			Task ID:
 		</th>
 		<td>
-			<% if (false &&  task) {%>
+			<% if (  task) {%>
 				<%=task_id%>
 					<% } else { %>
 						<input class='field dirty' type='text' id='task_id' placeholder='task_id' value='<%=task_id%>'>
 						<% } %>
 		</td>
+		<th>Parent</th>
+		<td>
+			<%=APP.GetLink(parent_module,parent_id)%>
+				<input class='field dirty' type='hidden' id='parent_module' value='<%=parent_module%>'>
+				<input class='field dirty' type='hidden' id='parent_id' value='<%=parent_id%>'>
+
+		</td>
 	</tr>
 	<tr>
 		<th>Kind</th>
-		<td>
+		<td colspan=3>
 
 			<select class='field' id='kind'>
 				<option <%=kind=='product' ? "selected": ""%> value='product'>Product</option>
@@ -58,7 +58,7 @@
 		<th>
 			Task:
 		</th>
-		<td>
+		<td colspan=3>
 			<input class='field' type='text' id='task' placeholder='task' value='<%=task%>'>
 		</td>
 	</tr>
@@ -66,13 +66,13 @@
 		<th>
 			Priority:
 		</th>
-		<td>
+		<td colspan=3>
 			<input class='field' type='range' id='priority' placeholder='task' value='<%=priority%>' min=1 max=100>
 		</td>
 	</tr>
 	<Tr>
 		<th>Assigned To</th>
-		<td>
+		<td colspan=3>
 			<%=APP.HTML.Select("assigned_to", APP.models.users,"name","_id",assigned_to,"field dirty", true)%>
 		</td>
 	</tr>
@@ -80,7 +80,7 @@
 	<tr>
 		<th>Description:
 		</th>
-		<td>
+		<td colspan=3>
 			<textarea class='field' id='description'>
 				<%=description%>
 			</textarea>
@@ -90,7 +90,7 @@
 		<th>
 			Due Date:
 		</th>
-		<td>
+		<td colspan=3>
 			<input class='field' type='date' id='due_date' placeholder='task' value='<%=due_date%>' min=0 max=100>
 		</td>
 	</tr>

@@ -30,7 +30,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 	 * mouse was not in the doc)
 	 * @return  null
 	 */
-	SetUpScrollToTop: function() {
+	SetUpWindowEvents: function() {
 		document.onmouseover = function() {
 			//User's mouse is inside the page. (This is working)
 			window.innerDocClick = true;
@@ -140,6 +140,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 		view: "search",
 		cancel: "remove",
 		delete: "trash",
+		done: "check",
 		new: "plus"
 	},
 	/**
@@ -186,9 +187,9 @@ var MainApp = Backbone.Marionette.Application.extend({
 			if (m.get('parent_id').length > 10) {
 				m.set({
 					parent_id: m.get('parent_id').slice(2)
-				})
+				});
 			}
-		})
+		});
 	}
 });
 
@@ -259,7 +260,7 @@ APP.HTML = {
 		var html = "<input value='" + value + "'list='" + id + "_list' type='text' id='" + id + "' class='" + (className || "") + "'>";
 		html += "<datalist id='" + id + "_list'>";
 		collection.each(function(model) {
-			html += "<option value='" + model.get(key) + "'>" + "</option>";
+			html += "<option value='" + model.get(key) + "'>" + model.GetTitle() + "</option>";
 		});
 		html += "</datalist>";
 		return html;
@@ -432,7 +433,7 @@ APP.util = {
 ██      ██ ██   ██ ██ ██   ████
 */
 APP.on('before:start', function() {
-	APP.SetUpScrollToTop();
+	APP.SetUpWindowEvents();
 	APP.setRootLayout();
 });
 
