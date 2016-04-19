@@ -20,7 +20,7 @@ DEF.EmptyView = Backbone.Marionette.ItemView.extend({
 	},
 	id: "empty",
 	tagName: function() {
-		return this.options.colspan > 0 ? "tr" : "div"
+		return this.options.colspan > 0 ? "tr" : "div";
 	},
 	ui: {
 		msg: "#msg",
@@ -95,8 +95,22 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 		"focus @ui.search": "LoadAll",
 		"click @ui.login": "Login"
 	},
-	onBeforeShow: function() {
+	onBeforeRender: function() {
 		$("#HEADER").addClass(U.get('prefs').header);
+		if (U) {
+			this.listenTo(APP.models.tasks, "sync", this.UpdateUserTaskCount);
+			this.listenTo(APP.models.tasks, "change:assigned_to change:state", this.UpdateUserTaskCount);
+		}
+	},
+	UpdateUserTaskCount: function() {
+		if (U) {
+			var length = APP.models.tasks.filter(APP.models.tasks.filters.Assigned(U)).length;
+			if (length) {
+				this.ui.taskcount.html("" + APP.Icon("tasks") + "" + length + "");
+			} else {
+				this.ui.taskcount.html("");
+			}
+		}
 	},
 	Search: function(e) {
 		if (e.keyCode == 13) {
