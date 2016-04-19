@@ -1,7 +1,7 @@
 DEF.modules.orders.LineItemModel = Roadtrip.Model.extend({
 	idAttribute: 'SOLI',
 	nameAttribute: 'SOLI', // the human-readable field in the record
-	module: "orders",
+	module: "orders_lineitems",
 	defaults: {
 		SOLI: "00000-00",
 		order: 0,
@@ -36,9 +36,7 @@ DEF.modules.orders.LineItemView = Roadtrip.RecordList.extend({
 	},
 });
 
-DEF.modules.orders.views.editline = Roadtrip.View.extend({
-	tagName: "table",
-	className: "table table-full table-left",
+DEF.modules.orders.views.editline = Roadtrip.Edit.extend({
 	template: require("./templates/lineitem_edit.html"),
 	onShow: function() {
 		APP.SetTitle("Line Item " + this.model.id, "orders");
