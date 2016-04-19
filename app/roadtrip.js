@@ -126,7 +126,7 @@ window.Roadtrip = {
 ██      ██  ██████  ██████  ███████ ███████
 */
 
-	Model: Backbone.Model.extend({
+	Model: Backbone.Highway.Model.extend({
 		idAttribute: '_id',
 		module: "tbd", // the name of the collection
 		nameAttribute: 'name', // the human-readable field in the record
