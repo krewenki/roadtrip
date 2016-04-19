@@ -98,7 +98,7 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 	onBeforeRender: function() {
 		$("#HEADER").addClass(U.get('prefs').header);
 		if (U) {
-			this.listenTo(APP.models.tasks, "sync", this.UpdateUserTaskCount);
+			this.listenTo(APP.models.tasks, "sync add remove", this.UpdateUserTaskCount);
 			this.listenTo(APP.models.tasks, "change:assigned_to change:state", this.UpdateUserTaskCount);
 		}
 	},

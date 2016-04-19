@@ -3,6 +3,14 @@
  *
  */
 window.Roadtrip = {
+	/*
+██████   ██████  ██    ██ ████████ ███████ ██████
+██   ██ ██    ██ ██    ██    ██    ██      ██   ██
+██████  ██    ██ ██    ██    ██    █████   ██████
+██   ██ ██    ██ ██    ██    ██    ██      ██   ██
+██   ██  ██████   ██████     ██    ███████ ██   ██
+*/
+
 	Router: Backbone.Marionette.AppRouter.extend({
 		module: "module", // override, of course.
 		collections: [], // list collections required for this module
@@ -76,6 +84,13 @@ window.Roadtrip = {
 			APP.root.showChildView("main", APP.Page);
 		}
 	}),
+	/*
+	 ██████  ██████  ██      ██      ███████  ██████ ████████ ██  ██████  ███    ██
+	██      ██    ██ ██      ██      ██      ██         ██    ██ ██    ██ ████   ██
+	██      ██    ██ ██      ██      █████   ██         ██    ██ ██    ██ ██ ██  ██
+	██      ██    ██ ██      ██      ██      ██         ██    ██ ██    ██ ██  ██ ██
+	 ██████  ██████  ███████ ███████ ███████  ██████    ██    ██  ██████  ██   ████
+	*/
 
 	Collection: Backbone.Highway.Collection.extend({
 		perpage: 100,
@@ -103,6 +118,14 @@ window.Roadtrip = {
 			}
 		},
 	}),
+	/*
+███    ███  ██████  ██████  ███████ ██
+████  ████ ██    ██ ██   ██ ██      ██
+██ ████ ██ ██    ██ ██   ██ █████   ██
+██  ██  ██ ██    ██ ██   ██ ██      ██
+██      ██  ██████  ██████  ███████ ███████
+*/
+
 	Model: Backbone.Model.extend({
 		idAttribute: '_id',
 		module: "tbd", // the name of the collection
@@ -113,6 +136,10 @@ window.Roadtrip = {
 				edits: 0
 			}
 		},
+		// destroy: function() {
+		// 	//			console.log("DESTEROY");
+		// 	debugger
+		// },
 		// disabled per #1.38
 		set: function(key, val, options) {
 			var orig = {},
@@ -300,9 +327,25 @@ window.Roadtrip = {
 		},
 
 	}),
+	/*
+	███    ███  █████  ██ ███    ██ ██    ██ ██ ███████ ██     ██
+	████  ████ ██   ██ ██ ████   ██ ██    ██ ██ ██      ██     ██
+	██ ████ ██ ███████ ██ ██ ██  ██ ██    ██ ██ █████   ██  █  ██
+	██  ██  ██ ██   ██ ██ ██  ██ ██  ██  ██  ██ ██      ██ ███ ██
+	██      ██ ██   ██ ██ ██   ████   ████   ██ ███████  ███ ███
+	*/
+
 	MainView: Backbone.Marionette.LayoutView.extend({
 
 	}),
+
+	/*
+	██    ██ ██ ███████ ██     ██
+	██    ██ ██ ██      ██     ██
+	██    ██ ██ █████   ██  █  ██
+	 ██  ██  ██ ██      ██ ███ ██
+	  ████   ██ ███████  ███ ███
+	*/
 
 	/**
 	 * Useful for viewing a single model
@@ -463,7 +506,8 @@ window.Roadtrip = {
 		},
 		Delete: function(e) {
 			if (confirm("Are you sure you wish to delete this thing?")) {
-				APP.models[this.model.module].remove(this.model);
+				//APP.models[this.model.module].remove(this.model);
+				this.model.destroy();
 				this.Return(true);
 			}
 		},

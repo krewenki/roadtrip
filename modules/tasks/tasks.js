@@ -61,7 +61,7 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		"Rejected": -1,
 		"New": 0,
 		"Accepted": 1,
-		"In Progresss": 5,
+		"In Progress": 5,
 		"Review": 80,
 		"Complete": 100
 	},
@@ -76,6 +76,15 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 	search_string: function() {
 		var string = this.id + " " + this.get(this.nameAttribute);
 		return string;
+	},
+	destroy: function(args) {
+		var kids = APP.models.tasks.filter({
+			"parent_id": this.id
+		});
+		for (var k in kids) {
+			kids[k].destroy();
+		}
+		Roadtrip.Model.prototype.destroy.apply(this, args);
 	},
 
 	/**
@@ -241,7 +250,7 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	UpdateProgress: function() {
 		var label = this.model.GetProgressLabel(this.ui.progress.val());
 		this.ui.state.val(label);
-		if (label == 'Accepted' && !this.model.get('assigned_to'))
+		if (!this.model.get('assigned_to'))
 			this.model.set({
 				assigned_to: U.id
 			});
