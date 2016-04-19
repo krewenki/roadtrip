@@ -47,7 +47,10 @@ DEF.modules.comments.Comments = Backbone.Marionette.CompositeView.extend({
 		"click @ui.save": "Save"
 	},
 	initialize: function() {
-		this.listenTo(this.options.model, "add change", this.render); /// harumph.  not working
+		this.listenTo(this.model, "change:comments", this.render );
+	},
+	onBeforeRender: function(){
+		this.collection = new DEF.modules.comments.Collection(this.model.get('comments'));
 	},
 	Save: function() {
 		var comments = this.model.get('comments');
@@ -57,15 +60,16 @@ DEF.modules.comments.Comments = Backbone.Marionette.CompositeView.extend({
 			comment: this.ui.comment.val()
 		};
 		comments.push(comment);
+
 		this.model.set({
-			comments: comments
+			"comments": comments
 		});
-		this.model.SetStats({
+		/*this.model.SetStats({
 			"comments": comments.length
-		});
+		}); */
 		// TODO: this adds to the model (parent) and this pseudocollection.  That's weird to have to do
-		this.model.trigger('change', this.model); // manually trigger a change, because Highway
-		this.collection.push(new DEF.modules.comments.Model(comment)); // manually add to the collection
+		//this.model.trigger('change', this.model); // manually trigger a change, because Highway
+		//this.collection.push(new DEF.modules.comments.Model(comment)); // manually add to the collection
 
 		APP.LogEvent(this.options.module, this.options.model.id, "New comment: " + comment.comment.substring(0, 20) + "&hellip;");
 	}
