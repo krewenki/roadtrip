@@ -20,32 +20,34 @@ window.Roadtrip = {
 		execute: function(callback, args, name) {
 			var module = this.module;
 			var missing = this.GetMissingCollections();
-			if (missing === false) {
+			if (missing === false) { // no missing collections.  Execute the route
 				return Backbone.Router.prototype.execute.call(this, callback, args, name);
 			} else {
 				console.log("waiting for collection", missing);
-				APP.root.showChildView("main", new DEF.EmptyView({
-					icon: missing,
-					msg: "Loading " + missing.toUpperCase() + "&hellip;",
-					submsg: "<progress value=" + this.collections.indexOf(missing) + " min=0 max=" + (this.collections.length - 1) + ">"
+				for (let module of missing) // loop the missing list
+					DEF.modules[module].Initialize(); // initialize them all (previous initialized ones will be ignored)
+				APP.root.showChildView("main", new DEF.EmptyView({ // Show the progress bar
+					icon: missing[0],
+					msg: "Loading " + missing[0].toUpperCase() + "&hellip;",
+					submsg: "<progress value=" + this.collections.indexOf(missing[0]) + " min=0 max=" + (this.collections.length - 1) + ">"
 				}));
-				var collection = (missing.indexOf('_') > 0) ? missing.split('_')[0] : missing; // "orders_lineitems"
-				DEF.modules[collection].Initialize();
-				this.listenToOnce(APP.models[missing], 'sync', this.execute.bind(this, callback, args, name));
+				var collection = (missing[0].indexOf('_') > 0) ? missing[0].split('_')[0] : missing[0]; // "orders_lineitems", etc.. =>"orders"
+				this.listenToOnce(APP.models[missing[0]], 'sync', this.execute.bind(this, callback, args, name)); // listen to the first one to sync, and try it all again
 			}
 		},
 		/**
 		 * returns the name of a missing collection, or FALSE if they are all loaded
 		 */
 		GetMissingCollections: function() {
+			var out = [];
 			if (this.collections.length === 0)
 				this.collections = [this.module];
 			for (var c = 0; c < this.collections.length; c++) {
 				var collection = this.collections[c];
 				if (_.isUndefined(APP.models[collection]) || APP.models[collection].length === 0)
-					return collection;
+					out.push(collection);
 			}
-			return false;
+			return out.length ? out : false;
 		},
 		/**
 		 * A generic method to show the module/cmd/arg style URLs
@@ -96,7 +98,7 @@ window.Roadtrip = {
 				$el.html(APP.Icon(module) + " " + this.length).addClass("new"); // add a flash
 				setTimeout(function() { // clear the flash
 					$el.removeClass("new");
-				}, 200);
+				}, 500);
 			}
 		},
 	}),
@@ -177,10 +179,17 @@ window.Roadtrip = {
 				cmd = "view";
 			return "#" + this.module + "/" + cmd + "/" + this.id;
 		},
+
 		GetTitle: function() {
 			return this.model.get(this.nameAttribute);
-
 		},
+		/**
+		 * Just like the .get function, but if the value is falsey, it asks the parent (and it's parent)
+		 * until it finds a non false answer.  For example, you can ask a task what the "name" is, and it'll
+		 * follow the parents up to the project where .get("name") returns a valid value.
+		 * @param  {string} field the name of the field in the database
+		 * @return {string}       the contents of that field
+		 */
 		getUp: function(field) {
 			if (this.get(field))
 				return this.get(field);
