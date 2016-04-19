@@ -221,7 +221,11 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	 */
 	AddSubtask: function() {
 		var page = new DEF.modules.tasks.views.edit({
-			model: false,
+			model: APP.models.tasks.create({
+				task_id: "1.29.5",
+				parent_module: "tasks",
+				parent_id: this.model.id
+			}),
 			parent: {
 				module: "tasks",
 				id: this.model.id
@@ -357,22 +361,22 @@ DEF.modules.tasks.views = {
 		onBeforeShow: function() {
 			this.model.UpdateTaskProgress();
 		},
-		onShow: function() {
+		onRender: function() {
 			APP.SetTitle(this.model.get(this.model.nameAttribute));
 			this.model.IncStat("views");
 
 			var model_id = this.model.id;
-			this.showChildView('task', new DEF.modules.tasks.TaskDetails({
+			this.task.show(new DEF.modules.tasks.TaskDetails({
 				model: this.model,
 			}));
 
-			this.showChildView('open', new DEF.modules.tasks.TaskList({
+			this.open.show(new DEF.modules.tasks.TaskList({
 				template: require("./templates/taskline.html"),
 				collection: APP.models.tasks,
 				filter: APP.models.tasks.filters.Open(this.model)
 			}));
 
-			this.showChildView('closed', new DEF.modules.tasks.TaskList({
+			this.closed.show(new DEF.modules.tasks.TaskList({
 				template: require("./templates/taskline_closed.html"),
 				collection: APP.models.tasks,
 				filter: APP.models.tasks.filters.Closed(this.model)
@@ -384,7 +388,7 @@ DEF.modules.tasks.views = {
 			}));
 
 			var task_id = this.model.get('task_id');
-			this.showChildView('revisions', new DEF.modules.revisions.MainView({
+			this.revisions.show(new DEF.modules.revisions.MainView({
 				collection: APP.models.revisions,
 				filter: function(r) {
 					if (r.get('task_id') == task_id) { // the fast way
@@ -396,6 +400,13 @@ DEF.modules.tasks.views = {
 					}
 					return false;
 				},
+			}));
+
+			var comments = new DEF.modules.comments.Collection(this.model.get('comments'));
+			this.comments.show(new DEF.modules.comments.Comments({
+				model: this.model,
+				collection: comments,
+				module: "tasks"
 			}));
 
 		}
