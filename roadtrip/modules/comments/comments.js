@@ -63,7 +63,7 @@ DEF.modules.comments.Comments = Backbone.Marionette.CompositeView.extend({
 		model.set('comments',model.get('comments').concat(comment))
 
 		this.model.SetStats({
-			"comments": comments.length
+			"comments": model.get('comments').length
 		});
 
 		APP.LogEvent(this.options.module, this.options.model.id, "New comment: " + comment.comment.substring(0, 20) + "&hellip;");
