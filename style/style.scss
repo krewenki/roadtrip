@@ -11,13 +11,20 @@ body {
     color     : white;
     background: repeating-linear-gradient( -55deg, #222, #222 10px, #242424 10px, #242424 20px);
 }
-
+/*
+███████  ██████   ██████  ████████ ███████ ██████
+██      ██    ██ ██    ██    ██    ██      ██   ██
+█████   ██    ██ ██    ██    ██    █████   ██████
+██      ██    ██ ██    ██    ██    ██      ██   ██
+██       ██████   ██████     ██    ███████ ██   ██
+*/
 #FOOTER {
     a {
         color          : $link-color-alt;
         text-decoration: none;
         border-right   : 1px solid $text-color;
-        padding-right  : 10px;
+        padding-right  : 5px;
+        padding-left   : 5px;
     }
 
     a:last-child {
@@ -50,7 +57,13 @@ body {
         }
     }
 }
-
+/*
+██   ██ ███████  █████  ██████  ███████ ██████
+██   ██ ██      ██   ██ ██   ██ ██      ██   ██
+███████ █████   ███████ ██   ██ █████   ██████
+██   ██ ██      ██   ██ ██   ██ ██      ██   ██
+██   ██ ███████ ██   ██ ██████  ███████ ██   ██
+*/
 #HEADER {
     background-color: black;
     background      : linear-gradient(#333, #000);
@@ -294,7 +307,13 @@ body {
         }
     }
 }
-
+/*
+███    ███  █████  ██ ███    ██
+████  ████ ██   ██ ██ ████   ██
+██ ████ ██ ███████ ██ ██ ██  ██
+██  ██  ██ ██   ██ ██ ██  ██ ██
+██      ██ ██   ██ ██ ██   ████
+*/
 #MAIN {
     padding         : 20px;
     background-color: white;
