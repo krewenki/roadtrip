@@ -77,14 +77,30 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		var string = this.id + " " + this.get(this.nameAttribute);
 		return string;
 	},
-	destroy: function(args) {
-		var kids = APP.models.tasks.filter({
-			"parent_id": this.id
+	GetChildID: function(module, id) {
+		var prefix = false,
+			instance = 0;
+
+		var parent = APP.models[module].get(id);
+		if (parent)
+			prefix = parent.get('task_id');
+		var models = APP.models.tasks.where({
+			parent_module: module,
+			parent_id: id
 		});
-		for (var k in kids) {
-			kids[k].destroy();
+
+		for (var m in models) {
+			var model = models[m];
+			var task_id = model.get('task_id');
+			instance = Math.max(instance, task_id.split('.').pop());
 		}
-		Roadtrip.Model.prototype.destroy.apply(this, args);
+		instance++;
+
+		if (prefix)
+			return prefix + "." + instance;
+		else
+			return instance;
+
 	},
 
 	/**
@@ -231,9 +247,14 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	AddSubtask: function() {
 		var page = new DEF.modules.tasks.views.edit({
 			model: APP.models.tasks.create({
-				task_id: "1.29.5",
+				task_id: this.model.GetChildID(this.model.module, this.model.id),
+				assigned_to: this.model.getUp("assigned_to"),
 				parent_module: "tasks",
-				parent_id: this.model.id
+				parent_id: this.model.id,
+				_: {
+					created_by: U.id,
+					created_on: Date.now()
+				}
 			}),
 			parent: {
 				module: "tasks",
@@ -309,17 +330,18 @@ DEF.modules.tasks.views = {
 	edit: Roadtrip.Edit.extend({
 		module: "tasks",
 		template: require("./templates/task_edit.html"),
-		templateHelpers: function() {
-			var rs = {
-				task_id: this.GenerateTaskID()
-			};
-			if (this.options.parent) {
-				rs.parent_id = this.options.parent.id;
-				rs.parent_module = this.options.parent.module;
-			}
-			rs.assigned_to = this.model.getUp("assigned_to");
-			return rs;
-		},
+		// templateHelpers: function() {
+		// 	// var rs = {
+		// 	// 	assigned_to: this.model.getUp("assigned_to")
+		// 	// 		//task_id: this.GenerateTaskID()
+		// 	// };
+		// 	// if (this.options.parent) {
+		// 	// 	//	rs.parent_id = this.options.parent.id;
+		// 	// 	//	rs.parent_module = this.options.parent.module;
+		// 	// }
+		// 	// rs.assigned_to = this.model.getUp("assigned_to");
+		// 	return rs;
+		// },
 		onShow: function() {
 			$("input#task").focus();
 			$("textarea").val(($("textarea").val() || '').trim()); // beautify inserts spaces between <textarea> in the template
@@ -328,33 +350,33 @@ DEF.modules.tasks.views = {
 		 * Generate the task ID, by incrementing the max task_id, including parents, if available.
 		 * @return {string} [1.2.3.5]
 		 */
-		GenerateTaskID: function() {
-			if (this.model.id) // this model has been saved
-				return this.model.id; // so do not generate a task_id
-
-			var prefix = false,
-				instance = 0;
-
-			var parent = APP.models[this.options.parent.module].get(this.options.parent.id);
-			if (parent)
-				prefix = parent.get('task_id');
-			var models = APP.models.tasks.where({
-				parent_module: this.options.parent.module,
-				parent_id: this.options.parent.id
-			});
-
-			for (var m in models) {
-				var model = models[m];
-				var task_id = model.get('task_id');
-				instance = Math.max(instance, task_id.split('.').pop());
-			}
-			instance++;
-
-			if (prefix)
-				return prefix + "." + instance;
-			else
-				return instance;
-		}
+		// GenerateTaskID: function() {
+		// 	if (this.model.id) // this model has been saved
+		// 		return this.model.id; // so do not generate a task_id
+		//
+		// 	var prefix = false,
+		// 		instance = 0;
+		//
+		// 	var parent = APP.models[this.options.parent.module].get(this.options.parent.id);
+		// 	if (parent)
+		// 		prefix = parent.get('task_id');
+		// 	var models = APP.models.tasks.where({
+		// 		parent_module: this.options.parent.module,
+		// 		parent_id: this.options.parent.id
+		// 	});
+		//
+		// 	for (var m in models) {
+		// 		var model = models[m];
+		// 		var task_id = model.get('task_id');
+		// 		instance = Math.max(instance, task_id.split('.').pop());
+		// 	}
+		// 	instance++;
+		//
+		// 	if (prefix)
+		// 		return prefix + "." + instance;
+		// 	else
+		// 		return instance;
+		// }
 	}),
 
 	view: Backbone.Marionette.LayoutView.extend({
