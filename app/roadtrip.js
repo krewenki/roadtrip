@@ -181,6 +181,16 @@ window.Roadtrip = {
 			return this.model.get(this.nameAttribute);
 
 		},
+		getUp: function(field) {
+			if (this.get(field))
+				return this.get(field);
+			var model = APP.models[this.get('parent_module')].get(this.get('parent_id'));
+			if (model) {
+				return model.getUp(field);
+			} else {
+				return false;
+			}
+		},
 		/**
 		 * Use this to quickly set stats for the models
 		 *

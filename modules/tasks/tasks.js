@@ -304,6 +304,7 @@ DEF.modules.tasks.views = {
 				rs.parent_id = this.options.parent.id;
 				rs.parent_module = this.options.parent.module;
 			}
+			rs.assigned_to = this.model.getUp("assigned_to");
 			return rs;
 		},
 		onShow: function() {
