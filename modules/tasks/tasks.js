@@ -378,10 +378,8 @@ DEF.modules.tasks.views = {
 				filter: APP.models.tasks.filters.Closed(this.model)
 			}));
 
-			var comments = new DEF.modules.comments.Collection(this.model.get('comments'));
 			this.showChildView('comments', new DEF.modules.comments.Comments({
 				model: this.model,
-				collection: comments,
 				module: "tasks"
 			}));
 
