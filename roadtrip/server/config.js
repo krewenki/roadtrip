@@ -24,17 +24,16 @@ var config = {
 	onComplete: function(self, _, ObjectId) {
 		self.settings.http.get('/', function(req, res) {
 			var fs = require('fs');
+			var user_id = '56fea5cc54d49c036c802e53';
       if(req.session.passport && req.session.passport.user){
-        res.send(_.template(fs.readFileSync('./templates/application.html', {
-  				encoding: 'utf8'
-  			}))(req.session.passport));
-      } else {
-        self.db.collection('users').find({ '_id' : ObjectId('56fea5cc54d49c036c802e53')}, function(err, doc){
-          res.send(_.template(fs.readFileSync('./templates/application.html', {
-            encoding: 'utf8'
-          }))({ "user" : doc[0] }));
-        });
+				user_id = req.session.passport.user._id;
       }
+      self.db.collection('users').find({ '_id' : ObjectId(user_id)}, function(err, doc){
+        res.send(_.template(fs.readFileSync('./templates/application.html', {
+          encoding: 'utf8'
+        }))({ "user" : doc[0] }));
+      });
+
 		});
 	}
 };
