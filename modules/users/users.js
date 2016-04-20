@@ -35,6 +35,13 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 			header: "large"
 		},
 		perms: {
+			events: {
+				create: false,
+				read: true,
+				update: false,
+				delete: false,
+				comment: true
+			},
 			tasks: {
 				create: false,
 				read: true,
@@ -156,23 +163,12 @@ DEF.modules.users.RecordLine = Roadtrip.RecordLine.extend({
 	},
 	events: {
 		"click @ui.perm": "SetPerm",
-		"click": "Click"
+		"Xclick": "Click"
 	},
 	SetPerm: function(e) {
-		var $el = e.currentTarget;
-		console.log($el);
-		var parts = $el.id.split('.');
-		var perms = _.extend(this.model.defaults.perms, this.model.get('perms'));
-		console.log(this.model.get('name'), parts[0], parts[1], perms);
-		if (!perms[parts[0]])
-			perms[parts[0]] = {};
-		perms[parts[0]][parts[1]] = $el.checked;
-		this.model.set({
-			perms: perms
-		});
-		this.model.trigger('change', this.model);
+		this.model.set(e.currentTarget.id, e.currentTarget.checked);
+		APP.LogEvent("users", this.model.id, `${e.currentTarget.id} set to ` + (e.currentTarget.checked ? "on" : "off"));
 		APP.trigger("auth_user"); // redraw the header to see if the modules need to be show/hide.
-		APP.LogEvent("users", this.model.id, `Permission ${parts[0]}:${parts[1]} set to ` + ($el.checked ? "on" : "off"));
 		return false; // stop propagation
 	}
 });

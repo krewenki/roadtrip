@@ -233,12 +233,13 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 		var Highcharts = require('highcharts');
 		var chart = Highcharts.chart('chart', {
 			chart: {
-				type: "pie"
+				type: "pie",
+				animation: false, // doesn't work:  http://api.highcharts.com/highcharts#chart.animation
 			},
 			title: {
 				text: ""
 			},
-			series: series
+			series: series,
 		});
 	},
 	CreateTask: function() {

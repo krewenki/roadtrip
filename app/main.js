@@ -305,6 +305,8 @@ APP.Tools = {
 	 * @return {number}            The result
 	 */
 	Aggregate: function(collection, key, func = "size") {
+		if (_.isArray(collection))
+			collection = new Backbone.Collection(collection);
 		return Number(_[func](collection.pluck(key)));
 	}
 };
