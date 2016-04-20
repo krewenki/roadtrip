@@ -187,7 +187,7 @@ window.Roadtrip = {
 
 			}
 
-			return Backbone.Model.prototype.set.call(this, key, val, options);
+			return Backbone.Highway.Model.prototype.set.call(this, key, val, options);
 		},
 		icon: function() {
 			return APP.Icon(this.module, this.module);
