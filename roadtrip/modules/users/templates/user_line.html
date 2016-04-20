@@ -1,22 +1,19 @@
 <td>
-		<%=name%>
-</td>
-<td class='minwidth1000'>
-		<%=email%>
+	<%=name%>
 </td>
 <%
 	var modules = Object.keys(APP.models);
 	var perm;
 	for( var m in modules) {
 		var module = modules[m];
-		if (perms[module]) // a module may not exist when this record had been created
-			perm = perms[module] // but if it does, use it.  Else, use the last.
+		if (!perms[module]) // a module may not exist when this record had been created
+			perms[module]={};
 		%>
-		<td>
-				<input title='Create' id='<%=module%>.create' class='fancy_checkbox perms' type='checkbox' <%=perm.create? "checked": ""%> >
-				<input title='Read' id='<%=module%>.read' class='fancy_checkbox perms' type='checkbox' <%=perm.read? "checked": ""%> >
-				<input title='Update' id='<%=module%>.update' class='fancy_checkbox perms' type='checkbox' <%=perm.update? "checked": ""%> >
-				<input title='Delete' id='<%=module%>.delete' class='fancy_checkbox perms' type='checkbox' <%=perm.delete? "checked": ""%> >
-				<input title='Comment' id='<%=module%>.comment' class='fancy_checkbox perms' type='checkbox' <%=perm.comment? "checked": ""%> >
-		</td>
-		<% } %>
+	<td>
+		<input title='Create' id='perms.<%=module%>.create' class='fancy_checkbox perms' type='checkbox' <%=perms[module].create? "checked": ""%> >
+		<input title='Read' id='perms.<%=module%>.read' class='fancy_checkbox perms' type='checkbox' <%=perms[module].read? "checked": ""%> >
+		<input title='Update' id='perms.<%=module%>.update' class='fancy_checkbox perms' type='checkbox' <%=perms[module].update? "checked": ""%> >
+		<input title='Delete' id='perms.<%=module%>.delete' class='fancy_checkbox perms' type='checkbox' <%=perms[module].delete? "checked": ""%> >
+		<input title='Comment' id='perms.<%=module%>.comment' class='fancy_checkbox perms' type='checkbox' <%=perms[module].comment? "checked": ""%> >
+	</td>
+	<% } %>
