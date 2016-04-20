@@ -35,6 +35,9 @@ var config = {
       });
 
 		});
+	},
+	hooks: {
+		revisions: require('../modules/revisions/server.js')
 	}
 };
 
