@@ -1,8 +1,8 @@
 <div id='menu'>
 	<span id='title'>Contacts:</span>
 	<%=name%>
-		<div class='cmd link ' id='cancel'>
-			<%=APP.Icon('cancel')%> cancel
+		<div class='cmd link ' id='done'>
+			<%=APP.Icon('done')%> done
 		</div>
 		<div class='cmd link' id='save'>
 			<%=APP.Icon('save')%> save
@@ -28,19 +28,19 @@
 	<tr>
 		<th>Order Date</th>
 		<td>
-			<input type='date' id='order_date' value='<%=new Date(order_date)%>'>
+			<input type='date' id='order_date' value='<%=APP.Format.sysdate(order_date)%>'>
 		</td>
 	</tr>
 	<tr>
 		<th>Customer Request Date</th>
 		<td>
-			<input type='date' id='customer_request_date' value='<%=customer_request_date%>'>
+			<input type='date' id='customer_request_date' value='<%=APP.Format.sysdate(customer_request_date)%>'>
 		</td>
 	</tr>
 	<tr>
 		<th>Release Date</th>
 		<td>
-			<input type='date' id='release_date' value='<%=release_date%>'>
+			<input type='date' id='release_date' value='<%=APP.Format.sysdate(release_date)%>'>
 		</td>
 	</tr>
 </table>
