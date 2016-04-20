@@ -163,12 +163,13 @@ DEF.modules.users.RecordLine = Roadtrip.RecordLine.extend({
 	},
 	events: {
 		"click @ui.perm": "SetPerm",
-		"Xclick": "Click"
+		"click": "Click"
 	},
 	SetPerm: function(e) {
 		this.model.set(e.currentTarget.id, e.currentTarget.checked);
 		APP.LogEvent("users", this.model.id, `${e.currentTarget.id} set to ` + (e.currentTarget.checked ? "on" : "off"));
-		APP.trigger("auth_user"); // redraw the header to see if the modules need to be show/hide.
+		// ** disabled, since this would only affect the current user, so its sort of useless.
+		//APP.trigger("auth_user"); // redraw the header to see if the modules need to be show/hide.
 		return false; // stop propagation
 	}
 });

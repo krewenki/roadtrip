@@ -66,8 +66,7 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 	ui: {
 		"add": "#add",
 		"field": ".field",
-		"save": "#save",
-		"cancel": "#cancel",
+		"done": "#done",
 		"delete": "#delete",
 		"start_date": "#start_date",
 		"duration": "#duration",
@@ -76,9 +75,7 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 	events: {
 		"click @ui.add": "AddLine",
 		"change @ui.field": "Save",
-		"click @ui.save": "Save",
-		"click @ui.cancel": "Cancel",
-		"click @ui.delete": "Delete",
+		"click @ui.done": "Done",
 		"change @ui.start_date": "UpdateDates",
 		"change @ui.duration": "UpdateDays"
 	},
@@ -140,13 +137,15 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 			$(e.currentTarget).addClass("dirty");
 	},
 	Save: function(e) {
+		console.log("save");
 		var model = this.model,
 			save = {};
 		//$(".field.dirty").each(function(i, $el) {
 		//			var val = $el.value;
-		save[e.currentTarget.id] = e.currentTarget.value;
+
+		if (e)
+			save[e.currentTarget.id] = e.currentTarget.value;
 		//});
-		console.log(e.currentTarget.id, e.currentTarget.value);
 		var expenses = model.get('expenses');
 		for (let el of $(".expense_field")) {
 			var day = $(el).data('day'),
@@ -184,11 +183,6 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 			console.log("save", save);
 			this.model.set(save);
 			this.model.SetStats("edit");
-			// APP.LogEvent(this.module, this.model.id, "Edited " + Object.keys(save).join(", "), {
-			// 	old: orig,
-			// 	new: save
-			// });
-			APP.Route("#expenses/view/" + this.model.id);
 		}
 	},
 	Sum: function() {
@@ -228,12 +222,13 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 		for (var d = 0; d < sum.days.length; d++) {
 			$("#total_" + (d + 1)).html(APP.Format.money(sum.days[d]));
 		}
+		this.Save();
 		//		this.model.trigger("change");
 	},
 	AddLine: function() {
 		this.collection.push(this.GetEmptyRecord());
 	},
-	Cancel: function(e) {
+	Done: function(e) {
 		APP.Route("#" + this.module + "/" + "view" + "/" + this.model.id);
 	},
 	Delete: function(e) {
