@@ -10,6 +10,7 @@ var marked = require("marked");
 var mdrenderer = new marked.Renderer();
 
 var WebpackNotifierPlugin = require('webpack-notifier');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 
 var config = {
@@ -47,17 +48,11 @@ var config = {
 			test: /\.(otf|eot|png|ico|svg|ttf|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
 			loader: 'url?limit=8192'
 		}, {
-			test: /\.css$/,
-			loader: 'style!css'
-		}, {
 			test: /\.html$/,
 			loader: "underscore-template-loader"
 		}, {
-			test: /\.less$/,
-			loader: "style!css!less"
-		}, {
 			test: /\.scss$/,
-			loader: 'style!css!sass'
+			loader: ExtractTextPlugin.extract("style-loader", "css!sass")
 		}, {
 			test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
 			loader: "file"
@@ -94,11 +89,13 @@ if (process.env.NODE_ENV == 'production') {
 			except: ['$', 'module', 'require', 'exports', '__webpack_require__']
 		}
 	}));
+	config.plugins.push(new ExtractTextPlugin("[name].css"))
 } else {
 	config.plugins.push(new Webpack.HotModuleReplacementPlugin());
 	config.plugins.push(new WebpackNotifierPlugin());
-	// Makes sure errors in console map to the correct file
-	// and line number
+	config.plugins.push(new ExtractTextPlugin("[name].css"))
+		// Makes sure errors in console map to the correct file
+		// and line number
 	config.devtool = 'source-map';
 	config.entry = [
 		// For hot style updates
