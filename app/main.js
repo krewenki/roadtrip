@@ -31,22 +31,22 @@ var MainApp = Backbone.Marionette.Application.extend({
 	 * @return  null
 	 */
 	SetUpWindowEvents: function() {
-		document.onmouseover = function() {
-			//User's mouse is inside the page. (This is working)
-			window.innerDocClick = true;
-		};
-		document.onmouseleave = function() {
-			//User's mouse has left the page. (this is working)
-			window.innerDocClick = false;
-		};
-		window.onhashchange = function() {
-			if (window.innerDocClick) {
-				// $("html, body").animate({
-				// 	scrollTop: 0
-				// }, 100);
-				//	window.scrollTo(0, 0);
-			}
-		};
+		// document.onmouseover = function() {
+		// 	//User's mouse is inside the page. (This is working)
+		// 	window.innerDocClick = true;
+		// };
+		// document.onmouseleave = function() {
+		// 	//User's mouse has left the page. (this is working)
+		// 	window.innerDocClick = false;
+		// };
+		// window.onhashchange = function() {
+		// 	if (window.innerDocClick) {
+		// 		// $("html, body").animate({
+		// 		// 	scrollTop: 0
+		// 		// }, 100);
+		// 		//	window.scrollTo(0, 0);
+		// 	}
+		// };
 		window.onscroll = function() {
 			var $header = $("#HEADER");
 			if (document.body.scrollTop > 110 || document.documentElement.scrollTop > 110) {
@@ -99,6 +99,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 		//		} else {
 		//			location.hash = route;
 		//		}
+		//
 		APP.controller.router.navigate(route, {
 			trigger: trigger
 		});

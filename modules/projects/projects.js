@@ -37,7 +37,31 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 	},
 	GetID: function() { // this is required when creating tasks
 		return APP.Tools.Aggregate(APP.models.projects, "project_id", "max") + 1;
-	}
+	},
+	GetChildID: function() {
+		debugger
+		var prefix = false,
+			instance = 0;
+
+		prefix = this.get('project_id');
+		var models = APP.models.tasks.where({
+			parent_module: this.module,
+			parent_id: this.id
+		});
+
+		for (var m in models) {
+			var model = models[m];
+			var task_id = model.get('task_id');
+			instance = Math.max(instance, task_id.split('.').pop());
+		}
+		instance++;
+
+		if (prefix)
+			return prefix + "." + instance;
+		else
+			return instance;
+
+	},
 });
 
 /**
@@ -244,7 +268,16 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 	},
 	CreateTask: function() {
 		var page = new DEF.modules.tasks.views.edit({
-			model: false,
+			model: APP.models.tasks.create({
+				task_id: this.model.GetChildID(this.model.module, this.model.id),
+				assigned_to: this.model.getUp("assigned_to"),
+				parent_module: "tasks",
+				parent_id: this.model.id,
+				_: {
+					created_by: U.id,
+					created_on: Date.now()
+				}
+			}),
 			parent: {
 				module: "projects",
 				id: this.model.id

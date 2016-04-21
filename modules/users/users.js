@@ -131,7 +131,7 @@ DEF.modules.users.views = {
 		},
 		onShow: function() {
 			APP.SetTitle(this.model.get('name'), "users");
-			this.showChildView('tasklist', new DEF.modules.tasks.TaskList({
+			this.tasklist.show(new DEF.modules.tasks.TaskList({
 				template: require("./templates/taskline.html"),
 				collection: APP.models.tasks,
 				filter: APP.models.tasks.filters.Assigned(this.model)

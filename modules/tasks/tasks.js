@@ -413,7 +413,7 @@ DEF.modules.tasks.views = {
 				filter: APP.models.tasks.filters.Closed(this.model)
 			}));
 
-			this.showChildView('comments', new DEF.modules.comments.Comments({
+			this.comments.show(new DEF.modules.comments.Comments({
 				model: this.model,
 				module: "tasks"
 			}));
