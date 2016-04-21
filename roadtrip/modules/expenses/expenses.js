@@ -40,7 +40,7 @@ DEF.modules.expenses.Router = Roadtrip.Router.extend({
 });
 DEF.modules.expenses.Model = Roadtrip.Model.extend({
 	nameAttribute: 'expense_id', // the human-readable field in the record
-	idAttribute: 'expense_id',
+	//idAttribute: 'expense_id',
 	module: "expenses",
 	search_string: function() {
 		return false;
@@ -112,7 +112,9 @@ DEF.modules.expenses.MainView = Roadtrip.RecordList.extend({
 	},
 	Add: function() {
 		var page = new DEF.modules.expenses.views.edit({
-			model: false,
+			model: APP.models.expenses.create({
+				x: 'y'
+			})
 		});
 		APP.root.showChildView('main', page);
 	}

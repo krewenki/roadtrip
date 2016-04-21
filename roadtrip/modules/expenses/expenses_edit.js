@@ -90,7 +90,7 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 
 		var expenses = this.model.get('expenses');
 		if (expenses.length === 0) {
-			cats = ["mileage", "plane", "hotel", "food", "food", "misc"];
+			var cats = ["mileage", "plane", "hotel", "food", "food", "misc"];
 			for (var i = 0; i < cats.length; i++) {
 				var rec = this.GetEmptyRecord(cats[i]);
 				expenses.push(rec);
@@ -176,7 +176,7 @@ DEF.modules.expenses.views.edit = Backbone.Marionette.CompositeView.extend({
 			};
 			return APP.models[this.module].create(save, {
 				success: function(attr) {
-					APP.Route("#expenses/view/" + attr.expense_id);
+					//APP.Route("#expenses/view/" + attr.expense_id);
 				}.bind(this)
 			});
 		} else {
