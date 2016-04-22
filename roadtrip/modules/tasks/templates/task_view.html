@@ -1,10 +1,10 @@
 <div id='menu'>
-	<% if (U.Can("tasks",'update') || _.created_by==U.id) { %>
+	<% if (U.Can("tasks") || _.created_by==U.id) { %>
 		<div class='cmd link' id='edit'>
 			<%=APP.Icon('edit')%> edit task
 		</div>
 		<% }%>
-			<% if (U.Can("tasks", "create")) { %>
+			<% if (U.Can("tasks")) { %>
 				<div class='cmd link' id='subtask'>
 					<%=APP.Icon('new')%> add subtask
 				</div>

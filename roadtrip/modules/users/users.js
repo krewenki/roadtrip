@@ -34,6 +34,7 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 		prefs: {
 			header: "large"
 		},
+		groups: "comments, projects, tasks, expenses, timeclock",
 		perms: {
 			events: {
 				create: false,
@@ -93,12 +94,26 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 			},
 		}
 	},
-	Can: function(module, perm) {
-		var perms = this.get('perms');
-		if (perms[module])
-			return perms[module][perm] || false;
-		return false;
-	},
+	/**
+	 * As the user if it has permissions to use this group function.  "admin" gets everything
+	 * @param  {string} group      Name of the group
+	 * @param  {string} extra extra part that gets concated.  "group_extra", aka "expenses_delete"
+	 * @return {[type]}            [description]
+	 */
+	Can: function(group, extra) {
+		var groups = this.get('groups');
+
+		if (groups.split(',').indexOf("admin") >= 0)
+			return true; // admin users can do everything
+		return groups.indexOf(group) >= 0;
+	}
+
+	// Can: function(module, perm) {
+	// 	var perms = this.get('perms');
+	// 	if (perms[module])
+	// 		return perms[module][perm] || false;
+	// 	return false;
+	// },
 });
 
 DEF.modules.users.Collection = Roadtrip.Collection.extend({

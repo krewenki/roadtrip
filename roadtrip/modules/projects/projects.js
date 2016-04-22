@@ -21,6 +21,7 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 		tasks: 0,
 		members: 0,
 		project_id: 0,
+		group: "",
 
 		progress: 0,
 
@@ -184,6 +185,11 @@ DEF.modules.projects.MainView = Roadtrip.RecordList.extend({
 	},
 	childView: DEF.modules.projects.RecordLine,
 	childViewContainer: "#record_list",
+	filter: function(m) {
+		if (m.get('group'))
+			return U.Can(m.get('group'));
+		return true;
+	},
 	ui: {
 		add: "#add"
 	},
