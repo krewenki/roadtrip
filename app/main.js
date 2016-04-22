@@ -348,7 +348,7 @@ APP.Format = {
 	 * @return {string}     A number, with , in the thousands
 	 */
 	number: function(val) {
-		return val.toFixed(0).replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+		return val.toLocalString();
 	},
 	/**
 	 * Returns a number with commas and dollarsigns and all that shit removed.
