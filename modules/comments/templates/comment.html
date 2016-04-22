@@ -1,11 +1,11 @@
 <div class='details'>
-		<a class='user' href='#users/view/<%=user_id%>'>
-				<%=username%>
-		</a> @ <span class='datetime'>
+	<a class='user' href='#users/view/<%=user_id%>'>
+		<%=username%>
+	</a> @ <span class='datetime'>
 
 		<%=APP.Format.datetime(datetime)%>
 </span>
 </div>
 <div class='content'>
-		<%=APP.Format.markdown(comment)%>
+	<%=APP.Format.linktext(APP.Format.markdown(comment))%>
 </div>
