@@ -11,16 +11,9 @@
 	<thead>
 		<tr>
 			<th>Name</th>
-			<%
-					var modules = Object.keys(APP.models);
-					for( var m in modules) {
-						var module = modules[m];
-						%>
-				<th>
-					<%=module%>
-				</th>
-
-				<% } %>
+			<th>Full Name</th>
+			<th>E-Mail</th>
+			<th>Phone</th>
 		</tr>
 	</thead>
 </table>

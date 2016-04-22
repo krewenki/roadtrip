@@ -34,65 +34,7 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 		prefs: {
 			header: "large"
 		},
-		groups: "comments, projects, tasks, expenses, timeclock",
-		perms: {
-			events: {
-				create: false,
-				read: true,
-				update: false,
-				delete: false,
-				comment: true
-			},
-			tasks: {
-				create: false,
-				read: true,
-				update: false,
-				delete: false,
-				comment: true
-			},
-			orders: {
-				create: false,
-				read: true,
-				update: false,
-				delete: false,
-				comment: false
-			},
-			contacts: {
-				create: false,
-				read: true,
-				update: false,
-				delete: false,
-				comment: false
-			},
-			projects: {
-				create: false,
-				read: true,
-				update: false,
-				delete: false,
-				comment: false
-			},
-			calendar: {
-				create: false,
-				read: true,
-				update: false,
-				delete: false,
-				comment: false
-			},
-			users: {
-				create: false,
-				read: false,
-				update: false,
-				delete: false,
-				comment: false
-			},
-			expenses: {
-				create: false,
-				read: false,
-				update: false,
-				delete: false,
-				comment: false
-			},
-		}
+		groups: "comments, projects, tasks, expenses, timeclock"
 	},
 	/**
 	 * As the user if it has permissions to use this group function.  "admin" gets everything
@@ -108,12 +50,6 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 		return groups.indexOf(group) >= 0;
 	}
 
-	// Can: function(module, perm) {
-	// 	var perms = this.get('perms');
-	// 	if (perms[module])
-	// 		return perms[module][perm] || false;
-	// 	return false;
-	// },
 });
 
 DEF.modules.users.Collection = Roadtrip.Collection.extend({
@@ -173,20 +109,10 @@ DEF.modules.users.RecordLine = Roadtrip.RecordLine.extend({
 	tagName: "tr",
 	module: "users",
 	template: require("./templates/user_line.html"),
-	ui: {
-		perm: ".perms"
-	},
+	ui: {},
 	events: {
-		"click @ui.perm": "SetPerm",
 		"click": "Click"
 	},
-	SetPerm: function(e) {
-		this.model.set(e.currentTarget.id, e.currentTarget.checked);
-		APP.LogEvent("users", this.model.id, `${e.currentTarget.id} set to ` + (e.currentTarget.checked ? "on" : "off"));
-		// ** disabled, since this would only affect the current user, so its sort of useless.
-		//APP.trigger("auth_user"); // redraw the header to see if the modules need to be show/hide.
-		return false; // stop propagation
-	}
 });
 
 DEF.modules.users.MainView = Roadtrip.RecordList.extend({
