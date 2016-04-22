@@ -71,17 +71,19 @@ var MainApp = Backbone.Marionette.Application.extend({
 	 * Yet another "GetLink".  Returns a <a href...
 	 * @param  {string} module Name of the module ("orders")
 	 * @param  {string} id     _id
-	 * @param  {string} cmd    "view", by default
+	 * @param  {string} linktext    what to display in the hyperklink
 	 * @return {string}        <a href...
 	 */
-	GetLink: function(module, id, cmd) {
-		if (!cmd)
-			cmd = "view";
-		var model = APP.models[module].get(id);
-		if (model)
-			return `<a href='#${module}/${cmd}/${id}'>` + APP.Icon(module) + " " + model.get(model.nameAttribute) + "</a>";
-		else
-			return "--";
+	GetLink: function(module, id, linktext) {
+		if (APP.models[module]) {
+			var model = APP.models[module].get(id);
+			if (model) {
+				if (!linktext)
+					linktext = " " + model.get(model.nameAttribute);
+				return `<a href='#${module}/view/${id}'>` + APP.Icon(module) + linktext + "</a>";
+			}
+		}
+		return "--";
 	},
 	/**
 	 * returns the specified models
@@ -409,6 +411,17 @@ APP.Format = {
 	markdown: require('marked'),
 	htmlentities: function(str) {
 		return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+	},
+	linktext: function(str) {
+		if (APP.models.tasks)
+			return str.replace(/(#)([\d.]+)/, APP.Format._replace);
+		else
+			return str;
+
+	},
+	_replace: function(match, key, id) {
+		console.log(match, key, id);
+		return APP.GetLink("tasks", id, id);
 	}
 };
 

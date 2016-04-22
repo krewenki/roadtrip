@@ -8,7 +8,7 @@
 	<%=APP.GetLink("users",  APP.models.repositories.get(repository).LookupUser(author))%>
 </td>
 <td>
-	<%= APP.Format.htmlentities(log) %>
+	<%= APP.Format.linktext(APP.Format.htmlentities(log)) %>
 </td>
 <td class='nowrap'>
 	<%= APP.Format.datetime(datetime)%>

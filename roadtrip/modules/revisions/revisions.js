@@ -7,7 +7,7 @@ DEF.modules.revisions.Initialize = function() {
 DEF.modules.revisions.Router = Roadtrip.Router.extend({
 	module: "revisions",
 	collections: [
-		"repositories", "revisions"
+		"repositories", "revisions", "tasks"
 	],
 	routes: {
 		"revisions/:cmd/:arg": "LoadModule",

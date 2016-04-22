@@ -36,7 +36,7 @@ DEF.modules.comments.Comments = Backbone.Marionette.CompositeView.extend({
 	childView: DEF.modules.comments.Comment,
 	childViewContainer: "#comment_list",
 	modelEvents: {
-		"change:comments" : "render"
+		"change:comments": "render"
 	},
 	// emptyView: DEF.EmptyView,
 	// emptyViewOptions: {
@@ -49,18 +49,18 @@ DEF.modules.comments.Comments = Backbone.Marionette.CompositeView.extend({
 	events: {
 		"click @ui.save": "Save"
 	},
-	onBeforeRender: function(){
+	onBeforeRender: function() {
 		this.collection = new DEF.modules.comments.Collection(this.model.get('comments'));
 	},
 	Save: function() {
 		var comment = {
-			"datetime"	: Date.now(),
-			"user_id"		: U.id,
-			"comment"		: this.ui.comment.val().trim()
+			"datetime": Date.now(),
+			"user_id": U.id,
+			"comment": this.ui.comment.val().trim()
 		};
 
 		var model = APP.models[this.model.module].get(this.model.id);
-		model.set('comments',model.get('comments').concat(comment))
+		model.set('comments', model.get('comments').concat(comment));
 
 		this.model.SetStats({
 			"comments": model.get('comments').length
