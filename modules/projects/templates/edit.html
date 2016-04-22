@@ -6,7 +6,7 @@
 	<div class='cmd link' id='editrecord'>
 		<%=APP.Icon('db')%> json
 	</div>
-	<% if (U.Can("projects","delete") || _.created_by==U.id) {%>
+	<% if (U.Can("projects_admin") || _.created_by==U.id) {%>
 		<div class='cmd link danger' id='delete'>
 			<%=APP.Icon('user-times')%> delete
 		</div>
@@ -36,6 +36,14 @@
 		</th>
 		<td>
 			<input class='field' type='text' id='icon' placeholder='icon' value='<%=icon%>'>
+		</td>
+	</tr>
+	<tr>
+		<th>
+			Group:
+		</th>
+		<td>
+			<input class='field' type='text' id='group' placeholder='group' value='<%=group%>'>
 		</td>
 	</tr>
 	<tr>

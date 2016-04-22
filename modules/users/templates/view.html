@@ -1,5 +1,5 @@
 <div id='menu'>
-	<% if (U.Can("users","update") || _.created_by==U.id) { %>
+	<% if (U.Can("users_admin") || _.created_by==U.id) { %>
 		<div class='cmd link' id='edit'>
 			<%=APP.Icon('edit')%> edit
 		</div>
@@ -9,7 +9,7 @@
 
 <table id='details' class='table table-left table-full'>
 	<tr>
-		<td rowspan=7><img src='<%=image_url%>'></td>
+		<td rowspan=8><img src='<%=image_url%>'></td>
 	</tr>
 	<tr>
 		<th>Initials</th>
@@ -49,6 +49,12 @@
 		<th>Boss</th>
 		<td>
 			<%=APP.GetLink("users", boss)%>
+		</td>
+	</tr>
+	<tr>
+		<th>Groups</th>
+		<td>
+			<%=groups%>
 		</td>
 	</tr>
 </table>

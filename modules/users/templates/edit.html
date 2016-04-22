@@ -5,7 +5,7 @@
 	<div class='cmd link' id='editrecord'>
 		<%=APP.Icon('db')%> json
 	</div>
-	<% if (U.Can("users","delete") || _.created_by==U.id){%>
+	<% if (U.Can("users_admin") || _.created_by==U.id){%>
 		<div class='cmd link danger' id='delete'>
 			<%=APP.Icon('user-times')%> delete
 		</div>
@@ -48,6 +48,15 @@
 		<th>Boss</th>
 		<td>
 			<%=APP.HTML.Select("boss", APP.models.users,"name","_id",boss,"field", true)%>
+		</td>
+	</tr>
+	<tr>
+		<th>Groups</th>
+		<td>
+			<input type='text' id='groups' class='field' value='<%= groups%>'>
+			<div class='note'>
+				Comma separated. Permission names are the name of the model, optionally with some suffixes like _admin or _new. The field is wide open, so we can control permissions at the record level, such as the "Mark" project requiring people in the "mark" group.
+			</div>
 		</td>
 	</tr>
 

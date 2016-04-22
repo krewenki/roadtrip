@@ -1,12 +1,12 @@
 <div id='menu'>
 	<span id='title'><%=project%></span>
 
-	<% if (U.Can("tasks", "create")) { %>
+	<% if (U.Can("tasks")) { %>
 		<div class='cmd link' id='new'>
 			<%=APP.Icon('new')%> new task
 		</div>
 		<% } %>
-			<% if (U.Can("projects","update") || _.created_by==U.id) {%>
+			<% if (U.Can("projects_admin") || _.created_by==U.id) {%>
 				<div class='cmd link' id='edit'>
 					<%=APP.Icon('edit')%> edit project
 				</div>

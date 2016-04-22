@@ -1,5 +1,5 @@
 <div id='menu'>
-	<% if (U.Can('expenses','update') || _.created_by==U.id) { %>
+	<% if (U.Can('expenses_admin') || _.created_by==U.id) { %>
 		<div class='cmd link' id='edit'>
 			<%=APP.Icon('edit')%> edit
 		</div>
