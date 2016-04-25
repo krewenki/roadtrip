@@ -1,36 +1,36 @@
-require('backbone.marionette');
+require( 'backbone.marionette' );
 
-window.$ = require('jquery');
-window._ = require('underscore');
+window.$ = require( 'jquery' );
+window._ = require( 'underscore' );
 window.APP = {}; // DEFINE THE MAIN APP OBJECT
 window.DEF = {}; // HOLD THE DEFINITIONS. ALL THE MODULES, ETC...
 
-require('backbone.highway');
+require( 'backbone.highway' );
 
-require('../style/style.scss');
-require("font-awesome-webpack");
+require( '../style/style.scss' );
+require( "font-awesome-webpack" );
 
 
-require("./roadtrip.js");
-require("./layout.js");
-require("./search.js");
-require("./router.js");
-require("./static.js");
+require( "./roadtrip.js" );
+require( "./layout.js" );
+require( "./search.js" );
+require( "./router.js" );
+require( "./static.js" );
 
-var MainApp = Backbone.Marionette.Application.extend({
+var MainApp = Backbone.Marionette.Application.extend( {
 	anon: "56fea5cc54d49c036c802e53", // the anonymous user id
 
-	setRootLayout: function() {
+	setRootLayout: function () {
 		this.root = new DEF.RootLayout();
-		APP.root.showChildView('header', new DEF.HeaderLayout({}));
-		APP.root.showChildView('footer', new DEF.FooterLayout({}));
+		APP.root.showChildView( 'header', new DEF.HeaderLayout( {} ) );
+		APP.root.showChildView( 'footer', new DEF.FooterLayout( {} ) );
 	},
 	/**
 	 * When the URL changes, scroll to the top, unless the url changed via Browser Back (when the
 	 * mouse was not in the doc)
 	 * @return  null
 	 */
-	SetUpWindowEvents: function() {
+	SetUpWindowEvents: function () {
 		// document.onmouseover = function() {
 		// 	//User's mouse is inside the page. (This is working)
 		// 	window.innerDocClick = true;
@@ -47,25 +47,29 @@ var MainApp = Backbone.Marionette.Application.extend({
 		// 		//	window.scrollTo(0, 0);
 		// 	}
 		// };
-		window.onscroll = function() {
-			var $header = $("#HEADER");
-			if (document.body.scrollTop > 110 || document.documentElement.scrollTop > 110) {
-				if ($header.hasClass("large"))
-					$header.removeClass("large").addClass("small");
+		window.onscroll = function () {
+			var $header = $( "#HEADER" );
+			if ( document.body.scrollTop > 110 || document.documentElement.scrollTop > 110 ) {
+				if ( $header.hasClass( "large" ) )
+					$header.removeClass( "large" )
+					.addClass( "small" );
 			} else {
-				if ($header.hasClass("small"))
-					$header.removeClass("small").addClass("large");
+				if ( $header.hasClass( "small" ) )
+					$header.removeClass( "small" )
+					.addClass( "large" );
 			}
 		};
 	},
-	SetTitle: function(title, module) {
+	SetTitle: function ( title, module ) {
 		document.title = title + " - roadtrip";
-		if (module)
-			this.SetMode(module);
+		if ( module )
+			this.SetMode( module );
 	},
-	SetMode: function(mode) {
-		$("#HEADER #mainmenu .menuitem").removeClass('active');
-		$("#HEADER #mainmenu .menuitem[data-mode=" + mode + "]").addClass('active');
+	SetMode: function ( mode ) {
+		$( "#HEADER #mainmenu .menuitem" )
+			.removeClass( 'active' );
+		$( "#HEADER #mainmenu .menuitem[data-mode=" + mode + "]" )
+			.addClass( 'active' );
 	},
 	/**
 	 * Yet another "GetLink".  Returns a <a href...
@@ -74,13 +78,13 @@ var MainApp = Backbone.Marionette.Application.extend({
 	 * @param  {string} linktext    what to display in the hyperklink
 	 * @return {string}        <a href...
 	 */
-	GetLink: function(module, id, linktext) {
-		if (APP.models[module]) {
-			var model = APP.models[module].get(id);
-			if (model) {
-				if (!linktext)
-					linktext = " " + model.get(model.nameAttribute);
-				return `<a href='#${module}/view/${id}'>` + APP.Icon(module) + linktext + "</a>";
+	GetLink: function ( module, id, linktext ) {
+		if ( APP.models[ module ] ) {
+			var model = APP.models[ module ].get( id );
+			if ( model ) {
+				if ( !linktext )
+					linktext = " " + model.get( model.nameAttribute );
+				return `<a href='#${module}/view/${id}'>` + APP.Icon( module ) + linktext + "</a>";
 			}
 		}
 		return "--";
@@ -91,10 +95,10 @@ var MainApp = Backbone.Marionette.Application.extend({
 	 * @param  {id} id    model  _id
 	 * @return {[type]}       the model
 	 */
-	GetModel: function(module, id) {
-		return APP.models[module].get(id);
+	GetModel: function ( module, id ) {
+		return APP.models[ module ].get( id );
 	},
-	Route: function(route, trigger = true) {
+	Route: function ( route, trigger = true ) {
 
 		//		if (history.pushState) {
 		//			history.pushState(null, null, route);
@@ -102,9 +106,9 @@ var MainApp = Backbone.Marionette.Application.extend({
 		//			location.hash = route;
 		//		}
 		//
-		APP.controller.router.navigate(route, {
+		APP.controller.router.navigate( route, {
 			trigger: trigger
-		});
+		} );
 		//console.log(route, title);
 	},
 	/**
@@ -114,15 +118,15 @@ var MainApp = Backbone.Marionette.Application.extend({
 	 * @param {text} event  The event
 	 * @param {object} extras  Any additional info?
 	 */
-	LogEvent(module, id, event, extras = false) {
-		APP.models.events.create({
+	LogEvent( module, id, event, extras = false ) {
+		APP.models.events.create( {
 			module: module,
 			module_id: id,
 			event: event,
 			datetime: Date.now(),
 			user_id: U.id,
 			extras: extras
-		});
+		} );
 	},
 	Icon_Lookup: {
 		calendar: "calendar",
@@ -152,49 +156,52 @@ var MainApp = Backbone.Marionette.Application.extend({
 	 * @param  {string} title Tooltip title
 	 * @return {string}       <i...>
 	 */
-	Icon: function(icon, title = icon) {
-		if (icon.substring(0, 4) == "http")
+	Icon: function ( icon, title = icon ) {
+		if ( icon.substring( 0, 4 ) == "http" )
 			return "<img class='icon' src='" + icon + "'>";
 
-		switch (icon) {
-			case 'loading':
-				return "<span class='loading'><i class='fa fa-refresh fa-spin'></i></span>";
-			default:
-				if (this.Icon_Lookup[icon])
-					icon = this.Icon_Lookup[icon];
+		switch ( icon ) {
+		case 'loading':
+			return "<span class='loading'><i class='fa fa-refresh fa-spin'></i></span>";
+		default:
+			if ( this.Icon_Lookup[ icon ] )
+				icon = this.Icon_Lookup[ icon ];
 		}
 		return "<i title='" + title + "' class='icon fa fa-" + icon + "'></i>";
 	},
-	_UpdateTaskID: function() {
-		for (let model of APP.models.tasks.filter({
+	_UpdateTaskID: function () {
+		for ( let model of APP.models.tasks.filter( {
 				"parent_module": "tasks"
-			})) {
-			if (model.get('parent_id').length > 10) {
-				var parent = APP.models.tasks.findWhere({
-					"_id": model.get('parent_id')
-				});
-				if (parent) {
-					model.set({
+			} ) ) {
+			if ( model.get( 'parent_id' )
+				.length > 10 ) {
+				var parent = APP.models.tasks.findWhere( {
+					"_id": model.get( 'parent_id' )
+				} );
+				if ( parent ) {
+					model.set( {
 						parent_id: parent.id
-					});
+					} );
 				} else {
-					APP.models.tasks.remove(model);
-					console.log("bad", model);
+					APP.models.tasks.remove( model );
+					console.log( "bad", model );
 				}
 			}
 
 		}
 	},
-	_UpdateTasks: function() {
-		APP.models.tasks.each(function(m) {
-			if (m.get('parent_id').length > 10) {
-				m.set({
-					parent_id: m.get('parent_id').slice(2)
-				});
+	_UpdateTasks: function () {
+		APP.models.tasks.each( function ( m ) {
+			if ( m.get( 'parent_id' )
+				.length > 10 ) {
+				m.set( {
+					parent_id: m.get( 'parent_id' )
+						.slice( 2 )
+				} );
 			}
-		});
+		} );
 	}
-});
+} );
 
 
 window.APP = new MainApp();
@@ -209,21 +216,21 @@ DEF.modules = {}; // hold the models definitions
 ██   ██ ███████  ██████   ██████  ██ ██   ██ ███████
                     ▀▀
 */
-require("../modules/comments/comments.js");
-require("../modules/tasks/tasks.js");
-require("../modules/users/users.js");
-require("../modules/wiki/wiki.js");
-require("../modules/contacts/contacts.js");
-require("../modules/orders/orders.js");
-require("../modules/projects/projects.js");
-require("../modules/timeclock/timeclock.js");
-require("../modules/calendar/calendar.js");
-require("../modules/expenses/expenses.js");
-require("../modules/repositories/repository.js");
-require("../modules/revisions/revisions.js");
-require("../modules/events/events.js");
-require("../modules/db/db.js");
-require("./auth.js");
+require( "../modules/comments/comments.js" );
+require( "../modules/tasks/tasks.js" );
+require( "../modules/users/users.js" );
+require( "../modules/wiki/wiki.js" );
+require( "../modules/contacts/contacts.js" );
+require( "../modules/orders/orders.js" );
+require( "../modules/projects/projects.js" );
+require( "../modules/timeclock/timeclock.js" );
+require( "../modules/calendar/calendar.js" );
+require( "../modules/expenses/expenses.js" );
+require( "../modules/repositories/repository.js" );
+require( "../modules/revisions/revisions.js" );
+require( "../modules/events/events.js" );
+require( "../modules/db/db.js" );
+require( "./auth.js" );
 
 
 /*
@@ -245,26 +252,26 @@ APP.HTML = {
 	 * @param  {bool} leave_empty Leave a blank line at the top
 	 * @return {string}             "<select...>"
 	 */
-	Select: function(id, collection, display, key, value, className, leave_empty) {
+	Select: function ( id, collection, display, key, value, className, leave_empty ) {
 		key = key || "_id";
-		var html = "<select id='" + id + "' class='" + (className || "") + "'>";
-		if (leave_empty) {
+		var html = "<select id='" + id + "' class='" + ( className || "" ) + "'>";
+		if ( leave_empty ) {
 			html += "<option></option>";
 		}
-		collection.each(function(model) {
-			html += "<option " + (value == model.get(key) ? "selected" : "") + " value='" + model.get(key) + "'>" + model.get(display) + "</option>";
-		});
+		collection.each( function ( model ) {
+			html += "<option " + ( value == model.get( key ) ? "selected" : "" ) + " value='" + model.get( key ) + "'>" + model.get( display ) + "</option>";
+		} );
 
 		html += "</select>";
 		return html;
 
 	},
-	Autocomplete: function(id, collection, display, key, value, className, leave_empty) {
-		var html = "<input value='" + value + "'list='" + id + "_list' type='text' id='" + id + "' class='" + (className || "") + "'>";
+	Autocomplete: function ( id, collection, display, key, value, className, leave_empty ) {
+		var html = "<input value='" + value + "'list='" + id + "_list' type='text' id='" + id + "' class='" + ( className || "" ) + "'>";
 		html += "<datalist id='" + id + "_list'>";
-		collection.each(function(model) {
-			html += "<option value='" + model.get(key) + "'>" + model.GetTitle() + "</option>";
-		});
+		collection.each( function ( model ) {
+			html += "<option value='" + model.get( key ) + "'>" + model.GetTitle() + "</option>";
+		} );
 		html += "</datalist>";
 		return html;
 	}
@@ -290,13 +297,13 @@ APP.Tools = {
 	 * @param  {string} key        The field to counts
 	 * @return {Object}            {bug:20,feature:40}
 	 */
-	CountFields: function(collection, key) {
+	CountFields: function ( collection, key ) {
 		var counts = {};
-		if (!_.isArray(collection)) // unfiltered, i guess
+		if ( !_.isArray( collection ) ) // unfiltered, i guess
 			collection = collection.models;
-		for (let model of collection) {
-			var field = model.get(key);
-			counts[field] = counts[field] ? counts[field] + 1 : 1;
+		for ( let model of collection ) {
+			var field = model.get( key );
+			counts[ field ] = counts[ field ] ? counts[ field ] + 1 : 1;
 		}
 		return counts;
 	},
@@ -307,10 +314,10 @@ APP.Tools = {
 	 * @param  {string} func       size(count), min, max.  anything _ provides
 	 * @return {number}            The result
 	 */
-	Aggregate: function(collection, key, func = "size") {
-		if (_.isArray(collection))
-			collection = new Backbone.Collection(collection);
-		return Number(_[func](collection.pluck(key)));
+	Aggregate: function ( collection, key, func = "size" ) {
+		if ( _.isArray( collection ) )
+			collection = new Backbone.Collection( collection );
+		return Number( _[ func ]( collection.pluck( key ) ) );
 	}
 };
 
@@ -329,10 +336,10 @@ APP.Format = {
 	 * @param  {int} dec Number of decimals
 	 * @return {string}     "5.50"
 	 */
-	fixed: function(val, dec) {
-		if (!_.isNumber(val))
+	fixed: function ( val, dec ) {
+		if ( !_.isNumber( val ) )
 			val = 0;
-		return val.toFixed(dec);
+		return val.toFixed( dec );
 	},
 	/**
 	 * Returns a value not exceeding min or max
@@ -341,15 +348,15 @@ APP.Format = {
 	 * @param  {float} max Max value
 	 * @return {float}     Value, not exceeding Min or Max
 	 */
-	clamp: function(val, min, max) {
-		return Math.max(Math.min(val, max), min);
+	clamp: function ( val, min, max ) {
+		return Math.max( Math.min( val, max ), min );
 	},
 	/**
 	 * Returns a number with commas inserted appropriately
 	 * @param  {float} val A number
 	 * @return {string}     A number, with , in the thousands
 	 */
-	number: function(val) {
+	number: function ( val ) {
 		return val.toLocaleString();
 	},
 	/**
@@ -358,85 +365,98 @@ APP.Format = {
 	 * @param  {string} val "$5,500.00"
 	 * @return {number}     5500
 	 */
-	pure: function(val) {
-		if (_.isString(val))
-			val = val.match(/[\.\d]+/g).join([]);
-		return Number(val);
+	pure: function ( val ) {
+		if ( _.isString( val ) )
+			val = val.match( /[\.\d]+/g )
+			.join( [] );
+		return Number( val );
 	},
 	/**
 	 * Returns the value formatted as money
 	 * @param  {float} val The money value
 	 * @return {string}     $5.50
 	 */
-	money: function(val) {
-		if (U.get("is_anonymous"))
-			return "<span class='notallowed'>" + APP.Icon("eye-slash", "You do not have permission to view money") + "</span>";
-		val = Number(val);
+	money: function ( val ) {
+		if ( U.get( "is_anonymous" ) )
+			return "<span class='notallowed'>" + APP.Icon( "eye-slash", "You do not have permission to view money" ) + "</span>";
+		val = Number( val );
 		var sign = "zero";
-		if (val < 0)
+		if ( val < 0 )
 			sign = "negative";
-		if (val > 0)
+		if ( val > 0 )
 			sign = "positive";
-		return '<span class="money ' + sign + '">$' + val.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + "</span>";
+		return '<span class="money ' + sign + '">$' + val.toFixed( 2 )
+			.replace( /(\d)(?=(\d{3})+\.)/g, '$1,' ) + "</span>";
 	},
-	sysdate: function(time = Date.now()) {
-		var date = new Date(time);
-		var datef = date.getFullYear() + "-" + ("00" + (date.getMonth() + 1)).slice(-2) + "-" + ("00" + date.getDate()).slice(-2);
+	sysdate: function ( time = Date.now() ) {
+		var date = new Date( time );
+		var datef = date.getFullYear() + "-" + ( "00" + ( date.getMonth() + 1 ) )
+			.slice( -2 ) + "-" + ( "00" + date.getDate() )
+			.slice( -2 );
 		return datef;
 	},
-	date: function(time) {
-		if (!time)
+	date: function ( time ) {
+		if ( !time )
 			return "--";
-		var date = new Date(time);
-		var datef = ("00" + (date.getMonth() + 1)).slice(-2) + "/" + ("00" + date.getDate()).slice(-2) + "/" + date.getFullYear();
-		return "<a href='#calendar/date/" + datef + "'>" + datef + "</a>";
+		var date = new Date( time );
+		var datef = ( "00" + ( date.getMonth() + 1 ) )
+			.slice( -2 ) + "/" + ( "00" + date.getDate() )
+			.slice( -2 ) + "/" + date.getFullYear();
+		return "<a href='#calendar/date/" + date.toISOString()
+			.slice( 0, 10 ) + "'>" + datef + "</a>";
 	},
-	time: function(time) {
-		if (!time)
+	time: function ( time ) {
+		if ( !time )
 			return "--";
-		var date = new Date(time);
-		var datef = date.getHours() + ":" + ("00" + date.getMinutes()).slice(-2) + ":" + ("00" + date.getSeconds()).slice(-2);
+		var date = new Date( time );
+		var datef = date.getHours() + ":" + ( "00" + date.getMinutes() )
+			.slice( -2 ) + ":" + ( "00" + date.getSeconds() )
+			.slice( -2 );
 		return datef;
 	},
-	datetime: function(time) {
-		if (!time)
+	datetime: function ( time ) {
+		if ( !time )
 			return "--";
-		return APP.Format.date(time) + " " + APP.Format.time(time);
+		return APP.Format.date( time ) + " " + APP.Format.time( time );
 	},
 	/**
 	 * Returns html, given markdown
 	 * @param  {text} 'marked' Markdown formatted text
 	 * @return {html}          HTML formatted text
 	 */
-	markdown: require('marked'),
-	htmlentities: function(str) {
-		return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+	markdown: require( 'marked' ),
+	htmlentities: function ( str ) {
+		return String( str )
+			.replace( /&/g, '&amp;' )
+			.replace( /</g, '&lt;' )
+			.replace( />/g, '&gt;' )
+			.replace( /"/g, '&quot;' );
 	},
-	linktext: function(str) {
-		if (APP.models.tasks)
-			return str.replace(/(#)([\d.]+)/, APP.Format._replace);
+	linktext: function ( str ) {
+		if ( APP.models.tasks )
+			return str.replace( /(#)([\d.]+)/, APP.Format._replace );
 		else
 			return str;
 
 	},
-	_replace: function(match, key, id) {
-		console.log(match, key, id);
-		return APP.GetLink("tasks", id, id);
+	_replace: function ( match, key, id ) {
+		console.log( match, key, id );
+		return APP.GetLink( "tasks", id, id );
 	}
 };
 
 APP.util = {
-	DeleteField: function(collection, field) {
+	DeleteField: function ( collection, field ) {
 
 	},
-	RenameField: function(collection, old_name, new_name) {
-		collection.each(function(m) {
+	RenameField: function ( collection, old_name, new_name ) {
+		collection.each( function ( m ) {
 			var set = {};
-			set[new_name] = m.get(old_name);
-			console.log(m.id, set);
-			m.set(set);
-		});
-		APP.util.DeleteField(collection, old_name);
+			set[ new_name ] = m.get( old_name );
+			console.log( m.id, set );
+			m.set( set );
+		} );
+		APP.util.DeleteField( collection, old_name );
 	}
 };
 
@@ -448,18 +468,18 @@ APP.util = {
 ██  ██  ██ ██   ██ ██ ██  ██ ██
 ██      ██ ██   ██ ██ ██   ████
 */
-APP.on('before:start', function() {
+APP.on( 'before:start', function () {
 	APP.SetUpWindowEvents();
 	APP.setRootLayout();
-});
+} );
 
-APP.on('start', function() {
+APP.on( 'start', function () {
 	APP.controller = new DEF.Controller();
-	APP.controller.router = new DEF.Router({
+	APP.controller.router = new DEF.Router( {
 		controller: APP.controller
-	});
+	} );
 	Backbone.history.start();
-});
+} );
 
 
 APP.start();
