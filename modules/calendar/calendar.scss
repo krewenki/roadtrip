@@ -37,4 +37,27 @@
 		border-bottom-right-radius: 10px;
 		padding-right: 10px;
 	}
+
+}
+
+
+#DATE {
+	display       : flex;
+
+	.leftbar {
+		flex-basis   : auto;
+			flex       : 2;
+			padding-right: 10px;
+			margin-right: 10px;
+
+			#mainDateBox {
+				border: 1px solid #aaa;
+			}
+	}
+
+	.rightbox {
+	flex-basis   : auto;
+		flex: 8;
+	}
+
 }
