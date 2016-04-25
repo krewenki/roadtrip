@@ -287,7 +287,13 @@ DEF.modules.calendar.MainView = Roadtrip.MainView.extend( {
 	},
 	Add: function () {
 		var page = new DEF.modules.calendar.views.edit( {
-			model: false,
+			model: APP.models.calendar.create( {
+				title: 'New Event',
+				_: {
+					created_by: U.id,
+					created_on: Date.now()
+				}
+			} )
 		} );
 		APP.root.showChildView( 'main', page );
 	}

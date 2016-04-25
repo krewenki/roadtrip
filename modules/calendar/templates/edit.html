@@ -1,15 +1,17 @@
 <div id='menu'>
 	<span id='title'>Calendar:</span>
-	<%=name%>
-		<div class='cmd link ' id='cancel'>
-			<%=APP.Icon('cancel')%> cancel
-		</div>
-		<div class='cmd link' id='save'>
-			<%=APP.Icon('save')%> save
-		</div>
+
+	<div class='cmd link' id='done'>
+		<%=APP.Icon('done')%> done
+	</div>
+	<div class='cmd link' id='editrecord'>
+		<%=APP.Icon('db')%> json
+	</div>
+	<% if (U.Can("calendar_admin") || _.created_by==U.id) { %>
 		<div class='cmd link danger' id='delete'>
-			<%=APP.Icon('user-times')%> delete
+			<%=APP.Icon('delete')%> delete
 		</div>
+		<% } %>
 </div>
 
 
@@ -19,7 +21,7 @@
 	<tr>
 		<th>Title</th>
 		<td>
-			<input class='field' type='text' value='<%=title%>' name='title' id='title'>
+			<input class='field' type='text' value='<%-title%>' name='title' id='title'>
 		</td>
 	</tr>
 	<tr>
@@ -43,8 +45,7 @@
 	<tr>
 		<th>Location</th>
 		<td>
-			<textarea class="field" id="location" name="location">
-				<%= location %>
+			<textarea class="field" id="location" name="location"><%- location %>
 			</textarea>
 		</td>
 	</tr>
@@ -52,22 +53,8 @@
 		<th>Notes</th>
 		<td>
 			<textarea class='field' name='notes' id='notes'>
-				<%=notes%>
+				<%-notes%>
 			</textarea>
 		</td>
-	</tr>
-
-
-
-	<tr>
-		<td colspan=2>
-			<button id='save' class='btn default'>
-				<%=APP.Icon("save")%> Save</button>
-			<button id='cancel' class='btn '>
-				<%=APP.Icon("cancel")%> Cancel</button>
-			<button id='delete' class='btn danger '>
-				<%=APP.Icon("delete")%> Delete</button>
-		</td>
-
 	</tr>
 </table>
