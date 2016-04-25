@@ -1,7 +1,7 @@
 var config = {
 	uri: 'roadtrip.telegauge.com',
 	database: 'roadtrip',
-	auth: [{
+	auth: [ {
 		defaultUser: '56fea5cc54d49c036c802e53',
 		strategy: 'local',
 		sessionLength: 60 * 60 * 24 * 365,
@@ -10,7 +10,7 @@ var config = {
 			login: '/#login',
 			passwordReset: '/password-reset'
 		}
-	}],
+	} ],
 	email: {
 		transporter: 'smtps://krewenki%40gmail.com:rvbaveokrgpdfdda@smtp.gmail.com', // I guess we could use telegauge for now
 		messages: {
@@ -21,23 +21,28 @@ var config = {
 		}
 	},
 
-	onComplete: function(self, _, ObjectId) {
-		self.settings.http.get('/', function(req, res) {
-			var fs = require('fs');
+	onComplete: function ( self, _, ObjectId ) {
+		self.settings.http.get( '/', function ( req, res ) {
+			var fs = require( 'fs' );
 			var user_id = '56fea5cc54d49c036c802e53';
-      if(req.session.passport && req.session.passport.user){
+			if ( req.session && req.session.passport && req.session.passport.user ) {
 				user_id = req.session.passport.user._id;
-      }
-      self.db.collection('users').find({ '_id' : ObjectId(user_id)}, function(err, doc){
-        res.send(_.template(fs.readFileSync('./templates/application.html', {
-          encoding: 'utf8'
-        }))({ "user" : doc[0] }));
-      });
+			}
+			self.db.collection( 'users' )
+				.find( {
+					'_id': ObjectId( user_id )
+				}, function ( err, doc ) {
+					res.send( _.template( fs.readFileSync( './templates/application.html', {
+						encoding: 'utf8'
+					} ) )( {
+						"user": doc[ 0 ]
+					} ) );
+				} );
 
-		});
+		} );
 	},
 	hooks: {
-		revisions: require('../modules/revisions/server.js')
+		revisions: require( '../modules/revisions/server.js' )
 	}
 };
 

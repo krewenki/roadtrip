@@ -14,12 +14,13 @@ DEF.modules.calendar.Router = Roadtrip.Router.extend( {
 	},
 	LoadDate: function ( d ) {
 		var module = this.module;
-		var iso = new Date( d + ' 00:00' )
-			.getTime()
+		var date = new Date( d );
+		var offset = date.getTimezoneOffset() * 60 * 1000;
 
 		var collection = APP.models.calendar.getEventsForDate( d );
 		APP.Page = new DEF.modules.calendar.views[ 'date' ]( {
-			collection: collection
+			collection: collection,
+			date: new Date( date.getTime() + offset )
 		} );
 		APP.root.showChildView( "main", APP.Page );
 	}
@@ -58,7 +59,9 @@ DEF.modules.calendar.Collection = Roadtrip.Collection.extend( {
 	model: DEF.modules.calendar.Model,
 	url: 'roadtrip.telegauge.com/roadtrip/calendar',
 	getEventsForDate: function ( date ) {
-		var iso = new Date( date )
+		var d = new Date( date );
+		var offset = d.getTimezoneOffset() * 60 * 1000;
+		var iso = d
 			.getTime();
 		var collection = new Backbone.Collection( this.filter( function ( c ) {
 			var start = c.get( 'start' );
@@ -69,7 +72,7 @@ DEF.modules.calendar.Collection = Roadtrip.Collection.extend( {
 			var endDate = new Date( end )
 				.toISOString()
 				.slice( 0, 10 );
-			var isoDate = new Date( iso )
+			var isoDate = new Date( iso + offset )
 				.toISOString()
 				.slice( 0, 10 );
 			return ( start <= iso && iso <= end ) || ( startDate == isoDate ) || endDate == isoDate;
@@ -243,7 +246,25 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend( {
 
 DEF.modules.calendar.views.date = Backbone.Marionette.LayoutView.extend( {
 	template: require( "./templates/date.html" ),
-	//childView: DEF.modules.calendar.views.detailed_event
+	templateHelpers: function () {
+		var self = this;
+		return {
+			dayName: function () {
+				var weekday = [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ];
+				return weekday[ self.options.date.getDay() ];
+			},
+			date: function () {
+				return self.options.date.getDate();
+			},
+			year: function () {
+				return self.options.date.getFullYear();
+			},
+			monthName: function () {
+				var month = [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ]
+				return month[ self.options.date.getMonth() ]
+			}
+		};
+	}
 } )
 
 /**
