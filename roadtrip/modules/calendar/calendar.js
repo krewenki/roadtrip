@@ -271,19 +271,37 @@ DEF.modules.calendar.views.date = Backbone.Marionette.LayoutView.extend( {
  * The MainView.  HAS to be called MainView.  This is where this module begins
  */
 
-DEF.modules.calendar.MainView = Roadtrip.MainView.extend( {
-	template: require( "./templates/calendar.html" ),
+DEF.modules.calendar.MainView = Backbone.Marionette.LayoutView.extend( {
+	template: require( "./templates/date.html" ),
 	id: 'CALENDAR',
 	ui: {
-		search: "#search",
 		add: "#add"
 	},
 	events: {
-		"keyup @ui.search": "Search",
 		"click @ui.add": "Add"
 	},
-	onShow: function () {
-		this.weekView = new DEF.modules.calendar.views.Week();
+	initialize: function ( options ) {
+		if ( !options.date )
+			this.options.date = new Date();
+	},
+	templateHelpers: function () {
+		var self = this;
+		return {
+			dayName: function () {
+				var weekday = [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ];
+				return weekday[ self.options.date.getDay() ];
+			},
+			date: function () {
+				return self.options.date.getDate();
+			},
+			year: function () {
+				return self.options.date.getFullYear();
+			},
+			monthName: function () {
+				var month = [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ]
+				return month[ self.options.date.getMonth() ]
+			}
+		};
 	},
 	Add: function () {
 		var page = new DEF.modules.calendar.views.edit( {
