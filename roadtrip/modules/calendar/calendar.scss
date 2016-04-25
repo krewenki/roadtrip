@@ -1,63 +1,91 @@
 #CALENDAR {
-	thead th {
-		text-align: center;
-	}
-	tbody td {
-		text-align: right;
-		height: 10vw;
-		width: 14vw;
-	}
-	tbody td {
-		text-align: left;
-		padding: 0px;
-		margin: 0px;
-	}
-
-	tbody td.saturday, tbody td.sunday {
-		background-color: #eee;
-	}
-
-	.calendar_event {
-		background-color: #def;
-		margin-top: 2px;
-		margin-bottom: 2px;
-		margin-left: 0px;
-		margin-right: 0px;
-
-	}
-
-	.start {
-		border-top-left-radius: 10px;
-		border-bottom-left-radius: 10px;
-		padding-left: 10px;
-	}
-
-	.end {
-		border-top-right-radius: 10px;
-		border-bottom-right-radius: 10px;
-		padding-right: 10px;
-	}
-
+    thead th {
+        text-align: center;
+    }
+    tbody td {
+        text-align: right;
+        height: 10vw;
+        width: 14vw;
+    }
+    tbody td {
+        text-align: left;
+        padding: 0;
+        margin: 0;
+    }
+    tbody td.saturday,
+    tbody td.sunday {
+        background-color: #eee;
+    }
+    .calendar_event {
+        background-color: #def;
+        margin: 2px 0;
+    }
+    .start {
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        padding-left: 10px;
+    }
+    .end {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        padding-right: 10px;
+    }
 }
-
-
 #DATE {
-	display       : flex;
+    display: flex;
+    .leftbar {
+        flex-basis: auto;
+        flex: 2;
+        padding-right: 10px;
+        margin-right: 10px;
+        #mainDateBox {
+            border: 1px solid #aaa;
+            padding: 10px;
+            display: flex;
+            #bigDate {
+                flex-basis: auto;
+                flex: 3;
+                text-align: center;
+                font-size: 2em;
+            }
+            #dateMeta {
+                flex-basis: auto;
+                flex: 7;
+            }
+        }
+        #filters {
+            border: 1px solid #aaa;
+            margin-top: 20px;
+            div {
+                padding: 10px;
+                border-bottom: 1px solid #aaa;
+            }
+						div:last-child { border-bottom: none; }
+        }
+        #minicalendar {
+            border: 1px solid #aaa;
+            margin-top: 20px;
+        }
+    }
+    .rightbox {
+        flex-basis: auto;
+        flex: 8;
 
-	.leftbar {
-		flex-basis   : auto;
-			flex       : 2;
-			padding-right: 10px;
-			margin-right: 10px;
-
-			#mainDateBox {
-				border: 1px solid #aaa;
-			}
-	}
-
-	.rightbox {
-	flex-basis   : auto;
-		flex: 8;
-	}
-
+				table {
+					width: 100%;
+					border: 1px solid #aaa;
+					padding: 0px;
+					th {
+						background-color: #eee;
+						font-weight: 800;
+						text-align: left;
+						margin: 0px;
+						padding: 20px;
+					}
+					td {
+						margin: 0px;
+						padding: 20px;
+					}
+				}
+    }
 }
