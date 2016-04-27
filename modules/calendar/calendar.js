@@ -244,27 +244,9 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend( {
 		}
 	} )
 
-DEF.modules.calendar.views.date = Backbone.Marionette.LayoutView.extend( {
-	template: require( "./templates/date.html" ),
-	templateHelpers: function () {
-		var self = this;
-		return {
-			dayName: function () {
-				var weekday = [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ];
-				return weekday[ self.options.date.getDay() ];
-			},
-			date: function () {
-				return self.options.date.getDate();
-			},
-			year: function () {
-				return self.options.date.getFullYear();
-			},
-			monthName: function () {
-				var month = [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ]
-				return month[ self.options.date.getMonth() ]
-			}
-		};
-	}
+DEF.modules.calendar.views.minicalendar = Backbone.Marionette.LayoutView.extend( {
+	template: require( "./templates/minicalendar.html" ),
+
 } )
 
 /**
@@ -280,9 +262,17 @@ DEF.modules.calendar.MainView = Backbone.Marionette.LayoutView.extend( {
 	events: {
 		"click @ui.add": "Add"
 	},
+	regions: {
+		"miniCalendar": "#minicalendar",
+		"eventlist": "#eventlist"
+	},
 	initialize: function ( options ) {
 		if ( !options.date )
 			this.options.date = new Date();
+	},
+	onShow: function () {
+		this.getRegion( 'miniCalendar' )
+			.show( new DEF.modules.calendar.views.minicalendar() );
 	},
 	templateHelpers: function () {
 		var self = this;

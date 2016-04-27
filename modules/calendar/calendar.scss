@@ -65,6 +65,15 @@
         #minicalendar {
             border: 1px solid #aaa;
             margin-top: 20px;
+            table {
+              width: 100%;
+            }
+            td {
+              text-align: right;
+              margin: 0px;
+              padding: 0px;
+              height: 20px !important;
+            }
         }
     }
     .rightbox {
