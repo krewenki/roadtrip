@@ -439,7 +439,7 @@ APP.Format = {
 	 */
 	linktext: function(str) {
 		if (APP.models.tasks)
-			return str.replace(/(#)([\d.]+)/, APP.Format._replace);
+			return str.replace(/(#)(\d.[\d.]+)/, APP.Format._replace);
 		else
 			return str;
 
