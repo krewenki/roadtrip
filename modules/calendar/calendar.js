@@ -254,11 +254,11 @@ DEF.modules.calendar.views.eventlistitem = Roadtrip.View.extend( {
 	module: 'calendar',
 	template: require( './templates/eventlistitem.html' ),
 	tagName: 'tr',
-	// emptyView: DEF.EmptyView,
-	// emptyViewOptions: {
-	// 	icon: "warning",
-	// 	msg: "There are no events on this date"
-	// }
+	emptyView: DEF.EmptyView,
+	emptyViewOptions: {
+		icon: "warning",
+		msg: "There are no events on this date"
+	}
 
 } )
 
@@ -266,6 +266,7 @@ DEF.modules.calendar.views.eventlist = Backbone.Marionette.CompositeView.extend(
 	module: 'calendar',
 	template: require( './templates/eventlist.html' ),
 	childView: DEF.modules.calendar.views.eventlistitem,
+	childViewContainer: 'tbody'
 
 } )
 
@@ -286,7 +287,7 @@ DEF.modules.calendar.MainView = Backbone.Marionette.LayoutView.extend( {
 	},
 	regions: {
 		"miniCalendar": "#minicalendar",
-		"eventlist": "#eventlist"
+		"eventlist": ".rightbox"
 	},
 	initialize: function ( options ) {
 		if ( !options.date )
@@ -322,14 +323,15 @@ DEF.modules.calendar.MainView = Backbone.Marionette.LayoutView.extend( {
 		};
 	},
 	Add: function () {
+		var model = APP.models.calendar.create( {
+			title: 'New Event',
+			_: {
+				created_by: U.id,
+				created_on: Date.now()
+			}
+		} );
 		var page = new DEF.modules.calendar.views.edit( {
-			model: APP.models.calendar.create( {
-				title: 'New Event',
-				_: {
-					created_by: U.id,
-					created_on: Date.now()
-				}
-			} )
+			model: model
 		} );
 		APP.root.showChildView( 'main', page );
 	}
