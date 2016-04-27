@@ -6,10 +6,18 @@ DEF.modules.orders.Initialize = function() {
 		APP.models.orders = new DEF.modules.orders.Collection();
 	if (!APP.models.orders_lineitems)
 		APP.models.orders_lineitems = new DEF.modules.orders.Collection_LineItems();
+
 };
 require("./lineitem.js");
+
+DEF.modules.orders.reports = {};
+require("./production.js");
+
 DEF.modules.orders.Router = Roadtrip.Router.extend({
-	initialize: function() {},
+	initialize: function() {
+		APP.Icon_Lookup.reports = "list-alt";
+
+	},
 	collections: [
 		"orders", "orders_lineitems"
 	],
@@ -18,8 +26,14 @@ DEF.modules.orders.Router = Roadtrip.Router.extend({
 	routes: {
 		"orders": "ShowRoot",
 		"orders/editline/:soli": "EditLine",
+		"orders/reports/:report": "Report",
 		"orders/:cmd": "LoadModule",
 		"orders/:cmd/:arg": "LoadModule",
+	},
+	Report: function(report) {
+		APP.root.showChildView("main", new DEF.modules.orders.reports[report]({
+			collection: APP.models.orders_lineitems
+		}));
 	},
 	EditLine: function(soli) {
 		var module = this.module;
@@ -167,11 +181,13 @@ DEF.modules.orders.MainView = Roadtrip.RecordList.extend({
 	},
 	ui: {
 		search: "#search",
-		add: "#add"
+		add: "#add",
+		submenu: ".submenu"
 	},
 	events: {
 		"keyup @ui.search": "Search",
-		"click @ui.add": "Add"
+		"click @ui.add": "Add",
+		"click @ui.submenu": "ShowSubmenu"
 	},
 	filter: function(model, index, collection) {
 		var string = model.search_string();
@@ -189,6 +205,9 @@ DEF.modules.orders.MainView = Roadtrip.RecordList.extend({
 		console.log(this.ui.search.val(), this.templateHelpers());
 		this.search = this.ui.search.val();
 		this.render();
+	},
+	ShowSubmenu: function(e) {
+		$($(e.currentTarget).data('submenu')).toggle(100);
 	},
 	Add: function() {
 		var page = new DEF.modules.contacts.views.edit({

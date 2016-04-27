@@ -7,8 +7,15 @@
 			<div class='cmd link' id='filter'>
 				<%=APP.Icon('tag')%> Filter
 			</div>
+			<div class='cmd link submenu' data-submenu='#reports_menu' id='reports'>
+				<%=APP.Icon('reports')%> Reports
+			</div>
 			<span id='title'>Orders</span>
-			<input id='search' type='search' placeholder='search'>
+			<!-- <input id='search' type='search' placeholder='search'> -->
+
+			<div id='reports_menu' style='display:none'>
+				Reports: <a href="#orders/reports/production">Production</a>
+			</div>
 
 			<div id='submenu' style='display:none'>
 				Type:
