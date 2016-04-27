@@ -169,6 +169,11 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 			return function(m) {
 				return m.get('assigned_to') == model.id && m.get('progress') != 100 && m.get('progress') >= 0;
 			};
+		},
+		Kind: function(kind) {
+			return function(m) {
+				return m.get('kind') == kind && !m.get('assigned_to') && m.get('state') == 'New';
+			};
 		}
 	}
 });
