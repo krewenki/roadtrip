@@ -7,7 +7,7 @@ DEF.modules.calendar.Router = Roadtrip.Router.extend( {
 	module: "calendar",
 	routes: {
 		"calendar": "ShowRoot",
-		"calendar/date/:arg": "LoadDate",
+		//		"calendar/date/:arg": "LoadDate",
 		"calendar/:cmd": "LoadModule",
 		"calendar/:cmd/:arg": "LoadModule"
 
@@ -250,16 +250,26 @@ DEF.modules.calendar.views.minicalendar = Backbone.Marionette.LayoutView.extend(
 
 } )
 
-DEF.modules.calendar.views.eventlist = Backbone.Marionette.CollectionView.extend( {
+DEF.modules.calendar.views.eventlistitem = Roadtrip.View.extend( {
 	module: 'calendar',
-	template: require( './templates/eventlist.html' ),
-	childView: DEF.modules.calendar.views.eventitem
+	template: require( './templates/eventlistitem.html' ),
+	tagName: 'tr',
+	// emptyView: DEF.EmptyView,
+	// emptyViewOptions: {
+	// 	icon: "warning",
+	// 	msg: "There are no events on this date"
+	// }
+
 } )
 
-DEF.modules.calendar.views.eventitem = Backbone.Marionette.ItemView.extend( {
+DEF.modules.calendar.views.eventlist = Backbone.Marionette.CompositeView.extend( {
 	module: 'calendar',
-	template: require( './templates/eventlistitem.html' )
+	template: require( './templates/eventlist.html' ),
+	childView: DEF.modules.calendar.views.eventlistitem,
+
 } )
+
+
 
 /**
  * The MainView.  HAS to be called MainView.  This is where this module begins
@@ -286,9 +296,11 @@ DEF.modules.calendar.MainView = Backbone.Marionette.LayoutView.extend( {
 		this.getRegion( 'miniCalendar' )
 			.show( new DEF.modules.calendar.views.minicalendar() );
 		this.getRegion( 'eventlist' )
-			.show( new DEF.modules.calendar.views.eventlist(), {
-				collection: APP.models.calendar
-			} );
+			.show( new DEF.modules.calendar.views.eventlist( {
+				collection: APP.models.calendar.getEventsForDate( this.options.date.toISOString()
+					.slice( 0, 10 ) )
+
+			} ) );
 	},
 	templateHelpers: function () {
 		var self = this;

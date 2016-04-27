@@ -2,7 +2,7 @@
     thead th {
         text-align: center;
     }
-    tbody td {
+/*    tbody td {
         text-align: right;
         height: 10vw;
         width: 14vw;
@@ -29,7 +29,7 @@
         border-top-right-radius: 10px;
         border-bottom-right-radius: 10px;
         padding-right: 10px;
-    }
+    } */
 }
 #DATE {
     display: flex;
@@ -69,9 +69,9 @@
               width: 100%;
             }
             td {
-              text-align: right;
-              margin: 0px;
-              padding: 0px;
+              text-align: center;
+              margin: 10px;
+              padding: 10px;
               height: 20px !important;
             }
         }
