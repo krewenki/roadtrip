@@ -254,19 +254,35 @@ DEF.modules.calendar.views.eventlistitem = Roadtrip.View.extend( {
 	module: 'calendar',
 	template: require( './templates/eventlistitem.html' ),
 	tagName: 'tr',
-	emptyView: DEF.EmptyView,
-	emptyViewOptions: {
-		icon: "warning",
-		msg: "There are no events on this date"
-	}
+	events: {
+		"click .fa-pencil": "handleClick"
+	},
+	attributes: function () {
+		var self = this;
+		return {
+			"data-id": self.model.id
+		};
+	},
+	handleClick: function ( e ) {
 
+		var page = new DEF.modules.calendar.views.edit( {
+			model: APP.models.calendar.get( $( e.currentTarget )
+				.attr( 'data-id' ) )
+		} );
+		APP.root.showChildView( 'main', page );
+	}
 } )
 
 DEF.modules.calendar.views.eventlist = Backbone.Marionette.CompositeView.extend( {
 	module: 'calendar',
 	template: require( './templates/eventlist.html' ),
 	childView: DEF.modules.calendar.views.eventlistitem,
-	childViewContainer: 'tbody'
+	childViewContainer: 'tbody',
+	emptyView: DEF.EmptyView,
+	emptyViewOptions: {
+		icon: "warning",
+		msg: "There are no events on this date"
+	}
 
 } )
 
