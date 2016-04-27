@@ -275,9 +275,8 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 	CreateTask: function() {
 		var page = new DEF.modules.tasks.views.edit({
 			model: APP.models.tasks.create({
-				task_id: this.model.GetChildID(this.model.module, this.model.id),
-				assigned_to: this.model.getUp("assigned_to"),
-				parent_module: "tasks",
+				task_id: this.model.GetChildID("projects", this.model.id),
+				parent_module: "projects",
 				parent_id: this.model.id,
 				_: {
 					created_by: U.id,
