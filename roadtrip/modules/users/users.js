@@ -93,13 +93,19 @@ DEF.modules.users.views = {
 	home: Backbone.Marionette.LayoutView.extend({
 		template: require("./templates/home.html"),
 		regions: {
-			tasks: "#tasklist"
+			tasks: "#tasklist",
+			ideas: "#taskideas"
 		},
 		onRender: function() {
 			this.tasks.show(new DEF.modules.tasks.TaskList({
 				template: require("./templates/taskline.html"),
 				collection: APP.models.tasks,
 				filter: APP.models.tasks.filters.Assigned(this.model)
+			}));
+			this.ideas.show(new DEF.modules.tasks.TaskList({
+				template: require("./templates/taskline.html"),
+				collection: APP.models.tasks,
+				filter: APP.models.tasks.filters.Kind("idea")
 			}));
 		}
 	})
