@@ -245,8 +245,20 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend( {
 	} )
 
 DEF.modules.calendar.views.minicalendar = Backbone.Marionette.LayoutView.extend( {
+	module: 'calendar',
 	template: require( "./templates/minicalendar.html" ),
 
+} )
+
+DEF.modules.calendar.views.eventlist = Backbone.Marionette.CollectionView.extend( {
+	module: 'calendar',
+	template: require( './templates/eventlist.html' ),
+	childView: DEF.modules.calendar.views.eventitem
+} )
+
+DEF.modules.calendar.views.eventitem = Backbone.Marionette.ItemView.extend( {
+	module: 'calendar',
+	template: require( './templates/eventlistitem.html' )
 } )
 
 /**
@@ -273,6 +285,10 @@ DEF.modules.calendar.MainView = Backbone.Marionette.LayoutView.extend( {
 	onShow: function () {
 		this.getRegion( 'miniCalendar' )
 			.show( new DEF.modules.calendar.views.minicalendar() );
+		this.getRegion( 'eventlist' )
+			.show( new DEF.modules.calendar.views.eventlist(), {
+				collection: APP.models.calendar
+			} );
 	},
 	templateHelpers: function () {
 		var self = this;
