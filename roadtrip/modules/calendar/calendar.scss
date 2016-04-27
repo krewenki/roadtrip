@@ -84,6 +84,9 @@
 					width: 100%;
 					border: 1px solid #aaa;
 					padding: 0px;
+          tr {
+            width: 100%;
+          }
 					th {
 						background-color: #eee;
 						font-weight: 800;
@@ -94,6 +97,7 @@
 					td {
 						margin: 0px;
 						padding: 20px;
+            border-bottom: 1px solid #aaa
 					}
 				}
     }
