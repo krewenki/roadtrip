@@ -123,8 +123,8 @@ DEF.modules.calendar.views = {
 	Event: Roadtrip.View.extend( {
 		module: "calendar",
 		template: require( "./templates/event.html" ),
-		initialize: function ( o ) {
-			console.log( arguments );
+		initialize: function ( options ) {
+			this.options = options;
 		},
 		attributes: function () {
 			var classes = [ 'calendar_event' ];
@@ -138,6 +138,8 @@ DEF.modules.calendar.views = {
 				classes.push( 'start' );
 			if ( end == this.options.date )
 				classes.push( 'end' );
+			if ( this.options.showEvents !== true )
+				classes.push( 'hidden' );
 			return {
 				"data-id": this.model.id,
 				"data-start": this.model.get( 'start' ),
@@ -174,7 +176,6 @@ DEF.modules.calendar.views = {
 		},
 		Delete: function () {
 			if ( confirm( "Are you sure you want to delete " + this.model.get( this.model.nameAttribute ) ) ) {
-				console.log( "kill it" );
 				APP.models.calendar.remove( this.model );
 				APP.Route( "#calendar", "calendar" );
 			}
@@ -189,19 +190,28 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend( {
 		initialize: function ( options ) {
 			this.options = options
 		},
+		events: {
+			"click": "handleClick"
+		},
+		handleClick: function () {
+			APP.Route( "#calendar/" + "date" + "/" + this.options.date.toISOString()
+				.slice( 0, 10 ) );
+		},
 		templateHelpers: function () {
 			var self = this;
 			return {
 				date: function () {
 					return self.options.date.getDate()
-				}
+				},
+				showEvents: self.options.showEvents
 			};
 		},
 		childViewOptions: function () {
 			var self = this;
 			return {
 				date: self.options.date.toISOString()
-					.slice( 0, 10 )
+					.slice( 0, 10 ),
+				showEvents: self.options.showEvents || false
 			}
 		}
 	} ),
@@ -256,32 +266,46 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend( {
 		},
 
 		onShow: function () {
-			var
-				date = 1,
+			var date = 1,
 				d;
 			var year = this.options.date.getFullYear();
 			var month = this.options.date.getMonth();
+			var total = 7 * 5,
+				count = 0;
+
+			var mode = 'calendar';
+			if ( this.mini == true )
+				mode = 'marching';
 
 			var first_day = new Date( year, month, 1 );
 			var last_day = new Date( year, month, 0 );
 			var stop_week = 0;
 
+			if ( mode == 'marching' ) {
+				first_day = new Date( this.options.date - ( 60 * 60 * 24 * 1000 * ( 7 + this.options.date.getDay() ) ) )
+				last_day = new Date( this.options.date + ( 60 * 60 * 24 * 1000 * ( 14 + ( 7 - this.options.date.getDay() ) ) ) )
+			}
+
 			for ( var week = 1; week < 7; week++ ) {
 				for ( var day = 1; day < 8; day++ ) {
-					if ( week == 1 && day == 1 && first_day.getDay() != 0 ) {
+					if ( mode != 'marching' && week == 1 && day == 1 && first_day.getDay() != 0 ) {
 						day = first_day.getDay() + 1;
 					}
-					if ( date < last_day.getDate() ) {
+					if ( ( mode != 'marching' && date < last_day.getDate() ) || ( mode == 'marching' && count < total ) ) {
 						d = new Date( year, month, date );
+						if ( mode == 'marching' )
+							d = new Date( first_day.getTime() + ( 60 * 60 * 24 * 1000 ) * count );
 						this.showChildView( 'w' + week + 'd' + day, new DEF.modules.calendar.views.Day( {
-							date: new Date( year, month, date ),
+							date: d,
 							collection: APP.models.calendar.getEventsForDate( d.toISOString()
-								.slice( 0, 10 ) )
+								.slice( 0, 10 ) ),
+							showEvents: this.mini !== true
 						} ) )
 					} else {
 						stop_week = stop_week == 0 ? week : stop_week;
 					}
 					date++;
+					count++;
 				}
 				if ( stop_week < 6 ) {
 					$( '.week_six' )
@@ -293,8 +317,7 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend( {
 	} )
 
 DEF.modules.calendar.views.minicalendar = DEF.modules.calendar.views.Month.extend( {
-
-
+	mini: true
 } )
 
 DEF.modules.calendar.views.eventlistitem = Roadtrip.View.extend( {
