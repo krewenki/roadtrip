@@ -13,17 +13,26 @@ DEF.modules.timeclock.Router = Roadtrip.Router.extend({
 	module: "timeclock",
 	routes: {
 		"timeclock": "ShowRoot",
+		"timeclock/week/:week": "ShowWeek"
 	},
+	ShowWeek: function (week) {
+		var module = this.module;
+		APP.Page = new DEF.modules[module].MainView({
+			collection: APP.models[module],
+			date: week
+		});
+		APP.root.showChildView("main", APP.Page);
+	}
 });
 
 
 DEF.modules.timeclock.Model = Roadtrip.Model.extend({
-	idAttribute: 'order',
-	nameAttribute: 'order', // the human-readable field in the record
+	nameAttribute: 'date', // the human-readable field in the record
 	module: "timeclock",
 	defaults: {
-		kind: "order",
-		order: "",
+		_: {},
+		module: "order",
+		module_id: "",
 		hours: [0, 0, 0, 0, 0, 0, 0]
 	},
 	search_string: function () {
@@ -41,13 +50,14 @@ DEF.modules.timeclock.LineView = Backbone.Marionette.ItemView.extend({
 	template: require("./templates/time_line.html"),
 	templateHelpers: function () {
 		return {
-			week: this.options.childIndex
+			week: this.options.childIndex,
+			date: this.options.date
 		};
 	},
 	ui: {
 		field: ".field",
-		kind: "#kind",
-		kind_val: "#kind_val",
+		module: "#module",
+		module_id: "#module_id",
 		hour: ".hour_picker",
 		sum: "#sum"
 	},
@@ -82,14 +92,15 @@ DEF.modules.timeclock.LineView = Backbone.Marionette.ItemView.extend({
 				totals[$(el).data('day')] += Number(el.value);
 			}
 		});
-		var kind = this.ui.kind.val();
+		var module = this.ui.module.val();
 		var change = {
 			hours: totals,
-			kind: kind
+			module: module,
+			module_id: this.ui.module_id.val(),
+			date: this.options.date,
 		};
-		change[kind] = this.ui.kind_val.val();
 		this.model.set(change);
-		this.model.SetStats("edit");
+		console.log("save", change);
 	}
 
 });
@@ -99,7 +110,20 @@ DEF.modules.timeclock.WeekView = Backbone.Marionette.CompositeView.extend({
 	childViewContainer: "#week",
 	childViewOptions: function (model, index) {
 		return {
+			date: this.options.date,
 			childIndex: index // a way to know which row you're on
+		};
+	},
+	emptyView: DEF.EmptyView,
+	emptyViewOptions: {
+		icon: "warning",
+		msg: "No times found",
+		colspan: 9
+	},
+
+	templateHelpers: function () {
+		return {
+			date: this.options.date
 		};
 	},
 	childEvents: {
@@ -125,28 +149,54 @@ DEF.modules.timeclock.WeekView = Backbone.Marionette.CompositeView.extend({
 		$("#grand_total").html(grand);
 	},
 	Add: function () {
+		console.log("add", this.options.date);
 		APP.models.timeclock.create({
-			order: ""
+			date: this.options.date,
+			_: {
+				created_by: U.id,
+				created_on: Date.now()
+			}
 		});
 	}
 });
 DEF.modules.timeclock.MainView = Backbone.Marionette.LayoutView.extend({
 	id: 'TIMECLOCK',
+	initialize: function () {
+		if (!this.options.date)
+			this.options.date = APP.Format.monday(new Date(), true);
+	},
 	template: require("./templates/timeclock.html"),
+	templateHelpers: function () {
+		var date = new Date(this.options.date).getTime();
+		var week = 604800 * 1000;
+		var day = 86400 * 1000;
+		var rs = {
+			prev: APP.Format.monday(date - week + day, true),
+			next: APP.Format.monday(date + week + day, true),
+			date: this.options.date
+		};
+		console.log(rs);
+		return rs;
+	},
 	regions: {
 		week: "#week",
 		summary: "#summary"
 	},
 	onRender: function () {
+		var date = this.options.date;
 		this.week.show(new DEF.modules.timeclock.WeekView({
 			collection: APP.models.timeclock,
-			filter: function (model) {
-				return model.get('_.created_by') == U.id;
+			date: this.options.date,
+			filter: function (m) {
+				var rs = m.get('_.created_by') == U.id && m.get('date') == date;
+				return rs;
 			}
 		}));
 		this.summary.show(new DEF.modules.timeclock.Summary({}));
 	}
 });
+
+
 
 DEF.modules.timeclock.Summary = Backbone.Marionette.ItemView.extend({
 	tagName: 'table',

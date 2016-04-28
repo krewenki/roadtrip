@@ -1,16 +1,16 @@
 <td class='important '>
-	<select id='kind' class='field'>
-		<option value='order' <%=kind=='order' ? 'selected': ''%>>Order</option>
-		<option value='task' <%=kind=='task' ? 'selected': ''%>>Task</option>
-		<option value='timeoff' <%=kind=='timeoff' ? 'selected': ''%>>Time-Off</option>
+	<select id='module' class='field'>
+		<option value='order' <%=module=='order' ? 'selected': ''%>>Order</option>
+		<option value='task' <%=module=='task' ? 'selected': ''%>>Task</option>
+		<option value='timeoff' <%=module=='timeoff' ? 'selected': ''%>>Time-Off</option>
 	</select>
 	<%
-	switch (kind) {
+	switch (module) {
 		case 'order':
-			print(APP.HTML.Autocomplete("kind_val", APP.models.orders,"order","order",order,"field", true));
+			print(APP.HTML.Autocomplete("module_id", APP.models.orders,"order","order",module_id,"field", true));
 			break;
 		case 'task':
-			print(APP.HTML.Autocomplete("kind_val", APP.models.tasks,"task","task_id",task,"field", true));
+			print(APP.HTML.Autocomplete("module_id", APP.models.tasks,"task","task_id",module_id,"field", true));
 			break;
 		case 'timeoff':
 			break;

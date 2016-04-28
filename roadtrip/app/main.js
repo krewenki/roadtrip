@@ -267,8 +267,9 @@ APP.HTML = {
 
 	},
 	Autocomplete: function (id, collection, display, key, value, className, leave_empty) {
-		var html = "<input value='" + value + "'list='" + id + "_list' type='text' id='" + id + "' class='" + (className || "") + "'>";
-		html += "<datalist id='" + id + "_list'>";
+		var data_list_id = _.uniqueId(id);
+		var html = "<input value='" + value + "'list='" + data_list_id + "' type='text' id='" + id + "' class='" + (className || "") + "'>";
+		html += "<datalist id='" + data_list_id + "'>";
 		collection.each(function (model) {
 			html += "<option value='" + model.get(key) + "'>" + model.GetTitle() + "</option>";
 		});
@@ -419,6 +420,17 @@ APP.Format = {
 		if (!time)
 			return "--";
 		return APP.Format.date(time) + " " + APP.Format.time(time);
+	},
+	monday: function (date, sysdate) {
+		if (!_.isDate(date))
+			date = new Date(date);
+		var day = date.getDay() || 7;
+		if (day !== 1)
+			date.setHours(-24 * (day - 1));
+		if (sysdate)
+			return APP.Format.sysdate(date);
+		else
+			return date;
 	},
 	/**
 	 * Returns html, given markdown
