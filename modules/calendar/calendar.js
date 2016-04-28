@@ -206,125 +206,91 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend( {
 		}
 	} ),
 
-	DEF.modules.calendar.views.Week = Backbone.Marionette.LayoutView.extend( {
-		template: require( './templates/week.html' ),
+	DEF.modules.calendar.views.Month = Backbone.Marionette.LayoutView.extend( {
+		module: 'calendar',
+		template: require( "./templates/calendar.html" ),
+		// Ok, this may be a shit way to do this.
+		// I'm doing one region per day for the whole calendar.
 		regions: {
-			sunday: ".sunday",
-			monday: ".monday",
-			tuesday: ".tuesday",
-			wednesday: ".wednesday",
-			thursday: ".thursday",
-			friday: ".friday",
-			saturday: ".saturday"
-		},
-		tagName: 'tr',
-		attributes: function () {
-			return {};
+			"w1d1": ".week_one .sunday",
+			"w1d2": ".week_one .monday",
+			"w1d3": ".week_one .tuesday",
+			"w1d4": ".week_one .wednesday",
+			"w1d5": ".week_one .thursday",
+			"w1d6": ".week_one .friday",
+			"w1d7": ".week_one .saturday",
+			"w2d1": ".week_two .sunday",
+			"w2d2": ".week_two .monday",
+			"w2d3": ".week_two .tuesday",
+			"w2d4": ".week_two .wednesday",
+			"w2d5": ".week_two .thursday",
+			"w2d6": ".week_two .friday",
+			"w2d7": ".week_two .saturday",
+			"w3d1": ".week_three .sunday",
+			"w3d2": ".week_three .monday",
+			"w3d3": ".week_three .tuesday",
+			"w3d4": ".week_three .wednesday",
+			"w3d5": ".week_three .thursday",
+			"w3d6": ".week_three .friday",
+			"w3d7": ".week_three .saturday",
+			"w4d1": ".week_four .sunday",
+			"w4d2": ".week_four .monday",
+			"w4d3": ".week_four .tuesday",
+			"w4d4": ".week_four .wednesday",
+			"w4d5": ".week_four .thursday",
+			"w4d6": ".week_four .friday",
+			"w4d7": ".week_four .saturday",
+			"w5d1": ".week_five .sunday",
+			"w5d2": ".week_five .monday",
+			"w5d3": ".week_five .tuesday",
+			"w5d4": ".week_five .wednesday",
+			"w5d5": ".week_five .thursday",
+			"w5d6": ".week_five .friday",
+			"w5d7": ".week_five .saturday",
 		},
 		initialize: function ( options ) {
-			var startDate = new Date();
-			if ( options.date )
-				startDate = options.date;
-			this.sunday = startDate.getDay() == 0 ? startDate : startDate - ( startDate.getDay() * ( 60 * 60 * 24 * 1000 ) );
-			this.render()
+			if ( options )
+				this.options = options;
+			if ( !this.options.date )
+				this.options.date = new Date();
 		},
-		onRender: function () {
-			var days = [ 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday' ];
-			var date, collection;
-			for ( var i in days ) {
-				date = new Date( this.sunday + ( 86400000 * i ) );
-				collection = APP.models.calendar.getEventsForDate( date.toISOString()
-					.slice( 0, 10 ) )
-				this.showChildView( days[ i ], new DEF.modules.calendar.views.Day( {
-					date: date,
-					collection: collection
-				} ) )
+
+		onShow: function () {
+			var
+				date = 1,
+				d;
+			var year = this.options.date.getFullYear();
+			var month = this.options.date.getMonth();
+
+			var first_day = new Date( year, month, 1 );
+			var last_day = new Date( year, month, 0 );
+			var stop_week = 0;
+
+			for ( var week = 1; week < 7; week++ ) {
+				for ( var day = 1; day < 8; day++ ) {
+					if ( week == 1 && day == 1 && first_day.getDay() != 0 ) {
+						day = first_day.getDay() + 1;
+					}
+					if ( date < last_day.getDate() ) {
+						d = new Date( year, month, date );
+						this.showChildView( 'w' + week + 'd' + day, new DEF.modules.calendar.views.Day( {
+							date: new Date( year, month, date ),
+							collection: APP.models.calendar.getEventsForDate( d.toISOString()
+								.slice( 0, 10 ) )
+						} ) )
+					} else {
+						stop_week = stop_week == 0 ? week : stop_week;
+					}
+					date++;
+				}
+				if ( stop_week < 6 ) {
+					$( '.week_six' )
+						.hide();
+				}
 			}
 		}
+
 	} )
-
-DEF.modules.calendar.views.Month = Backbone.Marionette.LayoutView.extend( {
-	module: 'calendar',
-	template: require( "./templates/calendar.html" ),
-	// Ok, this may be a shit way to do this.
-	// I'm doing one region per day for the whole calendar.
-	regions: {
-		"w1d1": ".week_one .sunday",
-		"w1d2": ".week_one .monday",
-		"w1d3": ".week_one .tuesday",
-		"w1d4": ".week_one .wednesday",
-		"w1d5": ".week_one .thursday",
-		"w1d6": ".week_one .friday",
-		"w1d7": ".week_one .saturday",
-		"w2d1": ".week_two .sunday",
-		"w2d2": ".week_two .monday",
-		"w2d3": ".week_two .tuesday",
-		"w2d4": ".week_two .wednesday",
-		"w2d5": ".week_two .thursday",
-		"w2d6": ".week_two .friday",
-		"w2d7": ".week_two .saturday",
-		"w3d1": ".week_three .sunday",
-		"w3d2": ".week_three .monday",
-		"w3d3": ".week_three .tuesday",
-		"w3d4": ".week_three .wednesday",
-		"w3d5": ".week_three .thursday",
-		"w3d6": ".week_three .friday",
-		"w3d7": ".week_three .saturday",
-		"w4d1": ".week_four .sunday",
-		"w4d2": ".week_four .monday",
-		"w4d3": ".week_four .tuesday",
-		"w4d4": ".week_four .wednesday",
-		"w4d5": ".week_four .thursday",
-		"w4d6": ".week_four .friday",
-		"w4d7": ".week_four .saturday",
-		"w5d1": ".week_five .sunday",
-		"w5d2": ".week_five .monday",
-		"w5d3": ".week_five .tuesday",
-		"w5d4": ".week_five .wednesday",
-		"w5d5": ".week_five .thursday",
-		"w5d6": ".week_five .friday",
-		"w5d7": ".week_five .saturday",
-	},
-	initialize: function ( options ) {
-		if ( options )
-			this.options = options;
-		if ( !this.options.date )
-			this.options.date = new Date();
-	},
-
-	onShow: function () {
-		var
-			date = 1;
-		var year = this.options.date.getFullYear();
-		var month = this.options.date.getMonth();
-
-		var first_day = new Date( year, month, 1 );
-		var last_day = new Date( year, month, 0 );
-		var stop_week = 0;
-
-		for ( var week = 1; week < 7; week++ ) {
-			for ( var day = 1; day < 8; day++ ) {
-				if ( week == 1 && day == 1 && first_day.getDay() != 0 ) {
-					day = first_day.getDay() + 1;
-				}
-				if ( date < last_day.getDate() ) {
-					this.showChildView( 'w' + week + 'd' + day, new DEF.modules.calendar.views.Day( {
-						date: new Date( year, month, date ),
-						collection: APP.models.calendar.getEventsForDate( year + '-' + month + '-' + date )
-					} ) )
-				} else {
-					stop_week = stop_week == 0 ? week : stop_week;
-				}
-				date++;
-			}
-			if ( stop_week < 6 ) {
-				$( '.week_six' )
-					.hide();
-			}
-		}
-	}
-
-} )
 
 DEF.modules.calendar.views.minicalendar = DEF.modules.calendar.views.Month.extend( {
 
