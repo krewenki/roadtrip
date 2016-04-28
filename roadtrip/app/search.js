@@ -30,7 +30,7 @@ DEF.Search = Backbone.Marionette.CompositeView.extend({
 			var module = modules[m];
 			APP.models[module].each(function(model, index) {
 				var string = model.search_string();
-				if (string && string.toUpperCase().indexOf(search) != -1)
+				if (string && string.toUpperCase().indexOf(search) != -1 && U.Can(model.getUp('group')))
 					matches.push(model);
 			});
 		}

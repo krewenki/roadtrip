@@ -77,6 +77,11 @@ window.Roadtrip = {
 			if (!model) {
 				console.error("Model not found", module, arg);
 			}
+			console.log(U.Can(model.getUp('group')), model.getUp('group'))
+			if (!U.Can(model.getUp('group'))) {
+				alert("Permission Denied");
+				return;
+			}
 
 			APP.Page = new DEF.modules[module].views[cmd]({
 				model: model,

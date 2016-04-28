@@ -43,7 +43,9 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 	 * @return {[type]}            [description]
 	 */
 	Can: function(group, extra) {
-		var groups = this.get('groups');
+		if (!group)
+			return true;
+		var groups = this.get('groups'); // the user's groups
 
 		if (groups.split(',').indexOf("admin") >= 0)
 			return true; // admin users can do everything
