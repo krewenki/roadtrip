@@ -445,4 +445,4 @@ DEF.modules.tasks.MainView = Roadtrip.RecordList.extend({
 		this.search = this.ui.search.val();
 		this.render();
 	},
-});
+});;
