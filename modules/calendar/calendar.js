@@ -317,7 +317,11 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend( {
 	} )
 
 DEF.modules.calendar.views.minicalendar = DEF.modules.calendar.views.Month.extend( {
-	mini: true
+	mini: true,
+	initialize: function ( options ) {
+		this.options = options;
+
+	}
 } )
 
 DEF.modules.calendar.views.eventlistitem = Roadtrip.View.extend( {
@@ -374,12 +378,15 @@ DEF.modules.calendar.MainView = Backbone.Marionette.LayoutView.extend( {
 		"eventlist": ".rightbox"
 	},
 	initialize: function ( options ) {
+		console.log( options );
 		if ( !options.date )
 			this.options.date = new Date();
 	},
 	onShow: function () {
 		this.getRegion( 'miniCalendar' )
-			.show( new DEF.modules.calendar.views.minicalendar() );
+			.show( new DEF.modules.calendar.views.minicalendar( {
+				date: this.options.date
+			} ) );
 		this.getRegion( 'eventlist' )
 			.show( new DEF.modules.calendar.views.eventlist( {
 				collection: APP.models.calendar.getEventsForDate( this.options.date.toISOString()
