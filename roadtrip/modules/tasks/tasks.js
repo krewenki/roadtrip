@@ -1,5 +1,5 @@
 DEF.modules.tasks = {};
-DEF.modules.tasks.Initialize = function() {
+DEF.modules.tasks.Initialize = function () {
 	if (!APP.models.tasks)
 		APP.models.tasks = new DEF.modules.tasks.Collection();
 };
@@ -7,7 +7,7 @@ DEF.modules.tasks.Router = Roadtrip.Router.extend({
 	collections: [
 		"users", "tasks", "projects", "revisions", "repositories"
 	],
-	initialize: function() {
+	initialize: function () {
 		APP.Icon_Lookup.todo = "list-ul";
 		APP.Icon_Lookup.bug = "bug";
 		APP.Icon_Lookup.feature = "star";
@@ -65,7 +65,7 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		"Review": 80,
 		"Complete": 100
 	},
-	initialize: function() {
+	initialize: function () {
 		if (this.get('subtasks') > 0)
 			this.States = {
 				"New": 0,
@@ -73,11 +73,11 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 				"Complete": 100
 			};
 	},
-	search_string: function() {
+	search_string: function () {
 		var string = this.id + " " + this.get(this.nameAttribute);
 		return string;
 	},
-	GetChildID: function(module, id) {
+	GetChildID: function (module, id) {
 		var prefix = false,
 			instance = 0;
 
@@ -107,7 +107,7 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 	 * Returns the (html) path for this task, by recursively following it's parents
 	 * @return {string} The path
 	 */
-	GetPath: function() {
+	GetPath: function () {
 		var path = "";
 		var parent = APP.GetModel(this.get('parent_module'), this.get('parent_id'));
 		if (parent.GetPath)
@@ -124,7 +124,7 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 	 * @param  {[type]} val 0..100
 	 * @return {[type]}     human readable text
 	 */
-	GetProgressLabel: function(val) {
+	GetProgressLabel: function (val) {
 		var label = false;
 		for (var state in this.States) {
 			if (val >= this.States[state])
@@ -137,7 +137,7 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.tasks.Model,
 	url: 'roadtrip.telegauge.com/roadtrip/tasks',
-	comparator: function(m) {
+	comparator: function (m) {
 		var rank = 0;
 		if (m.get('progress') == 100 || m.get('progress') < 0)
 			rank = 10000 - m.get('priority') - m.get('_').views / 10 - m.get('subtasks');
@@ -155,23 +155,23 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 	 * @type {Object}
 	 */
 	filters: {
-		Open: function(model) {
-			return function(m) {
+		Open: function (model) {
+			return function (m) {
 				return m.get('parent_id') == model.id && m.get('progress') != 100 && m.get('progress') >= 0;
 			};
 		},
-		Closed: function(model) {
-			return function(m) {
+		Closed: function (model) {
+			return function (m) {
 				return m.get('parent_id') == model.id && (m.get('progress') == 100 || m.get('progress') < 0);
 			};
 		},
-		Assigned: function(model) {
-			return function(m) {
+		Assigned: function (model) {
+			return function (m) {
 				return m.get('assigned_to') == model.id && m.get('progress') != 100 && m.get('progress') >= 0 && m.get('subtasks') === 0;
 			};
 		},
-		Kind: function(kind) {
-			return function(m) {
+		Kind: function (kind) {
+			return function (m) {
 				return m.get('kind') == kind && !m.get('assigned_to') && m.get('state') == 'New';
 			};
 		}
@@ -191,7 +191,7 @@ DEF.modules.tasks.TaskLine = Backbone.Marionette.ItemView.extend({
 	modelEvents: {
 		"change": "render"
 	},
-	ViewTask: function() {
+	ViewTask: function () {
 		APP.Route("#tasks/view/" + this.model.id);
 	}
 });
@@ -199,12 +199,12 @@ DEF.modules.tasks.TaskList = Backbone.Marionette.CollectionView.extend({
 	tagName: "table",
 	className: "table table-top table-full task-table",
 	childView: DEF.modules.tasks.TaskLine,
-	childViewOptions: function() {
+	childViewOptions: function () {
 		return {
 			template: this.options.template
 		};
 	},
-	onShow: function() {
+	onShow: function () {
 		if (!this.children.length)
 			this.$el.parent().parent().hide();
 	}
@@ -212,7 +212,7 @@ DEF.modules.tasks.TaskList = Backbone.Marionette.CollectionView.extend({
 
 DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	template: require("./templates/task_view.html"),
-	templateHelpers: function() {
+	templateHelpers: function () {
 		var parent = APP.models[this.model.get('parent_module')].get(this.model.get('parent_id'));
 		if (!parent) {
 			parent = APP.models.projects.get(this.model.get('parent_id')); // some tasks incorrectly have "task" as a parent.
@@ -246,7 +246,7 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	 * Show the task edit forms
 	 * @return {[type]} [description]
 	 */
-	Edit: function() {
+	Edit: function () {
 		APP.Route("#tasks/edit/" + this.model.id);
 	},
 
@@ -254,7 +254,7 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	 * Create a new model and launch the task editor
 	 * @return {[type]} [description]
 	 */
-	AddSubtask: function() {
+	AddSubtask: function () {
 		var page = new DEF.modules.tasks.views.edit({
 			model: APP.models.tasks.create({
 				task_id: this.model.GetChildID(this.model.module, this.model.id),
@@ -278,7 +278,7 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	 * Someone drug the progress handle, so update stuff
 	 * @return {[type]}   [description]
 	 */
-	UpdateProgress: function() {
+	UpdateProgress: function () {
 		var label = this.model.GetProgressLabel(this.ui.progress.val());
 		this.ui.state.val(label);
 		if (!this.model.get('assigned_to'))
@@ -312,7 +312,7 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	 * before calling the UpdateProgress function, which does more automated actions.
 	 * @return null
 	 */
-	UpdateProgressLabel: function() {
+	UpdateProgressLabel: function () {
 		if (this.model.get('state') == 'Complete') {
 			var states = Object.keys(this.model.States);
 			this.ui.progress.val(this.model.States[states[states.indexOf(this.ui.state.val()) + 1]] - 1); // WHAT!
@@ -321,7 +321,7 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		this.UpdateProgress();
 		this.render();
 	},
-	LogProgress: function() {
+	LogProgress: function () {
 		APP.LogEvent("tasks", this.model.id, "Task progress: " + this.model.get('progress') + "%", {
 			"progress": this.model.get('progress'),
 			"state": this.model.get('state')
@@ -340,7 +340,7 @@ DEF.modules.tasks.views = {
 	edit: Roadtrip.Edit.extend({
 		module: "tasks",
 		template: require("./templates/task_edit.html"),
-		onShow: function() {
+		onShow: function () {
 			$("input#task").focus();
 			$("textarea").val(($("textarea").val() || '').trim()); // beautify inserts spaces between <textarea> in the template
 		},
@@ -356,10 +356,10 @@ DEF.modules.tasks.views = {
 			comments: "#comment_container",
 			revisions: "#revisions_container"
 		},
-		onBeforeShow: function() {
+		onBeforeShow: function () {
 			this.model.UpdateTaskProgress();
 		},
-		onRender: function() {
+		onRender: function () {
 			APP.SetTitle(this.model.get(this.model.nameAttribute));
 			this.model.IncStat("views");
 
@@ -388,7 +388,7 @@ DEF.modules.tasks.views = {
 			var task_id = this.model.get('task_id');
 			this.revisions.show(new DEF.modules.revisions.MainView({
 				collection: APP.models.revisions,
-				filter: function(r) {
+				filter: function (r) {
 					if (r.get('task_id') == task_id) { // the fast way
 						return true;
 					} else { // the old way didn't have task_id in the revision records, oddly
@@ -417,7 +417,7 @@ DEF.modules.tasks.MainView = Roadtrip.RecordList.extend({
 	template: require("./templates/main.html"),
 	childView: DEF.modules.tasks.TaskLine,
 	childViewContainer: "#record_list",
-	templateHelpers: function(x, y, z) {
+	templateHelpers: function (x, y, z) {
 		return {
 			search: this.search,
 		};
@@ -428,21 +428,21 @@ DEF.modules.tasks.MainView = Roadtrip.RecordList.extend({
 	events: {
 		"keyup @ui.search": "Search",
 	},
-	filter: function(model, index, collection) {
+	filter: function (model, index, collection) {
 		var string = model.search_string();
 		if (string.indexOf(this.ui.search.val().toUpperCase()) == -1)
 			return false;
 		return true;
 	},
-	onShow: function() {
+	onShow: function () {
 		APP.SetTitle("Tasks", "tasks");
 	},
-	onRender: function() {
+	onRender: function () {
 		this.ui.search.focus().val(this.search); // this search is disgusting
 	},
-	Search: function(e) {
+	Search: function (e) {
 		console.log(this.ui.search.val(), this.templateHelpers());
 		this.search = this.ui.search.val();
 		this.render();
 	},
-});;
+});

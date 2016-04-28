@@ -26,7 +26,7 @@ window.Roadtrip = {
 		 * @param  {[type]}   name     [description]
 		 * @return {[type]}            [description]
 		 */
-		execute: function(callback, args, name) {
+		execute: function (callback, args, name) {
 			var module = this.module;
 			for (let module of this.collections_extra) { // loop through the extras, and init them
 				if (DEF.modules[module]) {
@@ -54,7 +54,7 @@ window.Roadtrip = {
 		/**
 		 * returns the name of a missing collection, or FALSE if they are all loaded
 		 */
-		GetMissingCollections: function() {
+		GetMissingCollections: function () {
 			var out = [];
 			if (this.collections.length === 0)
 				this.collections = [this.module];
@@ -71,7 +71,7 @@ window.Roadtrip = {
 		 * @param  {string} arg An argument, usually an ID
 		 * @return null
 		 */
-		LoadModule: function(cmd, arg) {
+		LoadModule: function (cmd, arg) {
 			var module = this.module;
 			var model = APP.models[module].get(arg);
 			if (!model) {
@@ -88,7 +88,7 @@ window.Roadtrip = {
 			});
 			APP.root.showChildView("main", APP.Page);
 		},
-		ShowRoot: function() {
+		ShowRoot: function () {
 			var module = this.module;
 			APP.Page = new DEF.modules[module].MainView({
 				collection: APP.models[module]
@@ -107,24 +107,24 @@ window.Roadtrip = {
 	Collection: Backbone.Highway.Collection.extend({
 		perpage: 100,
 		page: 1,
-		comparator: function(m) {
+		comparator: function (m) {
 			var attr = m.get('_');
 			if (attr) {
 				var sort = attr.views + attr.edits;
 				return -sort;
 			}
 		},
-		initialize: function() {
+		initialize: function () {
 			this.listenTo(this, "sync", this.UpdateFooterCount, this);
 			this.listenTo(this, "add", this.UpdateFooterCount, this);
 			this.listenTo(this, "remove", this.UpdateFooterCount, this);
 		},
-		UpdateFooterCount: function() {
+		UpdateFooterCount: function () {
 			var module = this.at(0).module;
 			var $el = $("#FOOTER #" + module + "_count");
 			if ($el.html() != this.length) { // check for sync in case this is just a "update from server event"
 				$el.html(APP.Icon(module) + " " + this.length).addClass("new"); // add a flash
-				setTimeout(function() { // clear the flash
+				setTimeout(function () { // clear the flash
 					$el.removeClass("new");
 				}, 500);
 			}
@@ -151,7 +151,7 @@ window.Roadtrip = {
 		/**
 		 * If any model referrences this parent, kill the fucker
 		 */
-		destroy: function(args) {
+		destroy: function (args) {
 			var kids = APP.models.tasks.filter({
 				"parent_id": this.id
 			});
@@ -161,7 +161,7 @@ window.Roadtrip = {
 			Backbone.Highway.Model.prototype.destroy.apply(this, args);
 		},
 
-		set: function(key, val, options) {
+		set: function (key, val, options) {
 			var orig = {},
 				save = {},
 				data = {},
@@ -172,7 +172,7 @@ window.Roadtrip = {
 				} else {
 					data[key] = val;
 				}
-				Object.keys(data).forEach(function(field) {
+				Object.keys(data).forEach(function (field) {
 					if (field == '_')
 						return;
 					if (_.isArray(data[field]) || _.isObject(data[field])) {
@@ -201,10 +201,10 @@ window.Roadtrip = {
 
 			return Backbone.Highway.Model.prototype.set.call(this, key, val, options);
 		},
-		icon: function() {
+		icon: function () {
 			return APP.Icon(this.module, this.module);
 		},
-		search_string: function() {
+		search_string: function () {
 			var string = this.get(this.nameAttribute) + "";
 			return string;
 		},
@@ -213,7 +213,7 @@ window.Roadtrip = {
 		 * @param  {[text]} field Which field to displa in the <a> tag
 		 * @return {html}      "<a href='linl'>field</a>"
 		 */
-		Link: function(field) {
+		Link: function (field) {
 			field = field || this.nameAttribute;
 			return "<a href='" + this.GetLink() + "'>" + this.get(field) + "</a>";
 		},
@@ -222,13 +222,13 @@ window.Roadtrip = {
 		 * @param  {string} cmd value to use in the "cmd" portion of the URL
 		 * @return {text}     "#module/cmd/id"
 		 */
-		GetLink: function(cmd) {
+		GetLink: function (cmd) {
 			if (!cmd)
 				cmd = "view";
 			return "#" + this.module + "/" + cmd + "/" + this.id;
 		},
 
-		GetTitle: function() {
+		GetTitle: function () {
 			return this.get(this.nameAttribute);
 		},
 		/**
@@ -238,7 +238,7 @@ window.Roadtrip = {
 		 * @param  {string} field the name of the field in the database
 		 * @return {string}       the contents of that field
 		 */
-		getUp: function(field) {
+		getUp: function (field) {
 			if (this.get(field))
 				return this.get(field);
 			if (this.get('parent_module')) {
@@ -254,7 +254,7 @@ window.Roadtrip = {
 		 *
 		 * this.model.SetStats({created_by: U.ID})
 		 */
-		SetStats: function(stats) {
+		SetStats: function (stats) {
 			var defaults = { // these attributes go to every model as "_"
 				views: 0,
 				edits: 0,
@@ -266,22 +266,24 @@ window.Roadtrip = {
 			var model = _.extend(defaults, this.get('_'));
 			if (!_.isObject(stats)) {
 				switch (stats) {
-					case "create": // this will not run, as there is no model yet
-						stats = {
-							created_by: U.id,
-							created_on: Date.now()
-						};
-						console.log("create", stats);
-						break;
-					case "edit":
-						stats = {
-							edited_on: Date.now(),
-							edited_by: U.id,
-							edits: model.edits + 1
-						};
-						break;
-					default:
-						console.warn("unhandled stat", stats);
+				case "create": // this will not run, as there is no model yet
+					stats = {
+						created_by: U.id,
+						created_on: Date.now()
+					};
+					console.log("create", stats);
+					break;
+				case "edit":
+					stats = {
+						edited_on: Date.now(),
+						edited_by: U.id,
+						edits: model.edits + 1,
+						created_by: model.created_by || U.id,
+						created_on: model.created_on || Date.now()
+					};
+					break;
+				default:
+					console.warn("unhandled stat", stats);
 				}
 			}
 			this.set({
@@ -293,7 +295,7 @@ window.Roadtrip = {
 		 * @param  {string} stat Name of stat
 		 * @return {null}      [description]
 		 */
-		IncStat: function(stat) {
+		IncStat: function (stat) {
 			var stats = this.get('_') || {};
 			stats[stat] = (stats[stat] + 1) || 1;
 			stats["last_" + stat] = Date.now();
@@ -306,7 +308,7 @@ window.Roadtrip = {
 		 * Generate a unique ID.  Don't even use this if you don't need a unique ID.  Else override it
 		 * @return {string} A Unique ID
 		 */
-		GetID: function() {
+		GetID: function () {
 			if (this.id)
 				return this.id; // the ID has  already been generated
 			return this.get('_id');
@@ -319,7 +321,7 @@ window.Roadtrip = {
 		 * that is.
 		 * @return null
 		 */
-		UpdateTaskProgress: function() {
+		UpdateTaskProgress: function () {
 			var subs = APP.models.tasks.where({
 				parent_id: this.id
 			});
@@ -371,7 +373,7 @@ window.Roadtrip = {
 	 * Useful for viewing a single model
 	 */
 	View: Backbone.Marionette.LayoutView.extend({
-		onShow: function() {
+		onShow: function () {
 			this.model.IncStat("views");
 			APP.SetTitle(this.model.get(this.model.nameAttribute), this.module);
 		},
@@ -384,7 +386,7 @@ window.Roadtrip = {
 		modelEvents: {
 			"change": "render" // This shouldn't be necessary, should it?
 		},
-		Edit: function() {
+		Edit: function () {
 			APP.Route("#" + this.module + "/" + "edit" + "/" + this.model.id);
 		},
 	}),
@@ -411,12 +413,12 @@ window.Roadtrip = {
 			"click @ui.record": "EditRecord",
 			"click @ui.done": "Done"
 		},
-		onBeforeRender: function() {
+		onBeforeRender: function () {
 			if (!this.model) {
 				this.model = new DEF.modules[this.module].Model({});
 			}
 		},
-		onShow: function() {
+		onShow: function () {
 			$("textarea").val(($("textarea").val() || '').trim()); // beautify inserts spaces between <textarea> in the item_edit form
 			APP.SetTitle(this.model.get(this.model.nameAttribute), this.module);
 
@@ -427,7 +429,7 @@ window.Roadtrip = {
 		 * each module could override it, or something.
 		 * @param  {bool} go_parent [don't go back to self, go to parent]
 		 */
-		Return: function(go_parent) {
+		Return: function (go_parent) {
 			if (this.model.id) {
 				if (go_parent) {
 					var module = this.model.get('parent_module'),
@@ -450,7 +452,7 @@ window.Roadtrip = {
 		 * @param  {event} e The event
 		 * @return {null}   null
 		 */
-		SaveField: function(e) {
+		SaveField: function (e) {
 			var save = {};
 			this.MakeDirty(e);
 			var $el = $(e.currentTarget);
@@ -458,12 +460,12 @@ window.Roadtrip = {
 				value = e.currentTarget.value,
 				type = e.currentTarget.type;
 			switch (type) {
-				case "checkbox":
-					save[field] = $el.checked;
-					console.log(field, $el.checked);
-					break;
-				default:
-					save[field] = value;
+			case "checkbox":
+				save[field] = $el.checked;
+				console.log(field, $el.checked);
+				break;
+			default:
+				save[field] = value;
 			}
 			console.log("savefield", save);
 			this.model.set(save);
@@ -474,14 +476,14 @@ window.Roadtrip = {
 		 * @param  {e} e the field
 		 * @return {null}   [description]
 		 */
-		MakeDirty: function(e) {
+		MakeDirty: function (e) {
 			if (e.currentTarget.value == this.model.get(e.currentTarget.id))
 				$(e.currentTarget).removeClass("dirty");
 			else
 				$(e.currentTarget).addClass("dirty");
 			$(".cmd#done").addClass("unsaved");
 		},
-		Save: function(e) {
+		Save: function (e) {
 			console.error("This is retired.  See #1.29");
 			// var model = this.model,
 			// 	save = {},
@@ -518,21 +520,21 @@ window.Roadtrip = {
 			// }
 			// return this.Return(false);
 		},
-		Cancel: function(e) {
+		Cancel: function (e) {
 			this.Return();
 		},
-		Done: function(e) {
+		Done: function (e) {
 			console.log(e);
 			this.Return();
 		},
-		Delete: function(e) {
+		Delete: function (e) {
 			if (confirm("Are you sure you wish to delete this thing?")) {
 				//APP.models[this.model.module].remove(this.model);
 				this.model.destroy();
 				this.Return(true);
 			}
 		},
-		EditRecord: function(e) {
+		EditRecord: function (e) {
 			APP.Route("#db/" + this.model.module + "/" + this.model.id);
 		}
 	}),
@@ -545,7 +547,7 @@ window.Roadtrip = {
 		events: {
 			"click": "Click"
 		},
-		Click: function(e) {
+		Click: function (e) {
 			APP.Route("#" + (this.module) + "/view/" + this.model.id, this.model.get(this.model.nameAttribute));
 		}
 	}),
@@ -578,7 +580,7 @@ window.Roadtrip = {
 			"change": "render"
 		},
 
-		addChild: function(child, ChildView, index) {
+		addChild: function (child, ChildView, index) {
 			var from = (this.page - 1) * this.perpage;
 			var to = from + this.perpage;
 			if (index >= from && index < to)
