@@ -1,3 +1,15 @@
+/**
+ * Here's how this thing is organized
+ *
+ * Views:
+ * 	- Event
+ * 	- Date / Planner
+ * 	- Day (Sub of week, month and year)
+ * 	- Week
+ * 	- Month
+ * 	- Year
+ */
+
 DEF.modules.calendar = {};
 DEF.modules.calendar.Initialize = function () {
 	if ( !APP.models.calendar )
@@ -141,24 +153,7 @@ DEF.modules.calendar.views = {
 		}
 	} ),
 
-	detailed_event: Roadtrip.View.extend( {
-		module: "calendar",
-		template: require( "./templates/detailed_event.html" ),
-		className: 'detailed_event',
-		attributes: function () {
-			return {
-				"data-id": this.model.id,
-				"data-start": this.model.get( 'start' ),
-				"data-end": this.model.get( 'end' )
-			}
-		},
-		events: {
-			"click": "handleClick"
-		},
-		handleClick: function () {
-			APP.Route( "#calendar/view/" + this.model.id, "calendar" );
-		}
-	} ),
+
 
 	/**
 	 * View a plain, read-only single record
@@ -223,9 +218,10 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend( {
 			saturday: ".saturday"
 		},
 		tagName: 'tr',
-		el: '#CALENDAR table tbody',
 		initialize: function ( options ) {
 			var startDate = new Date();
+			if ( options.date )
+				startDate = options.date;
 			this.sunday = startDate.getDay() == 0 ? startDate : startDate - ( startDate.getDay() * ( 60 * 60 * 24 * 1000 ) );
 			this.render()
 		},
@@ -244,9 +240,27 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend( {
 		}
 	} )
 
-DEF.modules.calendar.views.minicalendar = Backbone.Marionette.LayoutView.extend( {
+DEF.modules.calendar.views.Month = Backbone.Marionette.LayoutView.extend( {
 	module: 'calendar',
-	template: require( "./templates/minicalendar.html" ),
+	template: require( "./templates/calendar.html" ),
+	regions: {
+		"one": ".week_one",
+		"two": ".week_two",
+		"three": ".week_three"
+	},
+	initialize: function ( options ) {
+		this.weeks = Array( 5 );
+	},
+	onShow: function () {
+
+		this.showChildView( "one", new DEF.modules.calendar.views.Week( {
+			date: new Date()
+		} ) )
+	}
+} )
+
+DEF.modules.calendar.views.minicalendar = DEF.modules.calendar.views.Month.extend( {
+
 
 } )
 
@@ -264,15 +278,8 @@ DEF.modules.calendar.views.eventlistitem = Roadtrip.View.extend( {
 		};
 	},
 	handleClick: function ( e ) {
-		console.log( APP.models.calendar.get( $( e.currentTarget )
-			.parent()
-			.parent()
-			.attr( 'data-id' ) ) );
 		var page = new DEF.modules.calendar.views.edit( {
-			model: APP.models.calendar.get( $( e.currentTarget )
-				.parent()
-				.parent()
-				.attr( 'data-id' ) )
+			model: this.model
 		} );
 		APP.root.showChildView( 'main', page );
 	}
