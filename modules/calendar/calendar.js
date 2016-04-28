@@ -7,18 +7,18 @@ DEF.modules.calendar.Router = Roadtrip.Router.extend( {
 	module: "calendar",
 	routes: {
 		"calendar": "ShowRoot",
-		//		"calendar/date/:arg": "LoadDate",
 		"calendar/:cmd": "LoadModule",
+		"calendar/date/:arg": "LoadDate",
 		"calendar/:cmd/:arg": "LoadModule"
 
 	},
 	LoadDate: function ( d ) {
-		var module = this.module;
+		var module = 'calendar';
 		var date = new Date( d );
 		var offset = date.getTimezoneOffset() * 60 * 1000;
 
 		var collection = APP.models.calendar.getEventsForDate( d );
-		APP.Page = new DEF.modules.calendar.views[ 'date' ]( {
+		APP.Page = new DEF.modules.calendar.MainView( {
 			collection: collection,
 			date: new Date( date.getTime() + offset )
 		} );
