@@ -20,7 +20,7 @@ require("./static.js");
 var MainApp = Backbone.Marionette.Application.extend({
 	anon: "56fea5cc54d49c036c802e53", // the anonymous user id
 
-	setRootLayout: function() {
+	setRootLayout: function () {
 		this.root = new DEF.RootLayout();
 		APP.root.showChildView('header', new DEF.HeaderLayout({}));
 		APP.root.showChildView('footer', new DEF.FooterLayout({}));
@@ -30,7 +30,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 	 * mouse was not in the doc)
 	 * @return  null
 	 */
-	SetUpWindowEvents: function() {
+	SetUpWindowEvents: function () {
 		// document.onmouseover = function() {
 		// 	//User's mouse is inside the page. (This is working)
 		// 	window.innerDocClick = true;
@@ -47,7 +47,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 		// 		//	window.scrollTo(0, 0);
 		// 	}
 		// };
-		window.onscroll = function() {
+		window.onscroll = function () {
 			var $header = $("#HEADER");
 			if (document.body.scrollTop > 110 || document.documentElement.scrollTop > 110) {
 				if ($header.hasClass("large"))
@@ -60,12 +60,12 @@ var MainApp = Backbone.Marionette.Application.extend({
 			}
 		};
 	},
-	SetTitle: function(title, module) {
+	SetTitle: function (title, module) {
 		document.title = title + " - roadtrip";
 		if (module)
 			this.SetMode(module);
 	},
-	SetMode: function(mode) {
+	SetMode: function (mode) {
 		$("#HEADER #mainmenu .menuitem")
 			.removeClass('active');
 		$("#HEADER #mainmenu .menuitem[data-mode=" + mode + "]")
@@ -78,7 +78,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 	 * @param  {string} linktext    what to display in the hyperklink
 	 * @return {string}        <a href...
 	 */
-	GetLink: function(module, id, linktext) {
+	GetLink: function (module, id, linktext) {
 		if (APP.models[module]) {
 			var model = APP.models[module].get(id);
 			if (model) {
@@ -95,10 +95,10 @@ var MainApp = Backbone.Marionette.Application.extend({
 	 * @param  {id} id    model  _id
 	 * @return {[type]}       the model
 	 */
-	GetModel: function(module, id) {
+	GetModel: function (module, id) {
 		return APP.models[module].get(id);
 	},
-	Route: function(route, trigger = true) {
+	Route: function (route, trigger = true) {
 
 		//		if (history.pushState) {
 		//			history.pushState(null, null, route);
@@ -156,20 +156,20 @@ var MainApp = Backbone.Marionette.Application.extend({
 	 * @param  {string} title Tooltip title
 	 * @return {string}       <i...>
 	 */
-	Icon: function(icon, title = icon) {
+	Icon: function (icon, title = icon) {
 		if (icon.substring(0, 4) == "http")
 			return "<img class='icon' src='" + icon + "'>";
 
 		switch (icon) {
-			case 'loading':
-				return "<span class='loading'><i class='fa fa-refresh fa-spin'></i></span>";
-			default:
-				if (this.Icon_Lookup[icon])
-					icon = this.Icon_Lookup[icon];
+		case 'loading':
+			return "<span class='loading'><i class='fa fa-refresh fa-spin'></i></span>";
+		default:
+			if (this.Icon_Lookup[icon])
+				icon = this.Icon_Lookup[icon];
 		}
 		return "<i title='" + title + "' class='icon fa fa-" + icon + "'></i>";
 	},
-	_UpdateTaskID: function() {
+	_UpdateTaskID: function () {
 		for (let model of APP.models.tasks.filter({
 				"parent_module": "tasks"
 			})) {
@@ -190,8 +190,8 @@ var MainApp = Backbone.Marionette.Application.extend({
 
 		}
 	},
-	_UpdateTasks: function() {
-		APP.models.tasks.each(function(m) {
+	_UpdateTasks: function () {
+		APP.models.tasks.each(function (m) {
 			if (m.get('parent_id')
 				.length > 10) {
 				m.set({
@@ -252,13 +252,13 @@ APP.HTML = {
 	 * @param  {bool} leave_empty Leave a blank line at the top
 	 * @return {string}             "<select...>"
 	 */
-	Select: function(id, collection, display, key, value, className, leave_empty) {
+	Select: function (id, collection, display, key, value, className, leave_empty) {
 		key = key || "_id";
 		var html = "<select id='" + id + "' class='" + (className || "") + "'>";
 		if (leave_empty) {
 			html += "<option></option>";
 		}
-		collection.each(function(model) {
+		collection.each(function (model) {
 			html += "<option " + (value == model.get(key) ? "selected" : "") + " value='" + model.get(key) + "'>" + model.get(display) + "</option>";
 		});
 
@@ -266,10 +266,10 @@ APP.HTML = {
 		return html;
 
 	},
-	Autocomplete: function(id, collection, display, key, value, className, leave_empty) {
+	Autocomplete: function (id, collection, display, key, value, className, leave_empty) {
 		var html = "<input value='" + value + "'list='" + id + "_list' type='text' id='" + id + "' class='" + (className || "") + "'>";
 		html += "<datalist id='" + id + "_list'>";
-		collection.each(function(model) {
+		collection.each(function (model) {
 			html += "<option value='" + model.get(key) + "'>" + model.GetTitle() + "</option>";
 		});
 		html += "</datalist>";
@@ -297,7 +297,7 @@ APP.Tools = {
 	 * @param  {string} key        The field to counts
 	 * @return {Object}            {bug:20,feature:40}
 	 */
-	CountFields: function(collection, key) {
+	CountFields: function (collection, key) {
 		var counts = {};
 		if (!_.isArray(collection)) // unfiltered, i guess
 			collection = collection.models;
@@ -315,7 +315,7 @@ APP.Tools = {
 	 * @param  {string} func       size(count), min, max.  anything _ provides
 	 * @return {number}            The result
 	 */
-	Aggregate: function(collection, key, func = "size") {
+	Aggregate: function (collection, key, func = "size") {
 		if (_.isArray(collection))
 			collection = new Backbone.Collection(collection);
 		return Number(_[func](collection.pluck(key)));
@@ -337,7 +337,7 @@ APP.Format = {
 	 * @param  {int} dec Number of decimals
 	 * @return {string}     "5.50"
 	 */
-	fixed: function(val, dec) {
+	fixed: function (val, dec) {
 		if (!_.isNumber(val))
 			val = 0;
 		return val.toFixed(dec);
@@ -349,7 +349,7 @@ APP.Format = {
 	 * @param  {float} max Max value
 	 * @return {float}     Value, not exceeding Min or Max
 	 */
-	clamp: function(val, min, max) {
+	clamp: function (val, min, max) {
 		return Math.max(Math.min(val, max), min);
 	},
 	/**
@@ -357,7 +357,7 @@ APP.Format = {
 	 * @param  {float} val A number
 	 * @return {string}     A number, with , in the thousands
 	 */
-	number: function(val) {
+	number: function (val) {
 		return val.toLocaleString();
 	},
 	/**
@@ -366,7 +366,7 @@ APP.Format = {
 	 * @param  {string} val "$5,500.00"
 	 * @return {number}     5500
 	 */
-	pure: function(val) {
+	pure: function (val) {
 		if (_.isString(val))
 			val = val.match(/[\.\d]+/g)
 			.join([]);
@@ -377,7 +377,7 @@ APP.Format = {
 	 * @param  {float} val The money value
 	 * @return {string}     $5.50
 	 */
-	money: function(val) {
+	money: function (val) {
 		if (U.get("is_anonymous"))
 			return "<span class='notallowed'>" + APP.Icon("eye-slash", "You do not have permission to view money") + "</span>";
 		val = Number(val);
@@ -389,14 +389,14 @@ APP.Format = {
 		return '<span class="money ' + sign + '">$' + val.toFixed(2)
 			.replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + "</span>";
 	},
-	sysdate: function(time = Date.now()) {
+	sysdate: function (time = Date.now()) {
 		var date = new Date(time);
 		var datef = date.getFullYear() + "-" + ("00" + (date.getMonth() + 1))
 			.slice(-2) + "-" + ("00" + date.getDate())
 			.slice(-2);
 		return datef;
 	},
-	date: function(time) {
+	date: function (time) {
 		if (!time)
 			return "--";
 		var date = new Date(time);
@@ -406,7 +406,7 @@ APP.Format = {
 		return "<a href='#calendar/date/" + date.toISOString()
 			.slice(0, 10) + "'>" + datef + "</a>";
 	},
-	time: function(time) {
+	time: function (time) {
 		if (!time)
 			return "--";
 		var date = new Date(time);
@@ -415,7 +415,7 @@ APP.Format = {
 			.slice(-2);
 		return datef;
 	},
-	datetime: function(time) {
+	datetime: function (time) {
 		if (!time)
 			return "--";
 		return APP.Format.date(time) + " " + APP.Format.time(time);
@@ -426,7 +426,7 @@ APP.Format = {
 	 * @return {html}          HTML formatted text
 	 */
 	markdown: require('marked'),
-	htmlentities: function(str) {
+	htmlentities: function (str) {
 		return String(str)
 			.replace(/&/g, '&amp;')
 			.replace(/</g, '&lt;')
@@ -438,24 +438,24 @@ APP.Format = {
 	 * @param  {String} str The raw text
 	 * @return {String}     The text with HTML links for things that match
 	 */
-	linktext: function(str) {
+	linktext: function (str) {
 		if (APP.models.tasks)
 			return str.replace(/(#)(\d.[\d.]+)/, APP.Format._replace);
 		else
 			return str;
 
 	},
-	_replace: function(match, key, id) {
+	_replace: function (match, key, id) {
 		return APP.GetLink("tasks", id, id);
 	}
 };
 
 APP.util = {
-	DeleteField: function(collection, field) {
+	DeleteField: function (collection, field) {
 
 	},
-	RenameField: function(collection, old_name, new_name) {
-		collection.each(function(m) {
+	RenameField: function (collection, old_name, new_name) {
+		collection.each(function (m) {
 			var set = {};
 			set[new_name] = m.get(old_name);
 			console.log(m.id, set);
@@ -473,12 +473,12 @@ APP.util = {
 ██  ██  ██ ██   ██ ██ ██  ██ ██
 ██      ██ ██   ██ ██ ██   ████
 */
-APP.on('before:start', function() {
+APP.on('before:start', function () {
 	APP.SetUpWindowEvents();
 	APP.setRootLayout();
 });
 
-APP.on('start', function() {
+APP.on('start', function () {
 	APP.controller = new DEF.Controller();
 	APP.controller.router = new DEF.Router({
 		controller: APP.controller
@@ -489,7 +489,7 @@ APP.on('start', function() {
 
 APP.start();
 
-/**
+/*
 
 
 //https: //www.reddit.com/r/5ignal5/comments/4gfnc1/the_importance_of_being_ernest/
@@ -501,19 +501,29 @@ APP.start();
 var txt = "NEDE  YO LREARICDTRT EOFHY FIPO5 AAETOY A  RO ,RDPOARTWNEMHHPFNENR GH CGGSAE ?EOFRDERAD ENH- A  E TETI TMN'G CNLE5ROO NI.YRVEAAOSNA TA UFGO.ITNTIL!LHNLSMEENHAYETEAA BREWGZCA AF  NL L  ONNNR .GF R.I5MW EHW ,RSD ITERT ESD .WGP EESNRAEBB ONCOA5L";
 var txt = "NEDE  YO LREARIC DTRT EOFHY FIPO5";
 
+var txt = "ECWWA BCUBN EBB! PPFYI NUA AHAFAS HDKBAO. XYBUPLRBCKD. ZCD HGRRDEDYND AHQEAFA Y 5KOG BYE B 5KIYBM? KITPFQCCO NUY VECQD QZQ. UPFYI GUZ - TPFR 5KOGT OT NTGD ADRPFH QFDI. IU GAKEDH PECC GNKDKKBB'O FAE, XCQMC NUY 5POG ZEDEB BKICZ RDTT. EDKNEHT, OMI";
+var txt = "ECWWA BCUBN EBB!";
+
+txt = "PPFYI NUA AHAFAS HDKBAO. XYBUPLRBCKD.";
+
 var keys = [
 	//"Algernon Moncrieff",
-	"Ernest Hemmingway",
-	"A NAME",
-	"Frederic Henry",
-	"Fred Henry",
+	//"Ernest Hemmingway",
+	//"A NAME",
+	//"Frederic Henry",
+	//"Fred Henry",
 	//"Algy Moncrieff",
 	//"Gwendolen Fairfax",
-	"Oscar Wilde",
-	"Earnest",
-	"Ernest",
-	"Wilde",
-	"Hemmingway"
+	//"Oscar Wilde",
+	//"Earnest",
+	//"Ernest",
+	//	"Wilde",
+	//"Hemmingway",
+	//"Fred",
+	//"Henry",
+	//"Oscar",
+	"Henry",
+	"Oscar"
 ];
 //FREDERICHENRY
 //HENRYFREDERIC
@@ -593,5 +603,4 @@ for (var k1 in keys) {
 }
 
 console.log(count);
-
 */

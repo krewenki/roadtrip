@@ -1,20 +1,43 @@
-<td>
-	<%=APP.HTML.Autocomplete("order", APP.models.orders,"order","order",order,"field", true)%>
+<td class='important '>
+	<select id='kind' class='field'>
+		<option value='order' <%=kind=='order' ? 'selected': ''%>>Order</option>
+		<option value='task' <%=kind=='task' ? 'selected': ''%>>Task</option>
+		<option value='timeoff' <%=kind=='timeoff' ? 'selected': ''%>>Time-Off</option>
+	</select>
+	<%
+	switch (kind) {
+		case 'order':
+			print(APP.HTML.Autocomplete("kind_val", APP.models.orders,"order","order",order,"field", true));
+			break;
+		case 'task':
+			print(APP.HTML.Autocomplete("kind_val", APP.models.tasks,"task","task_id",task,"field", true));
+			break;
+		case 'timeoff':
+			break;
+	}
+
+	%>
 </td>
 <%
 for (var d=0; d<7; d++) {
 %>
-	<td>
+	<td class='nowrap'>
 		<%
-		var hours = [1,2,4,8]
-	for (var v in hours) {
-		var id = "D-"+week+"-"+d+"-"+hours[v];
+		var times = [0.5,1,2,4,8];
+	for (var v in times) {
+		var id = "D-"+week+"-"+d+"-"+times[v];
+		var checked = hours[d] & times[v] ? "checked" : "";
 	%>
-			<input id="<%=id%>" class='hour_picker' type='checkbox' value=<%=v%>>
-
-			<label for="<%=id%>">
-				<%=hours[v]%>
-			</label>
-			<% } %>
+			<input id="<%=id%>" <%=checked%> value=
+			<%=times[v]%> class='hour_picker' data-day=
+				<%=d%> type='checkbox' >
+					<label for="<%=id%>">
+						<%=times[v]==0.5?"&frac12;":times[v]%>
+					</label>
+					<% } %>
 	</td>
 	<% } %>
+		<td class='important right' id='sum'>
+			0
+		</td>
+		td>

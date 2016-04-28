@@ -1,13 +1,16 @@
 {
   "js": {
   beautify_on_save: true,
-  break_chained_methods: true,
+  break_chained_methods: false,
   end_with_newline: true,
   eval_code: true,
   indent_size: 5,
   indent_with_tabs: true,
   jslint_happy: true,
   space_after_anon_function: true,
-  space_in_paren: true
-  }
+  space_in_paren: false
+  },
+	"html": {
+		wrap_line_length: 0
+	}
 }
