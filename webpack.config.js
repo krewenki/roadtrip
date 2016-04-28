@@ -38,34 +38,37 @@ var config = {
 	},
 	module: {
 		loaders: [{
-			test: /\.js$/,
-			loader: 'babel',
-			exclude: [nodeModulesPath],
-			query: {
-				presets: ['es2015']
+				test: /\.js$/,
+				loader: 'babel',
+				exclude: [nodeModulesPath],
+				query: {
+					presets: ['es2015']
+				}
+			}, {
+				test: /\.(otf|eot|png|ico|svg|ttf|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+				loader: 'url?limit=8192'
+			}, {
+				test: /\.html$/,
+				loader: "underscore-template-loader"
+			},
+			//  {
+			// 	test: /\.scss$/,
+			// 	loader: ExtractTextPlugin.extract("style-loader", "css!sass")
+			// },
+			{
+				test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+				loader: "file"
+			}, {
+				test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+				loader: "url?limit=10000&mimetype=image/svg+xml"
+			}, {
+				test: /\.md$/,
+				loader: "html!markdown"
+			}, {
+				test: /\.node$/,
+				loader: "node-loader"
 			}
-		}, {
-			test: /\.(otf|eot|png|ico|svg|ttf|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-			loader: 'url?limit=8192'
-		}, {
-			test: /\.html$/,
-			loader: "underscore-template-loader"
-		}, {
-			test: /\.scss$/,
-			loader: ExtractTextPlugin.extract("style-loader", "css!sass")
-		}, {
-			test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-			loader: "file"
-		}, {
-			test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-			loader: "url?limit=10000&mimetype=image/svg+xml"
-		}, {
-			test: /\.md$/,
-			loader: "html!markdown"
-		}, {
-			test: /\.node$/,
-			loader: "node-loader"
-		}]
+		]
 	},
 
 	// We have to manually add the Hot Replacement plugin when running
@@ -89,13 +92,21 @@ if (process.env.NODE_ENV == 'production') {
 			except: ['$', 'module', 'require', 'exports', '__webpack_require__']
 		}
 	}));
-	config.plugins.push(new ExtractTextPlugin("[name].css"))
+	config.module.loaders.push({
+		test: /\.scss$/,
+		loader: ExtractTextPlugin.extract("style-loader", "css!sass")
+	});
+	config.plugins.push(new ExtractTextPlugin("[name].css"));
 } else {
 	config.plugins.push(new Webpack.HotModuleReplacementPlugin());
 	config.plugins.push(new WebpackNotifierPlugin());
-	config.plugins.push(new ExtractTextPlugin("[name].css"))
-		// Makes sure errors in console map to the correct file
-		// and line number
+	config.module.loaders.push({
+		test: /\.scss$/,
+		loader: "style!css!sass"
+	});
+	//config.plugins.push(new ExtractTextPlugin("[name].css"))
+	// Makes sure errors in console map to the correct file
+	// and line number
 	config.devtool = 'source-map';
 	config.entry = [
 		// For hot style updates
