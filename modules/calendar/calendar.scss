@@ -98,7 +98,12 @@
 					td {
 						margin: 0px;
 						padding: 20px;
-            border-bottom: 1px solid #aaa
+            border-bottom: 1px solid #aaa;
+            img {
+              width: 30px;
+              height: 30px;
+              border-radius: 5px;
+            }
 					}
 				}
     }
