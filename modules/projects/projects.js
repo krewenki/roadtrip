@@ -40,7 +40,6 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 		return APP.Tools.Aggregate(APP.models.projects, "project_id", "max") + 1;
 	},
 	GetChildID: function() {
-		debugger
 		var prefix = false,
 			instance = 0;
 
@@ -77,6 +76,9 @@ DEF.modules.projects.Router = Roadtrip.Router.extend({
 	module: "projects",
 	collections: [
 		"users", "tasks", "projects"
+	],
+	collections_extra: [
+		"revisions", "repositories"
 	],
 	initialize: function() {},
 	routes: {

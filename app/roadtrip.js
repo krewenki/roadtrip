@@ -14,6 +14,7 @@ window.Roadtrip = {
 	Router: Backbone.Marionette.AppRouter.extend({
 		module: "module", // override, of course.
 		collections: [], // list collections required for this module
+		collections_extra: [], // list of collections that may be required later, but not necessarily required to display this view
 		routes: {},
 		/**
 		 * This is a clever function that looks at a list of collections that must be present.
@@ -27,10 +28,16 @@ window.Roadtrip = {
 		 */
 		execute: function(callback, args, name) {
 			var module = this.module;
-			var missing = this.GetMissingCollections();
+			for (let module of this.collections_extra) { // loop through the extras, and init them
+				if (DEF.modules[module]) {
+					DEF.modules[module].Initialize(); // initialize  all the extra collections
+				}
+			}
+
+			var missing = this.GetMissingCollections(); // get a list of collections required, but not loaded
 			if (missing === false) { // no missing collections.  Execute the route
 				return Backbone.Router.prototype.execute.call(this, callback, args, name);
-			} else {
+			} else { // there ARE missing collection stiull
 				console.log("waiting for collection", missing);
 				for (let module of missing) // loop the missing list
 					if (DEF.modules[module])
@@ -467,6 +474,7 @@ window.Roadtrip = {
 				$(e.currentTarget).removeClass("dirty");
 			else
 				$(e.currentTarget).addClass("dirty");
+			$(".cmd#done").addClass("unsaved");
 		},
 		Save: function(e) {
 			console.error("This is retired.  See #1.29");

@@ -214,6 +214,11 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	template: require("./templates/task_view.html"),
 	templateHelpers: function() {
 		var parent = APP.models[this.model.get('parent_module')].get(this.model.get('parent_id'));
+		if (!parent) {
+			parent = APP.models.projects.get(this.model.get('parent_id')); // some tasks incorrectly have "task" as a parent.
+			if (parent)
+				this.model.set("parent_module", "projects");
+		}
 		return {
 			parent_title: APP.Icon(parent.module) + " " + parent.get(parent.nameAttribute),
 			parent_link: parent.GetLink(),
