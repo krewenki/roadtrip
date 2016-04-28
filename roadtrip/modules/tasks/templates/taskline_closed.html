@@ -1,13 +1,16 @@
 <td class='task_id'>
-		<%=task_id%>
+	<%=task_id%>
 </td>
 <td class='task'>
-		<%=APP.Icon(kind, kind)%>
-				<%=task%>
+	<%=APP.Icon(kind, kind)%>
+		<%=task%>
+</td>
+<td class='nowrap completed_by'>
+	<%=APP.GetLink('users',completed_by)%>
 </td>
 <td class='nowrap minwidth800'>
-		<%=APP.Format.date(start_date)%>
+	<%=APP.Format.date(start_date)%>
 </td>
 <td class='nowrap minwidth800'>
-		<%=APP.Format.date(complete_date)%>
+	<%=APP.Format.date(complete_date)%>
 </td>

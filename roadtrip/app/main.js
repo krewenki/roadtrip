@@ -305,6 +305,7 @@ APP.Tools = {
 			var field = model.get(key);
 			counts[field] = counts[field] ? counts[field] + 1 : 1;
 		}
+		var Σ = 45;
 		return counts;
 	},
 	/**
@@ -488,24 +489,31 @@ APP.on('start', function() {
 
 APP.start();
 
-/*
-
-https://www.reddit.com/r/5ignal5/comments/4gfnc1/the_importance_of_being_ernest/
+/**
 
 
-var V = require('vigenere');
-window.V = V;
+//https: //www.reddit.com/r/5ignal5/comments/4gfnc1/the_importance_of_being_ernest/
+
+
+//var V = require('vigenere');
+//window.V = V;
+
 var txt = "NEDE  YO LREARICDTRT EOFHY FIPO5 AAETOY A  RO ,RDPOARTWNEMHHPFNENR GH CGGSAE ?EOFRDERAD ENH- A  E TETI TMN'G CNLE5ROO NI.YRVEAAOSNA TA UFGO.ITNTIL!LHNLSMEENHAYETEAA BREWGZCA AF  NL L  ONNNR .GF R.I5MW EHW ,RSD ITERT ESD .WGP EESNRAEBB ONCOA5L";
 var txt = "NEDE  YO LREARIC DTRT EOFHY FIPO5";
 
 var keys = [
-	"Algernon Moncrieff",
+	//"Algernon Moncrieff",
 	"Ernest Hemmingway",
 	"A NAME",
 	"Frederic Henry",
 	"Fred Henry",
-	"Algy Moncrieff",
-	"Gwendolen Fairfax"
+	//"Algy Moncrieff",
+	//"Gwendolen Fairfax",
+	"Oscar Wilde",
+	"Earnest",
+	"Ernest",
+	"Wilde",
+	"Hemmingway"
 ];
 //FREDERICHENRY
 //HENRYFREDERIC
@@ -513,6 +521,34 @@ var keys = [
 //ERNESTHEMMINGWAY
 //YAWGNIMMEHTSENRE
 //
+//
+function decode(message, codeword) { //. vigenere
+	var abc = "abcdefghijklmnopqrstuvwxyz",
+		result = "",
+		cipher,
+		x,
+		y;
+
+	if (!message || !codeword) {
+		return null;
+	}
+
+	for (var i = 0; i < message.length; i++) {
+		if (abc.indexOf(message[i]) === -1) {
+			result += message[i];
+		} else {
+			cipher = codeword[i % codeword.length];
+			x = abc.indexOf(cipher);
+			y = abc.indexOf(message[i]);
+			result += abc[(y - x + abc.length) % abc.length];
+		}
+	}
+
+	return result;
+}
+
+
+
 function noop(s) {
 	return s;
 }
@@ -542,13 +578,13 @@ var count = 0;
 for (var k1 in keys) {
 	var n1 = keys[k1].toLowerCase();
 	for (var f1 in fn) {
-		var txt1 = V.decode(txt.toLowerCase(), fn[f1](n1));
+		var txt1 = decode(txt.toLowerCase(), fn[f1](n1));
 		result(txt1);
 		count++;
 		for (var k2 in keys) {
 			var n2 = keys[k2].toLowerCase();
 			for (var f2 in fn) {
-				var txt2 = V.decode(txt1, fn[f2](n2));
+				var txt2 = decode(txt1, fn[f2](n2));
 				result(txt2);
 				count++;
 			}
