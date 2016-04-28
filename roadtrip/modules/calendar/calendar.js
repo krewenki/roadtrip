@@ -197,6 +197,14 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend( {
 			APP.Route( "#calendar/" + "date" + "/" + this.options.date.toISOString()
 				.slice( 0, 10 ) );
 		},
+		attributes: function () {
+			var classes = '';
+			if ( this.options.active )
+				classes = 'active';
+			return {
+				class: classes
+			}
+		},
 		templateHelpers: function () {
 			var self = this;
 			return {
@@ -299,7 +307,10 @@ DEF.modules.calendar.views.Day = Backbone.Marionette.CompositeView.extend( {
 							date: d,
 							collection: APP.models.calendar.getEventsForDate( d.toISOString()
 								.slice( 0, 10 ) ),
-							showEvents: this.mini !== true
+							showEvents: this.mini !== true,
+							active: d.toISOString()
+								.slice( 0, 10 ) == this.options.date.toISOString()
+								.slice( 0, 10 )
 						} ) )
 					} else {
 						stop_week = stop_week == 0 ? week : stop_week;
@@ -378,7 +389,6 @@ DEF.modules.calendar.MainView = Backbone.Marionette.LayoutView.extend( {
 		"eventlist": ".rightbox"
 	},
 	initialize: function ( options ) {
-		console.log( options );
 		if ( !options.date )
 			this.options.date = new Date();
 	},
@@ -393,6 +403,8 @@ DEF.modules.calendar.MainView = Backbone.Marionette.LayoutView.extend( {
 					.slice( 0, 10 ) )
 
 			} ) );
+		APP.SetTitle( this.options.date.toISOString()
+			.slice( 0, 10 ), this.module );
 	},
 	templateHelpers: function () {
 		var self = this;
