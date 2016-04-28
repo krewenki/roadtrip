@@ -264,9 +264,14 @@ DEF.modules.calendar.views.eventlistitem = Roadtrip.View.extend( {
 		};
 	},
 	handleClick: function ( e ) {
-
+		console.log( APP.models.calendar.get( $( e.currentTarget )
+			.parent()
+			.parent()
+			.attr( 'data-id' ) ) );
 		var page = new DEF.modules.calendar.views.edit( {
 			model: APP.models.calendar.get( $( e.currentTarget )
+				.parent()
+				.parent()
 				.attr( 'data-id' ) )
 		} );
 		APP.root.showChildView( 'main', page );
