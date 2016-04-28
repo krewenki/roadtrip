@@ -6,6 +6,10 @@
   display: none;
 }
 
+.active {
+  background-color: #ccc;
+  font-weight: 800;
+}
 #CALENDAR {
     thead th {
         text-align: center;
