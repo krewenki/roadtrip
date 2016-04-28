@@ -29,24 +29,29 @@ DEF.modules.timeclock.Model = Roadtrip.Model.extend({
 	}
 });
 
-/**
- * The main collection.  MUST be called "Collection"
- */
 DEF.modules.timeclock.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.timeclock.Model,
 	url: 'dev.telegauge.com:3456/roadtrip/timeclock',
 });
 
-
-
 DEF.modules.timeclock.LineView = Backbone.Marionette.ItemView.extend({
 	tagName: "tr",
-	template: require("./templates/time_line.html")
+	template: require("./templates/time_line.html"),
+	templateHelpers: function() {
+		return {
+			week: this.options.childIndex
+		};
+	}
 });
 DEF.modules.timeclock.WeekView = Backbone.Marionette.CompositeView.extend({
 	template: require("./templates/week.html"),
 	childView: DEF.modules.timeclock.LineView,
-	childViewContainer: "#week"
+	childViewContainer: "#week",
+	childViewOptions: function(model, index) {
+		return {
+			childIndex: index
+		};
+	}
 });
 DEF.modules.timeclock.MainView = Backbone.Marionette.LayoutView.extend({
 	id: 'TIMECLOCK',

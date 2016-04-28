@@ -1,0 +1,22 @@
+#TIMECLOCK {
+	.hour_picker {
+		display: none;
+	}
+
+	.hour_picker + label {
+		display         : inline-block;
+		width           : 19px;
+		height          : 19px;
+		border          : 2px solid $link-color;
+		color           : $link-color;
+		border-radius   : 5px;
+		background-color: none;
+		text-align      : center;
+		user-select     : none;
+	}
+
+	.hour_picker:checked + label {
+		background-color: $link-color;
+		color           : white;
+	}
+}
