@@ -1,5 +1,5 @@
 DEF.modules.users = {};
-DEF.modules.users.Initialize = function() {
+DEF.modules.users.Initialize = function () {
 	if (!APP.models.users)
 		APP.models.users = new DEF.modules.users.Collection(); // init the collection (since it's needed first)
 };
@@ -8,7 +8,7 @@ DEF.modules.users.Router = Roadtrip.Router.extend({
 	collections: [
 		"users", "tasks"
 	],
-	initialize: function() {
+	initialize: function () {
 		// Normally the collection initializes here, but Users is handled in auth.js
 	},
 	routes: {
@@ -20,7 +20,7 @@ DEF.modules.users.Router = Roadtrip.Router.extend({
 DEF.modules.users.Model = Roadtrip.Model.extend({
 	nameAttribute: 'name', // the human-readable field in the record
 	module: "users",
-	initialize: function() {
+	initialize: function () {
 		var gravatar = require('gravatar');
 		this.set("image_url", gravatar.url(this.get('email'))); // cache the gravatar
 	},
@@ -42,7 +42,7 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 	 * @param  {string} extra extra part that gets concated.  "group_extra", aka "expenses_delete"
 	 * @return {[type]}            [description]
 	 */
-	Can: function(group, extra) {
+	Can: function (group, extra) {
 		if (!group)
 			return true;
 		var groups = this.get('groups'); // the user's groups
@@ -50,6 +50,23 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 		if (groups.split(',').indexOf("admin") >= 0)
 			return true; // admin users can do everything
 		return groups.indexOf(group) >= 0;
+	},
+	Star: function (module, id) {
+		var stars = this.get('stars') || [];
+		var key = module + "|" + id;
+		if (stars.indexOf(key) > -1) {
+			stars.splice(stars.indexOf(key), 1);
+		} else {
+			stars.push(key);
+		}
+		console.log("stars", stars);
+		this.save('stars', stars);
+		this.trigger('star');
+	},
+	is_starred: function (module, id) {
+		var stars = this.get('stars') || [];
+		console.log(stars, stars.indexOf(module + "|" + id))
+		return stars.indexOf(module + "|" + id) != -1;
 	}
 
 });
@@ -57,7 +74,7 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 DEF.modules.users.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.users.Model,
 	url: 'roadtrip.telegauge.com/roadtrip/users',
-	initialize: function() {
+	initialize: function () {
 		//console.log(APP.models.tasks);
 		this.listenTo(APP.models.tasks, "sync", this.UpdateUserTaskCount);
 		this.listenTo(APP.models.tasks, "change:assigned_to change:state", this.UpdateUserTaskCount);
@@ -82,7 +99,7 @@ DEF.modules.users.views = {
 			//	details: "#details",
 			tasklist: "#task_list"
 		},
-		onShow: function() {
+		onShow: function () {
 			APP.SetTitle(this.model.get('name'), "users");
 			this.tasklist.show(new DEF.modules.tasks.TaskList({
 				template: require("./templates/taskline.html"),
@@ -98,7 +115,7 @@ DEF.modules.users.views = {
 			tasks: "#tasklist",
 			ideas: "#taskideas"
 		},
-		onRender: function() {
+		onRender: function () {
 			this.tasks.show(new DEF.modules.tasks.TaskList({
 				template: require("./templates/taskline.html"),
 				collection: APP.models.tasks,
@@ -133,10 +150,10 @@ DEF.modules.users.MainView = Roadtrip.RecordList.extend({
 	events: {
 		"click @ui.add": "Add"
 	},
-	onShow: function() {
+	onShow: function () {
 		APP.SetTitle("Users", "users");
 	},
-	Add: function() {
+	Add: function () {
 		var page = new DEF.modules.users.views.edit({
 			model: false,
 		});

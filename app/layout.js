@@ -8,7 +8,7 @@
  */
 DEF.EmptyView = Backbone.Marionette.ItemView.extend({
 	template: require("../templates/empty.html"),
-	templateHelpers: function() {
+	templateHelpers: function () {
 		var rs = $.extend({}, {
 			colspan: 0,
 			submsg: "",
@@ -19,7 +19,7 @@ DEF.EmptyView = Backbone.Marionette.ItemView.extend({
 		return rs;
 	},
 	id: "empty",
-	tagName: function() {
+	tagName: function () {
 		return this.options.colspan > 0 ? "tr" : "div";
 	},
 	ui: {
@@ -27,14 +27,6 @@ DEF.EmptyView = Backbone.Marionette.ItemView.extend({
 		submsg: "#submsg",
 		icon: "#icon"
 	},
-	onRender: function() {
-
-		//		this.ui.msg.html(this.options.msg);
-		//		if (this.options.submsg)
-		//			this.ui.submsg.html(this.options.submsg);
-		//		if (this.options.icon)
-		//			this.ui.icon.html(APP.Icon(this.options.icon));
-	}
 });
 
 DEF.RootLayout = Backbone.Marionette.LayoutView.extend({
@@ -52,31 +44,13 @@ DEF.FooterLayout = Backbone.Marionette.ItemView.extend({
 	ui: {
 		collections: "#collection_list"
 	},
-	initialize: function() {
-		//this.listenTo(APP, "collection:sync", this.render);
-	},
-	onRender: function() {
-		// debugger
-		// var html = [],
-		// 	total = 0;
-		// var collections = Object.keys(APP.models);
-		// for (var c = 0; c < collections.length; c++) {
-		// 	var module = collections[c];
-		// 	var count = APP.models[module].length;
-		// 	if (count)
-		// 		html.push(module + ": " + APP.Format.number(count));
-		// 	total += count;
-		//
-		// }
-		// this.ui.collections.html("Total Records: " + APP.Format.number(total) + " &vellip; " + html.join(' &bull; '));
-	}
 });
 
 // Layout Header View
 // ------------------
 DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 	template: require('../templates/header.html'),
-	initialize: function() {
+	initialize: function () {
 		this.listenTo(APP, "auth_user", this.render);
 	},
 	ui: {
@@ -85,7 +59,8 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 		search: "#search",
 		results: "#SEARCH",
 		login: "#login",
-		taskcount: '#taskcount'
+		taskcount: '#taskcount',
+		stars: "#stars"
 	},
 	events: {
 		"click @ui.button": "Go",
@@ -95,14 +70,19 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 		"focus @ui.search": "LoadAll",
 		"click @ui.login": "Login"
 	},
-	onBeforeRender: function() {
+	onBeforeRender: function () {
 		$("#HEADER").addClass(U.get('prefs').header);
 		if (U) {
 			this.listenTo(APP.models.tasks, "sync add remove", this.UpdateUserTaskCount);
 			this.listenTo(APP.models.tasks, "change:assigned_to change:state", this.UpdateUserTaskCount);
+			this.listenTo(U, "star", this.ShowStars);
 		}
 	},
-	UpdateUserTaskCount: function() {
+	ShowStars: function () {
+		console.log("show");
+		this.ui.stars.html("??");
+	},
+	UpdateUserTaskCount: function () {
 		if (U) {
 			var length = APP.models.tasks.filter(APP.models.tasks.filters.Assigned(U)).length;
 			if (length) {
@@ -112,7 +92,7 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 			}
 		}
 	},
-	Search: function(e) {
+	Search: function (e) {
 		if (e.keyCode == 13) {
 			$(".search_result:first").trigger("click");
 			return;
@@ -128,23 +108,23 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 			this.ui.results.hide();
 		}
 	},
-	LoadAll: function() {
+	LoadAll: function () {
 		for (var mod in DEF.modules)
 			DEF.modules[mod].Initialize();
 	},
-	GoHome: function() {
+	GoHome: function () {
 		APP.Route('#');
 	},
-	InitCollection: function(e) {
+	InitCollection: function (e) {
 		var target = $(e.currentTarget).data('mode');
 		DEF.modules[target].Initialize();
 	},
-	Go: function(e) {
+	Go: function (e) {
 		var target = $(e.currentTarget).data('mode');
 		APP.Route('#' + target, target);
 		APP.SetMode(target); // set mode immediately, for UI sakes, in case the view has to wait for the collecton to sync
 	},
-	Login: function() {
+	Login: function () {
 		APP.Route('#login');
 	}
 });
