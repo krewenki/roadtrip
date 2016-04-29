@@ -231,7 +231,8 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		subtask: "#subtask",
 		subtasks: "#subtasks",
 		progress: "#progress",
-		state: "#state"
+		state: "#state",
+		star: "#star"
 	},
 	events: {
 		"click @ui.edit": "Edit",
@@ -240,6 +241,7 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		"change @ui.progress": "UpdateProgress",
 		"mouseup @ui.progress": "LogProgress",
 		"change @ui.state": "UpdateProgressLabel",
+		"click @ui.star": "Star"
 	},
 
 	/**
@@ -248,6 +250,14 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	 */
 	Edit: function () {
 		APP.Route("#tasks/edit/" + this.model.id);
+	},
+	Star: function () {
+		U.Star(this.model.module, this.model.id);
+	},
+	onShow: function () {
+		console.log(U.is_starred(this.model.module, this.model.id));
+		if (U.is_starred(this.model.module, this.model.id))
+			this.ui.star.html(APP.Icon('star'));
 	},
 
 	/**

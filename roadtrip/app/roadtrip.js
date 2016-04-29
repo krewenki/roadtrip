@@ -77,7 +77,6 @@ window.Roadtrip = {
 			if (!model) {
 				console.error("Model not found", module, arg);
 			}
-			console.log(U.Can(model.getUp('group')), model.getUp('group'))
 			if (!U.Can(model.getUp('group'))) {
 				alert("Permission Denied");
 				return;
