@@ -1,4 +1,4 @@
 <h1><%= APP.Format.htmlentities(log) %></h1>
-<h2><%= author %> at <%= APP.Format.datetime( datetime ) %></h2>
+<h2><%=APP.GetLink("users",  APP.models.repositories.get(repository).LookupUser(author))%> at <%= APP.Format.datetime( datetime ) %></h2>
 
 <%= markupDiff(diff) %>
