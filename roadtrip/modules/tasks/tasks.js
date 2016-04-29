@@ -31,7 +31,7 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		parent_id: false,
 		parent_module: false,
 
-		kind: "todo",
+		kind: "idea",
 		task: "",
 		description: "",
 		task_id: false,

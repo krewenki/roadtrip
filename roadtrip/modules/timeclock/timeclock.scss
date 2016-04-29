@@ -13,10 +13,21 @@
 		background-color: none;
 		text-align      : center;
 		user-select     : none;
+		margin-top      : 2px;
+		cursor          : pointer;
 	}
 
 	.hour_picker:checked + label {
 		background-color: $link-color;
 		color           : white;
+	}
+
+	.timeoff {
+		.hour_picker + label {}
+
+		.hour_picker:checked + label {
+			background-color: $link_color_alt;
+			color           : $link-color;
+		}
 	}
 }

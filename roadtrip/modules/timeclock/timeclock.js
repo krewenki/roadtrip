@@ -13,13 +13,14 @@ DEF.modules.timeclock.Router = Roadtrip.Router.extend({
 	module: "timeclock",
 	routes: {
 		"timeclock": "ShowRoot",
-		"timeclock/week/:week": "ShowWeek"
+		"timeclock/:mode/:date": "ShowWeek"
 	},
-	ShowWeek: function (week) {
+	ShowWeek: function (mode, date) {
 		var module = this.module;
 		APP.Page = new DEF.modules[module].MainView({
 			collection: APP.models[module],
-			date: week
+			date: date,
+			mode: mode
 		});
 		APP.root.showChildView("main", APP.Page);
 	}
@@ -51,7 +52,8 @@ DEF.modules.timeclock.LineView = Backbone.Marionette.ItemView.extend({
 	templateHelpers: function () {
 		return {
 			week: this.options.childIndex,
-			date: this.options.date
+			date: this.options.date,
+			mode: this.options.mode
 		};
 	},
 	ui: {
@@ -110,6 +112,7 @@ DEF.modules.timeclock.WeekView = Backbone.Marionette.CompositeView.extend({
 	childViewContainer: "#week",
 	childViewOptions: function (model, index) {
 		return {
+			mode: this.options.mode,
 			date: this.options.date,
 			childIndex: index // a way to know which row you're on
 		};
@@ -122,9 +125,16 @@ DEF.modules.timeclock.WeekView = Backbone.Marionette.CompositeView.extend({
 	},
 
 	templateHelpers: function () {
-		return {
-			date: this.options.date
+		var date = new Date(this.options.date).getTime();
+		var week = 604800 * 1000;
+		var day = 86400 * 1000;
+		var rs = {
+			prev: APP.Format.monday(date - week + day, true),
+			next: APP.Format.monday(date + week + day, true),
+			date: this.options.date,
+			mode: this.options.mode
 		};
+		return rs;
 	},
 	childEvents: {
 		"total": "Total",
@@ -167,15 +177,10 @@ DEF.modules.timeclock.MainView = Backbone.Marionette.LayoutView.extend({
 	},
 	template: require("./templates/timeclock.html"),
 	templateHelpers: function () {
-		var date = new Date(this.options.date).getTime();
-		var week = 604800 * 1000;
-		var day = 86400 * 1000;
 		var rs = {
-			prev: APP.Format.monday(date - week + day, true),
-			next: APP.Format.monday(date + week + day, true),
-			date: this.options.date
+			date: this.options.date,
+			mode: this.options.mode
 		};
-		console.log(rs);
 		return rs;
 	},
 	regions: {
@@ -187,6 +192,7 @@ DEF.modules.timeclock.MainView = Backbone.Marionette.LayoutView.extend({
 		this.week.show(new DEF.modules.timeclock.WeekView({
 			collection: APP.models.timeclock,
 			date: this.options.date,
+			mode: this.options.mode,
 			filter: function (m) {
 				var rs = m.get('_.created_by') == U.id && m.get('date') == date;
 				return rs;
