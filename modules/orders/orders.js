@@ -1,7 +1,7 @@
 DEF.modules.orders = {
 	views: {}
 }
-DEF.modules.orders.Initialize = function() {
+DEF.modules.orders.Initialize = function () {
 	if (!APP.models.orders)
 		APP.models.orders = new DEF.modules.orders.Collection();
 	if (!APP.models.orders_lineitems)
@@ -14,7 +14,7 @@ DEF.modules.orders.reports = {};
 require("./production.js");
 
 DEF.modules.orders.Router = Roadtrip.Router.extend({
-	initialize: function() {
+	initialize: function () {
 		APP.Icon_Lookup.reports = "list-alt";
 
 	},
@@ -30,12 +30,12 @@ DEF.modules.orders.Router = Roadtrip.Router.extend({
 		"orders/:cmd": "LoadModule",
 		"orders/:cmd/:arg": "LoadModule",
 	},
-	Report: function(report) {
+	Report: function (report) {
 		APP.root.showChildView("main", new DEF.modules.orders.reports[report]({
 			collection: APP.models.orders_lineitems
 		}));
 	},
-	EditLine: function(soli) {
+	EditLine: function (soli) {
 		var module = this.module;
 		var model = APP.models.orders_lineitems.get(soli);
 		if (!model) {
@@ -100,11 +100,19 @@ DEF.modules.orders.views.view = Backbone.Marionette.LayoutView.extend({
 	},
 	ui: {
 		edit: "#edit",
+		star: "#star"
 	},
 	events: {
 		"click @ui.edit": "Edit",
+		"click @ui.star": "Star"
 	},
-	onRender: function() {
+	Star: function () {
+		U.Star(this.model.module, this.model.id);
+		this.render();
+	},
+	onRender: function () {
+		if (U.is_starred(this.model.module, this.model.id))
+			this.ui.star.html(APP.Icon('star'));
 		this.model.IncStat("views");
 		APP.SetTitle(this.model.get('order'));
 		this.order.show(new DEF.modules.orders.OrderView({
@@ -114,7 +122,7 @@ DEF.modules.orders.views.view = Backbone.Marionette.LayoutView.extend({
 		var order = this.model.id;
 		this.lineitems.show(new DEF.modules.orders.LineItemView({
 			collection: APP.models.orders_lineitems,
-			filter: function(m) {
+			filter: function (m) {
 				return m.get('order') == order;
 			}
 		}));
@@ -123,14 +131,14 @@ DEF.modules.orders.views.view = Backbone.Marionette.LayoutView.extend({
 
 		this.RefreshStats();
 	},
-	Edit: function() {
+	Edit: function () {
 		APP.Route("#orders/" + "edit" + "/" + this.model.id);
 	},
 	/**
 	 * Calculate totals and item count.  Delete this in the future, when its all been counted.
 	 * @return {[type]} [description]
 	 */
-	RefreshStats: function() {
+	RefreshStats: function () {
 		var order = this.model.id;
 		var items = APP.models.orders_lineitems.filter({
 			order: order
@@ -174,7 +182,7 @@ DEF.modules.orders.MainView = Roadtrip.RecordList.extend({
 	template: require("./templates/orders.html"),
 	childView: DEF.modules.orders.RecordLine,
 	childViewContainer: "#record_list",
-	templateHelpers: function() {
+	templateHelpers: function () {
 		return {
 			search: this.search,
 		};
@@ -189,27 +197,27 @@ DEF.modules.orders.MainView = Roadtrip.RecordList.extend({
 		"click @ui.add": "Add",
 		"click @ui.submenu": "ShowSubmenu"
 	},
-	filter: function(model, index, collection) {
+	filter: function (model, index, collection) {
 		var string = model.search_string();
 		if (string.indexOf(this.search.toUpperCase()) == -1)
 			return false;
 		return true;
 	},
-	onShow: function() {
+	onShow: function () {
 		APP.SetTitle("Orders", "orders");
 	},
-	onRender: function() {
+	onRender: function () {
 		this.ui.search.focus().val(this.search); // this search is disgusting
 	},
-	Search: function(e) {
+	Search: function (e) {
 		console.log(this.ui.search.val(), this.templateHelpers());
 		this.search = this.ui.search.val();
 		this.render();
 	},
-	ShowSubmenu: function(e) {
+	ShowSubmenu: function (e) {
 		$($(e.currentTarget).data('submenu')).toggle(100);
 	},
-	Add: function() {
+	Add: function () {
 		var page = new DEF.modules.contacts.views.edit({
 			model: false,
 		});

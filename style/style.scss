@@ -82,6 +82,10 @@ body {
 		left      : 0;
 		right     : 0;
 
+		#stars {
+			display: none;
+		}
+
 		#topline {
 			#title {
 				display: none;
@@ -174,10 +178,21 @@ body {
 	}
 
 	&.large {
-		position: absolute;
-		left    : 0;
-		top     : 0;
-		right   : 0;
+		Xposition: absolute;
+		left     : 0;
+		top      : 0;
+		right    : 0;
+
+		#stars {
+			overflow : hidden;
+			padding  : 5px;
+			font-size: 12px;
+
+			.starred_item {
+				float      : left;
+				margin-left: 10px;
+			}
+		}
 
 		#topline {
 			display       : flex;
@@ -318,7 +333,7 @@ body {
 	padding         : 20px;
 	background-color: white;
 	overflow-y      : hidden;
-	padding-top     : 175px; // the main menu suddenly vanished, so we have to fill the space
+	Xpadding-top    : 175px; // the main menu suddenly vanished, so we have to fill the space
 	// &.smallmenu {
 	//     padding-top: 175px; // the main menu suddenly vanished, so we have to fill the space
 	// }
@@ -371,6 +386,14 @@ body {
 		box-shadow      : 0 5px 20px rgba(0, 0, 0, .5);
 		color           : #fff;
 		min-height      : 15px;
+
+		#star {
+			cursor: pointer;
+
+			&:hover {
+				color: $link_color_alt;
+			}
+		}
 
 		#title {
 			font-weight: bold;

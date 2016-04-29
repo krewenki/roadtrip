@@ -518,24 +518,10 @@ var txt = "ECWWA BCUBN EBB!";
 
 txt = "PPFYI NUA AHAFAS HDKBAO. XYBUPLRBCKD.";
 
+txt = "A 5GKD UW O PTCDQL, N DNCCBU, O UCTRYPJ, R JODESGQ. DPB BJNT QCP ROCCP ATPB PI B 5JOSRJ. DIJE 5ZFG AU AOBFXO AU 74 BYBK RYFBMY AIN IMKDKA PXA TANRZ SB UWF TYLTFTWLZA KBD";
 var keys = [
-	//"Algernon Moncrieff",
-	//"Ernest Hemmingway",
-	//"A NAME",
-	//"Frederic Henry",
-	//"Fred Henry",
-	//"Algy Moncrieff",
-	//"Gwendolen Fairfax",
-	//"Oscar Wilde",
-	//"Earnest",
-	//"Ernest",
-	//	"Wilde",
-	//"Hemmingway",
-	//"Fred",
-	//"Henry",
-	//"Oscar",
-	"Henry",
-	"Oscar"
+	"5gkd",
+	"5ign"
 ];
 //FREDERICHENRY
 //HENRYFREDERIC
@@ -615,4 +601,62 @@ for (var k1 in keys) {
 }
 
 console.log(count);
+*/
+
+/*
+var playfair = require('crypto-classic-playfair');
+
+//encrypt
+var ciperText = playfair.encipher('hellooneandall', 'thisisthesecretkey');
+console.log(ciperText)
+	//decrypt
+var plainText = playfair.decipher('it gz fq po al vn lq qe', 'thisisthesecretkey');
+console.log(plainText)
+*/
+/*
+var txt = "A 5GKD UW O PTCDQL, N DNCCBU, O UCTRYPJ, R JODESGQ. DPB BJNT QCP ROCCP ATPB PI B 5JOSRJ. DIJE 5ZFG AU AOBFXO AU 74 BYBK RYFBMY AIN IMKDKA PXA TANRZ SB UWF TYLTFTWLZA KBD";
+
+var alphabet = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ").split("");
+
+var out = "";
+
+function valid(txt) {
+	return txt.indexOf("A 5IGN") > -1 && txt.substring(6).indexOf("5IGN") > -1;
+}
+
+function decode(txt, alpha) {
+	var out = "";
+	for (var i = 0; i < txt.length; i++) {
+		//console.log(txt[i]);
+		var A = alpha[alphabet.indexOf(txt[i])];
+		if (A)
+			out += A;
+		else
+			out += txt[i];
+	}
+	return out;
+}
+
+var txt2 = "A 5GKD UW";
+
+function brute() {
+	console.log("brute");
+	for (var i = 0; i < 100000; i++) {
+		var alpha1 = _.shuffle(alphabet);
+		out = decode(txt2, alpha1);
+		if (valid(out)) {
+			console.log(decode(txt, alpha1), "[A1]", alpha1.join(""));
+		} else {
+			var alpha2 = _.shuffle(alphabet);
+			out = decode(out, alpha2);
+			if (valid(out)) {
+				console.log(decode(decode(txt, alpha1), alpha2), "[A1]", alpha1.join(""), "[A2]", alpha2.join(""));
+			}
+		}
+	}
+	_.defer(brute);
+}
+brute();
+
+console.log('done');
 */

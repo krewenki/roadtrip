@@ -253,9 +253,9 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	},
 	Star: function () {
 		U.Star(this.model.module, this.model.id);
+		this.render();
 	},
-	onShow: function () {
-		console.log(U.is_starred(this.model.module, this.model.id));
+	onRender: function () {
 		if (U.is_starred(this.model.module, this.model.id))
 			this.ui.star.html(APP.Icon('star'));
 	},

@@ -1,5 +1,5 @@
 DEF.modules.projects = {};
-DEF.modules.projects.Initialize = function() {
+DEF.modules.projects.Initialize = function () {
 	if (!APP.models.projects)
 		APP.models.projects = new DEF.modules.projects.Collection();
 	// console.log(DEF.modules.projects.Router.collections);
@@ -31,15 +31,15 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 			content: "Here I am!",
 		}
 	},
-	GetLink: function(cmd) {
+	GetLink: function (cmd) {
 		if (!cmd)
 			return "#projects/" + this.get('project');
 		return "#projects/" + cmd + "/" + this.get('_id');
 	},
-	GetID: function() { // this is required when creating tasks
+	GetID: function () { // this is required when creating tasks
 		return APP.Tools.Aggregate(APP.models.projects, "project_id", "max") + 1;
 	},
-	GetChildID: function() {
+	GetChildID: function () {
 		var prefix = false,
 			instance = 0;
 
@@ -80,7 +80,7 @@ DEF.modules.projects.Router = Roadtrip.Router.extend({
 	collections_extra: [
 		"revisions", "repositories"
 	],
-	initialize: function() {},
+	initialize: function () {},
 	routes: {
 		"projects": "ShowRoot",
 		"projects/:project": "ShowProject",
@@ -88,7 +88,7 @@ DEF.modules.projects.Router = Roadtrip.Router.extend({
 		"projects/:project/edit/:arg": "EditProject",
 		"projects/view/:arg": "RedirectView",
 	},
-	ShowProject: function(project) {
+	ShowProject: function (project) {
 		/**
 		 * You might thing we should use "project" as attributeID.  However
 		 * project names are editable, which would mean it'd instantly loose all of it's
@@ -102,14 +102,14 @@ DEF.modules.projects.Router = Roadtrip.Router.extend({
 		var view = new DEF.modules.projects.ProjectView({
 			model: model,
 			collection: APP.models.tasks,
-			filter: function(m) {
+			filter: function (m) {
 				return m.get('parent_id') == this.model.id;
 			}
 		});
 		APP.root.showChildView("main", view);
 		APP.SetMode("projects");
 	},
-	EditProject: function(project, id) {
+	EditProject: function (project, id) {
 		var module = this.module;
 		APP.Page = new DEF.modules.projects.views.edit({
 			model: APP.models[module].get(id),
@@ -117,11 +117,11 @@ DEF.modules.projects.Router = Roadtrip.Router.extend({
 		APP.root.showChildView("main", APP.Page);
 		APP.SetMode(module);
 	},
-	RedirectView: function(id) {
+	RedirectView: function (id) {
 		// the "project/view/$id" url gets rewritten to "project/$project"
 		APP.Route("#projects/" + APP.models.projects.get(id).get('project'));
 	},
-	ShowWiki: function(project, article) {
+	ShowWiki: function (project, article) {
 		var wikis = new DEF.modules.wiki.Article({
 			model: new DEF.modules.wiki.Model(APP.models.projects.findWhere({
 				project: project
@@ -155,7 +155,7 @@ DEF.modules.projects.views = {
 		events: {
 			"click @ui.edit": "Edit",
 		},
-		Edit: function() {
+		Edit: function () {
 			APP.Route("#projects/" + "edit" + "/" + this.model.id, false);
 		},
 	})
@@ -169,7 +169,7 @@ DEF.modules.projects.RecordLine = Roadtrip.RecordLine.extend({
 	tagName: "div",
 	className: 'click',
 	template: require("./templates/project_box.html"),
-	Click: function() {
+	Click: function () {
 		APP.Route("#projects/" + this.model.get('project'));
 	}
 });
@@ -180,28 +180,28 @@ DEF.modules.projects.RecordLine = Roadtrip.RecordLine.extend({
 DEF.modules.projects.MainView = Roadtrip.RecordList.extend({
 	id: 'PROJECTS',
 	template: require("./templates/projects.html"),
-	templateHelpers: function(x, y, z) {
+	templateHelpers: function (x, y, z) {
 		return {
 			search: this.search,
 		};
 	},
 	childView: DEF.modules.projects.RecordLine,
 	childViewContainer: "#record_list",
-	filter: function(m) {
+	filter: function (m) {
 		if (m.get('group'))
 			return U.Can(m.get('group'));
 		return true;
 	},
 	ui: {
-		add: "#add"
+		add: "#add",
 	},
 	events: {
 		"click @ui.add": "Add"
 	},
-	onShow: function() {
+	onShow: function () {
 		APP.SetTitle("Projects", "projects");
 	},
-	Add: function() {
+	Add: function () {
 		var page = new DEF.modules.projects.views.edit({
 			model: false
 		});
@@ -230,23 +230,33 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 		new: "#new",
 		edit: "#edit",
 		wiki: "#wiki",
-		comments: "#comments"
+		comments: "#comments",
+		star: "#star"
 	},
 	events: {
 		"click @ui.new": "CreateTask",
 		"click @ui.edit": "Edit",
-		"click @ui.wiki": "Wiki"
+		"click @ui.wiki": "Wiki",
+		"click @ui.star": "Star",
 	},
-	onBeforeShow: function() {
+	Star: function () {
+		U.Star(this.model.module, this.model.id);
+		this.render();
+	},
+	onRender: function () {
+		if (U.is_starred(this.model.module, this.model.id))
+			this.ui.star.html(APP.Icon('star'));
+	},
+	onBeforeShow: function () {
 		this.model.UpdateTaskProgress();
 	},
-	onShow: function() {
+	onShow: function () {
 		this.model.IncStat("views");
 		APP.SetTitle(this.model.get('project'));
 
 		this.DrawPie();
 	},
-	DrawPie: function() {
+	DrawPie: function () {
 		var series = [{
 			name: 'Expenses',
 			data: []
@@ -254,7 +264,7 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 		var totals = APP.Tools.CountFields(APP.models.tasks.filter({
 			"parent_id": this.model.id
 		}), "kind");
-		Object.keys(totals).forEach(function(cat) {
+		Object.keys(totals).forEach(function (cat) {
 			if (totals[cat])
 				series[0].data.push({
 					name: cat + "s",
@@ -274,7 +284,7 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 			series: series,
 		});
 	},
-	CreateTask: function() {
+	CreateTask: function () {
 		var page = new DEF.modules.tasks.views.edit({
 			model: APP.models.tasks.create({
 				task_id: this.model.GetChildID("projects", this.model.id),
@@ -293,10 +303,10 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 		});
 		APP.root.showChildView('main', page);
 	},
-	Edit: function() {
+	Edit: function () {
 		APP.Route("#projects/" + this.model.get('project') + "/" + "edit" + "/" + this.model.id);
 	},
-	Wiki: function() {
+	Wiki: function () {
 		APP.Route("#projects/" + this.model.get('project') + "/" + "wiki" + "/crap");
 	}
 

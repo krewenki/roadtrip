@@ -59,13 +59,11 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 		} else {
 			stars.push(key);
 		}
-		console.log("stars", stars);
-		this.save('stars', stars);
+		this.set('stars', stars);
 		this.trigger('star');
 	},
 	is_starred: function (module, id) {
 		var stars = this.get('stars') || [];
-		console.log(stars, stars.indexOf(module + "|" + id))
 		return stars.indexOf(module + "|" + id) != -1;
 	}
 
