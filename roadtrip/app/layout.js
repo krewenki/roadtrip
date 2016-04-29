@@ -75,12 +75,37 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 		if (U) {
 			this.listenTo(APP.models.tasks, "sync add remove", this.UpdateUserTaskCount);
 			this.listenTo(APP.models.tasks, "change:assigned_to change:state", this.UpdateUserTaskCount);
-			this.listenTo(U, "star", this.ShowStars);
+			this.InitStars();
 		}
 	},
+	onRender: function () {
+		this.ShowStars();
+	},
+	InitStars: function () {
+		var stars = U.get('stars') || [];
+		var collections = [];
+		for (let key of stars) {
+			var bits = key.split('|');
+			collections.push(bits[0]);
+		}
+		collections = _.uniq(collections);
+		for (var c in collections) {
+			var module = collections[c];
+			DEF.modules[module].Initialize();
+			this.listenToOnce(APP.models[module], "sync", this.ShowStars);
+		}
+
+		this.listenTo(U, "star", this.ShowStars);
+
+	},
 	ShowStars: function () {
-		console.log("show");
-		this.ui.stars.html("??");
+		var stars = U.get('stars') || [];
+		var html = "";
+		for (let key of stars) {
+			var bits = key.split('|');
+			html += "<div class='starred_item'>" + APP.GetLink(bits[0], bits[1]) + "</div>";
+		}
+		this.ui.stars.html(html);
 	},
 	UpdateUserTaskCount: function () {
 		if (U) {
