@@ -47,18 +47,18 @@ var MainApp = Backbone.Marionette.Application.extend({
 		// 		//	window.scrollTo(0, 0);
 		// 	}
 		// };
-		window.onscroll = function () {
-			var $header = $("#HEADER");
-			if (document.body.scrollTop > 110 || document.documentElement.scrollTop > 110) {
-				if ($header.hasClass("large"))
-					$header.removeClass("large")
-					.addClass("small");
-			} else {
-				if ($header.hasClass("small"))
-					$header.removeClass("small")
-					.addClass("large");
-			}
-		};
+		// window.onscroll = function () {
+		// 	var $header = $("#HEADER");
+		// 	if (document.body.scrollTop > 110 || document.documentElement.scrollTop > 110) {
+		// 		if ($header.hasClass("large"))
+		// 			$header.removeClass("large")
+		// 			.addClass("small");
+		// 	} else {
+		// 		if ($header.hasClass("small"))
+		// 			$header.removeClass("small")
+		// 			.addClass("large");
+		// 	}
+		// };
 	},
 	SetTitle: function (title, module) {
 		document.title = title + " - roadtrip";
