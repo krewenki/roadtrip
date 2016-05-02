@@ -65,6 +65,55 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 	is_starred: function (module, id) {
 		var stars = this.get('stars') || [];
 		return stars.indexOf(module + "|" + id) != -1;
+	},
+	/**
+	 * Timeclock functions
+	 */
+	SetHours: function (date, module, module_id, hours) {
+		var model;
+		var models = APP.models.timeclock.filter(function (m) {
+			return m.get('date') == APP.Format.monday(false, true);
+		});
+		console.log(models);
+		if (models.length === 0) {
+			model = APP.models.timeclock.create({
+				_: {
+					created_by: U.id,
+					created_on: Date.now()
+				},
+				hours: [hours, 0, 0, 0, 0, 0, 0]
+			});
+			console.log("new timeclock model");
+		} else {
+			model = models[0];
+		}
+		console.log(model);
+		var hourlist = model.get('hours');
+		hourlist[(new Date(date).getDay())] = hours;
+		var fields = {
+			hours: hourlist,
+			module: module,
+			module_id: module_id,
+			date: APP.Format.monday(date, true)
+		};
+		model.set(fields);
+	},
+	GetHours: function (date, module, module_id) {
+		var model = false;
+		var models = APP.models.timeclock.where({
+			date: APP.Format.monday(date, true),
+			module: module,
+			module_id: module_id
+		});
+		if (models.length === 0)
+			return 0;
+		for (var m in models) {
+			if (models[m].get('_').created_by == U.id)
+				model = models[m];
+		}
+		if (!model)
+			return 0;
+		return model.get('hours')[(new Date(date).getDay())];
 	}
 
 });

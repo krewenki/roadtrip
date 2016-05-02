@@ -1,25 +1,25 @@
 DEF.modules.db = {};
-DEF.modules.db.Initialize = function() {};
+DEF.modules.db.Initialize = function () {};
 DEF.modules.db.Router = Roadtrip.Router.extend({
 	module: "db",
-	collections: ["tasks", "users", "contacts", "orders", "expenses", "revisions", "projects"],
+	collections: ["tasks", "users", "contacts", "orders", "expenses", "revisions", "projects", "timeclock"],
 	routes: {
 		"db": "Root",
 		"db/:table": "ViewTable",
 		"db/:table/:id": "EditRecord",
 	},
-	Root: function() {
+	Root: function () {
 		APP.root.showChildView("main", new DEF.modules.db.Root({}));
 	},
-	ViewTable: function(table) {
+	ViewTable: function (table) {
 		APP.root.showChildView("main", new DEF.modules.db.Table({
 			collection: APP.models[table],
-			comparator: function() {
+			comparator: function () {
 				return _.last_views;
 			}
 		}));
 	},
-	EditRecord: function(table, id) {
+	EditRecord: function (table, id) {
 		APP.root.showChildView("main", new DEF.modules.db.Record({
 			model: APP.models[table].get(id)
 		}));
@@ -38,7 +38,7 @@ DEF.modules.db.Router = Roadtrip.Router.extend({
 DEF.modules.db.Record = Roadtrip.Edit.extend({
 	id: 'DB',
 	template: require("./templates/record.html"),
-	templateHelpers: function() {
+	templateHelpers: function () {
 		return {
 			json: JSON.stringify(this.model, null, 4)
 		};
@@ -55,10 +55,10 @@ DEF.modules.db.Record = Roadtrip.Edit.extend({
 		"click @ui.cancel": "Cancel",
 		"click @ui.delete": "Delete"
 	},
-	onShow: function() {
+	onShow: function () {
 		$("textarea").val(($("textarea").val() || '').trim()); // beautify inserts spaces between <textarea> in the item_edit form
 	},
-	Validate: function() {
+	Validate: function () {
 		try {
 			var json = JSON.parse(this.ui.json.val());
 			this.ui.json.removeClass("badjson");
@@ -66,7 +66,7 @@ DEF.modules.db.Record = Roadtrip.Edit.extend({
 			this.ui.json.addClass("badjson");
 		}
 	},
-	Save: function() {
+	Save: function () {
 		try {
 			var json = JSON.parse($("#json").val());
 			this.model.set(json);
@@ -75,7 +75,7 @@ DEF.modules.db.Record = Roadtrip.Edit.extend({
 			alert("bad json");
 		}
 	},
-	Cancel: function() {
+	Cancel: function () {
 		APP.Route("#db/" + this.model.module);
 	}
 });
@@ -91,14 +91,14 @@ DEF.modules.db.Record = Roadtrip.Edit.extend({
 DEF.modules.db.TableLine = Roadtrip.RecordLine.extend({
 	className: "row hover",
 	template: require("./templates/table_line.html"),
-	templateHelpers: function() {
+	templateHelpers: function () {
 		var fields = Object.keys(this.model.attributes);
 		return {
 			fields: fields.sort(),
 			model: this.model
 		};
 	},
-	Click: function(e) {
+	Click: function (e) {
 		APP.Route("#db/" + this.model.module + "/" + this.model.id);
 	}
 });
@@ -125,7 +125,7 @@ DEF.modules.db.DBLine = Roadtrip.RecordLine.extend({
 	tagName: "div",
 	className: "database",
 	template: require("./templates/db_line.html"),
-	Click: function(e) {
+	Click: function (e) {
 		APP.Route("#db/" + this.model.get('db'));
 	}
 });
@@ -134,7 +134,7 @@ DEF.modules.db.DBLine = Roadtrip.RecordLine.extend({
 DEF.modules.db.Root = Roadtrip.RecordList.extend({
 	id: 'DB',
 	template: require("./templates/root.html"),
-	onBeforeRender: function() {
+	onBeforeRender: function () {
 		var dbs = [];
 		for (var db in APP.models) {
 			dbs.push({

@@ -422,6 +422,10 @@ APP.Format = {
 		return APP.Format.date(time) + " " + APP.Format.time(time);
 	},
 	monday: function (date, sysdate) {
+		if (!date)
+			date = new Date();
+		if (_.isString(date))
+			date = new Date(date);
 		if (!_.isDate(date))
 			date = new Date(date);
 		var day = date.getDay() || 7;
