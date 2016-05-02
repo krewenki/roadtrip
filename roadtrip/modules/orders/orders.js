@@ -114,7 +114,6 @@ DEF.modules.orders.views.view = Backbone.Marionette.LayoutView.extend({
 		if (U.is_starred(this.model.module, this.model.id))
 			this.ui.star.html(APP.Icon('star'));
 		this.model.IncStat("views");
-		APP.SetTitle(this.model.get('order'));
 		this.order.show(new DEF.modules.orders.OrderView({
 			model: this.model
 		}));

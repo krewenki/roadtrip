@@ -148,6 +148,7 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 		if (m.get('assigned_to') == U.get('_id')) {
 			rank *= 1.2; // give a boost if the task is assigned to you
 		}
+		console.log(m.id, rank, m.get('progress'), m.get('priority'), m.get('_').views / 10, m.get('subtasks'));
 		return rank;
 	},
 	/**
@@ -219,11 +220,14 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 			if (parent)
 				this.model.set("parent_module", "projects");
 		}
+		var show_progress_form = this.model.get('subtasks') === 0 && this.model.get('state') != "Complete" && this.model.get('kind') != "folder";
+		show_progress_form = true;
 		return {
 			parent_title: APP.Icon(parent.module) + " " + parent.get(parent.nameAttribute),
 			parent_link: parent.GetLink(),
 			path: this.model.GetPath(),
-			states: this.model.States
+			states: this.model.States,
+			show_progress_form: show_progress_form
 		};
 	},
 	ui: {
@@ -370,7 +374,7 @@ DEF.modules.tasks.views = {
 			this.model.UpdateTaskProgress();
 		},
 		onRender: function () {
-			APP.SetTitle(this.model.get(this.model.nameAttribute));
+			APP.SetTitle(this.model.get(this.model.nameAttribute), "tasks");
 			this.model.IncStat("views");
 
 			var model_id = this.model.id;
@@ -455,4 +459,5 @@ DEF.modules.tasks.MainView = Roadtrip.RecordList.extend({
 		this.search = this.ui.search.val();
 		this.render();
 	},
+
 });

@@ -114,6 +114,7 @@ DEF.modules.users.views = {
 			ideas: "#taskideas"
 		},
 		onRender: function () {
+			APP.SetTitle(this.model.get(this.model.nameAttribute) + " Home", "users");
 			this.tasks.show(new DEF.modules.tasks.TaskList({
 				template: require("./templates/taskline.html"),
 				collection: APP.models.tasks,
@@ -158,4 +159,4 @@ DEF.modules.users.MainView = Roadtrip.RecordList.extend({
 		APP.root.showChildView('main', page);
 	}
 
-});
+});;

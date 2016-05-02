@@ -83,9 +83,11 @@
 
 					<table id='progress-table' class='shadow_box_dark table table-full table-left'>
 						<tr>
-							<th>Progress</th>
-							<td>
-								<% if (subtasks==0 && state!="Complete") { %>
+
+
+							<% if (show_progress_form) { %>
+								<th>Progress</th>
+								<td>
 									<input value='<%=progress%>' <%=subtasks>0?"disabled":""%> id='progress' list='progress_levels' type=range min=0 max=100 >
 									<datalist id="progress_levels">
 										<%
@@ -94,24 +96,45 @@
 											%>
 
 									</datalist>
-									<% } else { %>
-										<input id='progress' value='<%=progress%>' type='hidden'>
-										<progress value='<%=progress%>' min=0 max=100>
-											<% } %>
-							</td>
-							<td width="150px" id=''>
-								<% if (subtasks>0 ) { %>
-									<input type='hidden' id='state' value='<%=state%>'>
-									<%=state%>
-										<% } else {%>
-											<select id='state'>
-												<%
+								</td>
+								<td width="150px" id=''>
+									<select id='state'>
+										<%
 									for (var label in states)
 										print("<option " + (state==label ? "selected": "")+" value='"+label+"'>"+label+"</option>");
 										%>
-											</select>
+									</select>
+								</td>
+								<td>
+									Hours:
+									<%
+								var times = [0.5,1,2,4,8];
+							for (var v in times) {
+								var id = "D-"+"-"+"-"+times[v];
+								var checked =false;
+							%>
+										<input id="<%=id%>" <%=checked%> value=
+										<%=times[v]%>
+											class='hour_picker' type='checkbox' >
+											<label for="<%=id%>">
+												<%=times[v]==0.5?"&frac12;":times[v]%>
+											</label>
 											<% } %>
-							</td>
+
+
+
+								</td>
+
+
+								<% } else { %>
+									<td>
+										Progress:</br>
+										<input id='progress' value='<%=progress%>' type='hidden'>
+										<progress value='<%=progress%>' min=0 max=100>
+											<input type='hidden' id='state' value='<%=state%>'>
+											<%=state%>
+									</td>
+									<% } %>
 						</tr>
 					</table>
 </div>
@@ -123,3 +146,4 @@
 </div>
 
 <div id='revisions_container'></div>
+er'></div>
