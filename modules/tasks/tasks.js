@@ -5,7 +5,7 @@ DEF.modules.tasks.Initialize = function () {
 };
 DEF.modules.tasks.Router = Roadtrip.Router.extend({
 	collections: [
-		"users", "tasks", "projects", "revisions", "repositories"
+		"users", "tasks", "projects", "revisions", "repositories", "timeclock"
 	],
 	initialize: function () {
 		APP.Icon_Lookup.todo = "list-ul";
@@ -148,7 +148,6 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 		if (m.get('assigned_to') == U.get('_id')) {
 			rank *= 1.2; // give a boost if the task is assigned to you
 		}
-		console.log(m.id, rank, m.get('progress'), m.get('priority'), m.get('_').views / 10, m.get('subtasks'));
 		return rank;
 	},
 	/**
@@ -227,7 +226,8 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 			parent_link: parent.GetLink(),
 			path: this.model.GetPath(),
 			states: this.model.States,
-			show_progress_form: show_progress_form
+			show_progress_form: show_progress_form,
+			user_hours: this.GetHours()
 		};
 	},
 	ui: {
@@ -236,7 +236,8 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		subtasks: "#subtasks",
 		progress: "#progress",
 		state: "#state",
-		star: "#star"
+		star: "#star",
+		hours: ".hour_picker"
 	},
 	events: {
 		"click @ui.edit": "Edit",
@@ -245,9 +246,22 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		"change @ui.progress": "UpdateProgress",
 		"mouseup @ui.progress": "LogProgress",
 		"change @ui.state": "UpdateProgressLabel",
-		"click @ui.star": "Star"
+		"click @ui.star": "Star",
+		"click @ui.hours": "PutHours"
+	},
+	GetHours: function () {
+		return U.GetHours(APP.Format.sysdate(), "tasks", this.model.id);
 	},
 
+	PutHours: function (e) {
+		var hours = 0,
+			model;
+		$(".hour_picker:checked").each(function (i, e) {
+			hours += Number(e.value);
+		});
+		console.log(hours);
+		U.SetHours(APP.Format.sysdate(), "tasks", this.model.id, hours);
+	},
 	/**
 	 * Show the task edit forms
 	 * @return {[type]} [description]

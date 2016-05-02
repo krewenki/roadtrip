@@ -34,7 +34,8 @@ DEF.modules.timeclock.Model = Roadtrip.Model.extend({
 		_: {},
 		module: "order",
 		module_id: "",
-		hours: [0, 0, 0, 0, 0, 0, 0]
+		hours: [0, 0, 0, 0, 0, 0, 0],
+		date: false
 	},
 	search_string: function () {
 		return false;

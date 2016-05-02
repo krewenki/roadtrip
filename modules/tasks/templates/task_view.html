@@ -112,6 +112,7 @@
 							for (var v in times) {
 								var id = "D-"+"-"+"-"+times[v];
 								var checked =false;
+								checked = user_hours & times[v] ? "checked" : "";
 							%>
 										<input id="<%=id%>" <%=checked%> value=
 										<%=times[v]%>
@@ -146,4 +147,5 @@
 </div>
 
 <div id='revisions_container'></div>
-er'></div>
+
+flagler
