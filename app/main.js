@@ -660,3 +660,63 @@ brute();
 
 console.log('done');
 */
+
+
+var txt = "A 5GKD UW O PTCDQL, N DNCCBU, O UCTRYPJ, R JODESGQ. DPB BJNT QCP ROCCP ATPB PI B 5JOSRJ. DIJE 5ZFG AU AOBFXO AU 74 BYBK RYFBMY AIN IMKDKA PXA TANRZ SB UWF TYLTFTWLZA KBD";
+
+//var dec = "A 5ign of a _TCDQ_, a DNCCBU, a _CTstPJ, a _ODESGQ.  DPB BJNT QCP ROCCP ATPB PI B 5ignal.  DIJ_ 5ign of AOBFXO of 74 king street AIN IMgnKA PXA TANRZ SB UWF TYLTFTWLZA tlD";
+
+var pack = "AGKDUWOPTCDQLNDNCCBUOUCTRYPJRJODESGQDPBBJNTQCPROCCPATPBPIBJOSRJDIJEZFGAUAOBFXOAUBYBKRYFBMYAINIMKDKAPXATANRZSBUWFTYLTFTWLZAKBD";
+var split = "AG KD UW OP TC DQ LN DN CC BU OU CT RY PJ RJ OD ES GQ DP BB JN TQ CP RO CC PA TP BP IB JO SR JD IJ EZ FG AU AO BF XO AU BY BK RY FB MY AI NI MK DK AP XA TA NR ZS BU WF TY LT FT WL ZA KB D";
+
+var bits = split.split(" ");
+var map = {};
+for (var b in bits) {
+	map[bits[b]] = bits[b];
+}
+var total = bits.length;
+//whistle
+map = {};
+map.RY = "ST";
+map.FB = "RE";
+map.MY = "ET";
+map.BY = "KI";
+map.BK = "NG";
+map.AU = "OF";
+map.OP = "A-";
+map.LN = "-A";
+map.OU = "AW"; // a whistle
+map.JO = "IG";
+map.SR = "NA";
+map.JD = "L-";
+map.RJ = "AW";
+map.LN = "-A";
+map.KB = "TL";
+map.EZ = "-I";
+map.FG = "GN";
+map.KD = "GN";
+map.UW = "OF";
+map.IB = "_A";
+map.CT = "HI"; // a whstle
+map.RY = "ST";
+map.PJ = "LE"; // a whistle
+map.PH = "LE";
+map.OD = "AR";
+map.ES = "NI";
+map.GQ = "NG";
+
+var count = 0;
+var keys = Object.keys(map);
+for (var k in keys) {
+	var key = keys[k];
+	var re = new RegExp(key[0] + "[,\\s]*" + key[1], 'g');
+	pack = pack.replace(re, map[key].toLowerCase());
+	txt = txt.replace(re, map[key].toLowerCase());
+	//console.log(re, txt);
+	count++;
+}
+
+console.log(txt);
+console.log(pack);
+
+console.log(count, "of", total);
