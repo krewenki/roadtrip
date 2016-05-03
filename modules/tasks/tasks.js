@@ -226,7 +226,7 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 			path: this.model.GetPath(),
 			states: this.model.States,
 			show_progress_form: show_progress_form,
-			user_hours: this.GetHours()
+			user_hours: U.GetHours(APP.Format.sysdate(), "tasks", this.model.id)
 		};
 	},
 	ui: {
@@ -248,9 +248,6 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		"click @ui.star": "Star",
 		"click @ui.hours": "PutHours"
 	},
-	GetHours: function () {
-		return U.GetHours(APP.Format.sysdate(), "tasks", this.model.id);
-	},
 
 	PutHours: function (e) {
 		var hours = 0,
@@ -260,6 +257,10 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		});
 		console.log(hours);
 		U.SetHours(APP.Format.sysdate(), "tasks", this.model.id, hours);
+	},
+	onRender: function () {
+		if (U.is_starred(this.model.module, this.model.id))
+			this.ui.star.html(APP.Icon('star'));
 	},
 	/**
 	 * Show the task edit forms
@@ -271,10 +272,6 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	Star: function () {
 		U.Star(this.model.module, this.model.id);
 		this.render();
-	},
-	onRender: function () {
-		if (U.is_starred(this.model.module, this.model.id))
-			this.ui.star.html(APP.Icon('star'));
 	},
 
 	/**
