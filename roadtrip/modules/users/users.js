@@ -72,22 +72,22 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 	SetHours: function (date, module, module_id, hours) {
 		var model;
 		var models = APP.models.timeclock.filter(function (m) {
-			return m.get('date') == APP.Format.monday(false, true);
+			return m.get('date') == APP.Format.monday(false, true) && module_id == m.get('module_id');
 		});
-		console.log(models);
+
 		if (models.length === 0) {
 			model = APP.models.timeclock.create({
 				_: {
 					created_by: U.id,
 					created_on: Date.now()
 				},
-				hours: [hours, 0, 0, 0, 0, 0, 0]
+				hours: [0, 0, 0, 0, 0, 0, 0]
 			});
 			console.log("new timeclock model");
 		} else {
 			model = models[0];
 		}
-		console.log(model);
+
 		var hourlist = model.get('hours');
 		hourlist[(new Date(date).getDay())] = hours;
 		var fields = {
@@ -108,8 +108,10 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 		if (models.length === 0)
 			return 0;
 		for (var m in models) {
-			if (models[m].get('_').created_by == U.id)
+			if (models[m].get('_').created_by == U.id) {
 				model = models[m];
+				break;
+			}
 		}
 		if (!model)
 			return 0;
