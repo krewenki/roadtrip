@@ -220,7 +220,6 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 				this.model.set("parent_module", "projects");
 		}
 		var show_progress_form = this.model.get('subtasks') === 0 && this.model.get('state') != "Complete" && this.model.get('kind') != "folder";
-		show_progress_form = true;
 		return {
 			parent_title: APP.Icon(parent.module) + " " + parent.get(parent.nameAttribute),
 			parent_link: parent.GetLink(),
@@ -307,6 +306,16 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	 * @return {[type]}   [description]
 	 */
 	UpdateProgress: function () {
+		if (this.ui.state.val() == "Rejected") {
+			if (this.model.get('state') != "Rejected") {
+				this.model.set({
+					'progress': 100,
+					'state': label
+				});
+				APP.LogEvent("tasks", this.model.id, "Task Rejected.");
+			}
+			return;
+		}
 		var label = this.model.GetProgressLabel(this.ui.progress.val());
 		this.ui.state.val(label);
 		if (!this.model.get('assigned_to'))
