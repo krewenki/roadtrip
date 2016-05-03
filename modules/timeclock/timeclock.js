@@ -44,7 +44,7 @@ DEF.modules.timeclock.Model = Roadtrip.Model.extend({
 
 DEF.modules.timeclock.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.timeclock.Model,
-	url: 'dev.telegauge.com:3456/roadtrip/timeclock',
+	url: 'roadtrip.telegauge.com/roadtrip/timeclock',
 });
 
 DEF.modules.timeclock.LineView = Backbone.Marionette.ItemView.extend({
