@@ -9,8 +9,6 @@ var hooks = {
 
 			data.author = users[data.author];
 			success(data);
-
-
 		})
 	},
 	afterSave: function (data) {
