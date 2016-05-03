@@ -324,14 +324,23 @@ window.Roadtrip = {
 			var subs = APP.models.tasks.where({
 				parent_id: this.id
 			});
+			this.set("subtasks", subs.length);
+			console.log(subs.length);
 			if (subs.length > 0) {
+				var weights = { // some kinds of tasks are more important.
+					"products": 1.5,
+					"feature": 1.1,
+					"bug": 0.8,
+					"todo": 0.5,
+					"support": 0.5,
+				};
 				var sum = 0,
 					count = 0;
 				for (var s = 0; s < subs.length; s++) {
 					var sub = subs[s];
 					if (sub.get('state') != 'Rejected') {
-						sum += (sub.get('progress') * sub.get('priority') / 100.0);
-						count += (sub.get('priority') / 100.0);
+						sum += (sub.get('progress') * (weights[sub.get('kind')] || 1.0) * sub.get('priority') / 100.0);
+						count += (weights[sub.get('kind')] || 1.0) * (sub.get('priority') / 100.0);
 					}
 				}
 				var progress = sum / count;

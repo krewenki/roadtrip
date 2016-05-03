@@ -1,5 +1,5 @@
 DEF.modules.comments = {};
-DEF.modules.comments.Initialize = function() {};
+DEF.modules.comments.Initialize = function () {};
 DEF.modules.comments.Router = Roadtrip.Router.extend({
 
 });
@@ -16,7 +16,7 @@ DEF.modules.comments.Collection = Backbone.Collection.extend({
 DEF.modules.comments.Comment = Backbone.Marionette.ItemView.extend({
 	className: "comment",
 	template: require("./templates/comment.html"),
-	templateHelpers: function() {
+	templateHelpers: function () {
 		return {
 			username: APP.models.users.get(this.model.get('user_id')).get('name')
 		};
@@ -28,7 +28,7 @@ DEF.modules.comments.Comment = Backbone.Marionette.ItemView.extend({
 DEF.modules.comments.Comments = Backbone.Marionette.CompositeView.extend({
 	id: "COMMENTS",
 	template: require("./templates/comments.html"),
-	templateHelpers: function() {
+	templateHelpers: function () {
 		return {
 			module: this.options.module
 		};
@@ -49,24 +49,26 @@ DEF.modules.comments.Comments = Backbone.Marionette.CompositeView.extend({
 	events: {
 		"click @ui.save": "Save"
 	},
-	onBeforeRender: function() {
+	onBeforeRender: function () {
 		this.collection = new DEF.modules.comments.Collection(this.model.get('comments'));
 	},
-	Save: function() {
+	Save: function () {
 		var comment = {
 			"datetime": Date.now(),
 			"user_id": U.id,
 			"comment": this.ui.comment.val().trim()
 		};
+		if (comment.comment.length > 0) {
 
-		var model = APP.models[this.model.module].get(this.model.id);
-		model.set('comments', model.get('comments').concat(comment));
+			var model = APP.models[this.model.module].get(this.model.id);
+			model.set('comments', model.get('comments').concat(comment));
 
-		this.model.SetStats({
-			"comments": model.get('comments').length
-		});
+			this.model.SetStats({
+				"comments": model.get('comments').length
+			});
 
-		APP.LogEvent(this.options.module, this.options.model.id, "New comment: " + comment.comment.substring(0, 20) + "&hellip;");
+			APP.LogEvent(this.options.module, this.options.model.id, "New comment: " + comment.comment.substring(0, 20) + "&hellip;");
+		}
 	}
 
 });

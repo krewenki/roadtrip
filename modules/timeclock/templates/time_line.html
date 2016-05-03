@@ -67,7 +67,6 @@ for (var d=0; d<7; d++) {
 		var weekdate = APP.Format.sysdate( (new Date(date)).getTime() + (1000*3600*24*(1+d)) );
 		var important = ( weekdate == APP.Format.sysdate() )?"important":"";
 		var visible = (d>=5)?"minwidth1000":"";
-		console.log(weekdate,important);
 	%>
 					<td class='<%=important%> <%=module%> <%=visible%> right'>
 						<%=hours[d]?hours[d]:""%>
