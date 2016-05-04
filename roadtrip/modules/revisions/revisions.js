@@ -1,5 +1,5 @@
 DEF.modules.revisions = {};
-DEF.modules.revisions.Initialize = function() {
+DEF.modules.revisions.Initialize = function () {
 	if (!APP.models.revisions)
 		APP.models.revisions = new DEF.modules.revisions.Collection();
 
@@ -42,7 +42,7 @@ DEF.modules.revisions.Model = Roadtrip.Model.extend({
 DEF.modules.revisions.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.revisions.Model,
 	url: 'roadtrip.telegauge.com/roadtrip/revisions',
-	comparator: function(r) {
+	comparator: function (r) {
 		return -r.get('revision');
 	}
 });
@@ -56,23 +56,24 @@ DEF.modules.revisions.views = {
 		module: 'revisions',
 		template: require('./templates/view.html'),
 		templateHelpers: {
-			markupDiff: function(diff) {
+			markupDiff: function (diff) {
 				var out = '';
 				var files = this.splitByFile(diff);
 				for (var file in files) {
-					out += "<h2>" + file + "</h2>" +
-						"<div class='file-diff'><div>" +
+					out += "<div class='file-diff'>" +
+						"<div class='diff-header'>" + file + "</div>" +
+						"<div class='diff-container'>" +
 						this.generateDiff(files[file]) +
 						"</div></div>";
 				}
 				return out;
 			},
-			splitByFile: function(diff) {
+			splitByFile: function (diff) {
 
 				var filename;
 				var isEmpty = true;
 				var files = {};
-				diff.split("\n").forEach(function(line, i) {
+				diff.split("\n").forEach(function (line, i) {
 
 					// Unmerged paths, and possibly other non-diffable files
 					// https://github.com/scottgonzalez/pretty-diff/issues/11
@@ -92,7 +93,7 @@ DEF.modules.revisions.views = {
 				return isEmpty ? null : files;
 
 			},
-			generateDiff: function(diff) {
+			generateDiff: function (diff) {
 				diff.shift();
 				diff.shift();
 				var diffClasses = {
@@ -113,8 +114,12 @@ DEF.modules.revisions.views = {
 				}
 
 
-				return diff.map(function(line) {
+				return diff.map(function (line) {
 					var type = line.charAt(0);
+					console.log(line.substring(0, 3))
+					if (['---', '+++', '@@ '].indexOf(line.substring(0, 3)) > -1) {
+						return ''
+					}
 					return "<pre class='" + diffClasses[type] + "'>" + escape(line) + "</pre>";
 				}).join("\n");
 
@@ -134,7 +139,7 @@ DEF.modules.revisions.MainView = Roadtrip.RecordList.extend({
 	template: require("./templates/main.html"),
 	childView: DEF.modules.revisions.views.RevisionLine,
 	childViewContainer: '#record_list',
-	onShow: function() {
+	onShow: function () {
 		if (!this.children.length)
 			this.$el.parent().hide();
 	}
