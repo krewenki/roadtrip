@@ -2,7 +2,7 @@ var routes = [
 
 	{
 		"path": "/revisions/github",
-		"method": "get",
+		"method": "post",
 		"handler": function (req, res) {
 			var obj = req.body; // should be a JSON object
 			var repos = {
