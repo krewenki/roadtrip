@@ -2,10 +2,7 @@
 	<%= revision %>
 </td>
 <td class='nowrap'>
-	<!--APP.models.repositories.get(repository).LookupUser(author) -->
-
-	<!-- TODO: See #1.15.2  - the column in our database, by definitions, should hold a user_id, not a repo id of a user -->
-	<%=APP.GetLink("users",  APP.models.repositories.get(repository).LookupUser(author))%>
+	<%=APP.GetLink("users",  author)%>
 </td>
 <td>
 	<%= APP.Format.linktext(APP.Format.htmlentities(log)) %>
