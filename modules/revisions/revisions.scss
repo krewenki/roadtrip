@@ -1,15 +1,39 @@
+.rev-meta {
+  border: 1px solid #d8d8d8;
+  margin-bottom: 40px;
+
+  .title {
+    background-color: #f7f7f7;
+    padding: 10px;
+    font-size: 1.2em;
+    font-weight: 800;
+    border-bottom: 1px solid #d8d8d8;
+  }
+  .who-when {
+    padding: 10px;
+  }
+}
 .file-diff {
+
+  display: block;
+  overflow-x: auto;
+  color: #333;
+  background: #fff;
+  border: 1px solid #d8d8d8;
+  margin-bottom: 20px;
+
+  .diff-header {
+    background-color: #f7f7f7;
+    margin: 0px;
+    border-bottom:  1px solid #d8d8d8;
+    font-family: monospace;
+    padding: 10px;
+  }
+
   pre {
     margin: 0;
     padding: 0;
   }
-
-
-    display: block;
-    overflow-x: auto;
-    padding: 0.5em;
-    color: #333;
-    background: #f8f8f8;
 
 
   .context {
@@ -22,10 +46,10 @@
     font-weight: bold;
   }
   .delete {
-    background: #fdd;
+    background: #ffecec;
   }
   .insert {
-    background: #dfd;
+    background: #eaffea;
   }
 
 }

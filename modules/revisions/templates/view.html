@@ -1,4 +1,8 @@
-<h1><%= APP.Format.htmlentities(log) %></h1>
-<h2><%=APP.GetLink("users",  author)%> at <%= APP.Format.datetime( datetime ) %></h2>
+<div class="rev-meta">
+<div class="title"><%= APP.Format.htmlentities(log) %></div>
+<div class="who-when"><%=APP.GetLink("users",  author)%> at <%= APP.Format.datetime( datetime ) %></div>
+</div>
+
+
 
 <%= markupDiff(diff) %>
