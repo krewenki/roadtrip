@@ -68,9 +68,12 @@ var child = execFile('/usr/bin/svnlook', ['log', repo, '--revision', revision], 
 					total_removed = 0;
 				for (var f in split) {
 					for (var line in split[f]) {
-						if (line.charAt(0) == '+')
+						if(['---','+++'].indexOf(split[f][line].substring(0,3)) > -1){
+							continue;
+						}
+						if (split[f][line].charAt(0) == '+')
 							changed++;
-						if (line.charAt(0) == '-')
+						if (split[f][line].charAt(0) == '-')
 							removed++;
 					}
 					files.push({
@@ -102,7 +105,7 @@ var child = execFile('/usr/bin/svnlook', ['log', repo, '--revision', revision], 
 				})
 
 				// Tell slack after we tell roadtrip
-				url = "https://telegauge.slack.com/services/hooks/subversion?token=" + slack_token;
+/*				url = "https://telegauge.slack.com/services/hooks/subversion?token=" + slack_token;
 				request.post(url, {
 					form: {
 						payload: JSON.stringify({
@@ -112,7 +115,7 @@ var child = execFile('/usr/bin/svnlook', ['log', repo, '--revision', revision], 
 							url: 'http://roadtrip.telegauge.com/#revisions/view/' + process.argv[3]
 						})
 					}
-				});
+				});*/
 
 			});
 		});
