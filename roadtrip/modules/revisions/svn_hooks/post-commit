@@ -119,9 +119,3 @@ var child = execFile('/usr/bin/svnlook', ['log', repo, '--revision', revision], 
 
 	});
 });
-
-
-//exec("/usr/bin/svnlook author -r $argv[2] $argv[1]", $who);
-
-//$log = implode("\n", $log);
-//$who = implode("\n", $who);
