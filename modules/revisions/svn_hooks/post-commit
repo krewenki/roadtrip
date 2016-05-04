@@ -96,7 +96,7 @@ var child = execFile('/usr/bin/svnlook', ['log', repo, '--revision', revision], 
 						repository: '56fe9a014b88de4618e306c7',
 						changed: total_changed,
 						removed: total_removed,
-						diff_meta: files,
+						diff_meta: files, // test
 						task_id: task_id
 					}
 				})
