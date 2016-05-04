@@ -74,7 +74,6 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 		var models = APP.models.timeclock.filter(function (m) {
 			return m.get('date') == APP.Format.monday(false, true) && module_id == m.get('module_id');
 		});
-
 		if (models.length === 0) {
 			model = APP.models.timeclock.create({
 				_: {

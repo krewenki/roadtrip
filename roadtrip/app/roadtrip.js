@@ -325,7 +325,6 @@ window.Roadtrip = {
 				parent_id: this.id
 			});
 			this.set("subtasks", subs.length);
-			console.log(subs.length);
 			if (subs.length > 0) {
 				var weights = { // some kinds of tasks are more important.
 					"products": 1.5,
