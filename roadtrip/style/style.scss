@@ -510,7 +510,7 @@ body {
 
 	.table-top {
 		input:not([class=btn]):not([type=checkbox]) {
-			border-radius: 4px;
+			border-radius: 4px !important;
 			padding      : 2px;
 		}
 

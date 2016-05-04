@@ -55,4 +55,44 @@
 			</textarea>
 		</td>
 	</tr>
+	<tr>
+		<th>
+			Task States
+		</th>
+		<td>
+			<%
+			console.log("task_states",task_states);
+%>
+
+				<table id='task_states_table' class='table table-top table-small table-full'>
+					<thead>
+						<th>State</th>
+						<th>Progress</th>
+					</thead>
+					<%
+						var keys = Object.keys(task_states);
+						for (var k in keys) {
+					%>
+						<tr>
+							<td>
+								<input value='<%=keys[k]%>' type='text' class='task_states' data-id='key' data-row=<%=k%> >
+							</td>
+							<td>
+								<input value='<%=task_states[keys[k]]%>' type='number' class='task_states' data-id='value' data-row=<%=k%> >
+							</td>
+						</tr>
+						<% } %>
+							<tr>
+								<td>
+									<input placeholder='state' type='text' class='task_states' data-id='key' data-row=<%=k+1%> >
+								</td>
+								<td>
+									<input placeholder='progress value (0..100)' type='number' class='task_states' data-id='value' data-row=<%=k+1%> >
+								</td>
+							</tr>
+				</table>
+
+		</td>
+	</tr>
+
 </table>

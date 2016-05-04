@@ -29,7 +29,15 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 		_wiki: {
 			title: "wiki",
 			content: "Here I am!",
-		}
+		},
+		task_states: {
+			"Rejected": -1,
+			"New": 0,
+			"Accepted": 1,
+			"In Progress": 5,
+			"Review": 80,
+			"Complete": 100
+		},
 	},
 	GetLink: function (cmd) {
 		if (!cmd)
