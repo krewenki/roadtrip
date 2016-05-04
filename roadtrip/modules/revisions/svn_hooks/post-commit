@@ -105,7 +105,7 @@ var child = execFile('/usr/bin/svnlook', ['log', repo, '--revision', revision], 
 				})
 
 				// Tell slack after we tell roadtrip
-/*				url = "https://telegauge.slack.com/services/hooks/subversion?token=" + slack_token;
+				url = "https://telegauge.slack.com/services/hooks/subversion?token=" + slack_token;
 				request.post(url, {
 					form: {
 						payload: JSON.stringify({
@@ -115,7 +115,7 @@ var child = execFile('/usr/bin/svnlook', ['log', repo, '--revision', revision], 
 							url: 'http://roadtrip.telegauge.com/#revisions/view/' + process.argv[3]
 						})
 					}
-				});*/
+				});
 
 			});
 		});
