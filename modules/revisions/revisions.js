@@ -29,6 +29,9 @@ DEF.modules.revisions.Model = Roadtrip.Model.extend({
 		datetime: Date.now(),
 		comments: [],
 
+		changed: 0,
+		removed: 0,
+
 		_: {
 			views: 1,
 			edits: 0,
@@ -83,7 +86,7 @@ DEF.modules.revisions.views = {
 
 					if (['Modif', 'Added', 'Remove'].indexOf(line.substring(0, 5)) > -1) {
 						isEmpty = false;
-						filename = line.replace('Modified: ', '').replace('Added:', '').trim()
+						filename = line.replace('Modified: ', '').replace('Added:', '').trim();
 						files[filename] = [];
 					}
 
@@ -117,7 +120,7 @@ DEF.modules.revisions.views = {
 				return diff.map(function (line) {
 					var type = line.charAt(0);
 					if (['---', '+++'].indexOf(line.substring(0, 3)) > -1) {
-						return ''
+						return '';
 					}
 					return "<pre class='" + diffClasses[type] + "'>" + escape(line) + "</pre>";
 				}).join("\n");
@@ -130,7 +133,7 @@ DEF.modules.revisions.views = {
 		template: require('./templates/revisionline.html'),
 		tagName: 'tr'
 	})
-}
+};
 
 
 DEF.modules.revisions.MainView = Roadtrip.RecordList.extend({
@@ -142,4 +145,4 @@ DEF.modules.revisions.MainView = Roadtrip.RecordList.extend({
 		if (!this.children.length)
 			this.$el.parent().hide();
 	}
-})
+});

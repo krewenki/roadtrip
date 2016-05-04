@@ -7,8 +7,8 @@
 <td>
 	<%= APP.Format.linktext(APP.Format.htmlentities(log)) %>
 </td>
-<td class='nowrap'>
-	<%=changed+"/"+removed%>
+<td class='nowrap right'>
+	<span title='<%=changed%> added/mod lines, <%=removed%> removed lines'><%=changed+"/"+removed%></a>
 </td>
 <td class='nowrap'>
 	<%= APP.Format.datetime(datetime)%>
