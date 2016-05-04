@@ -67,6 +67,8 @@ var child = execFile('/usr/bin/svnlook', ['log', repo, '--revision', revision], 
 					total_changed = 0,
 					total_removed = 0;
 				for (var f in split) {
+					changed = 0;
+					removed = 0;
 					for (var line in split[f]) {
 						if (['---', '+++'].indexOf(split[f][line].substring(0, 3)) > -1) {
 							continue;
