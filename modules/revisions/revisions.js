@@ -117,7 +117,7 @@ DEF.modules.revisions.views = {
 				return diff.map(function (line) {
 					var type = line.charAt(0);
 					console.log(line.substring(0, 3))
-					if (['---', '+++', '@@ '].indexOf(line.substring(0, 3)) > -1) {
+					if (['---', '+++'].indexOf(line.substring(0, 3)) > -1) {
 						return ''
 					}
 					return "<pre class='" + diffClasses[type] + "'>" + escape(line) + "</pre>";

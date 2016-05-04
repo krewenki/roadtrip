@@ -32,7 +32,10 @@
 
   pre {
     margin: 0;
-    padding: 0;
+    padding-top: 0;
+    padding-right: 10px;
+    padding-bottom: 0px;
+    padding-left: 10px;
   }
 
 
@@ -44,6 +47,7 @@
   .info {
     color: #999;
     font-weight: bold;
+    background-color: #f4f7fb
   }
   .delete {
     background: #ffecec;
