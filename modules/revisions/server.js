@@ -12,8 +12,22 @@ var hooks = {
 		})
 	},
 	afterSave: function (data) {
-		console.log('I am the after save hook')
-		return data;
+		var self = this;
+		return new Promise(function (success, failure) {
+			console.log('I am the after save hook')
+			self.db.createRecord('events', {
+				"module": "revisions",
+				"module_id": data._id,
+				"event": "Revision committed",
+				"datetime": Date.now(),
+				"user_id": data.author
+			}).then(function (data) {
+				success(data)
+			}, function (err) {
+				failure(err);
+			})
+
+		})
 	}
 }
 
