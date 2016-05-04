@@ -4,6 +4,7 @@ var routes = [
 		"path": "/revisions/github",
 		"method": "post",
 		"handler": function (req, res) {
+			var request = require('request');
 			var obj = req.body; // should be a JSON object
 			var repos = {
 				"highway": "572a3771b91539200973a1c1",
@@ -16,6 +17,7 @@ var routes = [
 			for (var i in commits) {
 				commit = commits[i];
 				url = 'https://api.github.com/repos/krewenki/' + obj.repository.name + '/commits/' + commit.id;
+
 				request({
 					url: url,
 					headers: {
