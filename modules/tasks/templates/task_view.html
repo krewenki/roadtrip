@@ -123,19 +123,13 @@
 												<%=times[v]==0.5?"&frac12;":times[v]%>
 											</label>
 											<% } %>
-
-
-
 								</td>
 
-
 								<% } else { %>
-									<td>
-										Progress:</br>
+									<td title='<%=progress%>% complete'>
 										<input id='progress' value='<%=progress%>' type='hidden'>
-										<progress value='<%=progress%>' min=0 max=100>
+										<progress title='<%=progress%>% complete' value='<%=progress%>' min=0 max=100>
 											<input type='hidden' id='state' value='<%=state%>'>
-											<%=state%>
 									</td>
 									<% } %>
 						</tr>

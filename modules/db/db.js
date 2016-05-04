@@ -2,7 +2,7 @@ DEF.modules.db = {};
 DEF.modules.db.Initialize = function () {};
 DEF.modules.db.Router = Roadtrip.Router.extend({
 	module: "db",
-	collections: ["tasks", "users", "contacts", "orders", "expenses", "revisions", "projects", "timeclock"],
+	collections: ["tasks", "users", "contacts", "orders", "expenses", "revisions", "projects", "timeclock", "events"],
 	routes: {
 		"db": "Root",
 		"db/:table": "ViewTable",
