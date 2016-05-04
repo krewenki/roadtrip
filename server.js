@@ -63,19 +63,11 @@ config.io = io;
 
 var hw = new Highway(config)
 
-
-function LoadRoutes(routes) {
-	var route;
-	for (var i in routes) {
-		route = routes[i];
-		app[route.method](route.path, route.handler)
-	}
-}
-
-LoadRoutes(require('./modules/tasks/routes.js'));
+hw.LoadRoutes(require('./modules/revisions/routes.js'));
+hw.LoadRoutes(require('./modules/tasks/routes.js'));
 
 function exitHandler(options, err) {
-	//hw.CleanUp();
+	hw.CleanUp();
 	if (options.cleanup) console.log('clean');
 	if (err) console.log(err.stack);
 	if (options.exit) process.exit();
