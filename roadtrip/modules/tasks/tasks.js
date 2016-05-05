@@ -8,13 +8,12 @@ DEF.modules.tasks.Router = Roadtrip.Router.extend({
 		"users", "tasks", "projects", "revisions", "repositories", "timeclock"
 	],
 	initialize: function () {
-		APP.Icon_Lookup.todo = "list-ul";
-		APP.Icon_Lookup.bug = "bug";
-		APP.Icon_Lookup.feature = "star";
-		APP.Icon_Lookup.idea = "lightbulb-o";
-		APP.Icon_Lookup.product = "cubes";
-		APP.Icon_Lookup.support = "wechat";
-
+		// APP.Icon_Lookup.todo = "list-ul";
+		// APP.Icon_Lookup.bug = "bug";
+		// APP.Icon_Lookup.feature = "star";
+		// APP.Icon_Lookup.idea = "lightbulb-o";
+		// APP.Icon_Lookup.product = "cubes";
+		// APP.Icon_Lookup.support = "wechat";
 	},
 	module: "tasks",
 	routes: {
@@ -183,6 +182,11 @@ DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
  */
 DEF.modules.tasks.TaskLine = Backbone.Marionette.ItemView.extend({
 	template: require("./templates/taskline.html"),
+	templateHelpers: function () {
+		return {
+			icon: this.model.getUp("task_kinds")[this.model.get('kind')]
+		};
+	},
 	className: "click hover",
 	tagName: "tr",
 	events: {
@@ -226,7 +230,8 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 			path: this.model.GetPath(),
 			states: this.model.States,
 			show_progress_form: show_progress_form,
-			user_hours: U.GetHours(APP.Format.sysdate(), "tasks", this.model.id)
+			user_hours: U.GetHours(APP.Format.sysdate(), "tasks", this.model.id),
+			icon: this.model.getUp("task_kinds")[this.model.get('kind')]
 		};
 	},
 	ui: {
@@ -374,9 +379,16 @@ DEF.modules.tasks.views = {
 	edit: Roadtrip.Edit.extend({
 		module: "tasks",
 		template: require("./templates/task_edit.html"),
+		templateHelpers: function () {
+			return {
+				task_kinds: this.model.getUp('task_kinds')
+			};
+		},
 		onShow: function () {
 			$("input#task").focus();
-			$("textarea").val(($("textarea").val() || '').trim()); // beautify inserts spaces between <textarea> in the template
+			$("textarea").each(function (i, el) {
+				$(el).val(($(el).val() || '').trim());
+			}); // beautify inserts spaces between <textarea> in the template
 		},
 	}),
 

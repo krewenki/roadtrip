@@ -60,38 +60,22 @@
 			Task States
 		</th>
 		<td>
-			<%
-			console.log("task_states",task_states);
-%>
+			<div class='note'>State Name: Progress Value(0..100)</div>
+			<textarea class='field json' id='task_states'>
+				<%=JSON.stringify(task_states,null,2)%>
+			</textarea>
+		</td>
+	</tr>
 
-				<table id='task_states_table' class='table table-top table-small table-full'>
-					<thead>
-						<th>State</th>
-						<th>Progress</th>
-					</thead>
-					<%
-						var keys = Object.keys(task_states);
-						for (var k in keys) {
-					%>
-						<tr>
-							<td>
-								<input value='<%=keys[k]%>' type='text' class='task_states' data-id='key' data-row=<%=k%> >
-							</td>
-							<td>
-								<input value='<%=task_states[keys[k]]%>' type='number' class='task_states' data-id='value' data-row=<%=k%> >
-							</td>
-						</tr>
-						<% } %>
-							<tr>
-								<td>
-									<input placeholder='state' type='text' class='task_states' data-id='key' data-row=<%=k+1%> >
-								</td>
-								<td>
-									<input placeholder='progress value (0..100)' type='number' class='task_states' data-id='value' data-row=<%=k+1%> >
-								</td>
-							</tr>
-				</table>
-
+	<tr>
+		<th>
+			Task Kinds
+		</th>
+		<td>
+			<div class='note'>State Kind: Icon</div>
+			<textarea class='field json' id='task_kinds'>
+				<%=JSON.stringify(task_kinds,null,2)%>
+			</textarea>
 		</td>
 	</tr>
 
