@@ -28,6 +28,9 @@ DEF.modules.revisions.Model = Roadtrip.Model.extend({
 		diff: '',
 		datetime: Date.now(),
 		comments: [],
+		changed: 0,
+		removed: 0,
+		diff_meta: [],
 
 		changed: 0,
 		removed: 0,
@@ -46,7 +49,7 @@ DEF.modules.revisions.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.revisions.Model,
 	url: 'roadtrip.telegauge.com/roadtrip/revisions',
 	comparator: function (r) {
-		return -r.get('revision');
+		return -r.get('datetime');
 	}
 });
 

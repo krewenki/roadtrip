@@ -14,6 +14,7 @@ DEF.modules.repositories.Router = Roadtrip.Router.extend({
 	},
 });
 DEF.modules.repositories.Model = Roadtrip.Model.extend({
+	idAttribute: 'name',
 	defaults: {
 		name: "Main",
 		type: "svn",
@@ -23,13 +24,27 @@ DEF.modules.repositories.Model = Roadtrip.Model.extend({
 DEF.modules.repositories.Collection = Backbone.Highway.Collection.extend({
 	model: DEF.modules.repositories.Model,
 	url: 'roadtrip.telegauge.com/roadtrip/repositories',
+	idAttribute: 'name'
 });
 
 
 DEF.modules.repositories.views = {
-	view: Roadtrip.View.extend({
+	view: Backbone.Marionette.LayoutView.extend({
 		module: 'repositories',
-		template: require('./templates/view.html')
+		template: require('./templates/view.html'),
+		regions: {
+			'revisions': '#revisions'
+		},
+		onRender: function () {
+			var repository = this.model.get('_id');
+			this.revisions.show(new DEF.modules.revisions.MainView({
+				collection: APP.models.revisions,
+				filter: function (r) {
+					console.log(r.get('repository'), repository);
+					return r.get('repository') == repository;
+				},
+			}), {})
+		}
 	}),
 	RepositoryLine: Roadtrip.RecordLine.extend({
 		module: 'repositories',
