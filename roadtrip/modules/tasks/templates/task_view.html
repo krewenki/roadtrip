@@ -99,9 +99,10 @@
 								</td>
 								<td width="150px" id=''>
 									<select id='state'>
-										<%
+										<%=state%>
+											<%
 									for (var label in states)
-										print("<option " + (state==label ? "selected": "")+" value='"+label+"'>"+label+"</option>");
+										print("<option " + (state==label ? "selected": "")+" value='"+label+"'>"+APP.Format.first(label)+"</option>");
 										%>
 									</select>
 								</td>
