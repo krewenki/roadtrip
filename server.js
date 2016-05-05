@@ -64,7 +64,7 @@ config.io = io;
 var hw = new Highway(config)
 
 hw.LoadRoutes(require('./modules/revisions/routes.js'));
-hw.LoadRoutes(require('./modules/tasks/routes.js'));
+//hw.LoadRoutes(require('./modules/tasks/routes.js'));
 
 function exitHandler(options, err) {
 	hw.CleanUp();
