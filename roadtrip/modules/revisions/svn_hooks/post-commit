@@ -115,7 +115,7 @@ var child = execFile('/usr/bin/svnlook', ['log', repo, '--revision', revision], 
 							log: log.trim(),
 							author: author.trim(),
 							revision: process.argv[3],
-							url: 'http://roadtrip.telegauge.com/#revisions/view/' + process.argv[3]
+							url: viewurl
 						})
 					}
 				});
