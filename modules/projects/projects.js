@@ -30,6 +30,7 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 			title: "wiki",
 			content: "Here I am!",
 		},
+		// state name: progress value
 		task_states: {
 			"Rejected": -1,
 			"New": 0,
@@ -38,6 +39,15 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 			"Review": 80,
 			"Complete": 100
 		},
+		// kind name: icon
+		task_kinds: {
+			"product": "cubes",
+			"todo": "list-ul",
+			"bug": "bug",
+			"feature": "star",
+			"idea": "lightbulb-o",
+			"support": "wechat",
+		}
 	},
 	GetLink: function (cmd) {
 		if (!cmd)

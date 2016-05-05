@@ -455,7 +455,7 @@ APP.Format = {
 	 * @return {String}     The text with HTML links for things that match
 	 */
 	linktext: function (str) {
-		// TODO pick up emails and urls
+		// TODO:0 pick up emails and urls
 		if (APP.models.tasks)
 			return str.replace(/(#)(\d.[\d.]+)/, APP.Format._replace);
 		else
@@ -464,6 +464,14 @@ APP.Format = {
 	},
 	_replace: function (match, key, id) {
 		return APP.GetLink("tasks", id, id);
+	},
+	/**
+	 * Capitalize first letters
+	 * @param  {string} text "a things"
+	 * @return {string}      "A thing"
+	 */
+	first: function (text) {
+		return text.charAt(0).toUpperCase() + text.slice(1);
 	}
 };
 

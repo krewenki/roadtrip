@@ -70,6 +70,7 @@ body {
 	color           : white;
 	padding         : 10px;
 	box-shadow      : 0 5px 20px rgba(0, 0, 0, .5);
+	user-select     : none;
 
 	.link {
 		cursor: pointer;
@@ -472,12 +473,13 @@ body {
 		}
 
 		.note {
-			background-color: #ddd;
-			border          : 5px dashed #aaa;
+			background-color: #eee;
+			background      : linear-gradient(90deg,#eee, #fff);
+			border-left     : 5px solid #aaa;
 			padding         : 10px;
-			margin          : 5px;
-			border-radius   : 5px;
+			margin          : 5px 0;
 			font-size       : 12px;
+			border-radius   : 0;
 		}
 
 		meter {

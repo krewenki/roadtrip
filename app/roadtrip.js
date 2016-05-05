@@ -426,7 +426,9 @@ window.Roadtrip = {
 			}
 		},
 		onShow: function () {
-			$("textarea").val(($("textarea").val() || '').trim()); // beautify inserts spaces between <textarea> in the item_edit form
+			$("textarea").each(function (i, el) {
+				$(el).val(($(el).val() || '').trim());
+			}); // beautify inserts spaces between <textarea> in the template
 			APP.SetTitle(this.model.get(this.model.nameAttribute), this.module);
 
 		},
@@ -470,6 +472,12 @@ window.Roadtrip = {
 			case "checkbox":
 				save[field] = $el.checked;
 				console.log(field, $el.checked);
+				break;
+			case "textarea":
+				if ($el.hasClass("json"))
+					save[field] = JSON.parse(value);
+				else
+					save[field] = value;
 				break;
 			default:
 				save[field] = value;
