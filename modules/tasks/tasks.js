@@ -56,22 +56,6 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		}
 
 	},
-	States: {
-		"Rejected": -1,
-		"New": 0,
-		"Accepted": 1,
-		"In Progress": 5,
-		"Review": 80,
-		"Complete": 100
-	},
-	initialize: function () {
-		if (this.get('subtasks') > 0)
-			this.States = {
-				"New": 0,
-				"In Progress": 1,
-				"Complete": 100
-			};
-	},
 	search_string: function () {
 		var string = this.id + " " + this.get(this.nameAttribute);
 		return string;
@@ -228,7 +212,7 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 			parent_title: APP.Icon(parent.module) + " " + parent.get(parent.nameAttribute),
 			parent_link: parent.GetLink(),
 			path: this.model.GetPath(),
-			states: this.model.States,
+			states: this.model.getUp('task_states'),
 			show_progress_form: show_progress_form,
 			user_hours: U.GetHours(APP.Format.sysdate(), "tasks", this.model.id),
 			icon: this.model.getUp("task_kinds")[this.model.get('kind')]
