@@ -9,8 +9,8 @@ DEF.modules.repositories.Router = Roadtrip.Router.extend({
 		"repositories", "revisions", "tasks"
 	],
 	routes: {
+		"repositories/view/:arg": "LoadModule",
 		"repositories/:repo/:rev": "LoadRevision",
-		//"repositories/:cmd/:arg": "LoadModule",
 		"repositories": "ShowRoot"
 	},
 	LoadRevision: function (repo_name, rev) {

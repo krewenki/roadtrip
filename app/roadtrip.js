@@ -72,10 +72,18 @@ window.Roadtrip = {
 		 * @return null
 		 */
 		LoadModule: function (cmd, arg) {
+			if (arguments.length == 2 && arguments[1] == null) {
+				arg = arguments[0];
+				cmd = 'view';
+
+			}
 			var module = this.module;
 			var model = APP.models[module].get(arg);
 			if (!model) {
 				console.error("Model not found", module, arg);
+			}
+			if (!cmd) {
+				cmd = 'view';
 			}
 			if (!U.Can(model.getUp('group'))) {
 				alert("Permission Denied");

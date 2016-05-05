@@ -1,5 +1,5 @@
 <td class='important'>
-	<%= revision %>
+	<%= revision.length > 8 ? revision.substring(0,8)+'...' : revision  %>
 </td>
 <td class='nowrap'>
 	<%=APP.GetLink("users",  author)%>

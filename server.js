@@ -61,7 +61,7 @@ var config = require('./server/config.js');
 config.http = app;
 config.io = io;
 
-var hw = new Highway(config)
+var hw = new Highway(config);
 
 hw.LoadRoutes(require('./modules/revisions/routes.js'));
 //hw.LoadRoutes(require('./modules/tasks/routes.js'));
