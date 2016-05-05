@@ -31,10 +31,6 @@ DEF.modules.revisions.Model = Roadtrip.Model.extend({
 		changed: 0,
 		removed: 0,
 		diff_meta: [],
-
-		changed: 0,
-		removed: 0,
-
 		_: {
 			views: 1,
 			edits: 0,
