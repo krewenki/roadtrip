@@ -53,7 +53,7 @@ var routes = [
 							total_removed += removed;
 						}
 						save = {
-							revision: commit.id,
+							revision: c.sha,
 							repository: repo,
 							//author: '56f3f7cb4b88de4618e306c0', // Not always warren, but hardcode for laziness now
 							author: 'wck',
@@ -65,9 +65,9 @@ var routes = [
 							log: c.commit.message
 						}
 						self.db.createRecord(save, 'revisions').then(function (record) {
-							res.send(record);
+
 						}, function (error) {
-							res.send(error)
+							//res.send(error)
 						})
 
 					})

@@ -40,7 +40,6 @@ DEF.modules.repositories.views = {
 			this.revisions.show(new DEF.modules.revisions.MainView({
 				collection: APP.models.revisions,
 				filter: function (r) {
-					console.log(r.get('repository'), repository);
 					return r.get('repository') == repository;
 				},
 			}), {})
