@@ -11,7 +11,7 @@ var hooks = {
 			success(data);
 		})
 	},
-	afterSave: function (data) {
+	after2Save: function (data) {
 		var self = this;
 		return new Promise(function (success, failure) {
 			console.log('I am the after save hook')

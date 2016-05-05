@@ -20,7 +20,6 @@ var routes = [
 				for (var i in commits) {
 					commit = commits[i];
 					url = 'https://api.github.com/repos/krewenki/' + obj.repository.name + '/commits/' + commit.id;
-					console.log('Fetching ', url);
 					request({
 						url: url,
 						headers: {
@@ -28,14 +27,16 @@ var routes = [
 						}
 					}, function (error, response, body) {
 						var c = JSON.parse(body);
-						console.log(c);
 						var files = [],
-							changed, removed, total_changed, total_removed, diff = '',
+							changed, removed, total_changed = 0,
+							total_removed = 0,
+							diff = '',
 							lines, save;
 						for (var i in c.files) {
 							changed = 0;
 							removed = 0;
-							diff += c.files[i].patch;
+							diff += 'Modified: ' + c.files[i].filename +
+								"\n" + "============" + c.files[i].patch;
 							lines = c.files[i].patch.split("\n");
 							for (var n in lines) {
 								if (lines[n].charAt(0) == '+')
@@ -54,14 +55,16 @@ var routes = [
 						save = {
 							revision: commit.id,
 							repository: repo,
-							author: '56f3f7cb4b88de4618e306c0', // Not always warren, but hardcode for laziness now
+							//author: '56f3f7cb4b88de4618e306c0', // Not always warren, but hardcode for laziness now
+							author: 'wck',
 							datetime: new Date(c.commit.author.date).getTime(), // change this to the actual commit time?
-							log: c.commit.message,
+							diff: diff,
+							diff_meta: files,
 							changed: total_changed,
 							removed: total_removed,
-							diff_meta: files
+							log: c.commit.message
 						}
-						self.db.createRecord('revisions', save).then(function (record) {
+						self.db.createRecord(save, 'revisions').then(function (record) {
 							res.send(record);
 						}, function (error) {
 							res.send(error)
