@@ -157,6 +157,8 @@ var MainApp = Backbone.Marionette.Application.extend({
 	 * @return {string}       <i...>
 	 */
 	Icon: function (icon, title = icon) {
+		if (!icon)
+			return;
 		if (icon.substring(0, 4) == "http")
 			return "<img class='icon' src='" + icon + "'>";
 
