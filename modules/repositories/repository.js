@@ -9,9 +9,22 @@ DEF.modules.repositories.Router = Roadtrip.Router.extend({
 		"repositories", "revisions", "tasks"
 	],
 	routes: {
-		"repositories/view/:arg": "LoadModule",
+		"repositories/view/:name": "LoadRepo",
 		"repositories/:repo/:rev": "LoadRevision",
 		"repositories": "ShowRoot"
+	},
+	LoadRepo: function (name) {
+		var matches = APP.models.repositories.filter(function (r) {
+			return r.get('name').toLowerCase() == name.toLowerCase();
+		});
+		if (matches.length == 1) {
+			var model = matches[0];
+		}
+
+		APP.Page = new DEF.modules.repositories.views.view({
+			"model": model
+		});
+		APP.root.showChildView("main", APP.Page);
 	},
 	LoadRevision: function (repo_name, rev) {
 		var module = this.module;

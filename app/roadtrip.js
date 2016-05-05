@@ -72,18 +72,10 @@ window.Roadtrip = {
 		 * @return null
 		 */
 		LoadModule: function (cmd, arg) {
-			if (arguments.length == 2 && arguments[1] == null) {
-				arg = arguments[0];
-				cmd = 'view';
-
-			}
 			var module = this.module;
 			var model = APP.models[module].get(arg);
 			if (!model) {
 				console.error("Model not found", module, arg);
-			}
-			if (!cmd) {
-				cmd = 'view';
 			}
 			if (!U.Can(model.getUp('group'))) {
 				alert("Permission Denied");
@@ -249,13 +241,9 @@ window.Roadtrip = {
 			if (this.get(field))
 				return this.get(field);
 			if (this.get('parent_module')) {
-				if (APP.models[this.get('parent_module')]) {
-					var model = APP.models[this.get('parent_module')].get(this.get('parent_id'));
-					if (model) {
-						return model.getUp(field);
-					}
-				} else {
-					DEF.modules[this.get('parent_module')].Initialize();
+				var model = APP.models[this.get('parent_module')].get(this.get('parent_id'));
+				if (model) {
+					return model.getUp(field);
 				}
 			}
 			return false;
@@ -438,9 +426,7 @@ window.Roadtrip = {
 			}
 		},
 		onShow: function () {
-			$("textarea").each(function (i, el) {
-				$(el).val(($(el).val() || '').trim());
-			}); // beautify inserts spaces between <textarea> in the template
+			$("textarea").val(($("textarea").val() || '').trim()); // beautify inserts spaces between <textarea> in the item_edit form
 			APP.SetTitle(this.model.get(this.model.nameAttribute), this.module);
 
 		},
@@ -484,12 +470,6 @@ window.Roadtrip = {
 			case "checkbox":
 				save[field] = $el.checked;
 				console.log(field, $el.checked);
-				break;
-			case "textarea":
-				if ($el.hasClass("json"))
-					save[field] = JSON.parse(value);
-				else
-					save[field] = value;
 				break;
 			default:
 				save[field] = value;
