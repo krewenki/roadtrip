@@ -241,9 +241,13 @@ window.Roadtrip = {
 			if (this.get(field))
 				return this.get(field);
 			if (this.get('parent_module')) {
-				var model = APP.models[this.get('parent_module')].get(this.get('parent_id'));
-				if (model) {
-					return model.getUp(field);
+				if (APP.models[this.get('parent_module')]) {
+					var model = APP.models[this.get('parent_module')].get(this.get('parent_id'));
+					if (model) {
+						return model.getUp(field);
+					}
+				} else {
+					DEF.modules[this.get('parent_module')].Initialize();
 				}
 			}
 			return false;
