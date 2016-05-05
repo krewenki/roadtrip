@@ -23,7 +23,7 @@ var splitByFile = function (diff) {
 
 		if (['Modif', 'Added', 'Remove'].indexOf(line.substring(0, 5)) > -1) {
 			isEmpty = false;
-			filename = line.replace('Modified: ', '').replace('Added:', '').trim()
+			filename = line.replace('Modified: ', '').replace('Added:', '').trim();
 			files[filename] = [];
 		}
 
@@ -108,6 +108,7 @@ var child = execFile('/usr/bin/svnlook', ['log', repo, '--revision', revision], 
 
 				// Tell slack after we tell roadtrip
 				url = "https://telegauge.slack.com/services/hooks/subversion?token=" + slack_token;
+				viewurl = 'http://roadtrip.telegauge.com/#repositories/Main/' + process.argv[3];
 				request.post(url, {
 					form: {
 						payload: JSON.stringify({
