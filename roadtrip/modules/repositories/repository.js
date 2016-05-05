@@ -9,8 +9,29 @@ DEF.modules.repositories.Router = Roadtrip.Router.extend({
 		"repositories", "revisions", "tasks"
 	],
 	routes: {
-		"repositories/:cmd/:arg": "LoadModule",
+		"repositories/:repo/:rev": "LoadRevision",
+		//"repositories/:cmd/:arg": "LoadModule",
 		"repositories": "ShowRoot"
+	},
+	LoadRevision: function (repo_name, rev) {
+		var module = this.module;
+		var repo = APP.models.repositories.get(repo_name);
+		var model = APP.models.revisions.findWhere({
+			repository: repo.get('_id'),
+			revision: rev
+		});
+		if (!model) {
+			console.error("Model not found", module, arg);
+		}
+		if (!U.Can(model.getUp('group'))) {
+			alert("Permission Denied");
+			return;
+		}
+
+		APP.Page = new DEF.modules.revisions.views.view({
+			model: model,
+		});
+		APP.root.showChildView("main", APP.Page);
 	},
 });
 DEF.modules.repositories.Model = Roadtrip.Model.extend({
