@@ -56,6 +56,7 @@ DEF.modules.todo.RecordLine = Roadtrip.RecordLine.extend({
 	tagName: "tr",
 	className: 'click',
 	template: require("./templates/todoline.html"),
+	events: {}
 });
 
 /**
