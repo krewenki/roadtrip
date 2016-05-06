@@ -229,7 +229,8 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		progress: "#progress",
 		state: "#state",
 		star: "#star",
-		hours: ".hour_picker"
+		hours: ".hour_picker",
+		state_log: "#state_log"
 	},
 	events: {
 		"click @ui.edit": "Edit",
@@ -241,7 +242,9 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		"click @ui.star": "Star",
 		"click @ui.hours": "PutHours"
 	},
-
+	modelEvents: {
+		"change state": "render"
+	},
 	PutHours: function (e) {
 		var hours = 0,
 			model;
@@ -254,6 +257,23 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	onRender: function () {
 		if (U.is_starred(this.model.module, this.model.id))
 			this.ui.star.html(APP.Icon('star'));
+		this.DoStateLog();
+	},
+	DoStateLog: function () {
+		var states = APP.models.events.filter({
+			group: "task_state",
+			module: "tasks",
+			module_id: this.model.id
+		});
+		if (states.length > 0) {
+			var html = "<table>";
+			for (var s in states) {
+				html += "<tr><td>" + APP.Format.datetime(states[s].get('datetime')) + "</td><td>" + states[s].get('event') + "</td></tr>";
+			}
+			html += "</table>";
+			this.ui.state_log.html(html);
+		}
+		console.log(states);
 	},
 	/**
 	 * Show the task edit forms
@@ -318,7 +338,7 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 			});
 		}
 		if (label != this.model.get('state'))
-			APP.LogEvent("tasks", this.model.id, "New State: " + label, {
+			APP.LogEvent("tasks", this.model.id, label, {
 				"old": this.model.get('state'),
 				"new": label
 			}, "task_state");
