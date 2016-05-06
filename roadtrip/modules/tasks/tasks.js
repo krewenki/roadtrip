@@ -259,6 +259,9 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 			this.ui.star.html(APP.Icon('star'));
 		this.DoStateLog();
 	},
+	/**
+	 * Populate the state log.
+	 */
 	DoStateLog: function () {
 		var states = APP.models.events.filter({
 			group: "task_state",
@@ -266,14 +269,13 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 			module_id: this.model.id
 		});
 		if (states.length > 0) {
-			var html = "<table>";
+			var html = "<table class='table'><tr><th>State</th><th>Date</th></tr>";
 			for (var s in states) {
-				html += "<tr><td>" + APP.Format.datetime(states[s].get('datetime')) + "</td><td>" + states[s].get('event') + "</td></tr>";
+				html += "<tr><td>" + states[s].get('event') + "</td><td>" + APP.Format.datetime(states[s].get('datetime')) + "</td></tr>";
 			}
 			html += "</table>";
 			this.ui.state_log.html(html);
 		}
-		console.log(states);
 	},
 	/**
 	 * Show the task edit forms

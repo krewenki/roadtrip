@@ -6,7 +6,7 @@ DEF.modules.users.Initialize = function () {
 DEF.modules.users.Router = Roadtrip.Router.extend({
 	module: "users",
 	collections: [
-		"users", "tasks"
+		"users", "tasks", "todo"
 	],
 	initialize: function () {
 		// Normally the collection initializes here, but Users is handled in auth.js
@@ -160,6 +160,7 @@ DEF.modules.users.views = {
 	home: Backbone.Marionette.LayoutView.extend({
 		template: require("./templates/home.html"),
 		regions: {
+			todos: "#todolist",
 			tasks: "#tasklist",
 			ideas: "#taskideas"
 		},
@@ -174,6 +175,9 @@ DEF.modules.users.views = {
 				template: require("./templates/taskline.html"),
 				collection: APP.models.tasks,
 				filter: APP.models.tasks.filters.Kind("idea")
+			}));
+			this.todos.show(new DEF.modules.todo.MainView({
+				collection: APP.models.todo
 			}));
 		}
 	})
