@@ -15,7 +15,7 @@ DEF.modules.repositories.Router = Roadtrip.Router.extend({
 	},
 	LoadRepo: function (name) {
 		var matches = APP.models.repositories.filter(function (r) {
-			return r.get('name').toLowerCase() == name.toLowerCase();
+			return r.get('name').toLowerCase() == name.toLowerCase().trim();
 		});
 		if (matches.length == 1) {
 			var model = matches[0];
@@ -28,7 +28,10 @@ DEF.modules.repositories.Router = Roadtrip.Router.extend({
 	},
 	LoadRevision: function (repo_name, rev) {
 		var module = this.module;
-		var repo = APP.models.repositories.get(repo_name);
+		var matches = APP.models.repositories.filter(function (r) {
+			return r.get('name').toLowerCase() == repo_name.toLowerCase().trim();
+		});
+		var repo = matches[0];
 		var model = APP.models.revisions.findWhere({
 			repository: repo.get('_id'),
 			revision: rev
