@@ -1,5 +1,5 @@
 DEF.modules.events = {};
-DEF.modules.events.Initialize = function() {
+DEF.modules.events.Initialize = function () {
 	if (!APP.models.events)
 		APP.models.events = new DEF.modules.events.Collection();
 };
@@ -8,7 +8,7 @@ DEF.modules.events.Router = Roadtrip.Router.extend({
 	collections: [
 		"users", "events", "expenses", "orders", "contacts", "projects", "tasks"
 	],
-	initialize: function() {
+	initialize: function () {
 		DEF.modules.events.Initialize(); // required for almost everything.
 	},
 	routes: {
@@ -25,13 +25,14 @@ DEF.modules.events.Model = Roadtrip.Model.extend({
 		event: false,
 		user_id: false,
 		module: false,
-		module_id: false
+		module_id: false,
+		group: false
 	}
 });
 DEF.modules.events.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.events.Model,
 	url: 'roadtrip.telegauge.com/roadtrip/events',
-	comparator: function(m) {
+	comparator: function (m) {
 		return -m.get('datetime');
 	}
 });
@@ -47,7 +48,7 @@ DEF.modules.events.MainView = Roadtrip.RecordList.extend({
 	template: require("./templates/main.html"),
 	childView: DEF.modules.events.RecordLine,
 	childViewContainer: "#record_list",
-	onShow: function() {
+	onShow: function () {
 		APP.SetTitle("Events", "events");
 	}
 });

@@ -41,6 +41,7 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 		},
 		// kind name: icon
 		task_kinds: {
+			"folder": "folder",
 			"product": "cubes",
 			"todo": "list-ul",
 			"bug": "bug",
