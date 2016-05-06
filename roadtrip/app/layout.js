@@ -109,6 +109,8 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 	},
 	UpdateUserTaskCount: function () {
 		if (U) {
+			$("#usermenu").css("background-image", 'url("' + U.get('image_url') + '")');
+
 			var length = APP.models.tasks.filter(APP.models.tasks.filters.Assigned(U)).length;
 			if (length) {
 				this.ui.taskcount.html("" + APP.Icon("tasks") + "" + length + "");

@@ -118,7 +118,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 	 * @param {text} event  The event
 	 * @param {object} extras  Any additional info?
 	 */
-	LogEvent(module, id, event, extras = false, group = false) {
+	LogEvent: function (module, id, event, extras = false, group = false) {
 		if (group) {
 			console.log(event, extras);
 		}
@@ -132,7 +132,19 @@ var MainApp = Backbone.Marionette.Application.extend({
 			group: group
 		});
 	},
+	CreateTodo: function (user_id, module, module_id, task) {
+		APP.models.todo.create({
+			user_id: user_id,
+			module: module,
+			module_id: module_id,
+			task: task
+		});
+		APP.LogEvent(module, module_id, "Todo created: " + task, {
+			for: user_id
+		}, "todo")
+	},
 	Icon_Lookup: {
+		// module icons.  Gotta be here, so the UI can be drawn prior to init
 		calendar: "calendar",
 		contacts: "group",
 		projects: "pie-chart",
@@ -146,7 +158,9 @@ var MainApp = Backbone.Marionette.Application.extend({
 		users: "user",
 		revisions: "code-fork",
 		db: "database",
+		todo: "list",
 
+		// general icons
 		edit: "pencil",
 		view: "search",
 		cancel: "remove",
@@ -236,6 +250,7 @@ require("../modules/repositories/repository.js");
 require("../modules/revisions/revisions.js");
 require("../modules/events/events.js");
 require("../modules/db/db.js");
+require("../modules/todo/todo.js");
 require("./auth.js");
 
 
