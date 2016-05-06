@@ -192,8 +192,7 @@ window.Roadtrip = {
 					APP.LogEvent(this.module, this.id, "Edited " + Object.keys(save).join(", "), {
 						old: orig,
 						new: save
-					});
-					console.info("Edited", orig, save);
+					}, "edit");
 				}
 
 			}

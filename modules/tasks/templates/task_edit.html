@@ -43,6 +43,7 @@
 		<th>Kind</th>
 		<td colspan=3>
 			<select class='field' id='kind'>
+				<option></option>
 				<%
 				for (var k in task_kinds) {
 					print ("<option "+(kind==k?"selected":"")+" value='"+k+"'>"+APP.Format.first(k)+"</option>");

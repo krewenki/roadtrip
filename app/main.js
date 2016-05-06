@@ -118,14 +118,18 @@ var MainApp = Backbone.Marionette.Application.extend({
 	 * @param {text} event  The event
 	 * @param {object} extras  Any additional info?
 	 */
-	LogEvent(module, id, event, extras = false) {
+	LogEvent(module, id, event, extras = false, group = false) {
+		if (group) {
+			console.log(event, extras);
+		}
 		APP.models.events.create({
 			module: module,
 			module_id: id,
 			event: event,
 			datetime: Date.now(),
 			user_id: U.id,
-			extras: extras
+			extras: extras,
+			group: group
 		});
 	},
 	Icon_Lookup: {

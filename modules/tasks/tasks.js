@@ -5,7 +5,10 @@ DEF.modules.tasks.Initialize = function () {
 };
 DEF.modules.tasks.Router = Roadtrip.Router.extend({
 	collections: [
-		"users", "tasks", "projects", "revisions", "repositories", "timeclock"
+		"users", "tasks", "projects"
+	],
+	collections_extra: [
+		"revisions", "repositories", "timeclock"
 	],
 	initialize: function () {
 		// APP.Icon_Lookup.todo = "list-ul";
@@ -109,8 +112,9 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 	 */
 	GetProgressLabel: function (val) {
 		var label = false;
-		for (var state in this.States) {
-			if (val >= this.States[state])
+		var states = this.getUp('task_states');
+		for (var state in states) {
+			if (val >= states[state])
 				label = state;
 		}
 		return label;
@@ -313,6 +317,11 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 				assigned_to: this.model.get('_').created_by
 			});
 		}
+		if (label != this.model.get('state'))
+			APP.LogEvent("tasks", this.model.id, "New State: " + label, {
+				"old": this.model.get('state'),
+				"new": label
+			}, "task_state");
 		this.model.set({
 			'progress': this.ui.progress.val(),
 			'state': label
@@ -336,11 +345,17 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 	 * @return null
 	 */
 	UpdateProgressLabel: function () {
-		if (this.model.get('state') == 'Complete') {
-			var states = Object.keys(this.model.States);
-			this.ui.progress.val(this.model.States[states[states.indexOf(this.ui.state.val()) + 1]] - 1); // WHAT!
-		} else
-			this.ui.progress.val(Math.max(this.model.States[this.ui.state.val()], this.ui.progress.val()));
+		var progress = this.ui.progress.val();
+		var state = this.ui.state.val();
+		var states = this.model.getUp("task_states");
+		var state_names = Object.keys(states);
+
+		if (progress < states[state]) { // raise progress
+			this.ui.progress.val(states[state]);
+		} else {
+			this.ui.progress.val(states[state_names[state_names.indexOf(state) + 1]] - 1);
+
+		}
 		this.UpdateProgress();
 		this.render();
 	},

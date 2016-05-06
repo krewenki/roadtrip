@@ -106,33 +106,35 @@
 										%>
 									</select>
 								</td>
-								<th>
-									Hours:
-								</th>
-								<td>
-									<%
+								<% if (APP.models.timeclock) { %>
+									<th>
+										Hours:
+									</th>
+									<td>
+										<%
 								var times = [0.5,1,2,4,8];
 							for (var v in times) {
 								var id = "D-"+"-"+"-"+times[v];
 								var checked =false;
 								checked = user_hours & times[v] ? "checked" : "";
 							%>
-										<input id="<%=id%>" <%=checked%> value=
-										<%=times[v]%>
-											class='hour_picker' type='checkbox' >
-											<label for="<%=id%>">
-												<%=times[v]==0.5?"&frac12;":times[v]%>
-											</label>
-											<% } %>
-								</td>
-
-								<% } else { %>
-									<td title='<%=progress%>% complete'>
-										<input id='progress' value='<%=progress%>' type='hidden'>
-										<progress title='<%=progress%>% complete' value='<%=progress%>' min=0 max=100>
-											<input type='hidden' id='state' value='<%=state%>'>
+											<input id="<%=id%>" <%=checked%> value=
+											<%=times[v]%>
+												class='hour_picker' type='checkbox' >
+												<label for="<%=id%>">
+													<%=times[v]==0.5?"&frac12;":times[v]%>
+												</label>
+												<% } %>
 									</td>
 									<% } %>
+
+										<% } else { %>
+											<td title='<%=progress%>% complete'>
+												<input id='progress' value='<%=progress%>' type='hidden'>
+												<progress title='<%=progress%>% complete' value='<%=progress%>' min=0 max=100>
+													<input type='hidden' id='state' value='<%=state%>'>
+											</td>
+											<% } %>
 						</tr>
 					</table>
 </div>
