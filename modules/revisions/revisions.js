@@ -130,7 +130,13 @@ DEF.modules.revisions.views = {
 	RevisionLine: Roadtrip.RecordLine.extend({
 		module: 'revisions',
 		template: require('./templates/revisionline.html'),
-		tagName: 'tr'
+		tagName: 'tr',
+		Click: function (e) {
+			var repo = APP.models.repositories.findWhere({
+				'_id': this.model.get('repository')
+			});
+			APP.Route("#repositories/" + repo.get('name') + "/" + this.model.get('revision'), this.model.get(this.model.nameAttribute));
+		}
 	})
 };
 
