@@ -166,18 +166,25 @@ DEF.modules.users.views = {
 		},
 		onRender: function () {
 			APP.SetTitle(this.model.get(this.model.nameAttribute) + " Home", "users");
+			var user_id = this.model.id;
+
+			this.todos.show(new DEF.modules.todo.MainView({
+				collection: APP.models.todo,
+				filter: function (m) {
+					return m.get('user_id') == user_id && !m.get('done');
+				}
+			}));
+
 			this.tasks.show(new DEF.modules.tasks.TaskList({
 				template: require("./templates/taskline.html"),
 				collection: APP.models.tasks,
 				filter: APP.models.tasks.filters.Assigned(this.model)
 			}));
+
 			this.ideas.show(new DEF.modules.tasks.TaskList({
 				template: require("./templates/taskline.html"),
 				collection: APP.models.tasks,
 				filter: APP.models.tasks.filters.Kind("idea")
-			}));
-			this.todos.show(new DEF.modules.todo.MainView({
-				collection: APP.models.todo
 			}));
 		}
 	})
@@ -213,4 +220,4 @@ DEF.modules.users.MainView = Roadtrip.RecordList.extend({
 		APP.root.showChildView('main', page);
 	}
 
-});;
+});

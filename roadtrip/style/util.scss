@@ -31,7 +31,12 @@
 }
 
 .click {
-	cursor: pointer;
+	cursor        : pointer;
+	pointer-events: auto;
+}
+
+.noclick {
+	pointer-events: none;
 }
 
 .hover:hover {
@@ -155,6 +160,7 @@ input[disabled] {
 	a {
 		color          : $link_color;
 		text-decoration: none;
+		pointer-events : auto;
 	}
 }
 

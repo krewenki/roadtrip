@@ -10,7 +10,6 @@ require('backbone.highway');
 require('../style/style.scss');
 require("font-awesome-webpack");
 
-
 require("./roadtrip.js");
 require("./layout.js");
 require("./search.js");
@@ -31,6 +30,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 	 * @return  null
 	 */
 	SetUpWindowEvents: function () {
+
 		// document.onmouseover = function() {
 		// 	//User's mouse is inside the page. (This is working)
 		// 	window.innerDocClick = true;
@@ -141,7 +141,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 		});
 		APP.LogEvent(module, module_id, "Todo created: " + task, {
 			for: user_id
-		}, "todo")
+		}, "todo");
 	},
 	Icon_Lookup: {
 		// module icons.  Gotta be here, so the UI can be drawn prior to init
@@ -189,38 +189,6 @@ var MainApp = Backbone.Marionette.Application.extend({
 		}
 		return "<i title='" + title + "' class='icon fa fa-" + icon + "'></i>";
 	},
-	_UpdateTaskID: function () {
-		for (let model of APP.models.tasks.filter({
-				"parent_module": "tasks"
-			})) {
-			if (model.get('parent_id')
-				.length > 10) {
-				var parent = APP.models.tasks.findWhere({
-					"_id": model.get('parent_id')
-				});
-				if (parent) {
-					model.set({
-						parent_id: parent.id
-					});
-				} else {
-					APP.models.tasks.remove(model);
-					console.log("bad", model);
-				}
-			}
-
-		}
-	},
-	_UpdateTasks: function () {
-		APP.models.tasks.each(function (m) {
-			if (m.get('parent_id')
-				.length > 10) {
-				m.set({
-					parent_id: m.get('parent_id')
-						.slice(2)
-				});
-			}
-		});
-	}
 });
 
 
