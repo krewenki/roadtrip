@@ -19,9 +19,6 @@ var app = express();
 var http = require('http').Server(app);
 
 
-
-
-
 app.use(express.static(publicPath));
 
 if (!isProduction) {
@@ -44,8 +41,11 @@ app.set('host', isProduction ? process.env.HOST : 'localhost');
 var server = app.listen(port, function () {
 	console.log('Server running on port ' + port);
 });
-var io = require('socket.io').listen(server);
-io.set('origins', 'http://localhost:3000');
+
+
+
+
+
 
 app.get('/user/:id', function (req, res, next) {
 	if (req.params.id === 'me') {
@@ -57,6 +57,12 @@ app.get('/user/:id', function (req, res, next) {
 	}
 });
 
+
+//require('./server/highway.js')(app, server, ['./modules/revisions/routes.js']);
+
+var io = require('socket.io').listen(server);
+io.set('origins', 'http://localhost:3000');
+
 var config = require('./server/config.js');
 config.http = app;
 config.io = io;
@@ -64,6 +70,7 @@ config.io = io;
 var hw = new Highway(config);
 
 hw.LoadRoutes(require('./modules/revisions/routes.js'));
+hw.LoadRoutes(require('./modules/repositories/routes.js'));
 //hw.LoadRoutes(require('./modules/tasks/routes.js'));
 
 function exitHandler(options, err) {
