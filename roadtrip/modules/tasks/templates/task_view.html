@@ -139,7 +139,22 @@
 					</table>
 </div>
 
-<div id='state_log'></div>
+<table class='right_box' id='todo_container'>
+	<thead>
+		<td>
+			<input type='text' id='new_todo' placeholder='To do...'>
+		</td>
+		<td class='pull-right'>
+			<%=APP.HTML.Select("assigned_to", APP.models.users,"name","_id",assigned_to,"field", true)%>
+				<button id='create_todo'>
+					<%=APP.Icon('new')%>
+				</button>
+		</td>
+	</thead>
+	<tbody></tbody>
+</table>
+
+<div class='right_box' id='state_log'></div>
 
 <h2>Description</h2>
 <div class='description'>

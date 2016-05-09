@@ -5,7 +5,7 @@ DEF.modules.tasks.Initialize = function () {
 };
 DEF.modules.tasks.Router = Roadtrip.Router.extend({
 	collections: [
-		"users", "tasks", "projects"
+		"users", "tasks", "projects", "todo"
 	],
 	collections_extra: [
 		"revisions", "repositories", "timeclock"
@@ -230,7 +230,9 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		state: "#state",
 		star: "#star",
 		hours: ".hour_picker",
-		state_log: "#state_log"
+		state_log: "#state_log",
+		todo_list: "#todo_container",
+		create_todo: "#create_todo"
 	},
 	events: {
 		"click @ui.edit": "Edit",
@@ -240,7 +242,8 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		"mouseup @ui.progress": "LogProgress",
 		"change @ui.state": "UpdateProgressLabel",
 		"click @ui.star": "Star",
-		"click @ui.hours": "PutHours"
+		"click @ui.hours": "PutHours",
+		"click @ui.create_task": "CreateTask"
 	},
 	modelEvents: {
 		"change state": "render"
@@ -258,6 +261,21 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		if (U.is_starred(this.model.module, this.model.id))
 			this.ui.star.html(APP.Icon('star'));
 		this.DoStateLog();
+		this.DoToDoList();
+	},
+	CreateTask: function () {
+		console.log("X", $(""));
+		var task = $("#todo_container #new_todo").val();
+		var assigned_to = $("#todo_container #assigned_to").val();
+		APP.CreateTodo(assigned_to, "tasks", this.model.id, task);
+	},
+	DoToDoList: function () {
+		// var list = new DEF.modules.tasks.TaskList({
+		// 	template: require("./templates/todo_line.html"),
+		// 	collection: APP.models.tasks,
+		// });
+		// debugger;
+
 	},
 	/**
 	 * Populate the state log.
@@ -421,7 +439,7 @@ DEF.modules.tasks.views = {
 			open: "#open_subtasks",
 			closed: "#closed_subtasks",
 			comments: "#comment_container",
-			revisions: "#revisions_container"
+			revisions: "#revisions_container",
 		},
 		onBeforeShow: function () {
 			this.model.UpdateTaskProgress();
