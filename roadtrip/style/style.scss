@@ -260,8 +260,8 @@ body {
 				background-size: 100% 100%;
 				text-align     : center;
 
-				#taskcount {
-					margin-top : 15px;
+				.counts {
+					margin-top : 5px;
 					color      : white;
 					text-shadow: -2px -2px 0 black, 2px -2px 0 black, -2px 2px 0 black, 2px 2px 0 black;
 				}

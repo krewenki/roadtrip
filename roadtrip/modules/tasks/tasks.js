@@ -202,7 +202,7 @@ DEF.modules.tasks.TaskList = Backbone.Marionette.CollectionView.extend({
 	}
 });
 
-DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
+DEF.modules.tasks.TaskDetails = Backbone.Marionette.LayoutView.extend({
 	template: require("./templates/task_view.html"),
 	templateHelpers: function () {
 		var parent = APP.models[this.model.get('parent_module')].get(this.model.get('parent_id'));
@@ -222,6 +222,10 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 			icon: this.model.getUp("task_kinds")[this.model.get('kind')]
 		};
 	},
+	regions: {
+		"todo": "#todo_container",
+		"states": "#state_log"
+	},
 	ui: {
 		edit: "#edit",
 		subtask: "#subtask",
@@ -232,7 +236,6 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		hours: ".hour_picker",
 		state_log: "#state_log",
 		todo_list: "#todo_container",
-		create_todo: "#create_todo"
 	},
 	events: {
 		"click @ui.edit": "Edit",
@@ -243,7 +246,6 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 		"change @ui.state": "UpdateProgressLabel",
 		"click @ui.star": "Star",
 		"click @ui.hours": "PutHours",
-		"click @ui.create_task": "CreateTask"
 	},
 	modelEvents: {
 		"change state": "render"
@@ -262,12 +264,21 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.ItemView.extend({
 			this.ui.star.html(APP.Icon('star'));
 		this.DoStateLog();
 		this.DoToDoList();
-	},
-	CreateTask: function () {
-		console.log("X", $(""));
-		var task = $("#todo_container #new_todo").val();
-		var assigned_to = $("#todo_container #assigned_to").val();
-		APP.CreateTodo(assigned_to, "tasks", this.model.id, task);
+
+		var this_id = this.model.id;
+		this.todo.show(new DEF.modules.todo.MainView({
+			template: require("./templates/todo_list.html"),
+			line_template: require("./templates/todo_line.html"),
+			module: "tasks",
+			module_id: this.model.id,
+			collection: APP.models.todo,
+			assigned_to: this.model.get('assigned_to'),
+			filter: function (m) {
+				return m.get('module_id') == this_id && !m.get('done');
+			}
+		}));
+
+
 	},
 	DoToDoList: function () {
 		// var list = new DEF.modules.tasks.TaskList({

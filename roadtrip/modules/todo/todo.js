@@ -2,7 +2,6 @@ DEF.modules.todo = {
 	views: {}
 };
 DEF.modules.todo.Initialize = function () {
-	APP.Icon_Lookup.todo = "list";
 	if (!APP.models.todo)
 		APP.models.todo = new DEF.modules.todo.Collection();
 };
@@ -12,19 +11,6 @@ DEF.modules.todo.Router = Roadtrip.Router.extend({
 		"todo", "users"
 	],
 	module: "todo",
-	routes: {
-		"todo": "ShowRoot",
-		"todo/:mode/:date": "ShowWeek"
-	},
-	ShowWeek: function (mode, date) {
-		var module = this.module;
-		APP.Page = new DEF.modules[module].MainView({
-			collection: APP.models[module],
-			date: date,
-			mode: mode
-		});
-		APP.root.showChildView("main", APP.Page);
-	}
 });
 
 
@@ -46,6 +32,13 @@ DEF.modules.todo.Model = Roadtrip.Model.extend({
 DEF.modules.todo.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.todo.Model,
 	url: 'roadtrip.telegauge.com/roadtrip/todo',
+	filters: {
+		Assigned: function (model) {
+			return function (m) {
+				return m.get('assigned_to') == model.id;
+			};
+		}
+	}
 });
 
 /**
@@ -56,7 +49,10 @@ DEF.modules.todo.RecordLine = Roadtrip.RecordLine.extend({
 	tagName: "tr",
 	className: 'click',
 	template: require("./templates/todoline.html"),
-	events: {}
+	initialize: function () {
+		if (this.options.template)
+			this.template = this.options.template;
+	}
 });
 
 /**
@@ -67,4 +63,29 @@ DEF.modules.todo.MainView = Roadtrip.RecordList.extend({
 	template: require("./templates/todolist.html"),
 	childView: DEF.modules.todo.RecordLine,
 	childViewContainer: "#record_list",
+	templateHelpers: function () {
+		return {
+			assigned_to: this.options.assigned_to
+		};
+	},
+	ui: {
+		create_todo: "#create_todo"
+	},
+	events: {
+		"click @ui.create_todo": "CreateTodo"
+	},
+	childViewOptions: function () {
+		return {
+			template: this.options.line_template,
+			assigned_to: this.options.assigned_to
+		};
+	},
+	CreateTodo: function () {
+		var task = $("#todo_container #new_todo").val();
+		var assigned_to = $("#todo_container #assigned_to").val();
+		if (task.length && assigned_to.length) {
+			APP.CreateTodo(assigned_to, this.options.module, this.options.module_id, task);
+		}
+	},
+
 });
