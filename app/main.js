@@ -134,10 +134,11 @@ var MainApp = Backbone.Marionette.Application.extend({
 	},
 	CreateTodo: function (user_id, module, module_id, task) {
 		APP.models.todo.create({
-			user_id: user_id,
+			assigned_to: user_id,
 			module: module,
 			module_id: module_id,
-			task: task
+			task: task,
+			created_by: U.id
 		});
 		APP.LogEvent(module, module_id, "Todo created: " + task, {
 			for: user_id

@@ -60,6 +60,7 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 		results: "#SEARCH",
 		login: "#login",
 		taskcount: '#taskcount',
+		todocount: '#todocount',
 		stars: "#stars"
 	},
 	events: {
@@ -73,6 +74,8 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 	onBeforeRender: function () {
 		$("#HEADER").addClass(U.get('prefs').header);
 		if (U) {
+			this.listenTo(APP.models.tasks, "sync add remove", this.UpdateUserTodoCount);
+			this.listenTo(APP.models.tasks, "change:done", this.UpdateUserTodoCount);
 			this.listenTo(APP.models.tasks, "sync add remove", this.UpdateUserTaskCount);
 			this.listenTo(APP.models.tasks, "change:assigned_to change:state", this.UpdateUserTaskCount);
 			this.InitStars();
@@ -106,6 +109,17 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 			html += "<div class='starred_item'>" + APP.GetLink(bits[0], bits[1]) + "</div>";
 		}
 		this.ui.stars.html(html);
+	},
+	UpdateUserTodoCount: function () {
+		if (U) {
+			var length = APP.models.todo.filter(APP.models.todo.filters.Assigned(U)).length;
+			if (length) {
+				this.ui.todocount.html("" + APP.Icon("todo") + "" + length + "");
+			} else {
+				this.ui.todocount.html("");
+			}
+
+		}
 	},
 	UpdateUserTaskCount: function () {
 		if (U) {
