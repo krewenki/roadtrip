@@ -171,7 +171,7 @@ DEF.modules.users.views = {
 			this.todos.show(new DEF.modules.todo.MainView({
 				collection: APP.models.todo,
 				filter: function (m) {
-					return m.get('user_id') == user_id && !m.get('done');
+					return m.get('assigned_to') == user_id && !m.get('done');
 				}
 			}));
 
