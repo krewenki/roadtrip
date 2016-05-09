@@ -1,4 +1,6 @@
 #TASKS {
+	.right_box {}
+
 	.description {
 		padding    : 10px;
 		line-height: 20px;
@@ -31,10 +33,18 @@
 		}
 	}
 
-	#state_log {
-		font-size: 12px;
-		float    : right;
-		color    : $text_light_color;
+	.right_box {
+		font-size       : 12px;
+		float           : right;
+		color           : $text_light_color;
+		clear           : both;
+		min-width       : 350px;
+		margin          : 5px;
+		background-color: #eee;
+
+		table {
+			width: 100%;
+		}
 	}
 
 	#menu {
