@@ -119,9 +119,6 @@ var MainApp = Backbone.Marionette.Application.extend({
 	 * @param {object} extras  Any additional info?
 	 */
 	LogEvent: function (module, id, event, extras = false, group = false) {
-		if (group) {
-			console.log(event, extras);
-		}
 		APP.models.events.create({
 			module: module,
 			module_id: id,

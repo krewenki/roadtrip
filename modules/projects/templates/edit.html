@@ -86,8 +86,9 @@
 			To Do generation
 		</th>
 		<td>
-			<div class='note'>State Kind: Icon</div>
+			<div class='note'>{ State: [array of people], ... }</div>
 			<textarea class='field json' id='task_kinds'>
+				<%=JSON.stringify(todo_targets,null,2)%>
 			</textarea>
 		</td>
 	</tr>

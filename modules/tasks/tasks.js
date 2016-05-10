@@ -363,16 +363,15 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.LayoutView.extend({
 			this.model.set({
 				assigned_to: U.id
 			});
-		if (label == 'Review') {
-			this.model.set({
-				assigned_to: this.model.get('_').created_by
-			});
-		}
-		if (label != this.model.get('state'))
+		if (label != this.model.get('state')) {
 			APP.LogEvent("tasks", this.model.id, label, {
 				"old": this.model.get('state'),
 				"new": label
 			}, "task_state");
+
+			this.GenerateTodo(this.model.get('state'), label);
+
+		}
 		this.model.set({
 			'progress': this.ui.progress.val(),
 			'state': label
@@ -415,6 +414,28 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.LayoutView.extend({
 			"progress": this.model.get('progress'),
 			"state": this.model.get('state')
 		});
+	},
+	/**
+	 * If a state changes, look up "todo_targets" and see who to create TODOs for
+	 * @param {string} old_state The name of the old state
+	 * @param {string} new_state The name of the new state
+	 */
+	GenerateTodo: function (old_state, new_state) {
+		new_state = new_state.toLowerCase();
+		if (old_state != new_state) {
+			var todo_targets = this.model.getUp('todo_targets');
+			if (todo_targets[new_state]) {
+				var targets = todo_targets[new_state];
+				var self = U.id;
+				for (var t in targets) {
+					var user_id = targets[t];
+					if (user_id != U.id) {
+						APP.CreateTodo(user_id, "tasks", this.model.id, "Task state went to ''" + new_state + "'");
+					}
+				}
+
+			}
+		}
 	}
 });
 
