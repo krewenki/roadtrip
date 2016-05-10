@@ -1,9 +1,7 @@
 <td>
-	<%=task%>
+	<%=done?APP.Icon("check-square-o"):APP.Icon("square-o")%>
+		<%=task%>
 </td>
 <td>
 	<%=APP.GetLink("users",assigned_to)%>
-</td>
-<td>
-	<input type='checkbox'>
 </td>

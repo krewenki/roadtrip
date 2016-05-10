@@ -362,6 +362,10 @@ body {
 		font-size: 20px;
 	}
 
+	.done {
+		text-decoration: line-through;
+	}
+
 	.money {
 		&.negative {
 			color: red;

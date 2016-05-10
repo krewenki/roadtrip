@@ -8,7 +8,7 @@ DEF.modules.todo.Initialize = function () {
 DEF.modules.todo.Router = Roadtrip.Router.extend({
 	initialize: function () {},
 	collections: [
-		"todo", "users"
+		"todo", "users", "tasks"
 	],
 	module: "todo",
 });
@@ -19,10 +19,12 @@ DEF.modules.todo.Model = Roadtrip.Model.extend({
 	module: "todo",
 	defaults: {
 		_: {},
+		done: false,
 		module: "order",
 		module_id: "",
 		task: "",
-		user: ""
+		created_by: false,
+		assigned_to: false
 	},
 	search_string: function () {
 		return false;
@@ -47,11 +49,26 @@ DEF.modules.todo.Collection = Roadtrip.Collection.extend({
 DEF.modules.todo.RecordLine = Roadtrip.RecordLine.extend({
 	module: "todo",
 	tagName: "tr",
-	className: 'click',
 	template: require("./templates/todoline.html"),
+	ui: {
+		done: "#done"
+	},
+	events: {
+		"click @ui.done": "CompleteTask"
+	},
 	initialize: function () {
 		if (this.options.template)
 			this.template = this.options.template;
+		if (this.model.get('done'))
+			this.$el.addClass("done");
+		console.log(this.model.get('done'));
+	},
+	CompleteTask: function () {
+		this.ui.done.html(APP.Icon("check-square-o"));
+		this.$el.fadeOut(function () {
+			this.model.set("done", true);
+			APP.LogEvent("todo", this.model.id, "Task completed: " + this.model.get('task'));
+		}.bind(this));
 	}
 });
 
