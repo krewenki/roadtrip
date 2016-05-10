@@ -111,7 +111,7 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 		this.ui.stars.html(html);
 	},
 	UpdateUserTodoCount: function () {
-		if (U) {
+		if (U && APP.models.todo) {
 			var length = APP.models.todo.filter(APP.models.todo.filters.Assigned(U)).length;
 			if (length) {
 				this.ui.todocount.html("" + APP.Icon("todo") + "" + length + "");
@@ -119,6 +119,8 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 				this.ui.todocount.html("");
 			}
 
+		} else {
+			DEF.modules.todo.Initialize();
 		}
 	},
 	UpdateUserTaskCount: function () {
