@@ -1,6 +1,10 @@
 #TASKS {
 	.right_box {}
 
+	#todo .done {
+		text-decoration: line-through;
+	}
+
 	.description {
 		padding    : 10px;
 		line-height: 20px;

@@ -39,6 +39,11 @@ DEF.modules.todo.Collection = Roadtrip.Collection.extend({
 			return function (m) {
 				return m.get('assigned_to') == model.id;
 			};
+		},
+		Incomplete: function (model) {
+			return function (m) {
+				return m.get('assigned_to') == model.id && !m.get('done');
+			};
 		}
 	}
 });
@@ -68,6 +73,7 @@ DEF.modules.todo.RecordLine = Roadtrip.RecordLine.extend({
 		this.$el.fadeOut(function () {
 			this.model.set("done", true);
 			APP.LogEvent("todo", this.model.id, "Task completed: " + this.model.get('task'));
+
 		}.bind(this));
 	}
 });

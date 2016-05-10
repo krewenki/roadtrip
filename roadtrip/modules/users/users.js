@@ -172,7 +172,13 @@ DEF.modules.users.views = {
 				collection: APP.models.todo,
 				filter: function (m) {
 					return m.get('assigned_to') == user_id && !m.get('done');
-				}
+				},
+				emptyView: DEF.EmptyView,
+				emptyViewOptions: {
+					icon: "smile-o",
+					msg: "No current tasks",
+					colspan: 5
+				},
 			}));
 
 			this.tasks.show(new DEF.modules.tasks.TaskList({
