@@ -1,0 +1,18 @@
+<table class='right_box' id='record_list'>
+	<thead>
+		<tr>
+			<td>
+				<input type='text' id='new_todo' placeholder='To do...'>
+			</td>
+			<td class=''>
+				<%=APP.HTML.Select("assigned_to", APP.models.users,"name","_id",assigned_to,"field", true)%>
+			</td>
+			<td>
+				<button id='create_todo'>
+					<%=APP.Icon('new')%>
+				</button>
+			</td>
+		</tr>
+	</thead>
+	<tbody></tbody>
+</table>
