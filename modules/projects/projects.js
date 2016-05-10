@@ -48,6 +48,10 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 			"feature": "star",
 			"idea": "lightbulb-o",
 			"support": "wechat",
+		},
+
+		todo_targets: {
+			"review": ["56f3f7cb4b88de4618e306c0", "56fd29934b88de4618e306c5"]
 		}
 	},
 	GetLink: function (cmd) {
