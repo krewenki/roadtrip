@@ -263,7 +263,6 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.LayoutView.extend({
 		if (U.is_starred(this.model.module, this.model.id))
 			this.ui.star.html(APP.Icon('star'));
 		this.DoStateLog();
-		this.DoToDoList();
 
 		var this_id = this.model.id;
 		this.todo.show(new DEF.modules.todo.MainView({
@@ -274,18 +273,10 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.LayoutView.extend({
 			collection: APP.models.todo,
 			assigned_to: this.model.get('assigned_to'),
 			filter: function (m) {
-				return m.get('module_id') == this_id && !m.get('done');
+				return m.get('module_id') == this_id;
 			}
 		}));
 
-
-	},
-	DoToDoList: function () {
-		// var list = new DEF.modules.tasks.TaskList({
-		// 	template: require("./templates/todo_line.html"),
-		// 	collection: APP.models.tasks,
-		// });
-		// debugger;
 
 	},
 	/**
