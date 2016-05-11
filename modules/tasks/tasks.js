@@ -172,7 +172,8 @@ DEF.modules.tasks.TaskLine = Backbone.Marionette.ItemView.extend({
 	template: require("./templates/taskline.html"),
 	templateHelpers: function () {
 		return {
-			icon: this.model.getUp("task_kinds")[this.model.get('kind')]
+			icon: this.model.getUp("task_kinds")[this.model.get('kind')],
+			top: this.model.getTop("nameAttribute", true)
 		};
 	},
 	className: "click hover",

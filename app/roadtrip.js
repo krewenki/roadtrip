@@ -78,7 +78,7 @@ window.Roadtrip = {
 				console.error("Model not found", module, arg);
 			}
 			if (!U.Can(model.getUp('group'))) {
-				alert("Permission Denied");
+				alert("Permission Denied: " + model.getUp('group'));
 				return;
 			}
 
@@ -249,6 +249,32 @@ window.Roadtrip = {
 				}
 			}
 			return false;
+		},
+		getTop: function (field, link) {
+			var rs = false;
+			if (this.get('parent_module')) {
+				var collection = APP.models[this.get('parent_module')];
+				if (collection) {
+					var model = collection.get(this.get('parent_id'));
+					if (model) {
+						return model.getTop(field, link);
+					}
+				} else {
+					if (field == 'nameAttribute')
+						rs = this.get(this.nameAttribute);
+					else
+						rs = this.get(field);
+				}
+			} else {
+				if (field == 'nameAttribute')
+					rs = this.get(this.nameAttribute);
+				else
+					rs = this.get(field);
+			}
+			if (link && rs) {
+				rs = APP.GetLink(this.module, this.id, rs);
+			}
+			return rs;
 		},
 		/**
 		 * Use this to quickly set stats for the models
