@@ -19,7 +19,7 @@
 
 <table id='project_header' class='table table-full table-left '>
 	<tr>
-		<td rowspan=2 class='icon'>
+		<td rowspan=3 class='box' id='main_icon'>
 			<%=APP.Icon(icon)%>
 		</td>
 		<th>Project</th>
@@ -55,7 +55,7 @@
 	</tr>
 	<tr>
 
-		<td colspan=7>
+		<td colspan=6>
 			<progress id='progress' value='<%=progress%>' min=0 max=100>
 				<%=progress%>
 			</progress>

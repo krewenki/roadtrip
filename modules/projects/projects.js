@@ -306,6 +306,7 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 			},
 			series: series,
 		});
+		$(".highcharts-container text:contains('Highcharts')").css('display', 'none'); // hide the source, as it overlaps
 	},
 	CreateTask: function () {
 		var page = new DEF.modules.tasks.views.edit({

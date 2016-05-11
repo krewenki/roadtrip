@@ -2,7 +2,7 @@ DEF.modules.expenses.ExpenseLineReadOnly = Backbone.Marionette.ItemView.extend({
 	tagName: "tr",
 	module: "expenses",
 	template: require("./templates/expense_line_ro.html"),
-	templateHelpers: function() {
+	templateHelpers: function () {
 		return {
 			line: this.model.collection.indexOf(this.model),
 			duration: this.options.duration,
@@ -17,13 +17,13 @@ DEF.modules.expenses.views.view = Backbone.Marionette.CompositeView.extend({
 	id: 'EXPENSES',
 	childView: DEF.modules.expenses.ExpenseLineReadOnly,
 	childViewContainer: "#expenses",
-	childViewOptions: function() {
+	childViewOptions: function () {
 		return {
 			duration: this.model.get('duration'),
 			mileage_rate: this.model.get('mileage_rate')
 		};
 	},
-	filter: function(m) {
+	filter: function (m) {
 		return m.get('total') !== 0;
 	},
 	ui: {
@@ -35,22 +35,22 @@ DEF.modules.expenses.views.view = Backbone.Marionette.CompositeView.extend({
 	modelEvents: {
 		"change": "render"
 	},
-	onBeforeRender: function() {
+	onBeforeRender: function () {
 		this.collection = new DEF.modules.expenses.ExpenseCollection(this.model.get('expenses'));
 
 	},
-	onShow: function() {
+	onShow: function () {
 		APP.SetTitle("Expenses " + this.model.get('expense_id'), "expenses");
 
 		this.DrawPie();
 	},
-	onRender: function() {
+	onRender: function () {
 		console.log("render");
 	},
-	Edit: function() {
+	Edit: function () {
 		APP.Route("#" + this.module + "/" + "edit" + "/" + this.model.id);
 	},
-	DrawPie: function() {
+	DrawPie: function () {
 		var series = [{
 			name: 'Expenses',
 			data: []
@@ -62,7 +62,7 @@ DEF.modules.expenses.views.view = Backbone.Marionette.CompositeView.extend({
 			else
 				totals[line.category] = Number(line.total);
 		}
-		Object.keys(totals).forEach(function(cat) {
+		Object.keys(totals).forEach(function (cat) {
 			if (totals[cat])
 				series[0].data.push({
 					name: cat,
@@ -80,5 +80,6 @@ DEF.modules.expenses.views.view = Backbone.Marionette.CompositeView.extend({
 			},
 			series: series
 		});
+		$(".highcharts-container text:contains('Highcharts')").css('display', 'none');
 	}
 });

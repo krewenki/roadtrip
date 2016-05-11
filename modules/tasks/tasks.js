@@ -265,8 +265,8 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.LayoutView.extend({
 			this.ui.star.html(APP.Icon('star'));
 		this.DoStateLog();
 
-		if (this.model.get('subtasks'))
-			this.model.set('progress', this.model.getDown('progress', 'avg'));
+		// if (this.model.get('subtasks'))
+		// 	this.model.set('progress', this.model.getDown('progress', 'avg'));
 
 		var this_id = this.model.id;
 		this.todo.show(new DEF.modules.todo.MainView({

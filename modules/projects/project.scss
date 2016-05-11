@@ -1,77 +1,80 @@
 #PROJECTS {
-    #chart {
-        width: 250px;
-    }
+	#chart {
+		width: 250px;
+	}
 
-    #description {
-        text-align: justify;
-        padding   : 25px;
-        color     : $text_light_color;
-    }
+	#description {
+		text-align: justify;
+		padding   : 25px;
+		color     : $text_light_color;
+	}
 
-    #project_header {
-        .icon {
-            font-size : 50px;
-            color     : $text_light_color;
-            width     : 60px;
-            height    : 60px;
-            text-align: center;
-        }
+	#project_header {
+		margin-top   : -30px;
+		border-bottom: 5px solid #555;
 
-        .project {
-            font-weight: bold;
-        }
+		#main_icon {
+			font-size : 50px;
+			color     : $text_light_color;
+			width     : 60px;
+			height    : 60px;
+			text-align: center;
+		}
 
-        .goal {
-            font-style: italic;
-            color     : $text_light_color;
-        }
-    }
+		.project {
+			font-weight: bold;
+		}
 
-    #record_list {
-        display        : flex;
-        flex-wrap      : wrap;
-        justify-content: space-around;
-        align-content  : space-around;
-        align-items    : center;
+		.goal {
+			font-style: italic;
+			color     : $text_light_color;
+		}
+	}
 
-        .box {
-            &:hover {
-                background-color: rgba(0, 255, 255, 0.1);
+	#record_list {
+		display        : flex;
+		flex-wrap      : wrap;
+		justify-content: space-around;
+		align-content  : space-around;
+		align-items    : center;
+	}
 
-                .icon {
-                    color: #069;
-                }
-            }
-            color        : $text_light_color;
-            border       : 3px solid #555;
-            margin       : 20px;
-            padding      : 20px;
-            border-radius: 15px;
-            height       : 150px;
-            overflow     : hidden;
-            text-align   : center;
-            box-shadow   : 5px 5px 15px 5px rgba(0, 0, 0, 0.2);
-            flex         : 'flex-grow';
+	.box {
+		&:hover {
+			background-color: rgba(0, 255, 255, 0.1);
 
-            #title {
-                font-weight: bold;
-                color      : black;
-            }
+			.icon {
+				color: #069;
+			}
+		}
+		color        : $text_light_color;
+		border       : 3px solid #555;
+		margin       : 20px;
+		padding      : 20px;
+		border-radius: 15px;
+		height       : 150px;
+		overflow     : hidden;
+		text-align   : center;
+		box-shadow   : -5px 5px 15px 5px rgba(0, 0, 0, 0.2);
+		flex         : 'flex-grow';
 
-            #goal {
-                font-size  : 12px;
-                color      : #999;
-                font-style : italic;
-                height     : 12px;
-                white-space: nowrap;
-            }
+		#title {
+			font-weight: bold;
+			color      : black;
+		}
 
-            .icon {
-                font-size: 50px;
-                width    : 50px;
-                height   : 50px;
-            }
-        }
-    }
+		#goal {
+			font-size  : 12px;
+			color      : #999;
+			font-style : italic;
+			height     : 12px;
+			white-space: nowrap;
+		}
+
+		.icon {
+			font-size: 50px;
+			width    : 55px;
+			height   : 55px;
+		}
+	}
 }
