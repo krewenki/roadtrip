@@ -1,5 +1,5 @@
 DEF.modules.expenses = {}
-DEF.modules.expenses.Initialize = function() {
+DEF.modules.expenses.Initialize = function () {
 	if (!APP.models.expenses)
 		APP.models.expenses = new DEF.modules.expenses.Collection();
 };
@@ -8,7 +8,7 @@ DEF.modules.expenses.Router = Roadtrip.Router.extend({
 	collections: [
 		"users", "expenses", "orders"
 	],
-	initialize: function() {
+	initialize: function () {
 
 		APP.Icon_Lookup["car"] = "car";
 		APP.Icon_Lookup["cab"] = "cab";
@@ -42,7 +42,7 @@ DEF.modules.expenses.Model = Roadtrip.Model.extend({
 	nameAttribute: 'expense_id', // the human-readable field in the record
 	//idAttribute: 'expense_id',
 	module: "expenses",
-	search_string: function() {
+	search_string: function () {
 		return false;
 	},
 	defaults: {
@@ -60,10 +60,10 @@ DEF.modules.expenses.Model = Roadtrip.Model.extend({
 		mileage_rate: 0.575,
 		expenses: []
 	},
-	GetID: function() {
+	GetID: function () {
 		if (this.id)
 			return this.id; // the ID has  already been generated
-		return APP.Tools.Aggregate(APP.models.expenses, "expense_id", "max") + 1;
+		return APP.Tools.Aggregate(APP.models.expenses, "max", "expense_id") + 1;
 	}
 });
 DEF.modules.expenses.Collection = Backbone.Highway.Collection.extend({
@@ -106,11 +106,11 @@ DEF.modules.expenses.MainView = Roadtrip.RecordList.extend({
 	events: {
 		"click @ui.add": "Add"
 	},
-	onShow: function() {
+	onShow: function () {
 		APP.SetTitle("Expenses", "expenses");
 
 	},
-	Add: function() {
+	Add: function () {
 		var page = new DEF.modules.expenses.views.edit({
 			model: APP.models.expenses.create({
 				x: 'y'

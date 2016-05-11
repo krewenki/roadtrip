@@ -250,6 +250,13 @@ window.Roadtrip = {
 			}
 			return false;
 		},
+		/**
+		 * Like getUp, but goes all the way to the very top of the chain.  Use "nameAttribute" to use
+		 * the top model's nameAttribute.
+		 * @param  {string} field the name of the field, or "nameAttribute"
+		 * @param  {bool} link  return the results as a APP.getLink
+		 * @return {string}       the contents of the field
+		 */
 		getTop: function (field, link) {
 			var rs = false;
 			if (this.get('parent_module')) {
@@ -275,6 +282,28 @@ window.Roadtrip = {
 				rs = APP.GetLink(this.module, this.id, rs);
 			}
 			return rs;
+		},
+		/**
+		 * Given a field, recursively ask all the children for their values,
+		 * aggregated by the given function (min, max, averages)
+		 * @param  {string} field The field name
+		 * @param  {string} func  the function name (min, max, averages)
+		 * @return {vals}       the value of the aggregate function
+		 */
+		getDown: function (field, func) {
+			var vals = [];
+			var collection = APP.models[this.module].filter({
+				parent_module: this.module,
+				parent_id: this.id
+			});
+			if (collection.length === 0) {
+				return this.get(field);
+			} else {
+				for (var m in collection) {
+					vals.push(collection[m].getDown(field, func));
+				}
+			}
+			return APP.Tools.Aggregate(vals, func);
 		},
 		/**
 		 * Use this to quickly set stats for the models
@@ -352,25 +381,8 @@ window.Roadtrip = {
 			var subs = APP.models.tasks.where({
 				parent_id: this.id
 			});
-			this.set("subtasks", subs.length);
 			if (subs.length > 0) {
-				var weights = { // some kinds of tasks are more important.
-					"products": 1.5,
-					"feature": 1.1,
-					"bug": 0.8,
-					"todo": 0.5,
-					"support": 0.5,
-				};
-				var sum = 0,
-					count = 0;
-				for (var s = 0; s < subs.length; s++) {
-					var sub = subs[s];
-					if (sub.get('state') != 'Rejected') {
-						sum += (sub.get('progress') * (weights[sub.get('kind')] || 1.0) * sub.get('priority') / 100.0);
-						count += (weights[sub.get('kind')] || 1.0) * (sub.get('priority') / 100.0);
-					}
-				}
-				var progress = sum / count;
+				var progress = this.getDown('progress', 'avg');
 				progress = Number(progress.toFixed(2));
 				if (progress != this.get('progress')) {
 					console.log("Progress automatically set to ", progress, this.get('progress'));

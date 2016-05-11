@@ -303,10 +303,25 @@ APP.Tools = {
 	 * @param  {string} func       size(count), min, max.  anything _ provides
 	 * @return {number}            The result
 	 */
-	Aggregate: function (collection, key, func = "size") {
-		if (_.isArray(collection))
-			collection = new Backbone.Collection(collection);
-		return Number(_[func](collection.pluck(key)));
+	Aggregate: function (collection, func, key) {
+		var rs = false;
+		if (key)
+			collection = new Backbone.Collection(collection).pluck(key);
+		switch (func) {
+		case "min":
+		case "max":
+		case "size":
+			rs = Number(_[func](collection));
+			break;
+		case "avg":
+			var sum = collection.reduce(function (a, b) {
+				return Number(a) + Number(b);
+			});
+			rs = sum / collection.length;
+			break;
+
+		}
+		return rs;
 	}
 };
 
