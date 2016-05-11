@@ -26,3 +26,22 @@
 // 		left     : 3px;
 // 		color    : $link_color;
 // }
+//
+
+#tasks {
+	.top {
+		width: 150px;
+	}
+
+	.state {
+		width: 100px;
+	}
+
+	.progress {
+		width: 100px;
+	}
+
+	.task_id {
+		width: 100px;
+	}
+}
