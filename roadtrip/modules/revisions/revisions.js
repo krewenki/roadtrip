@@ -146,8 +146,15 @@ DEF.modules.revisions.MainView = Roadtrip.RecordList.extend({
 	template: require("./templates/main.html"),
 	childView: DEF.modules.revisions.views.RevisionLine,
 	childViewContainer: '#record_list',
+	// A task can show, without requiring Revisions collection.  So, if it hasn't loaded
+	// hide it.  But, if it syncs, and re-renders, figure out if we need to show it.
+	onRender: function () {
+		if (this.children.length)
+			this.$el.parent().show();
+	},
 	onShow: function () {
 		if (!this.children.length)
 			this.$el.parent().hide();
+
 	}
 });
