@@ -125,9 +125,28 @@ DEF.modules.db.DBLine = Roadtrip.RecordLine.extend({
 	tagName: "div",
 	className: "database",
 	template: require("./templates/db_line.html"),
+	templateHelpers: function () {
+		return {
+			length: APP.models[this.model.get('db')].length,
+			size: this.GetCollectionSize(APP.models[this.model.get('db')])
+		};
+	},
+	initialize: function () {
+		this.listenTo(APP.models[this.model.get('db')], "sync", this.render);
+	},
 	Click: function (e) {
 		APP.Route("#db/" + this.model.get('db'));
-	}
+	},
+	GetCollectionSize: function (collection) {
+		var size = 0;
+		collection.each(function (m) {
+			size += this.GetObjectSize(m);
+		}.bind(this));
+		return size;
+	},
+	GetObjectSize: function (object) {
+		return JSON.stringify(object).length;
+	},
 });
 
 
@@ -138,8 +157,7 @@ DEF.modules.db.Root = Roadtrip.RecordList.extend({
 		var dbs = [];
 		for (var db in APP.models) {
 			dbs.push({
-				db: db,
-				length: APP.models[db].length
+				db: db
 			});
 		}
 		this.collection = new Backbone.Collection(dbs);

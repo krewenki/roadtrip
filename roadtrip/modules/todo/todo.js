@@ -83,6 +83,7 @@ DEF.modules.todo.RecordLine = Roadtrip.RecordLine.extend({
  */
 DEF.modules.todo.MainView = Roadtrip.RecordList.extend({
 	id: 'todo',
+	//	tagName:"table"
 	template: require("./templates/todolist.html"),
 	childView: DEF.modules.todo.RecordLine,
 	childViewContainer: "#record_list",

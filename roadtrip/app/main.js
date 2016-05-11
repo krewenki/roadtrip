@@ -348,6 +348,18 @@ APP.Format = {
 	number: function (val) {
 		return val.toLocaleString();
 	},
+	bytes: function (val) {
+		var unit = 'b';
+		if (val > 1000) {
+			unit = 'kb';
+			val /= 1000;
+		}
+		if (val > 1000) {
+			unit = 'mb';
+			val /= 1000;
+		}
+		return APP.Format.fixed(val, 1) + unit;
+	},
 	/**
 	 * Returns a number with commas and dollarsigns and all that shit removed.
 	 * Deccimals remain, though
