@@ -42,15 +42,11 @@
 	<tr>
 		<th>Kind</th>
 		<td colspan=3>
-			<select class='field' id='kind'>
-				<option></option>
-				<%
+			<%
 				for (var k in task_kinds) {
-					print ("<option "+(kind==k?"selected":"")+" value='"+k+"'>"+APP.Format.first(k)+"</option>");
+					print ("<input class='field' type='radio' name='kind' id='kind' "+(kind==k?"checked":"")+" value='"+k+"'>"+APP.Format.first(k)+"</input>&nbsp;&nbsp;");
 				}
-
 				%>
-			</select>
 		</td>
 	</tr>
 	<tr>
