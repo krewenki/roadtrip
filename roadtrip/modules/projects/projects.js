@@ -60,7 +60,7 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 		return "#projects/" + cmd + "/" + this.get('_id');
 	},
 	GetID: function () { // this is required when creating tasks
-		return APP.Tools.Aggregate(APP.models.projects, "project_id", "max") + 1;
+		return APP.Tools.Aggregate(APP.models.projects, "max", "project_id") + 1;
 	},
 	GetChildID: function () {
 		var prefix = false,
