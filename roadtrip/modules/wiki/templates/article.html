@@ -1,5 +1,10 @@
 <div id='menu'>
-		<span id='title'>Wiki: <%=title%></span>
+	<span id='title'>Wiki: <%=title%></span>
+	<% if (U.Can("tasks") || _.created_by==U.id) { %>
+		<div class='cmd link' id='edit'>
+			<%=APP.Icon('edit')%> edit wiki
+		</div>
+		<% }%>
 </div>
 
 <%=APP.Format.markdown(content)%>

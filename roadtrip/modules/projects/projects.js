@@ -107,7 +107,8 @@ DEF.modules.projects.Router = Roadtrip.Router.extend({
 	routes: {
 		"projects": "ShowRoot",
 		"projects/:project": "ShowProject",
-		"projects/:project/wiki/:article": "ShowWiki",
+		"projects/:project/wiki": "ShowWiki",
+		"projects/:project/wiki/edit": "EditWiki",
 		"projects/:project/edit/:arg": "EditProject",
 		"projects/view/:arg": "RedirectView",
 	},
@@ -145,10 +146,26 @@ DEF.modules.projects.Router = Roadtrip.Router.extend({
 		APP.Route("#projects/" + APP.models.projects.get(id).get('project'));
 	},
 	ShowWiki: function (project, article) {
+		var parent = APP.models.projects.findWhere({
+			project: project
+		});
 		var wikis = new DEF.modules.wiki.Article({
-			model: new DEF.modules.wiki.Model(APP.models.projects.findWhere({
-				project: project
-			}).get('_wiki'))
+			parent_module: "projects",
+			parent_id: project,
+			model: new DEF.modules.wiki.Model(parent.get('_wiki')),
+			parent: parent
+		});
+		APP.root.showChildView('main', wikis);
+	},
+	EditWiki: function (project, article) {
+		var parent = APP.models.projects.findWhere({
+			project: project
+		});
+		var wikis = new DEF.modules.wiki.Edit({
+			parent_module: "projects",
+			parent_id: project,
+			model: new DEF.modules.wiki.Model(parent.get('_wiki')),
+			parent: parent
 		});
 		APP.root.showChildView('main', wikis);
 	}
@@ -331,7 +348,7 @@ DEF.modules.projects.ProjectView = Backbone.Marionette.CompositeView.extend({
 		APP.Route("#projects/" + this.model.get('project') + "/" + "edit" + "/" + this.model.id);
 	},
 	Wiki: function () {
-		APP.Route("#projects/" + this.model.get('project') + "/" + "wiki" + "/crap");
+		APP.Route("#projects/" + this.model.get('project') + "/" + "wiki");
 	}
 
 });
