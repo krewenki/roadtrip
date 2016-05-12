@@ -1,18 +1,21 @@
 <div id='menu'>
 	<a href="#">
 		<%=APP.Icon("home")%> home</a>
-	<% if (U.Can("database")) { %>
-		<a href="#db">
-			<%=APP.Icon("db")%> db</a>
-		<% } %>
-			<% if (U.Can("tasks")) { %>
-				<a href='#tasks'>
+	<% if(!U.get("is_anonymous")){ %>
+		<% if (U.Can("database")) { %>
+			<a href="#db">
+				<%=APP.Icon("db")%> db</a>
+			<% } %>
+				<% if (U.Can("tasks")) { %>
+					<a href='#tasks'>
+						<%}%>
+							<%=APP.Icon("tasks")%> tasks</a>
+					<a href='#events'>
+						<%=APP.Icon("events")%> events</a>
+					<a href='#revisions'>
+						<%=APP.Icon("revisions")%> revisions</a>
+
 					<%}%>
-						<%=APP.Icon("tasks")%> tasks</a>
-				<a href='#events'>
-					<%=APP.Icon("events")%> events</a>
-				<a href='#revisions'>
-					<%=APP.Icon("revisions")%> revisions</a>
 </div>
 <div id='collection_list'>
 	<div class='collection_count' id='contacts_count' title='Contacts Count'></div>
