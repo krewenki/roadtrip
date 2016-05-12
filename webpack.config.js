@@ -41,9 +41,9 @@ var config = {
 				test: /\.js$/,
 				loader: 'babel',
 				exclude: [nodeModulesPath],
-				query: {
-					presets: ['es2015']
-				}
+				/*				query: {
+									presets: ['es2015']
+								} */
 			}, {
 				test: /\.(otf|eot|png|ico|svg|ttf|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
 				loader: 'url?limit=8192'
