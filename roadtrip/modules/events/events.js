@@ -34,6 +34,9 @@ DEF.modules.events.Collection = Roadtrip.Collection.extend({
 	url: 'roadtrip.telegauge.com/roadtrip/events',
 	comparator: function (m) {
 		return -m.get('datetime');
+	},
+	minimum: {
+		limit: 20
 	}
 });
 
