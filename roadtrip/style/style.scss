@@ -72,6 +72,10 @@ body {
 	box-shadow      : 0 5px 20px rgba(0, 0, 0, .5);
 	user-select     : none;
 
+	#login {
+		width: 100%;
+	}
+
 	.link {
 		cursor: pointer;
 	}
