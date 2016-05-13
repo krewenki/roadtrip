@@ -1,6 +1,6 @@
 <div class="rev-meta">
 <div class="title">
-  <%= APP.Format.htmlentities(log) %>
+  <%= APP.Format.htmlentities(log).split('\n')[0] %>
   <div class="meta">
     <span class="changed">+<%= changed %> lines changed</span>, <span class="removed">-<%= removed %> lines removed</span> in <%= diff_meta.length %> file<%= diff_meta.length > 1 ? 's' : '' %>
   </div>
