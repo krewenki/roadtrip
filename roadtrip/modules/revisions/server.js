@@ -1,5 +1,5 @@
 var hooks = {
-	beforeSave: function (data) {
+	beforeSave: function (self, data) {
 		return new Promise(function (success, failure) {
 			// Transform author to user_id
 			var users = {
@@ -11,8 +11,7 @@ var hooks = {
 			success(data);
 		});
 	},
-	afterSave: function (data) {
-		var self = this;
+	afterSave: function (self, data) {
 		return new Promise(function (success, failure) {
 			self.db.createRecord({
 				"module": "revisions",
