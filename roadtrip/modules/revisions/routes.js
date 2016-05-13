@@ -42,7 +42,7 @@ var routes = [
 								if (lines[n].charAt(0) == '+')
 									changed++;
 								if (lines[n].charAt(0) == '-')
-									removed--;
+									removed++;
 							}
 							files.push({
 								changed: changed,
