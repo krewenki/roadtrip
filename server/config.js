@@ -22,7 +22,7 @@ var config = {
 	},
 
 	onComplete: function (self, _, ObjectId) {
-		self.settings.http.get('/', function (req, res) {
+		self.settings.http.get('*', function (req, res) {
 			var fs = require('fs');
 			var user_id = '56fea5cc54d49c036c802e53';
 			if (req.session && req.session.passport && req.session.passport.user) {
@@ -40,6 +40,11 @@ var config = {
 				});
 
 		});
+
+		//self.settings.http.get('*', function(req, res){
+
+		//});
+
 	},
 	hooks: {
 		revisions: require('../modules/revisions/server.js')
