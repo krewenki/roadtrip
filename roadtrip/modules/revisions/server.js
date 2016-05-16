@@ -20,6 +20,7 @@ var hooks = {
 				"datetime": Date.now(),
 				"user_id": data.author
 			}, 'events').then(function (data) {
+				// Somehow I need IO in here send the event down to everyone
 				success(data);
 			}, function (err) {
 				failure(err);
