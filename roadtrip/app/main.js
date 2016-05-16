@@ -522,7 +522,9 @@ APP.on('start', function () {
 	APP.controller.router = new DEF.Router({
 		controller: APP.controller
 	});
-	Backbone.history.start();
+	Backbone.history.start({
+		pushState: true
+	});
 });
 
 
