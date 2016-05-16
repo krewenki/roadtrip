@@ -1,11 +1,11 @@
 DEF.modules.contacts = {};
-DEF.modules.contacts.Initialize = function() {
+DEF.modules.contacts.Initialize = function () {
 	if (!APP.models.contacts)
 		APP.models.contacts = new DEF.modules.contacts.Collection();
 };
 DEF.modules.contacts.Router = Roadtrip.Router.extend({
 	module: "contacts",
-	initialize: function() {
+	initialize: function () {
 		APP.Icon_Lookup["Vendor"] = "building";
 		APP.Icon_Lookup["Customer"] = "money";
 		APP.Icon_Lookup["Miscellaneous"] = "question";
@@ -46,10 +46,10 @@ DEF.modules.contacts.Model = Roadtrip.Model.extend({
 		zip: "",
 
 	},
-	GetLink: function(cmd) {
-		return "#contacts/" + cmd + "/" + this.get('_id');
+	GetLink: function (cmd) {
+		return "/contacts/" + cmd + "/" + this.get('_id');
 	},
-	search_string: function() {
+	search_string: function () {
 		return this.get('name');
 	}
 })
@@ -96,7 +96,7 @@ DEF.modules.contacts.RecordLine = Roadtrip.RecordLine.extend({
 DEF.modules.contacts.MainView = Roadtrip.RecordList.extend({
 	id: 'CONTACTS',
 	template: require("./templates/contacts.html"),
-	templateHelpers: function(x, y, z) {
+	templateHelpers: function (x, y, z) {
 		return {
 			search: this.search,
 		}
@@ -111,24 +111,24 @@ DEF.modules.contacts.MainView = Roadtrip.RecordList.extend({
 		"keyup @ui.search": "Search",
 		"click @ui.add": "Add"
 	},
-	filter: function(model, index, collection) {
+	filter: function (model, index, collection) {
 		var string = model.search_string();
 		if (string.indexOf(this.ui.search.val().toUpperCase()) == -1)
 			return false;
 		return true;
 	},
-	onShow: function() {
+	onShow: function () {
 		APP.SetTitle("Contacts", "contacts");
 	},
-	onRender: function() {
+	onRender: function () {
 		this.ui.search.focus().val(this.search); // this search is disgusting
 	},
-	Search: function(e) {
+	Search: function (e) {
 		console.log(this.ui.search.val(), this.templateHelpers());
 		this.search = this.ui.search.val();
 		this.render();
 	},
-	Add: function() {
+	Add: function () {
 		var page = new DEF.modules.contacts.views.edit({
 			model: false,
 		});

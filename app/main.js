@@ -59,6 +59,10 @@ var MainApp = Backbone.Marionette.Application.extend({
 		// 			.addClass("large");
 		// 	}
 		// };
+		$(document).on('click', 'a.route', function (e) {
+			APP.Route($(e.currentTarget).attr('href'));
+			return false;
+		});
 	},
 	SetTitle: function (title, module) {
 		document.title = title + " - roadtrip";
@@ -84,7 +88,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 			if (model) {
 				if (!linktext)
 					linktext = " " + model.get(model.nameAttribute);
-				return `<a title='` + id + ": " + model.get(model.nameAttribute) + `'' href='#${module}/view/${id}'>` + APP.Icon(module) + linktext + "</a>";
+				return `<a title='` + id + ": " + model.get(model.nameAttribute) + `'' class="route" href='${module}/view/${id}'>` + APP.Icon(module) + linktext + "</a>";
 			}
 		}
 		return "--";
@@ -418,8 +422,8 @@ APP.Format = {
 		var datef = ("00" + (date.getMonth() + 1))
 			.slice(-2) + "/" + ("00" + date.getDate())
 			.slice(-2) + "/" + date.getFullYear();
-		return "<a href='#calendar/date/" + date.toISOString()
-			.slice(0, 10) + "'>" + datef + "</a>";
+		return "<a href='/calendar/date/" + date.toISOString()
+			.slice(0, 10) + "' class='route'>" + datef + "</a>";
 	},
 	time: function (time) {
 		if (!time)

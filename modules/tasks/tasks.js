@@ -99,9 +99,9 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 		if (parent.GetPath)
 			path = parent.GetPath();
 		else {
-			path = "<a href='" + parent.GetLink() + "'>" + parent.get(parent.nameAttribute) + "</a>";
+			path = "<a href='" + parent.GetLink() + "' class='route'>" + parent.get(parent.nameAttribute) + "</a>";
 		}
-		path += " / <a href='" + this.GetLink() + "'>" + this.get(this.nameAttribute) + "</a>";
+		path += " / <a href='" + this.GetLink() + "' class='route'>" + this.get(this.nameAttribute) + "</a>";
 		return path;
 	},
 
