@@ -66,7 +66,6 @@ DEF.modules.todo.RecordLine = Roadtrip.RecordLine.extend({
 			this.template = this.options.template;
 		if (this.model.get('done'))
 			this.$el.addClass("done");
-		console.log(this.model.get('done'));
 	},
 	CompleteTask: function () {
 		this.ui.done.html(APP.Icon("check-square-o"));
