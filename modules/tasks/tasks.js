@@ -123,7 +123,7 @@ DEF.modules.tasks.Model = Roadtrip.Model.extend({
 
 DEF.modules.tasks.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.tasks.Model,
-	url: 'roadtrip.telegauge.com/roadtrip/tasks',
+	url: 'https://roadtrip.telegauge.com/roadtrip/tasks',
 	comparator: function (m) {
 		var rank = 0;
 		if (m.get('progress') == 100 || m.get('progress') < 0)

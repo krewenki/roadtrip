@@ -31,7 +31,7 @@ DEF.modules.events.Model = Roadtrip.Model.extend({
 });
 DEF.modules.events.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.events.Model,
-	url: 'roadtrip.telegauge.com/roadtrip/events',
+	url: 'https://roadtrip.telegauge.com/roadtrip/events',
 	comparator: function (m) {
 		return -m.get('datetime');
 	},

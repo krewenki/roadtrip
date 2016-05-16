@@ -121,7 +121,7 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 
 DEF.modules.users.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.users.Model,
-	url: 'roadtrip.telegauge.com/roadtrip/users',
+	url: 'https://roadtrip.telegauge.com/roadtrip/users',
 	initialize: function () {
 		//console.log(APP.models.tasks);
 		this.listenTo(APP.models.tasks, "sync", this.UpdateUserTaskCount);

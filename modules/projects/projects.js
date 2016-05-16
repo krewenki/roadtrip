@@ -92,7 +92,7 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
  */
 DEF.modules.projects.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.projects.Model,
-	url: 'roadtrip.telegauge.com/roadtrip/projects',
+	url: 'https://roadtrip.telegauge.com/roadtrip/projects',
 });
 
 DEF.modules.projects.Router = Roadtrip.Router.extend({

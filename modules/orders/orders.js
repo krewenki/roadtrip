@@ -74,11 +74,11 @@ DEF.modules.orders.Model = Roadtrip.Model.extend({
  */
 DEF.modules.orders.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.orders.Model,
-	url: 'roadtrip.telegauge.com/roadtrip/orders',
+	url: 'https://roadtrip.telegauge.com/roadtrip/orders',
 });
 DEF.modules.orders.Collection_LineItems = Roadtrip.Collection.extend({
 	model: DEF.modules.orders.LineItemModel,
-	url: 'roadtrip.telegauge.com/roadtrip/orders_lineitems',
+	url: 'https://roadtrip.telegauge.com/roadtrip/orders_lineitems',
 	comparator: "SOLI"
 });
 

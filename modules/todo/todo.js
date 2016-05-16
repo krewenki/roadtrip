@@ -33,7 +33,7 @@ DEF.modules.todo.Model = Roadtrip.Model.extend({
 
 DEF.modules.todo.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.todo.Model,
-	url: 'roadtrip.telegauge.com/roadtrip/todo',
+	url: 'https://roadtrip.telegauge.com/roadtrip/todo',
 	filters: {
 		Assigned: function (model) {
 			return function (m) {

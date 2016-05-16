@@ -60,7 +60,7 @@ DEF.modules.repositories.Model = Roadtrip.Model.extend({
 });
 DEF.modules.repositories.Collection = Backbone.Highway.Collection.extend({
 	model: DEF.modules.repositories.Model,
-	url: 'roadtrip.telegauge.com/roadtrip/repositories',
+	url: 'https://roadtrip.telegauge.com/roadtrip/repositories',
 	idAttribute: 'name'
 });
 
