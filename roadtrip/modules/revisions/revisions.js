@@ -46,9 +46,6 @@ DEF.modules.revisions.Collection = Roadtrip.Collection.extend({
 	url: 'https://roadtrip.telegauge.com/roadtrip/revisions',
 	comparator: function (r) {
 		return -r.get('datetime');
-	},
-	minimum: {
-		limit: 100000
 	}
 });
 

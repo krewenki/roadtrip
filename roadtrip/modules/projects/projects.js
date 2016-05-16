@@ -26,6 +26,7 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 		progress: 0,
 
 		comments: [],
+		repositories: [],
 		_wiki: {
 			title: "wiki",
 			content: "Here I am!",

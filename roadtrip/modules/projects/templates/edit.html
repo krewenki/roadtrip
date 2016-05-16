@@ -93,4 +93,19 @@
 		</td>
 	</tr>
 
+	<tr>
+		<th>Repositories</th>
+		<td>
+			<select multiple id="repositories" class="field">
+				<% for(var i in APP.models.repositories.models){
+					m = APP.models.repositories.models[i]
+					%>
+					<option value="<%= m.id %>"><%= m.get('name') %></option>
+					<%
+				}
+				%>
+			</select>
+		</td>
+	</tr>
+
 </table>
