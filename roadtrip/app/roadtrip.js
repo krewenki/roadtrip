@@ -506,7 +506,7 @@ window.Roadtrip = {
 			this.MakeDirty(e);
 			var $el = $(e.currentTarget);
 			var field = e.currentTarget.id,
-				value = e.currentTarget.value,
+				value = $el.val(),
 				type = e.currentTarget.type;
 			switch (type) {
 			case "checkbox":
