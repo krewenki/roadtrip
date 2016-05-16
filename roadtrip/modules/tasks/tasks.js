@@ -299,6 +299,9 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.LayoutView.extend({
 			}
 			html += "</table>";
 			this.ui.state_log.html(html);
+		} else {
+			// TODO : this doesn't seem to work.  Partial collection loading #1.2.3
+			this.listenTo(APP.models.events, "sync", this.DoStateLog);
 		}
 	},
 	/**
@@ -449,6 +452,16 @@ DEF.modules.tasks.views = {
 			return {
 				task_kinds: this.model.getUp('task_kinds')
 			};
+		},
+		ui: {
+			desc: "#description",
+			preview: "#preview"
+		},
+		events: {
+			"keyup @ui.desc": "DoPreview"
+		},
+		DoPreview: function () {
+			this.ui.preview.html(APP.Format.markdown(this.ui.desc.val()));
 		},
 		onShow: function () {
 			$("input#task").focus();

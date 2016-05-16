@@ -73,6 +73,14 @@
 	</tr>
 
 	<tr>
+		<th>
+			Due Date:
+		</th>
+		<td colspan=3>
+			<input class='field' type='date' id='due_date' placeholder='task' value='<%=due_date%>' min=0 max=100>
+		</td>
+	</tr>
+	<tr>
 		<th>Description:
 		</th>
 		<td colspan=3>
@@ -82,11 +90,11 @@
 		</td>
 	</tr>
 	<tr>
-		<th>
-			Due Date:
+		<th>Preview:
 		</th>
-		<td colspan=3>
-			<input class='field' type='date' id='due_date' placeholder='task' value='<%=due_date%>' min=0 max=100>
+		<td colspan=3 id='preview'>
+			<%=APP.Format.markdown(description)%>
 		</td>
 	</tr>
+
 </table>
