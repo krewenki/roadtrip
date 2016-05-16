@@ -213,7 +213,7 @@ window.Roadtrip = {
 		 */
 		Link: function (field) {
 			field = field || this.nameAttribute;
-			return "<a href='" + this.GetLink() + "'>" + this.get(field) + "</a>";
+			return "<a href='" + this.GetLink() + "' class='route'>" + this.get(field) + "</a>";
 		},
 		/**
 		 * Generate a URL for a record
@@ -223,7 +223,7 @@ window.Roadtrip = {
 		GetLink: function (cmd) {
 			if (!cmd)
 				cmd = "view";
-			return "#" + this.module + "/" + cmd + "/" + this.id;
+			return "/" + this.module + "/" + cmd + "/" + this.id;
 		},
 
 		GetTitle: function () {

@@ -56,8 +56,8 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
 	},
 	GetLink: function (cmd) {
 		if (!cmd)
-			return "#projects/" + this.get('project');
-		return "#projects/" + cmd + "/" + this.get('_id');
+			return "/projects/" + this.get('project');
+		return "/projects/" + cmd + "/" + this.get('_id');
 	},
 	GetID: function () { // this is required when creating tasks
 		return APP.Tools.Aggregate(APP.models.projects, "max", "project_id") + 1;

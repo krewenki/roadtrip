@@ -7,10 +7,10 @@ DEF.modules.orders.LineItemModel = Roadtrip.Model.extend({
 		order: 0,
 		warehouse: "JAX"
 	},
-	GetLink: function(cmd) {
+	GetLink: function (cmd) {
 		if (!cmd)
 			cmd = "view";
-		return "#orders/editline/" + this.id;
+		return "/orders/editline/" + this.id;
 	},
 });
 
@@ -20,7 +20,7 @@ DEF.modules.orders.LineItemLine = Roadtrip.RecordLine.extend({
 	events: {
 		"click": "View"
 	},
-	View: function(e) {
+	View: function (e) {
 		APP.Route("#orders/editline/" + this.model.id);
 	}
 });
@@ -38,7 +38,7 @@ DEF.modules.orders.LineItemView = Roadtrip.RecordList.extend({
 
 DEF.modules.orders.views.editline = Roadtrip.Edit.extend({
 	template: require("./templates/lineitem_edit.html"),
-	onShow: function() {
+	onShow: function () {
 		APP.SetTitle("Line Item " + this.model.id, "orders");
 	}
 });
