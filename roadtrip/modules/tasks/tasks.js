@@ -454,10 +454,20 @@ DEF.modules.tasks.views = {
 			};
 		},
 		ui: {
+			"field": ".field",
+			"delete": "#delete",
+			"record": "#editrecord",
+			"done": "#done",
+
 			desc: "#description",
 			preview: "#preview"
 		},
 		events: {
+			"change @ui.field": "SaveField",
+			"click @ui.delete": "Delete",
+			"click @ui.record": "EditRecord",
+			"click @ui.done": "Done",
+
 			"keyup @ui.desc": "DoPreview"
 		},
 		DoPreview: function () {
