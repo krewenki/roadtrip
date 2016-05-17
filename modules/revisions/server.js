@@ -11,16 +11,16 @@ var hooks = {
 			success(data);
 		});
 	},
-	afterSave: function (self, data) {
+	afterXSave: function (self, data) {
 		return new Promise(function (success, failure) {
-			self.db.createRecord({
+			var eventRecord = {
 				"module": "revisions",
 				"module_id": data._id,
 				"event": "Revision committed",
 				"datetime": Date.now(),
 				"user_id": data.author
-			}, 'events').then(function (data) {
-				// Somehow I need IO in here send the event down to everyone
+			};
+			self.db.createRecord(eventRecord, 'events').then(function (data) {
 				success(data);
 			}, function (err) {
 				failure(err);
