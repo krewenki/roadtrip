@@ -5,6 +5,7 @@ var routes = [
 		"method": "post",
 		"handler": function (s) {
 			var self = s;
+			var ObjectId = require('mongojs').ObjectId;
 			return function (req, res) {
 				var request = require('request');
 				var obj = req.body; // should be a JSON object
@@ -55,9 +56,9 @@ var routes = [
 						save = {
 							revision: c.sha,
 							repository: repo,
-							//author: '56f3f7cb4b88de4618e306c0', // Not always warren, but hardcode for laziness now
-							author: 'wck',
-							datetime: new Date(c.commit.author.date).getTime(), // change this to the actual commit time?
+							author: ObjectId('56f3f7cb4b88de4618e306c0'), // Not always warren, but hardcode for laziness now
+							//author: 'wck', Not wck,  why not point at the author, instead of
+							datetime: new Date(c.commit.author.date).getTime(),
 							diff: diff,
 							diff_meta: files,
 							changed: total_changed,

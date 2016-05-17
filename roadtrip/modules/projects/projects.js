@@ -2,8 +2,6 @@ DEF.modules.projects = {};
 DEF.modules.projects.Initialize = function () {
 	if (!APP.models.projects)
 		APP.models.projects = new DEF.modules.projects.Collection();
-	// console.log(DEF.modules.projects.Router.collections);
-	// debugger
 };
 
 /**
@@ -108,6 +106,7 @@ DEF.modules.projects.Router = Roadtrip.Router.extend({
 	routes: {
 		"projects": "ShowRoot",
 		"projects/:project": "ShowProject",
+		"projects/:project/activity": "ShowProjectActivity",
 		"projects/:project/wiki": "ShowWiki",
 		"projects/:project/wiki/edit": "EditWiki",
 		"projects/:project/edit/:arg": "EditProject",
@@ -169,6 +168,15 @@ DEF.modules.projects.Router = Roadtrip.Router.extend({
 			parent: parent
 		});
 		APP.root.showChildView('main', wikis);
+	},
+	ShowProjectActivity: function (project) {
+		var parent = APP.models.projects.findWhere({
+			project: project
+		});
+		var revisions = new DEF.modules.revisions.MainView({
+			//			repository: APP.models.
+		});
+		APP.root.showChildView('main', revisions);
 	}
 });
 
