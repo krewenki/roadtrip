@@ -53,7 +53,7 @@ var child = execFile('/usr/bin/svnlook', ['log', repo, '--revision', revision], 
 			const diff = stdout;
 			const child = execFile('/usr/bin/svnlook', ['date', repo, '--revision', revision], (error, stdout, stderr) => {
 				const datetime = new Date(stdout.slice(0, 19)).getTime();
-				var tasks = log.match(/(#[0-9.]*)/ig)
+				var tasks = log.match(/(#[0-9.]*)/ig);
 				var task_id = '';
 				if (tasks && tasks.length > 0) {
 					task_id = tasks[0].replace('#', '');
