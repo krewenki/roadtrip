@@ -1,0 +1,33 @@
+<div id='menu'>
+	<span id='title'></span>
+	<div class='cmd link' id='done'>
+		<%=APP.Icon('done')%> done
+	</div>
+	<div class='cmd link' id='editrecord'>
+		<%=APP.Icon('db')%> json
+	</div>
+	<% if (U.Can("repositories_admin") || _.created_by==U.id) { %>
+		<div class='cmd link danger' id='delete'>
+			<%=APP.Icon('delete')%> delete
+		</div>
+		<% } %>
+</div>
+
+<table class='table table-full table-left'>
+	<tr>
+		<th>Name</th>
+		<td>
+      <input class='field' type='text' id='name' placeholder='name' value='<%=name%>'>
+		</td>
+	</tr>
+	<tr>
+		<th>
+			URL:
+		</th>
+		<td colspan=3>
+			<input class='field' type='text' id='url' placeholder='url' value='<%=url%>'>
+		</td>
+	</tr>
+
+
+</table>
