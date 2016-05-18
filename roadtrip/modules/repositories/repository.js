@@ -79,15 +79,19 @@ DEF.modules.repositories.views = {
 				filter: function (r) {
 					return r.get('repository') == repository;
 				},
-			}), {})
+			}), {});
 		}
 	}),
 	RepositoryLine: Roadtrip.RecordLine.extend({
 		module: 'repositories',
 		template: require('./templates/line.html'),
 		tagName: 'tr'
-	})
-}
+	}),
+	edit: Roadtrip.Edit.extend({
+		module: "repositories",
+		template: require("./templates/edit.html")
+	}),
+};
 
 
 DEF.modules.repositories.MainView = Roadtrip.RecordList.extend({
@@ -98,5 +102,17 @@ DEF.modules.repositories.MainView = Roadtrip.RecordList.extend({
 	onShow: function () {
 		if (!this.children.length)
 			this.$el.parent().hide();
+	},
+	ui: {
+		add: "#add",
+	},
+	events: {
+		"click @ui.add": "Add"
+	},
+	Add: function () {
+		var page = new DEF.modules.repositories.views.edit({
+			model: false
+		});
+		APP.root.showChildView('main', page);
 	}
-})
+});
