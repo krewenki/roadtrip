@@ -13,6 +13,7 @@ var proxy = httpProxy.createProxyServer({
 var isProduction = process.env.NODE_ENV === 'production';
 var port = isProduction ? process.env.PORT : 3000;
 var publicPath = path.resolve(__dirname, 'public');
+port = 3456;
 
 
 var app = express();
@@ -61,7 +62,7 @@ app.get('/user/:id', function (req, res, next) {
 //require('./server/highway.js')(app, server, ['./modules/revisions/routes.js']);
 
 var io = require('socket.io').listen(server);
-io.set('origins', 'http://localhost:3000');
+io.set('origins', 'http://localhost:3000 https://roadtrip.telegauge.com');
 
 var config = require('./server/config.js');
 config.http = app;
