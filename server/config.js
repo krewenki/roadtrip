@@ -28,15 +28,23 @@ var config = {
 			if (req.session && req.session.passport && req.session.passport.user) {
 				user_id = req.session.passport.user._id;
 			}
+
 			self.db.collection('users')
 				.find({
 					'_id': ObjectId(user_id)
 				}, function (err, doc) {
-					res.send(_.template(fs.readFileSync('./templates/application.html', {
-						encoding: 'utf8'
-					}))({
-						"user": doc[0]
-					}));
+					var out;
+					if (err) {
+						console.log('Error finding user: ', err);
+						out = err;
+					} else {
+						out = _.template(fs.readFileSync('./templates/application.html', {
+							encoding: 'utf8'
+						}))({
+							"user": doc[0]
+						});
+					}
+					res.send(out);
 				});
 
 		});

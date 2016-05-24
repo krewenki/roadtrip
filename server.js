@@ -22,8 +22,9 @@ var http = require('http').Server(app);
 
 app.use(express.static(publicPath));
 
-if (!isProduction) {
 
+// hot reload server. don't load this stuff in production
+if (!isProduction) {
 	var bundle = require('./server/bundle.js');
 	bundle();
 	app.all('/build/*', function (req, res) {
