@@ -81,16 +81,17 @@ if (process.env.NODE_ENV == 'production') {
 	//    config.output.path = __dirname + '/dist';
 	config.entry = [mainPath];
 	config.plugins.push(new Webpack.optimize.UglifyJsPlugin({
-		sourceMap: false,
-		mangle: {
-			minimize: true,
-			eval: true,
-			toplevel: true,
-			compress: {
-				warnings: false
-			},
-			except: ['$', 'module', 'require', 'exports', '__webpack_require__']
-		}
+		sourceMap: true,
+		minify: true
+//		mangle: {
+//			minimize: true,
+//			eval: true,
+//			toplevel: true,
+//			compress: {
+//				warnings: false
+//			},
+//			except: ['$', 'module', 'require', 'exports', '__webpack_require__']
+//		}
 	}));
 	config.module.loaders.push({
 		test: /\.scss$/,
