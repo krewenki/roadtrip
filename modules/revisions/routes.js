@@ -73,6 +73,13 @@ var routes = [
 						};
 						self.db.createRecord(save, 'revisions').then(function (record) {
 
+							self.db.createRecord({
+								revision: record._id,
+								diff: diff
+							}, 'diffs').then(function () {
+
+							});
+
 						}, function (error) {
 							//res.send(error)
 						});
