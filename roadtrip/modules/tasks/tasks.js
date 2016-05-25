@@ -287,22 +287,24 @@ DEF.modules.tasks.TaskDetails = Backbone.Marionette.LayoutView.extend({
 	 * Populate the state log.
 	 */
 	DoStateLog: function () {
-		var states = APP.models.events.filter({
+		var self = this;
+		var states = APP.models.events._where({
 			group: "task_state",
 			module: "tasks",
 			module_id: this.model.id
-		});
-		if (states.length > 0) {
-			var html = "<table class='table'><tr><th>State</th><th>Date</th></tr>";
-			for (var s in states) {
-				html += "<tr><td>" + states[s].get('event') + "</td><td>" + APP.Format.datetime(states[s].get('datetime')) + "</td></tr>";
+		}).then(function (states) {
+			if (states.length > 0) {
+				var html = "<table class='table'><tr><th>State</th><th>Date</th></tr>";
+				for (var s in states) {
+					html += "<tr><td>" + states[s].get('event') + "</td><td>" + APP.Format.datetime(states[s].get('datetime')) + "</td></tr>";
+				}
+				html += "</table>";
+				self.ui.state_log.html(html);
+			} else {
+				// TODO : this doesn't seem to work.  Partial collection loading #1.2.3
+				self.listenTo(APP.models.events, "sync", this.DoStateLog);
 			}
-			html += "</table>";
-			this.ui.state_log.html(html);
-		} else {
-			// TODO : this doesn't seem to work.  Partial collection loading #1.2.3
-			this.listenTo(APP.models.events, "sync", this.DoStateLog);
-		}
+		});
 	},
 	/**
 	 * Show the task edit forms
