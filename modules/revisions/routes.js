@@ -53,6 +53,11 @@ var routes = [
 							total_changed += changed;
 							total_removed += removed;
 						}
+						var tasks = c.commit.message.match(/(#[0-9.]*)/ig);
+						var task_id = '';
+						if (tasks && tasks.length > 0) {
+							task_id = tasks[0].replace('#', '');
+						}
 						save = {
 							revision: c.sha,
 							repository: repo,
@@ -63,7 +68,8 @@ var routes = [
 							diff_meta: files,
 							changed: total_changed,
 							removed: total_removed,
-							log: c.commit.message
+							log: c.commit.message,
+							task_id: task_id
 						};
 						self.db.createRecord(save, 'revisions').then(function (record) {
 
