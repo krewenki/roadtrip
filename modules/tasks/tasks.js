@@ -495,7 +495,7 @@ DEF.modules.tasks.views = {
 			this.model.UpdateTaskProgress();
 		},
 		onRender: function () {
-			APP.SetTitle(this.model.get(this.model.nameAttribute), "tasks");
+			APP.SetTitle("#" + this.model.get('task_id') + " : " + this.model.get(this.model.nameAttribute), "tasks");
 			this.model.IncStat("views");
 
 			var model_id = this.model.id;
