@@ -11,9 +11,8 @@ var proxy = httpProxy.createProxyServer({
 });
 
 var isProduction = process.env.NODE_ENV === 'production';
-var port = isProduction ? process.env.PORT : 3000;
+var port = isProduction ? 3456 : 3000;
 var publicPath = path.resolve(__dirname, 'public');
-port = 3456;
 
 
 var app = express();
@@ -36,7 +35,7 @@ if (!isProduction) {
 }
 
 proxy.on('error', function (e) {
-	console.log('Could not connect to proxy, please try again...');
+	console.log('Could not connect to proxy, please try again...', e);
 });
 
 app.set('host', isProduction ? process.env.HOST : 'localhost');
