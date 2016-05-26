@@ -5,10 +5,10 @@ DEF.modules.tasks.Initialize = function () {
 };
 DEF.modules.tasks.Router = Roadtrip.Router.extend({
 	collections: [
-		"users", "tasks", "projects", "todo"
+		"users", "tasks", "projects", "todo", "revisions"
 	],
 	collections_extra: [
-		"revisions", "repositories", "timeclock"
+		"repositories", "timeclock"
 	],
 	initialize: function () {
 		// APP.Icon_Lookup.todo = "list-ul";
@@ -524,20 +524,23 @@ DEF.modules.tasks.views = {
 
 			var task_id = this.model.get('task_id');
 			var self = this;
-			_.defer(function () {
-				APP.models.revisions._where({
-					"task_id": task_id
-				}).then(function (f) {
-					console.log('it finished', task_id, f);
-					self.revisions.show(new DEF.modules.revisions.MainView({
-						collection: APP.models.revisions,
-						filter: function (r) {
-							return r.get('task_id') == task_id;
-						},
-					}));
-				});
 
+
+			APP.models.revisions._where({
+				"task_id": task_id
+			}).then(function (records) {
+				//console.log('it finished', task_id, records);
+				self.revisions.show(new DEF.modules.revisions.MainView({
+					collection: APP.models.revisions,
+					filter: function (r) {
+						return r.get('task_id') == task_id;
+					},
+				}));
+			}, function (error) {
+				console.error(error);
 			});
+
+
 
 			var comments = new DEF.modules.comments.Collection(this.model.get('comments'));
 			this.comments.show(new DEF.modules.comments.Comments({
