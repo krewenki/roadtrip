@@ -523,19 +523,21 @@ DEF.modules.tasks.views = {
 			}));
 
 			var task_id = this.model.get('task_id');
-			this.revisions.show(new DEF.modules.revisions.MainView({
-				collection: APP.models.revisions,
-				filter: function (r) {
-					if (r.get('task_id') == task_id) { // the fast way
-						return true;
-					} else { // the old way didn't have task_id in the revision records, oddly
-						var match = r.get('log').match(/#[\d.]+/); // so go do a regexpr
-						if (match) // and see if anything at all matches
-							return match.indexOf('#' + task_id) > -1;
-					}
-					return false;
-				},
-			}));
+			var self = this;
+			_.defer(function () {
+				APP.models.revisions._where({
+					"task_id": task_id
+				}).then(function (f) {
+					console.log('it finished', task_id, f);
+					self.revisions.show(new DEF.modules.revisions.MainView({
+						collection: APP.models.revisions,
+						filter: function (r) {
+							return r.get('task_id') == task_id;
+						},
+					}));
+				});
+
+			});
 
 			var comments = new DEF.modules.comments.Collection(this.model.get('comments'));
 			this.comments.show(new DEF.modules.comments.Comments({
