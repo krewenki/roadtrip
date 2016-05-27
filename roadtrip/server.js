@@ -59,8 +59,6 @@ app.get('/user/:id', function (req, res, next) {
 });
 
 
-//require('./server/highway.js')(app, server, ['./modules/revisions/routes.js']);
-
 var io = require('socket.io').listen(server);
 io.set('origins', 'http://localhost:* https://roadtrip.telegauge.com:*');
 

@@ -5,7 +5,7 @@ DEF.modules.tasks.Initialize = function () {
 };
 DEF.modules.tasks.Router = Roadtrip.Router.extend({
 	collections: [
-		"users", "tasks", "projects", "todo", "revisions"
+		"tasks", "projects", "todo", "revisions", "events", "users"
 	],
 	collections_extra: [
 		"repositories", "timeclock"
@@ -494,7 +494,7 @@ DEF.modules.tasks.views = {
 			revisions: "#revisions_container",
 		},
 		onBeforeShow: function () {
-			this.model.UpdateTaskProgress();
+			//this.model.UpdateTaskProgress();
 		},
 		onRender: function () {
 			APP.SetTitle("#" + this.model.get('task_id') + " : " + this.model.get(this.model.nameAttribute), "tasks");
@@ -517,19 +517,15 @@ DEF.modules.tasks.views = {
 				filter: APP.models.tasks.filters.Closed(this.model)
 			}));
 
-			this.comments.show(new DEF.modules.comments.Comments({
-				model: this.model,
-				module: "tasks"
-			}));
-
 			var task_id = this.model.get('task_id');
 			var self = this;
+
 
 
 			APP.models.revisions._where({
 				"task_id": task_id
 			}).then(function (records) {
-				//console.log('it finished', task_id, records);
+				console.log('it finished', task_id, records);
 				self.revisions.show(new DEF.modules.revisions.MainView({
 					collection: APP.models.revisions,
 					filter: function (r) {
@@ -539,6 +535,7 @@ DEF.modules.tasks.views = {
 			}, function (error) {
 				console.error(error);
 			});
+
 
 
 
