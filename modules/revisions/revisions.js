@@ -48,7 +48,7 @@ DEF.modules.revisions.Collection = Roadtrip.Collection.extend({
 		return -r.get('datetime');
 	},
 	minimum: {
-		limit: 1
+		limit: 2
 	}
 });
 
