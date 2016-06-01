@@ -11,7 +11,7 @@ var hooks = {
 			success(data);
 		});
 	},
-	afterSave: function (self, data) {
+	xxafterSave: function (self, data) {
 		return new Promise(function (success, failure) {
 			var eventRecord = {
 				"module": "revisions",
