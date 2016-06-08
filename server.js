@@ -66,8 +66,12 @@ var config = require('./server/config.js');
 config.http = app;
 config.io = io;
 
-var hw = new Highway(config);
+var hw;
+var _hw = new Highway(config).then(function (s) {
+	hw = s;
+	hw.LoadRoutes(require('./modules/revisions/routes.js'));
+	hw.LoadRoutes(require('./modules/repositories/routes.js'));
+});
 
-hw.LoadRoutes(require('./modules/revisions/routes.js'));
-hw.LoadRoutes(require('./modules/repositories/routes.js'));
+
 //hw.LoadRoutes(require('./modules/tasks/routes.js'));
