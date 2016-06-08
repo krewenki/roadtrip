@@ -32,22 +32,23 @@ DEF.modules.repositories.Router = Roadtrip.Router.extend({
 			return r.get('name').toLowerCase() == repo_name.toLowerCase().trim();
 		});
 		var repo = matches[0];
-		var model = APP.models.revisions.findWhere({
+		APP.models.revisions._findWhere({
 			repository: repo.get('_id'),
 			revision: rev
-		});
-		if (!model) {
-			console.error("Model not found", module, arg);
-		}
-		if (!U.Can(model.getUp('group'))) {
-			alert("Permission Denied");
-			return;
-		}
+		}).then(function (model) {
+			if (!model) {
+				console.error("Model not found", module, arg);
+			}
+			if (!U.Can(model.getUp('group'))) {
+				alert("Permission Denied");
+				return;
+			}
 
-		APP.Page = new DEF.modules.revisions.views.view({
-			model: model,
+			APP.Page = new DEF.modules.revisions.views.view({
+				model: model,
+			});
+			APP.root.showChildView("main", APP.Page);
 		});
-		APP.root.showChildView("main", APP.Page);
 	},
 });
 DEF.modules.repositories.Model = Roadtrip.Model.extend({
