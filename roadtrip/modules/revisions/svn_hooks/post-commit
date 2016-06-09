@@ -38,6 +38,7 @@ var splitByFile = function (diff) {
 
 
 // stub comment
+// another stub
 var execFile = require('child_process').execFile;
 var child = execFile('/usr/bin/svnlook', ['log', repo, '--revision', revision], (error, stdout, stderr) => {
 	if (error) {
