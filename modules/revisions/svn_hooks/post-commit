@@ -26,8 +26,8 @@ var splitByFile = function (diff) {
 			filename = line.replace('Modified: ', '').replace('Added:', '').trim();
 			files[filename] = [];
 		}
-
-		files[filename].push(line);
+		if (filename)
+			files[filename].push(line);
 	});
 
 	return isEmpty ? [] : files;
