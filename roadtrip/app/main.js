@@ -123,7 +123,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 	 * @param {object} extras  Any additional info?
 	 */
 	LogEvent: function (module, id, event, extras = false, group = false) {
-		APP.models.events.create({
+		APP.models.events._create({
 			module: module,
 			module_id: id,
 			event: event,
