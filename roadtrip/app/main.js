@@ -365,7 +365,7 @@ APP.Format = {
 	 * @return {string}     A number, with , in the thousands
 	 */
 	number: function (val) {
-		return val.toLocaleString();
+		return val;
 	},
 	bytes: function (val) {
 		var unit = 'b';
