@@ -88,7 +88,7 @@ var MainApp = Backbone.Marionette.Application.extend({
 			if (model) {
 				if (!linktext)
 					linktext = " " + model.get(model.nameAttribute);
-				return `<a title='` + id + ": " + model.get(model.nameAttribute) + `'' class="route" href='${module}/view/${id}'>` + APP.Icon(module) + linktext + "</a>";
+				return "<a title='" + id + ": " + model.get(model.nameAttribute) + " class=\"route\" href='${module}/view/${id}'>" + APP.Icon(module) + linktext + "</a>";
 			}
 		}
 		return "--";

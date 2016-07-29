@@ -521,11 +521,9 @@ DEF.modules.tasks.views = {
 			var self = this;
 
 
-
 			APP.models.revisions._where({
 				"task_id": task_id
 			}).then(function (records) {
-				console.log('it finished', task_id, records);
 				self.revisions.show(new DEF.modules.revisions.MainView({
 					collection: APP.models.revisions,
 					filter: function (r) {
@@ -535,9 +533,6 @@ DEF.modules.tasks.views = {
 			}, function (error) {
 				console.error(error);
 			});
-
-
-
 
 			var comments = new DEF.modules.comments.Collection(this.model.get('comments'));
 			this.comments.show(new DEF.modules.comments.Comments({
