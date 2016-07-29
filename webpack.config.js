@@ -83,15 +83,15 @@ if (process.env.NODE_ENV == 'production') {
 	config.plugins.push(new Webpack.optimize.UglifyJsPlugin({
 		sourceMap: true,
 		minify: true
-//		mangle: {
-//			minimize: true,
-//			eval: true,
-//			toplevel: true,
-//			compress: {
-//				warnings: false
-//			},
-//			except: ['$', 'module', 'require', 'exports', '__webpack_require__']
-//		}
+			//		mangle: {
+			//			minimize: true,
+			//			eval: true,
+			//			toplevel: true,
+			//			compress: {
+			//				warnings: false
+			//			},
+			//			except: ['$', 'module', 'require', 'exports', '__webpack_require__']
+			//		}
 	}));
 	config.module.loaders.push({
 		test: /\.scss$/,
