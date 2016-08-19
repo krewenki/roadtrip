@@ -2,7 +2,7 @@ var express = require('express');
 var path = require('path');
 var httpProxy = require('http-proxy');
 
-var Highway = require('highway');
+var Highway = require('highway.server');
 
 // We need to add a configuration to our proxy server,
 // as we are now proxying outside localhost
