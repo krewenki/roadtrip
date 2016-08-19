@@ -60,7 +60,7 @@ app.get('/user/:id', function (req, res, next) {
 
 
 var io = require('socket.io').listen(server);
-io.set('origins', 'http://localhost:* https://roadtrip.telegauge.com:*');
+//io.set('origins', 'http://localhost:* https:127.0.0.1:3000/roadtrip/om:*');
 
 var config = require('./server/config.js');
 config.http = app;

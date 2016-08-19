@@ -43,7 +43,7 @@ DEF.modules.revisions.Model = Roadtrip.Model.extend({
 
 DEF.modules.revisions.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.revisions.Model,
-	url: 'https://roadtrip.telegauge.com/roadtrip/revisions',
+	url: 'http://127.0.0.1:3000/roadtrip//roadtrip/revisions',
 	comparator: function (r) {
 		return -r.get('datetime');
 	},

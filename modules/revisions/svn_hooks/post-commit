@@ -92,7 +92,7 @@ var child = execFile('/usr/bin/svnlook', ['log', repo, '--revision', revision], 
 
 
 				// Now I need to post it all to roadtrip
-				request.post('https://roadtrip.telegauge.com/roadtrip/revisions', {
+				request.post('http://127.0.0.1:3000/roadtrip/roadtrip//roadtrip/revisions', {
 					json: {
 						revision: process.argv[3],
 						log: log,
@@ -109,7 +109,7 @@ var child = execFile('/usr/bin/svnlook', ['log', repo, '--revision', revision], 
 
 				// Tell slack after we tell roadtrip
 				url = "https://telegauge.slack.com/services/hooks/subversion?token=" + slack_token;
-				viewurl = 'https://roadtrip.telegauge.com/#repositories/Main/' + process.argv[3];
+				viewurl = 'http://127.0.0.1:3000/roadtrip/roadtrip//#repositories/Main/' + process.argv[3];
 				request.post(url, {
 					form: {
 						payload: JSON.stringify({
