@@ -1,5 +1,5 @@
 var config = {
-	uri: 'roadtrip.telegauge.com',
+	uri: '127.0.0.1',
 	database: 'roadtrip',
 	auth: [{
 		defaultUser: '56fea5cc54d49c036c802e53',
