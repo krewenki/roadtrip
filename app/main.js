@@ -31,34 +31,6 @@ var MainApp = Backbone.Marionette.Application.extend({
 	 */
 	SetUpWindowEvents: function () {
 
-		// document.onmouseover = function() {
-		// 	//User's mouse is inside the page. (This is working)
-		// 	window.innerDocClick = true;
-		// };
-		// document.onmouseleave = function() {
-		// 	//User's mouse has left the page. (this is working)
-		// 	window.innerDocClick = false;
-		// };
-		// window.onhashchange = function() {
-		// 	if (window.innerDocClick) {
-		// 		// $("html, body").animate({
-		// 		// 	scrollTop: 0
-		// 		// }, 100);
-		// 		//	window.scrollTo(0, 0);
-		// 	}
-		// };
-		// window.onscroll = function () {
-		// 	var $header = $("#HEADER");
-		// 	if (document.body.scrollTop > 110 || document.documentElement.scrollTop > 110) {
-		// 		if ($header.hasClass("large"))
-		// 			$header.removeClass("large")
-		// 			.addClass("small");
-		// 	} else {
-		// 		if ($header.hasClass("small"))
-		// 			$header.removeClass("small")
-		// 			.addClass("large");
-		// 	}
-		// };
 		$(document).on('click', 'a.route', function (e) {
 			APP.Route($(e.currentTarget).attr('href'));
 			return false;
@@ -210,12 +182,7 @@ require("../modules/comments/comments.js");
 require("../modules/tasks/tasks.js");
 require("../modules/users/users.js");
 require("../modules/wiki/wiki.js");
-require("../modules/contacts/contacts.js");
-require("../modules/orders/orders.js");
 require("../modules/projects/projects.js");
-require("../modules/timeclock/timeclock.js");
-require("../modules/calendar/calendar.js");
-require("../modules/expenses/expenses.js");
 require("../modules/repositories/repository.js");
 require("../modules/revisions/revisions.js");
 require("../modules/events/events.js");
