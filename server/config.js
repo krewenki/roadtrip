@@ -11,15 +11,6 @@ var config = {
 			passwordReset: '/password-reset'
 		}
 	}],
-	email: {
-		transporter: 'smtps://krewenki%40gmail.com:rvbaveokrgpdfdda@smtp.gmail.com', // I guess we could use telegauge for now
-		messages: {
-			passwordReset: {
-				subject: 'Reset your roadtrip password',
-				template: __dirname + '/templates/email/password_reset.html', // pass a path, parse it when we need it
-			}
-		}
-	},
 
 	onComplete: function (self, _, ObjectId) {
 		self.settings.http.get('*', function (req, res) {
