@@ -61,7 +61,7 @@ DEF.modules.repositories.Model = Roadtrip.Model.extend({
 });
 DEF.modules.repositories.Collection = Backbone.Highway.Collection.extend({
 	model: DEF.modules.repositories.Model,
-	url: 'http://127.0.0.1:3000/roadtrip//roadtrip/repositories',
+	url: 'http://127.0.0.1:3000/roadtrip/repositories',
 	idAttribute: 'name'
 });
 

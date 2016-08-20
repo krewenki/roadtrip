@@ -33,7 +33,7 @@ DEF.modules.todo.Model = Roadtrip.Model.extend({
 
 DEF.modules.todo.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.todo.Model,
-	url: 'http://127.0.0.1:3000/roadtriproadtrip//roadtrip/todo',
+	url: 'http://127.0.0.1:3000/roadtrip/todo',
 	filters: {
 		Assigned: function (model) {
 			return function (m) {

@@ -121,7 +121,7 @@ DEF.modules.users.Model = Roadtrip.Model.extend({
 
 DEF.modules.users.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.users.Model,
-	url: 'http://127.0.0.1:3000/roadtriproadtrip/users',
+	url: 'http://127.0.0.1:3000/roadtrip/users',
 	initialize: function () {
 		//console.log(APP.models.tasks);
 		this.listenTo(APP.models.tasks, "sync", this.UpdateUserTaskCount);

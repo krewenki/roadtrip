@@ -31,12 +31,12 @@ DEF.modules.events.Model = Roadtrip.Model.extend({
 });
 DEF.modules.events.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.events.Model,
-	url: 'http://127.0.0.1:3000/roadtrip//roadtrip/events',
+	url: 'http://127.0.0.1:3000/roadtrip/events',
 	comparator: function (m) {
 		return -m.get('datetime');
 	},
 	minimum: {
-		limit: 20
+		limit: 2
 	}
 });
 

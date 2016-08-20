@@ -189,10 +189,11 @@ window.Roadtrip = {
 					}
 				}.bind(this));
 				if (changed) {
+					/*
 					APP.LogEvent(this.module, this.id, "Edited " + Object.keys(save).join(", "), {
 						old: orig,
 						new: save
-					}, "edit");
+					}, "edit"); */
 				}
 
 			}

@@ -160,6 +160,7 @@ DEF.HeaderLayout = Backbone.Marionette.LayoutView.extend({
 	},
 	InitCollection: function (e) {
 		var target = $(e.currentTarget).data('mode');
+		console.log('InitCollection: ', target);
 		DEF.modules[target].Initialize();
 	},
 	Go: function (e) {

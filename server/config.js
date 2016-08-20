@@ -40,10 +40,6 @@ var config = {
 
 		});
 
-		//self.settings.http.get('*', function(req, res){
-
-		//});
-
 	},
 	hooks: {
 		revisions: require('../modules/revisions/server.js')

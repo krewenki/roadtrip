@@ -26,36 +26,12 @@ I use data-id here, because when i did stuff like 'id=contacts', then clicking o
 -->
 
 <div class='bg1' id='mainmenu'>
-	<% if (U.Can("contacts")) { %>
-		<div class='menuitem link' data-mode='contacts'>
-			<%=APP.Icon('contacts')%> <span class='label'>Contacts</span>
-		</div>
-	<% } %>
-	<% if (U.Can("orders")) { %>
-		<div class='menuitem link' data-mode='orders'>
-			<%=APP.Icon('orders')%> <span class='label'>Orders</span>
-		</div>
-	<% } %>
-	<% if (U.Can("calendar")) { %>
-		<div class='menuitem link' data-mode='calendar'>
-			<%=APP.Icon('calendar')%> <span class='label'>Calendar</span>
-		</div>
-	<% } %>
 	<% if (U.Can("projects")) { %>
 		<div class='menuitem link' data-mode='projects'>
 			<%=APP.Icon('projects')%> <span class='label'>Projects</span>
 		</div>
 	<% } %>
-	<% if (U.Can("expenses")) { %>
-		<div class='menuitem link' data-mode='expenses'>
-			<%=APP.Icon('expenses')%> <span class='label'>Expenses</span>
-		</div>
-	<% } %>
-	<% if (U.Can("timeclock")) { %>
-		<div class='menuitem link' data-mode='timeclock'>
-			<%=APP.Icon('timeclock')%> <span class='label'>Time Clock</span>
-		</div>
-	<% } %>
+
 	<% if (U.Can("users")) { %>
 		<div class='menuitem link' data-mode='users'>
 			<%=APP.Icon('users')%> <span class='label'>Users</span>

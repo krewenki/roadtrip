@@ -91,7 +91,7 @@ DEF.modules.projects.Model = Roadtrip.Model.extend({
  */
 DEF.modules.projects.Collection = Roadtrip.Collection.extend({
 	model: DEF.modules.projects.Model,
-	url: 'http://127.0.0.1:3000/roadtrip//roadtrip/projects',
+	url: 'http://127.0.0.1:3000/roadtrip/projects',
 });
 
 DEF.modules.projects.Router = Roadtrip.Router.extend({
