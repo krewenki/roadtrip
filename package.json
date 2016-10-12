@@ -18,7 +18,6 @@
     "file-loader": "^0.8.5",
     "font-awesome": "^4.5.0",
     "font-awesome-webpack": "0.0.4",
-    "fs": "0.0.2",
     "highcharts": "^4.2.3",
     "highway.server": "^0.3.0",
     "html": "0.0.10",
@@ -45,18 +44,19 @@
     "webpack-notifier": "^1.3.0"
   },
   "repository": {
-    "type": "svn",
-    "url": "svn://dev.telegauge.com/roadtrip"
+    "type": "git",
+    "url": "https://github.com/krewenki/roadtrip"
   },
   "scripts": {
     "start": "rm -rf public/build; node server",
-    "deploy": "svn update; npm update; NODE_ENV=production webpack --source-map --progress",
-    "dev" : "nodemon server.js"
+    "deploy": "NODE_ENV=production webpack --source-map --progress",
+    "dev": "nodemon server.js"
   },
-  "author": "team telegauge",
+  "author": "Warren Krewenki",
   "license": "ISC",
   "dependencies": {
     "gravatar": "^1.5.2",
+    "material-design-lite": "^1.2.0",
     "nodemailer": "^2.3.2"
   }
 }
